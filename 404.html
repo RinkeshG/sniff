@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sniff — 404</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ginger: #E08A3A;
+      --ginger-deep: #C06E22;
+      --ginger-soft: #FCEBD4;
+      --indie: #8B7355;
+      --indie-soft: #B8A88E;
+      --charcoal: #2A2725;
+      --charcoal-soft: #3D3835;
+      --cream: #F5F0E5;
+      --tabby-soft: #E8DCC8;
+      --serif: 'Young Serif', Georgia, serif;
+      --sans: 'Sora', system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--charcoal);
+      color: var(--cream);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+      overflow: hidden;
+    }
+
+    nav {
+      padding: 24px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .mark {
+      font-family: var(--serif);
+      font-size: 28px;
+      color: var(--cream);
+      text-decoration: none;
+    }
+    .mark .dot {
+      color: var(--ginger);
+      font-size: 0.7em;
+      vertical-align: 0.1em;
+      display: inline-block;
+      animation: eyeBlink 4s ease-in-out infinite;
+    }
+    @keyframes eyeBlink {
+      0%, 92%, 100% { transform: scaleY(1); opacity: 1; }
+      95% { transform: scaleY(0.1); opacity: 0.6; }
+    }
+
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 0 24px 80px;
+      text-align: center;
+    }
+
+    .cat-scene {
+      width: 320px;
+      height: 200px;
+      margin-bottom: 48px;
+      color: var(--ginger);
+    }
+
+    @keyframes lookAround {
+      0%, 40%, 100% { transform: rotate(0) translate(0, 0); }
+      10% { transform: rotate(-12deg) translate(-8px, 2px); }
+      20% { transform: rotate(8deg) translate(4px, -1px); }
+      30% { transform: rotate(-4deg) translate(-2px, 1px); }
+    }
+    .look-head { animation: lookAround 6s ease-in-out infinite; transform-origin: 160px 105px; }
+
+    @keyframes tailFlick {
+      0%, 85%, 100% { transform: rotate(0); }
+      90% { transform: rotate(8deg); }
+      95% { transform: rotate(-4deg); }
+    }
+    .flick-tail { animation: tailFlick 4s ease-in-out infinite; transform-origin: 248px 115px; }
+
+    @keyframes sockDrift {
+      0%, 100% { transform: translate(0, 0) rotate(0); opacity: 0.2; }
+      50% { transform: translate(6px, -4px) rotate(8deg); opacity: 0.35; }
+    }
+    .sock { animation: sockDrift 5s ease-in-out infinite; }
+
+    .four-oh-four {
+      font-family: var(--sans);
+      font-weight: 800;
+      font-size: 14px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--ginger);
+      opacity: 0.5;
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      font-family: var(--serif);
+      font-size: clamp(36px, 8vw, 64px);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+      color: var(--cream);
+    }
+
+    h1 .ginger { color: var(--ginger); }
+
+    .sub {
+      font-size: 17px;
+      color: var(--indie-soft);
+      max-width: 420px;
+      line-height: 1.55;
+      margin-bottom: 40px;
+    }
+
+    .back-btn {
+      display: inline-block;
+      background: var(--ginger);
+      color: var(--charcoal);
+      font-family: var(--sans);
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 16px 36px;
+      border-radius: 10px;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .back-btn:hover {
+      background: var(--ginger-deep);
+      transform: translateY(-2px);
+    }
+
+    .foot-line {
+      padding: 24px 40px;
+      text-align: center;
+      font-size: 12px;
+      color: rgba(245,240,229,0.25);
+      font-family: var(--serif);
+    }
+
+    @media (max-width: 600px) {
+      nav { padding: 16px 16px; }
+      .main { padding: 0 16px 60px; }
+      .cat-scene { width: 240px; height: 150px; margin-bottom: 32px; }
+      h1 { font-size: clamp(28px, 8vw, 44px); }
+      .sub { font-size: 15px; }
+      .back-btn { padding: 14px 28px; font-size: 13px; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/" class="mark">sn<span class="dot">●</span>ff</a>
+  </nav>
+
+  <div class="main">
+    <svg class="cat-scene" viewBox="0 0 320 200" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
+      <!-- the sock (what the cat lost) -->
+      <g class="sock">
+        <path d="M50 160 L55 140 Q60 130 70 132 L75 148 Q72 165 60 168 Z" stroke-width="2" opacity="0.25" stroke-linecap="round"/>
+        <line x1="58" y1="142" x2="68" y2="140" stroke-width="1.5" opacity="0.15"/>
+        <line x1="56" y1="148" x2="66" y2="146" stroke-width="1.5" opacity="0.15"/>
+      </g>
+
+      <!-- cat body -->
+      <g class="flick-tail">
+        <path d="M280 50 C276 72, 264 100, 242 118 C228 128, 212 130, 196 126" stroke-width="3" stroke-linecap="round"/>
+      </g>
+
+      <g class="look-head">
+        <!-- head -->
+        <path d="M155 108 C148 100, 143 98, 140 102 C134 110, 132 118, 134 124 C136 130, 146 134, 158 128 C168 124, 176 118, 182 114" stroke-width="3" stroke-linecap="round"/>
+        <!-- ears — alert, perked, searching -->
+        <path d="M148 96 L140 66 L158 92" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+        <path d="M162 98 L170 64 L168 94" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+        <!-- nose -->
+        <circle cx="134" cy="118" r="2.5" fill="currentColor" stroke="none"/>
+        <!-- eye — wide open, searching -->
+        <ellipse cx="150" cy="108" rx="2.5" ry="4" fill="currentColor" stroke="none"/>
+        <!-- whiskers -->
+        <line x1="132" y1="114" x2="108" y2="108" stroke-width="1.5" opacity="0.35"/>
+        <line x1="132" y1="118" x2="106" y2="118" stroke-width="1.5" opacity="0.35"/>
+        <line x1="132" y1="122" x2="108" y2="128" stroke-width="1.5" opacity="0.35"/>
+        <!-- ? marks floating -->
+        <text x="120" y="82" font-family="'Young Serif', serif" font-size="18" fill="currentColor" stroke="none" opacity="0.3">?</text>
+        <text x="175" y="72" font-family="'Young Serif', serif" font-size="12" fill="currentColor" stroke="none" opacity="0.2">?</text>
+      </g>
+
+      <!-- belly + legs -->
+      <path d="M182 114 C190 120, 206 132, 224 136 C240 140, 256 136, 268 124" stroke-width="3" stroke-linecap="round"/>
+      <line x1="200" y1="132" x2="198" y2="172" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="218" y1="136" x2="216" y2="172" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="254" y1="130" x2="256" y2="172" stroke-width="2.5" stroke-linecap="round"/>
+
+      <!-- ground line -->
+      <line x1="40" y1="174" x2="280" y2="174" stroke-width="1.5" opacity="0.1"/>
+    </svg>
+
+    <div class="four-oh-four">404</div>
+    <h1>Page went somewhere<br>we can't <span class="ginger">find.</span></h1>
+    <p class="sub">Like a sock. It was here. Now it's not. The cat looks equally confused.</p>
+    <a href="/" class="back-btn">Back to the bowl</a>
+  </div>
+
+  <div class="foot-line">sn●ff</div>
+</body>
+</html>
