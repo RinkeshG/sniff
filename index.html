@@ -533,17 +533,23 @@
     .foot-meta .dot { color: var(--ginger); margin: 0 8px; }
 
     /* ═══ RESPONSIVE ═══ */
+
+    /* Tablet */
     @media (max-width: 900px) {
       .hero-main { grid-template-columns: 1fr; padding: 40px 24px; }
       .hero-ill { max-width: 280px; margin: 0 auto; order: -1; }
       .hero-nav { padding: 16px 24px; }
-      .card { transform: none; }
+      .hero h1 { font-size: clamp(40px, 10vw, 64px); }
+      .card { transform: none; max-width: 100%; }
       .card:hover { transform: none; }
       .findings { grid-template-columns: 1fr 1fr; }
+      .find.gm { grid-column: 1 / -1; }
       .missing-grid { grid-template-columns: 1fr; }
+      .demo { padding: 80px 24px; }
       .versus { padding: 80px 24px; }
       .vs-grid { grid-template-columns: 1fr; gap: 16px; }
       .vs-divider { display: none; }
+      .vs-card { padding: 32px 28px; }
       .gap-section { padding: 80px 24px; }
       .gap-row { grid-template-columns: 1fr 1fr 50px; }
       .gap-name { grid-column: 1 / -1; }
@@ -551,9 +557,91 @@
       .foot { flex-direction: column; gap: 16px; text-align: center; padding: 32px 24px; }
     }
 
-    @media (max-width: 480px) {
-      .gap-row { grid-template-columns: 1fr 60px; }
+    /* Mobile */
+    @media (max-width: 600px) {
+      .hero { min-height: auto; }
+      .hero-nav { padding: 16px 16px; }
+      .hero-nav-tag { font-size: 10px; letter-spacing: 0.12em; }
+      .hero-main { padding: 24px 16px 40px; gap: 24px; }
+      .hero-text { max-width: 100%; }
+      .hero h1 { font-size: clamp(36px, 10vw, 48px); margin-bottom: 16px; }
+      .hero-sub { font-size: 15px; margin-bottom: 28px; }
+      .search-field { flex-direction: column; border-radius: 10px; }
+      .search-field input { padding: 14px 16px; font-size: 15px; }
+      .search-btn { padding: 14px 20px; border-radius: 0 0 8px 8px; }
+      .chips { gap: 6px; }
+      .chip { font-size: 12px; padding: 7px 12px; }
+      .hero-ill { max-width: 200px; }
+      .hero-ill svg { max-width: 200px; }
+
+      .demo { padding: 60px 16px; }
+      .demo-h { font-size: clamp(28px, 8vw, 40px); }
+      .demo-sub { font-size: 14px; }
+      .card { border-radius: 12px; }
+      .card-head { padding: 18px 18px; }
+      .card-title { font-size: 20px; }
+      .card-price { font-size: 12px; }
+      .card-body { padding: 18px 18px; }
+      .findings { grid-template-columns: 1fr; gap: 8px; }
+      .find { padding: 14px 12px; }
+      .find.gm { grid-column: auto; }
+      .find-val { font-size: 24px; }
+      .find .tip { width: 180px; font-size: 11px; padding: 10px 12px; }
+      .bar-wrap { margin: 16px 0 20px; }
+      .bar-head { font-size: 10px; }
+      .bar-labels { font-size: 9px; }
+      .ing-first { font-size: 26px; }
+      .ing-rest { font-size: 12px; }
+      .missing-grid { gap: 6px; }
+      .miss-box { padding: 10px 12px; }
+      .miss-name { font-size: 12px; }
+      .miss-status { font-size: 10px; }
+      .nose { padding: 14px 16px; }
+      .nose-text { font-size: 14px; }
+      .card-source { padding: 12px 18px; font-size: 10px; }
+
+      .versus { padding: 60px 16px; }
+      .versus-h { font-size: clamp(28px, 8vw, 40px); }
+      .versus-sub { font-size: 14px; margin-bottom: 36px; }
+      .vs-card { padding: 24px 20px; border-radius: 12px; }
+      .vs-title { font-size: 22px; }
+      .vs-desc { font-size: 12px; }
+      .vs-stat-val { font-size: 26px; }
+      .vs-stat-name { font-size: 12px; }
+
+      .gap-section { padding: 60px 16px; }
+      .gap-h { font-size: clamp(28px, 8vw, 40px); }
+      .gap-sub { font-size: 14px; }
+      .gap-row { grid-template-columns: 1fr 50px; gap: 12px; }
       .gap-bar-wrap { display: none; }
+      .gap-name { grid-column: auto; font-size: 14px; }
+      .gap-name .note { font-size: 11px; }
+      .gap-fraction { font-size: 14px; }
+      .gap-callout { padding: 18px 20px; font-size: 16px; }
+
+      .manifesto { padding: 60px 16px; }
+      .manifesto h2 { font-size: clamp(36px, 10vw, 56px); }
+      .manifesto p { font-size: 15px; margin-bottom: 40px; }
+      .cta-field { flex-direction: column; border-radius: 10px; }
+      .cta-field input { padding: 14px 16px; font-size: 15px; }
+      .cta-field button { padding: 14px 20px; border-radius: 0 0 8px 8px; }
+
+      .foot { padding: 24px 16px; gap: 12px; }
+      .foot-mark { font-size: 20px; }
+      .foot-meta { font-size: 12px; line-height: 1.5; }
+    }
+
+    /* Small mobile (< 380px) */
+    @media (max-width: 380px) {
+      .hero h1 { font-size: 32px; }
+      .hero-sub { font-size: 14px; }
+      .chip { font-size: 11px; padding: 6px 10px; }
+      .card-head { padding: 14px 14px; }
+      .card-body { padding: 14px 14px; }
+      .card-title { font-size: 18px; }
+      .find-val { font-size: 22px; }
+      .vs-stat-val { font-size: 22px; }
+      .manifesto h2 { font-size: 32px; }
     }
   </style>
 </head>
