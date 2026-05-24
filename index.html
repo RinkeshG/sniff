@@ -652,11 +652,35 @@
 
     /* ═══ RESPONSIVE ═══ */
 
+    /* notch/dynamic island safe areas */
+    @supports (padding: env(safe-area-inset-top)) {
+      .hero-nav { padding-top: max(24px, env(safe-area-inset-top)); padding-left: max(40px, env(safe-area-inset-left)); padding-right: max(40px, env(safe-area-inset-right)); }
+      .foot { padding-bottom: max(40px, env(safe-area-inset-bottom)); }
+      .pspsps-toast { bottom: max(32px, env(safe-area-inset-bottom)); }
+    }
+
+    /* touch devices: tap-to-reveal tooltips instead of hover */
+    @media (hover: none) {
+      .find:hover { transform: none; }
+      .find .tip { display: none; }
+      .find.tip-open .tip { display: block; opacity: 1; transform: translateX(-50%) translateY(0); }
+      .miss-box:hover { transform: none; }
+      .miss-box::after { display: none; }
+      .miss-box.tip-open::after { display: block; opacity: 1; transform: translateX(-50%) translateY(0); }
+      .step:hover { transform: none; box-shadow: none; }
+      .card { transform: none !important; }
+    }
+
     @media (max-width: 900px) {
-      .hero-main { grid-template-columns: 1fr; padding: 40px 24px; }
-      .hero-ill { max-width: 280px; margin: 0 auto; order: -1; }
+      .hero { min-height: auto; }
+      .hero-main { grid-template-columns: 1fr; padding: 40px 24px; gap: 20px; }
+      .hero-ill { max-width: 300px; margin: 0 auto; order: -1; }
       .hero-nav { padding: 16px 24px; }
       .hero h1 { font-size: clamp(40px, 10vw, 64px); }
+      .hero-text { text-align: center; margin: 0 auto; }
+      .hero-sub { margin-left: auto; margin-right: auto; }
+      .search-box { max-width: 480px; margin: 0 auto; }
+      .chips { justify-content: center; }
       .card { transform: none; max-width: 100%; }
       .card:hover { transform: none; }
       .findings { grid-template-columns: 1fr 1fr; }
@@ -677,82 +701,150 @@
       .hero { min-height: auto; }
       .hero-nav { padding: 16px 16px; }
       .hero-nav-tag { font-size: 10px; letter-spacing: 0.12em; }
-      .hero-main { padding: 24px 16px 40px; gap: 24px; }
+      .hero-main { padding: 24px 20px 44px; gap: 16px; }
       .hero-text { max-width: 100%; }
-      .hero h1 { font-size: clamp(36px, 10vw, 48px); margin-bottom: 16px; }
-      .hero-sub { font-size: 15px; margin-bottom: 28px; }
-      .search-field { flex-direction: column; border-radius: 10px; }
-      .search-field input { padding: 14px 16px; font-size: 15px; }
-      .search-btn { padding: 14px 20px; border-radius: 0 0 8px 8px; }
-      .chips { gap: 6px; }
-      .chip { font-size: 12px; padding: 7px 12px; }
-      .hero-ill { max-width: 200px; }
+      .hero h1 { font-size: clamp(36px, 11vw, 52px); margin-bottom: 12px; line-height: 1.05; }
+      .hero-sub { font-size: 15px; margin-bottom: 24px; max-width: 320px; }
+      .search-label { font-size: 10px; margin-bottom: 10px; }
+      .search-field { flex-direction: column; border-radius: 12px; }
+      .search-field input { padding: 16px 16px; font-size: 16px; text-align: center; }
+      .search-btn { padding: 16px 20px; border-radius: 0 0 10px 10px; font-size: 14px; min-height: 48px; }
+      .chips { gap: 6px; justify-content: center; }
+      .chip { font-size: 12px; padding: 8px 14px; min-height: 36px; display: flex; align-items: center; }
+      .hero-ill { max-width: 220px; margin-bottom: 8px; }
 
-      .demo { padding: 60px 16px; }
+      .demo { padding: 56px 16px; }
+      .demo-intro { margin-bottom: 32px; }
       .demo-h { font-size: clamp(28px, 8vw, 40px); }
       .demo-sub { font-size: 14px; }
-      .card { border-radius: 12px; }
-      .card-head { padding: 18px 18px; }
+      .card { border-radius: 14px; box-shadow: 0 2px 4px rgba(42,39,37,0.04), 0 12px 40px rgba(42,39,37,0.08); }
+      .card-head { padding: 20px 20px 16px; }
+      .card-brand { font-size: 10px; }
       .card-title { font-size: 20px; }
       .card-price { font-size: 12px; }
-      .card-body { padding: 18px 18px; }
-      .findings { grid-template-columns: 1fr; gap: 8px; }
-      .find { padding: 14px 12px; }
-      .find.gm { grid-column: auto; }
+      .card-body { padding: 16px 20px 20px; }
+      .findings { grid-template-columns: 1fr 1fr; gap: 8px; }
+      .find { padding: 14px 10px; border-radius: 10px; }
+      .find.gm { grid-column: 1 / -1; }
+      .find-label { font-size: 8px; letter-spacing: 0.12em; }
       .find-val { font-size: 24px; }
-      .find .tip { width: 180px; font-size: 11px; padding: 10px 12px; }
+      .find-what { font-size: 9px; }
+      .find .tip { width: 200px; font-size: 12px; padding: 12px 14px; left: 50%; }
+      .find.gm .find-val { font-size: 12px; }
       .bar-wrap { margin: 16px 0 20px; }
       .bar-head { font-size: 10px; }
       .bar-labels { font-size: 9px; }
+      .bar-labels .ideal { font-size: 8px; }
       .ing-first { font-size: 26px; }
-      .ing-rest { font-size: 12px; }
-      .missing-grid { gap: 6px; }
-      .miss-box { padding: 10px 12px; }
-      .miss-box::after { display: none; }
-      .miss-name { font-size: 12px; }
-      .miss-status { font-size: 10px; }
-      .nose { padding: 14px 16px; }
-      .nose-text { font-size: 14px; }
-      .card-source { padding: 12px 18px; font-size: 10px; }
+      .ing-rest { font-size: 13px; line-height: 1.55; }
+      .missing-grid { gap: 8px; }
+      .miss-box { padding: 12px 14px; border-radius: 10px; }
+      .miss-name { font-size: 13px; }
+      .miss-status { font-size: 11px; }
+      .nose { padding: 16px 18px; border-radius: 12px; }
+      .nose-label { font-size: 10px; }
+      .nose-text { font-size: 14px; line-height: 1.55; }
+      .card-source { padding: 14px 20px; font-size: 11px; }
+      .card-loading { padding: 48px 20px; }
 
-      .how-section { padding: 60px 16px; }
+      .how-section { padding: 56px 20px; }
       .how-h { font-size: clamp(28px, 8vw, 40px); }
-      .how-sub { font-size: 14px; margin-bottom: 40px; }
-      .step { padding: 28px 20px; }
-      .step-title { font-size: 20px; }
-      .how-fact { font-size: 15px; margin-top: 32px; }
+      .how-sub { font-size: 14px; margin-bottom: 36px; }
+      .steps { gap: 16px; max-width: 100%; }
+      .step { padding: 24px 20px; border-radius: 14px; display: grid; grid-template-columns: 44px 1fr; grid-template-rows: auto auto auto; gap: 0 16px; text-align: left; }
+      .step-icon { width: 44px; height: 44px; margin: 0; grid-row: 1 / -1; align-self: center; }
+      .step-num { font-size: 10px; margin-bottom: 2px; }
+      .step-title { font-size: 18px; margin-bottom: 4px; }
+      .step-desc { font-size: 13px; max-width: none; margin: 0; }
+      .how-fact { font-size: 15px; margin-top: 28px; padding: 0 4px; }
 
-      .gap-section { padding: 60px 16px; }
+      .gap-section { padding: 56px 20px; }
       .gap-h { font-size: clamp(28px, 8vw, 40px); }
-      .gap-sub { font-size: 14px; }
-      .gap-row { grid-template-columns: 1fr 50px; gap: 12px; }
+      .gap-sub { font-size: 14px; margin-bottom: 36px; }
+      .gap-row { grid-template-columns: 1fr auto; gap: 8px; padding: 14px 0; align-items: center; }
       .gap-bar-wrap { display: none; }
       .gap-name { grid-column: auto; font-size: 14px; }
-      .gap-name .note { font-size: 11px; }
-      .gap-fraction { font-size: 14px; }
-      .gap-callout { padding: 18px 20px; font-size: 16px; }
+      .gap-name .note { font-size: 11px; margin-top: 1px; }
+      .gap-fraction { font-size: 15px; min-width: 40px; }
+      .gap-divider { padding: 10px 0 2px; font-size: 9px; }
+      .gap-callout { padding: 20px 20px; font-size: 15px; border-radius: 0 12px 12px 0; line-height: 1.5; margin-top: 28px; }
 
-      .manifesto { padding: 60px 16px; }
-      .manifesto h2 { font-size: clamp(36px, 10vw, 56px); }
-      .manifesto .manifesto-line { font-size: 18px; margin-bottom: 40px; }
-      .cta-field { flex-direction: column; border-radius: 10px; }
-      .cta-field input { padding: 14px 16px; font-size: 15px; }
-      .cta-field button { padding: 14px 20px; border-radius: 0 0 8px 8px; }
+      .manifesto { padding: 64px 20px; }
+      .manifesto h2 { font-size: clamp(32px, 10vw, 56px); margin-bottom: 16px; }
+      .manifesto .manifesto-line { font-size: 17px; margin-bottom: 36px; }
+      .cta-label { font-size: 10px; margin-bottom: 12px; }
+      .cta-field { flex-direction: column; border-radius: 12px; }
+      .cta-field input { padding: 16px 16px; font-size: 16px; text-align: center; }
+      .cta-field button { padding: 16px 20px; border-radius: 0 0 10px 10px; font-size: 14px; min-height: 48px; }
 
-      .foot { padding: 24px 16px; gap: 12px; }
+      .foot { padding: 28px 20px; gap: 10px; }
       .foot-mark { font-size: 20px; }
-      .foot-meta { font-size: 12px; line-height: 1.5; }
+      .foot-meta { font-size: 12px; line-height: 1.6; max-width: 300px; margin: 0 auto; }
+      .foot-tail { top: -18px; }
+
+      .pspsps-toast { font-size: 15px; padding: 14px 20px; border-radius: 12px; max-width: calc(100vw - 32px); white-space: nowrap; }
     }
 
     @media (max-width: 380px) {
+      .hero-main { padding: 12px 16px 28px; }
       .hero h1 { font-size: 32px; }
-      .hero-sub { font-size: 14px; }
-      .chip { font-size: 11px; padding: 6px 10px; }
-      .card-head { padding: 14px 14px; }
-      .card-body { padding: 14px 14px; }
+      .hero-sub { font-size: 13px; max-width: 260px; }
+      .hero-ill { max-width: 180px; }
+      .chip { font-size: 11px; padding: 7px 11px; }
+      .search-field input { padding: 14px 14px; }
+
+      .card-head { padding: 16px 16px 14px; }
+      .card-body { padding: 14px 16px 16px; }
       .card-title { font-size: 18px; }
+      .card-price { font-size: 11px; }
+      .find { padding: 12px 8px; }
       .find-val { font-size: 22px; }
-      .manifesto h2 { font-size: 32px; }
+      .find-label { font-size: 7px; }
+      .find-what { font-size: 8px; }
+      .ing-first { font-size: 22px; }
+      .ing-rest { font-size: 12px; }
+      .nose-text { font-size: 13px; }
+
+      .step { padding: 20px 16px; gap: 16px; }
+      .step-icon { width: 36px; height: 36px; }
+      .step-title { font-size: 16px; }
+      .step-desc { font-size: 12px; }
+
+      .gap-name { font-size: 13px; }
+      .gap-fraction { font-size: 13px; }
+      .gap-callout { font-size: 14px; padding: 16px 16px; }
+
+      .manifesto h2 { font-size: 28px; }
+      .manifesto .manifesto-line { font-size: 15px; }
+      .cta-field input { font-size: 15px; }
+
+      .foot-meta { font-size: 11px; max-width: 260px; }
+    }
+
+    /* very small — iPhone SE first gen, 4-inch screens */
+    @media (max-width: 340px) {
+      .hero h1 { font-size: 28px; }
+      .hero-sub { font-size: 12px; }
+      .hero-ill { max-width: 160px; }
+      .chips { gap: 4px; }
+      .chip { font-size: 10px; padding: 6px 9px; }
+      .demo-h, .how-h, .gap-h { font-size: 24px; }
+      .manifesto h2 { font-size: 24px; }
+      .card-title { font-size: 16px; }
+      .find-val { font-size: 20px; }
+    }
+
+    /* landscape phones */
+    @media (max-height: 500px) and (orientation: landscape) {
+      .hero { min-height: auto; }
+      .hero-main { grid-template-columns: 1fr 1fr; gap: 20px; padding: 16px 24px; }
+      .hero-ill { order: 0; max-width: 180px; }
+      .hero-text { text-align: left; }
+      .hero-sub { margin-left: 0; }
+      .hero h1 { font-size: 32px; margin-bottom: 8px; }
+      .hero-sub { font-size: 13px; margin-bottom: 16px; }
+      .search-box { max-width: none; margin: 0; }
+      .chips { justify-content: flex-start; }
     }
   </style>
 </head>
@@ -1114,7 +1206,23 @@
       });
     }
 
-    // 4. pspsps easter egg
+    // 4. Mobile tap-to-reveal tooltips
+    if ('ontouchstart' in window) {
+      document.querySelectorAll('.find, .miss-box').forEach(el => {
+        el.addEventListener('click', (e) => {
+          const wasOpen = el.classList.contains('tip-open');
+          document.querySelectorAll('.tip-open').forEach(o => o.classList.remove('tip-open'));
+          if (!wasOpen) el.classList.add('tip-open');
+        });
+      });
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.find') && !e.target.closest('.miss-box')) {
+          document.querySelectorAll('.tip-open').forEach(o => o.classList.remove('tip-open'));
+        }
+      });
+    }
+
+    // 5. pspsps easter egg
     let psBuffer = '';
     document.addEventListener('keypress', (e) => {
       psBuffer += e.key.toLowerCase();
