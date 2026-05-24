@@ -563,72 +563,82 @@
 
     .gap-tag { font-size: 11px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--ginger); margin-bottom: 16px; }
     .gap-h { font-family: var(--serif); font-size: clamp(36px,5vw,52px); letter-spacing: -0.02em; margin-bottom: 12px; }
-    .gap-sub { font-size: 16px; color: var(--indie); max-width: 520px; margin-bottom: 56px; }
+    .gap-sub { font-size: 16px; color: var(--indie); max-width: 520px; margin-bottom: 48px; }
 
-    .gap-list { list-style: none; }
-
-    .gap-row {
-      display: grid;
-      grid-template-columns: 180px 1fr 60px;
-      gap: 20px;
-      align-items: center;
-      padding: 18px 0;
-      border-bottom: 1px solid var(--tabby-soft);
+    /* the "shown" block — boring, compact, dismissive */
+    .gap-shown {
+      background: var(--good-soft);
+      border: 1px solid rgba(74,143,92,0.15);
+      border-radius: 14px;
+      padding: 24px 28px;
+      margin-bottom: 16px;
     }
-
-    .gap-name { font-size: 15px; font-weight: 600; }
-    .gap-name .note { font-weight: 400; font-size: 12px; color: var(--indie); display: block; margin-top: 2px; }
-
-    .gap-bar-wrap { position: relative; height: 12px; }
-
-    .gap-bar-bg {
-      position: absolute;
-      inset: 0;
-      background: var(--cream-deep);
-      border-radius: 6px;
+    .gap-shown-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--good); margin-bottom: 16px;
     }
-
-    .gap-bar-fill {
-      position: absolute;
-      left: 0; top: 0; height: 100%;
-      border-radius: 6px;
-      transition: width 1.2s cubic-bezier(0.34,1.56,0.64,1);
-      width: 0;
+    .gap-shown-items {
+      display: flex; gap: 12px; flex-wrap: wrap;
     }
+    .gap-shown-item {
+      display: flex; align-items: center; gap: 7px;
+      font-size: 14px; font-weight: 500; color: var(--good);
+    }
+    .gap-check {
+      width: 20px; height: 20px; border-radius: 50%;
+      background: var(--good); display: flex; align-items: center;
+      justify-content: center; flex-shrink: 0;
+    }
+    .gap-check svg { width: 11px; height: 11px; }
 
-    .gap-bar-fill.full { background: var(--good); }
-    .gap-bar-fill.partial { background: var(--caution); }
-    .gap-bar-fill.low { background: var(--missing); }
-    .gap-bar-fill.zero { background: transparent; border: 1.5px dashed var(--missing); height: 100%; border-radius: 6px; width: 100% !important; }
-
-    .gap-fraction {
-      font-family: var(--sans);
-      font-weight: 700;
-      font-size: 15px;
-      text-align: right;
+    /* the "hidden" block — dramatic, dark, the villain */
+    .gap-hidden {
+      background: var(--charcoal);
+      border-radius: 16px;
+      padding: 32px 28px;
+      color: var(--cream);
+    }
+    .gap-hidden-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--flag); margin-bottom: 24px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .gap-hidden-label::after {
+      content: ''; flex: 1; height: 1px;
+      background: rgba(179,58,42,0.3);
+    }
+    .gap-hidden-items {
+      display: flex; flex-direction: column; gap: 0;
+    }
+    .gap-hidden-item {
+      display: grid; grid-template-columns: 28px 1fr auto;
+      gap: 14px; align-items: start;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .gap-hidden-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .gap-hidden-item:first-child { padding-top: 0; }
+    .gap-x {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: rgba(179,58,42,0.2); display: flex; align-items: center;
+      justify-content: center; flex-shrink: 0; margin-top: 1px;
+    }
+    .gap-x svg { width: 12px; height: 12px; color: var(--flag); }
+    .gap-hidden-name {
+      font-family: var(--serif); font-size: 17px; color: var(--cream);
+      margin-bottom: 3px; line-height: 1.3;
+    }
+    .gap-hidden-why {
+      font-size: 13px; color: var(--indie-soft); line-height: 1.45;
+    }
+    .gap-hidden-stat {
+      font-family: var(--sans); font-weight: 800; font-size: 13px;
+      color: var(--flag); white-space: nowrap; margin-top: 3px;
       font-feature-settings: 'tnum';
     }
 
-    .gap-fraction.full { color: var(--good); }
-    .gap-fraction.partial { color: var(--caution); }
-    .gap-fraction.low { color: var(--missing); }
-    .gap-fraction.zero { color: var(--flag); }
-
-    .gap-divider {
-      grid-column: 1 / -1;
-      padding: 12px 0 4px;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--indie);
-      border-bottom: 1px solid var(--charcoal);
-    }
-
-    .gap-divider.warn { color: var(--flag); border-color: var(--flag); }
-
     .gap-callout {
-      margin-top: 40px;
+      margin-top: 28px;
       padding: 24px 28px;
       background: rgba(179,58,42,0.06);
       border-left: 4px solid var(--flag);
@@ -971,8 +981,6 @@
       .how-section { padding: 80px 24px; }
       .steps { grid-template-columns: 1fr; gap: 20px; max-width: 400px; margin: 0 auto; }
       .gap-section { padding: 80px 24px; }
-      .gap-row { grid-template-columns: 1fr 1fr 50px; }
-      .gap-name { grid-column: 1 / -1; }
       .manifesto { padding: 80px 24px; }
       .dog-modal { padding: 32px 24px; }
       .foot { flex-direction: column; gap: 16px; text-align: center; padding: 32px 24px; }
@@ -1059,14 +1067,20 @@
 
       .gap-section { padding: 56px 20px; }
       .gap-h { font-size: clamp(28px, 8vw, 40px); }
-      .gap-sub { font-size: 14px; margin-bottom: 36px; }
-      .gap-row { grid-template-columns: 1fr auto; gap: 8px; padding: 14px 0; align-items: center; }
-      .gap-bar-wrap { display: none; }
-      .gap-name { grid-column: auto; font-size: 14px; }
-      .gap-name .note { font-size: 11px; margin-top: 1px; }
-      .gap-fraction { font-size: 15px; min-width: 40px; }
-      .gap-divider { padding: 10px 0 2px; font-size: 9px; }
-      .gap-callout { padding: 20px 20px; font-size: 15px; border-radius: 0 12px 12px 0; line-height: 1.5; margin-top: 28px; }
+      .gap-sub { font-size: 14px; margin-bottom: 32px; }
+      .gap-shown { padding: 20px 20px; border-radius: 12px; }
+      .gap-shown-items { gap: 10px; }
+      .gap-shown-item { font-size: 13px; }
+      .gap-check { width: 18px; height: 18px; }
+      .gap-check svg { width: 10px; height: 10px; }
+      .gap-hidden { padding: 24px 20px; border-radius: 14px; }
+      .gap-hidden-item { grid-template-columns: 24px 1fr auto; gap: 10px; padding: 14px 0; }
+      .gap-x { width: 24px; height: 24px; }
+      .gap-x svg { width: 10px; height: 10px; }
+      .gap-hidden-name { font-size: 15px; }
+      .gap-hidden-why { font-size: 12px; }
+      .gap-hidden-stat { font-size: 12px; }
+      .gap-callout { padding: 20px 20px; font-size: 15px; border-radius: 0 12px 12px 0; line-height: 1.5; margin-top: 24px; }
 
       .manifesto { padding: 64px 20px; }
       .manifesto h2 { font-size: clamp(32px, 10vw, 56px); margin-bottom: 16px; }
@@ -1119,8 +1133,7 @@
       .step-title { font-size: 16px; }
       .step-desc { font-size: 12px; }
 
-      .gap-name { font-size: 13px; }
-      .gap-fraction { font-size: 13px; }
+      .gap-hidden-name { font-size: 14px; }
       .gap-callout { font-size: 14px; padding: 16px 16px; }
 
       .manifesto h2 { font-size: 28px; }
@@ -1491,61 +1504,51 @@
     <div class="gap-inner reveal">
       <div class="gap-tag">The transparency gap</div>
       <h2 class="gap-h">What brands tell you — and what they hide.</h2>
-      <p class="gap-sub">We checked the top 6 cat foods sold in India. Here's how many disclose each nutritional field.</p>
+      <p class="gap-sub">We checked the top 6 cat foods sold in India.</p>
 
-      <ul class="gap-list" id="gapList">
-        <li class="gap-row"><div class="gap-divider">What they must tell you</div></li>
-        <li class="gap-row">
-          <div class="gap-name">Protein</div>
-          <div class="gap-bar-wrap"><div class="gap-bar-bg"></div><div class="gap-bar-fill full" data-width="100"></div></div>
-          <div class="gap-fraction full">6/6</div>
-        </li>
-        <li class="gap-row">
-          <div class="gap-name">Fat</div>
-          <div class="gap-bar-wrap"><div class="gap-bar-bg"></div><div class="gap-bar-fill full" data-width="100"></div></div>
-          <div class="gap-fraction full">6/6</div>
-        </li>
-        <li class="gap-row">
-          <div class="gap-name">Fibre</div>
-          <div class="gap-bar-wrap"><div class="gap-bar-bg"></div><div class="gap-bar-fill full" data-width="100"></div></div>
-          <div class="gap-fraction full">6/6</div>
-        </li>
-        <li class="gap-row">
-          <div class="gap-name">Moisture</div>
-          <div class="gap-bar-wrap"><div class="gap-bar-bg"></div><div class="gap-bar-fill full" data-width="100"></div></div>
-          <div class="gap-fraction full">6/6</div>
-        </li>
+      <div class="gap-shown reveal d1">
+        <div class="gap-shown-label">What the label tells you</div>
+        <div class="gap-shown-items">
+          <div class="gap-shown-item"><span class="gap-check"><svg viewBox="0 0 12 12" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><path d="M2.5 6.5 L5 9 L9.5 3.5"/></svg></span>Protein</div>
+          <div class="gap-shown-item"><span class="gap-check"><svg viewBox="0 0 12 12" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><path d="M2.5 6.5 L5 9 L9.5 3.5"/></svg></span>Fat</div>
+          <div class="gap-shown-item"><span class="gap-check"><svg viewBox="0 0 12 12" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><path d="M2.5 6.5 L5 9 L9.5 3.5"/></svg></span>Fibre</div>
+          <div class="gap-shown-item"><span class="gap-check"><svg viewBox="0 0 12 12" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><path d="M2.5 6.5 L5 9 L9.5 3.5"/></svg></span>Moisture</div>
+        </div>
+      </div>
 
-        <li class="gap-row"><div class="gap-divider warn">What they choose to hide</div></li>
-        <li class="gap-row">
-          <div class="gap-name">Carbohydrates<span class="note">Never printed. Sniff calculates this.</span></div>
-          <div class="gap-bar-wrap"><div class="gap-bar-bg"></div><div class="gap-bar-fill zero"></div></div>
-          <div class="gap-fraction zero">0/6</div>
-        </li>
-        <li class="gap-row">
-          <div class="gap-name">Taurine<span class="note">Essential. Deficiency causes blindness.</span></div>
-          <div class="gap-bar-wrap"><div class="gap-bar-bg"></div><div class="gap-bar-fill partial" data-width="17"></div></div>
-          <div class="gap-fraction low">1/6</div>
-        </li>
-        <li class="gap-row">
-          <div class="gap-name">Ash content</div>
-          <div class="gap-bar-wrap"><div class="gap-bar-bg"></div><div class="gap-bar-fill partial" data-width="33"></div></div>
-          <div class="gap-fraction low">2/6</div>
-        </li>
-        <li class="gap-row">
-          <div class="gap-name">Calcium : Phosphorus<span class="note">Critical for kidney health.</span></div>
-          <div class="gap-bar-wrap"><div class="gap-bar-bg"></div><div class="gap-bar-fill zero"></div></div>
-          <div class="gap-fraction zero">0/6</div>
-        </li>
-        <li class="gap-row">
-          <div class="gap-name">Named meat source<span class="note">"Meat by-products" vs. "chicken."</span></div>
-          <div class="gap-bar-wrap"><div class="gap-bar-bg"></div><div class="gap-bar-fill partial" data-width="33"></div></div>
-          <div class="gap-fraction low">2/6</div>
-        </li>
-      </ul>
+      <div class="gap-hidden reveal d2">
+        <div class="gap-hidden-label">What your cat actually needs you to know</div>
+        <div class="gap-hidden-items">
+          <div class="gap-hidden-item">
+            <span class="gap-x"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 3 L9 9 M9 3 L3 9"/></svg></span>
+            <div><div class="gap-hidden-name">Carbohydrates</div><div class="gap-hidden-why">Never printed on any label. Sniff calculates it for you.</div></div>
+            <div class="gap-hidden-stat">0 of 6</div>
+          </div>
+          <div class="gap-hidden-item">
+            <span class="gap-x"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 3 L9 9 M9 3 L3 9"/></svg></span>
+            <div><div class="gap-hidden-name">Taurine</div><div class="gap-hidden-why">Essential amino acid. Deficiency causes blindness and heart failure.</div></div>
+            <div class="gap-hidden-stat">1 of 6</div>
+          </div>
+          <div class="gap-hidden-item">
+            <span class="gap-x"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 3 L9 9 M9 3 L3 9"/></svg></span>
+            <div><div class="gap-hidden-name">Ash content</div><div class="gap-hidden-why">High ash means low-quality ingredients. Most brands won't say.</div></div>
+            <div class="gap-hidden-stat">2 of 6</div>
+          </div>
+          <div class="gap-hidden-item">
+            <span class="gap-x"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 3 L9 9 M9 3 L3 9"/></svg></span>
+            <div><div class="gap-hidden-name">Calcium : Phosphorus</div><div class="gap-hidden-why">Wrong ratio damages kidneys over time. No brand discloses it.</div></div>
+            <div class="gap-hidden-stat">0 of 6</div>
+          </div>
+          <div class="gap-hidden-item">
+            <span class="gap-x"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 3 L9 9 M9 3 L3 9"/></svg></span>
+            <div><div class="gap-hidden-name">Named meat source</div><div class="gap-hidden-why">"Meat by-products" could be anything. Only 2 brands name the animal.</div></div>
+            <div class="gap-hidden-stat">2 of 6</div>
+          </div>
+        </div>
+      </div>
 
-      <div class="gap-callout reveal d2">
-        The top half is what regulations require. The bottom half is what your cat actually needs you to know. That gap is why Sniff exists.
+      <div class="gap-callout reveal d3">
+        That's the gap. The easy stuff is printed. The stuff that actually matters? Hidden. That's why Sniff exists.
       </div>
     </div>
   </section>
@@ -1996,20 +1999,6 @@
       });
     },{threshold:0.15});
     document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
-
-    // gap bar fill animation
-    const gapObserver = new IntersectionObserver((entries)=>{
-      entries.forEach(entry=>{
-        if(entry.isIntersecting){
-          entry.target.querySelectorAll('.gap-bar-fill[data-width]').forEach(bar=>{
-            setTimeout(()=>{bar.style.width=bar.dataset.width+'%';},200);
-          });
-          gapObserver.unobserve(entry.target);
-        }
-      });
-    },{threshold:0.3});
-    const gapList=document.getElementById('gapList');
-    if(gapList) gapObserver.observe(gapList);
 
     updateTeaser(foods[0]);
 
