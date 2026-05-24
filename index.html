@@ -352,6 +352,121 @@
     .nose-label { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ginger-deep); margin-bottom: 8px; }
     .nose-text { font-family: var(--serif); font-size: 16px; line-height: 1.5; }
 
+    /* ═══ VERDICT ═══ */
+    .verdict {
+      padding: 22px 28px;
+      background: linear-gradient(135deg, var(--ginger-soft) 0%, rgba(252,235,212,0.35) 100%);
+      border-bottom: 1px solid rgba(224,138,58,0.12);
+    }
+    .verdict-tag {
+      font-size: 9px; font-weight: 700; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--ginger-deep); margin-bottom: 10px;
+    }
+    .verdict-labels { display: flex; align-items: baseline; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+    .verdict-pill { font-family: var(--serif); font-size: 21px; }
+    .verdict-pill.vp-good { color: var(--good); }
+    .verdict-pill.vp-okay { color: var(--caution); }
+    .verdict-pill.vp-weak { color: var(--flag); }
+    .verdict-pill.vp-muted { color: var(--indie); font-size: 17px; }
+    .verdict-sep { color: var(--indie-soft); font-size: 16px; }
+    .verdict-summary { font-size: 14px; color: var(--indie); line-height: 1.55; }
+
+    /* ═══ WORRY LEVEL ═══ */
+    .worry { padding: 16px 0; margin-bottom: 4px; border-bottom: 1px solid var(--tabby-soft); }
+    .worry-level { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+    .worry-dots { display: flex; gap: 5px; }
+    .worry-dots .wd {
+      width: 9px; height: 9px; border-radius: 50%;
+      background: var(--cream-deep); border: 1.5px solid var(--tabby); transition: all 0.3s;
+    }
+    .worry.wl-low .wd.filled { background: var(--good); border-color: var(--good); }
+    .worry.wl-medium .wd.filled { background: var(--caution); border-color: var(--caution); }
+    .worry.wl-high .wd.filled { background: var(--flag); border-color: var(--flag); }
+    .worry-label { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; }
+    .worry.wl-low .worry-label { color: var(--good); }
+    .worry.wl-medium .worry-label { color: var(--caution); }
+    .worry.wl-high .worry-label { color: var(--flag); }
+    .worry-note { font-size: 13px; color: var(--indie); line-height: 1.55; }
+
+    /* ═══ ACTION CARD ═══ */
+    .action-card {
+      margin: 20px 0; padding: 20px 22px;
+      background: var(--charcoal); border-radius: 12px; color: var(--cream);
+    }
+    .action-label {
+      font-size: 9px; font-weight: 700; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--ginger); margin-bottom: 10px;
+    }
+    .action-text { font-family: var(--serif); font-size: 15px; line-height: 1.6; color: var(--cream); }
+
+    /* ═══ REASONS ═══ */
+    .reasons-section { margin: 24px 0; }
+    .reasons-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--indie); margin-bottom: 16px;
+    }
+    .reasons { display: flex; flex-direction: column; gap: 18px; }
+    .reason { display: grid; grid-template-columns: 30px 1fr; gap: 14px; align-items: start; }
+    .reason-num {
+      width: 30px; height: 30px; border-radius: 50%;
+      background: var(--cream-deep); display: flex; align-items: center;
+      justify-content: center; font-size: 12px; font-weight: 700;
+      color: var(--indie); flex-shrink: 0; margin-top: 2px;
+    }
+    .reason.r-good .reason-num { background: var(--good-soft); color: var(--good); }
+    .reason.r-caution .reason-num { background: var(--caution-soft); color: var(--caution); }
+    .reason.r-missing .reason-num { background: var(--missing-soft); color: var(--missing); }
+    .reason-q { font-family: var(--serif); font-size: 16px; color: var(--charcoal); margin-bottom: 3px; line-height: 1.35; }
+    .reason-a { font-size: 13px; color: var(--indie); line-height: 1.5; }
+
+    /* ═══ BEST USE ═══ */
+    .best-use-section {
+      margin: 24px 0; padding: 18px 22px;
+      background: var(--cream); border-radius: 12px; border: 1px solid var(--tabby-soft);
+    }
+    .best-use-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--indie); margin-bottom: 14px;
+    }
+    .best-use { display: flex; flex-direction: column; }
+    .best-use-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 9px 0; border-bottom: 1px solid rgba(196,166,125,0.15);
+    }
+    .best-use-row:last-child { border-bottom: none; }
+    .bu-q { font-size: 13px; color: var(--indie); }
+    .bu-a { font-size: 13px; font-weight: 600; }
+    .bu-a.bu-good { color: var(--good); }
+    .bu-a.bu-okay { color: var(--caution); }
+    .bu-a.bu-flag { color: var(--flag); }
+    .bu-a.bu-vet { color: var(--flag); font-style: italic; }
+
+    /* ═══ PARENT TAKE ═══ */
+    .parent-take {
+      margin: 24px 0 20px; padding: 20px 22px;
+      border-left: 3px solid var(--tabby); background: rgba(196,166,125,0.06); border-radius: 0 12px 12px 0;
+    }
+    .parent-take-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--indie); margin-bottom: 10px;
+    }
+    .parent-take-text { font-family: var(--serif); font-size: 15px; line-height: 1.65; color: var(--charcoal); }
+
+    /* ═══ TECH DETAILS ═══ */
+    .tech-section { margin-top: 20px; border-top: 1px solid var(--tabby-soft); padding-top: 4px; }
+    .tech-toggle {
+      display: flex; align-items: center; justify-content: space-between;
+      width: 100%; padding: 12px 0; background: none; border: none; cursor: pointer;
+      font-family: var(--sans); font-size: 12px; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--indie); transition: color 0.2s;
+    }
+    .tech-toggle:hover { color: var(--charcoal); }
+    .tech-arrow { font-size: 16px; transition: transform 0.3s ease; display: inline-block; }
+    .tech-arrow.open { transform: rotate(180deg); }
+    .tech-details { max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0.4,0,0.2,1); }
+    .tech-details.open { max-height: 1500px; }
+    .tech-details .findings { margin-top: 16px; }
+
     .card-source { padding: 14px 28px; border-top: 1px solid var(--tabby-soft); font-size: 11px; color: var(--indie); display: flex; justify-content: space-between; }
     .card-source a { color: var(--ginger); text-decoration: none; font-weight: 600; }
 
@@ -848,6 +963,10 @@
       .findings { grid-template-columns: 1fr 1fr; }
       .find.gm { grid-column: 1 / -1; }
       .missing-grid { grid-template-columns: 1fr; }
+      .verdict { padding: 18px 24px; }
+      .action-card { margin: 16px 0; }
+      .best-use-section { margin: 16px 0; }
+      .parent-take { margin: 16px 0; }
       .demo { padding: 80px 24px; }
       .how-section { padding: 80px 24px; }
       .steps { grid-template-columns: 1fr; gap: 20px; max-width: 400px; margin: 0 auto; }
@@ -909,6 +1028,23 @@
       .nose-text { font-size: 14px; line-height: 1.55; }
       .card-source { padding: 14px 20px; font-size: 11px; }
       .card-loading { padding: 48px 20px; }
+      .verdict { padding: 16px 20px; }
+      .verdict-pill { font-size: 17px; }
+      .verdict-pill.vp-muted { font-size: 14px; }
+      .verdict-summary { font-size: 13px; }
+      .worry-note { font-size: 12px; }
+      .action-card { margin: 14px 0; padding: 16px 18px; }
+      .action-text { font-size: 14px; }
+      .reasons-section { margin: 16px 0; }
+      .reason { gap: 10px; }
+      .reason-num { width: 26px; height: 26px; font-size: 11px; }
+      .reason-q { font-size: 15px; }
+      .reason-a { font-size: 12px; }
+      .best-use-section { padding: 14px 18px; margin: 16px 0; }
+      .bu-q, .bu-a { font-size: 12px; }
+      .parent-take { padding: 16px 18px; margin: 16px 0; }
+      .parent-take-text { font-size: 14px; }
+      .tech-toggle { font-size: 11px; }
 
       .how-section { padding: 56px 20px; }
       .how-h { font-size: clamp(28px, 8vw, 40px); }
@@ -972,6 +1108,11 @@
       .ing-first { font-size: 22px; }
       .ing-rest { font-size: 12px; }
       .nose-text { font-size: 13px; }
+      .verdict-pill { font-size: 15px; }
+      .verdict-pill.vp-muted { font-size: 13px; }
+      .action-text { font-size: 13px; }
+      .reason-q { font-size: 14px; }
+      .parent-take-text { font-size: 13px; }
 
       .step { padding: 20px 16px; gap: 16px; }
       .step-icon { width: 36px; height: 36px; }
@@ -1013,6 +1154,206 @@
       .hero-sub { font-size: 13px; margin-bottom: 16px; }
       .search-box { max-width: none; margin: 0; }
       .chips { justify-content: flex-start; }
+    }
+
+    /* ═══ PRODUCT OVERLAY ═══ */
+    .overlay-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(42, 39, 37, 0.65);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 2000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.35s ease, visibility 0.35s ease;
+    }
+    .overlay-backdrop.show { opacity: 1; visibility: visible; }
+
+    .overlay-panel {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      top: 48px;
+      z-index: 2001;
+      background: var(--cream);
+      border-radius: 24px 24px 0 0;
+      transform: translateY(100%);
+      transition: transform 0.45s cubic-bezier(0.32, 0.72, 0, 1);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 -8px 40px rgba(42,39,37,0.15);
+    }
+    .overlay-backdrop.show .overlay-panel { transform: translateY(0); }
+
+    .overlay-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--tabby-soft);
+      background: var(--cream);
+      flex-shrink: 0;
+    }
+
+    .overlay-mark {
+      font-family: var(--serif);
+      font-size: 20px;
+      color: var(--charcoal);
+    }
+    .overlay-mark .dot { color: var(--ginger); font-size: 0.7em; vertical-align: 0.1em; }
+
+    .overlay-close {
+      width: 36px;
+      height: 36px;
+      border: none;
+      background: var(--cream-deep);
+      color: var(--indie);
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: background 0.2s, color 0.2s;
+    }
+    .overlay-close:hover { background: var(--tabby-soft); color: var(--charcoal); }
+
+    .overlay-scroll {
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+    }
+
+    .overlay-body {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 32px 24px 80px;
+    }
+
+    .overlay-card {
+      background: white;
+      border-radius: 16px;
+      border: 1px solid var(--tabby-soft);
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(42,39,37,0.04), 0 24px 64px rgba(42,39,37,0.08);
+    }
+
+    .overlay-sniff-another {
+      text-align: center;
+      margin-top: 32px;
+    }
+    .overlay-sniff-another-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--indie);
+      margin-bottom: 12px;
+    }
+    .overlay-search-field {
+      display: flex;
+      max-width: 420px;
+      margin: 0 auto;
+      border: 1.5px solid var(--tabby);
+      border-radius: 10px;
+      overflow: hidden;
+      background: white;
+      transition: border-color 0.2s;
+    }
+    .overlay-search-field:focus-within { border-color: var(--ginger); }
+    .overlay-search-field input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      font-family: var(--sans);
+      font-size: 15px;
+      padding: 14px 16px;
+      outline: none;
+      color: var(--charcoal);
+    }
+    .overlay-search-field input::placeholder { color: var(--indie-soft); }
+    .overlay-search-field button {
+      background: var(--ginger);
+      border: none;
+      color: var(--charcoal);
+      font-family: var(--sans);
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0 20px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .overlay-search-field button:hover { background: var(--ginger-deep); }
+
+    .overlay-chips {
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+    .overlay-chips .chip { font-size: 12px; padding: 6px 14px; }
+
+    /* demo teaser card overrides */
+    .teaser-cta {
+      padding: 16px 28px;
+      text-align: center;
+    }
+    .teaser-cta-btn {
+      display: inline-block;
+      background: var(--ginger);
+      color: var(--charcoal);
+      font-family: var(--sans);
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 14px 32px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .teaser-cta-btn:hover { background: var(--ginger-deep); transform: translateY(-1px); }
+    .teaser-cta-hint {
+      font-size: 12px;
+      color: var(--indie);
+      margin-top: 8px;
+    }
+
+    /* loading state in overlay */
+    .overlay-loading {
+      display: none;
+      padding: 80px 32px;
+      text-align: center;
+    }
+    .overlay-loading.show { display: block; }
+    .overlay-content.hide { display: none; }
+
+    @media (max-width: 900px) {
+      .overlay-panel { top: 0; border-radius: 0; }
+      .overlay-body { padding: 24px 16px 60px; }
+    }
+
+    @media (max-width: 600px) {
+      .overlay-header { padding: 12px 16px; }
+      .overlay-mark { font-size: 18px; }
+      .overlay-close { width: 32px; height: 32px; font-size: 16px; }
+      .overlay-body { padding: 16px 12px 60px; }
+      .overlay-card { border-radius: 14px; }
+      .overlay-search-field { flex-direction: column; border-radius: 12px; }
+      .overlay-search-field input { text-align: center; font-size: 16px; padding: 14px 16px; }
+      .overlay-search-field button { padding: 14px 16px; border-radius: 0 0 10px 10px; min-height: 48px; }
+    }
+
+    @media (max-width: 380px) {
+      .overlay-body { padding: 12px 8px 48px; }
     }
   </style>
 </head>
@@ -1070,37 +1411,34 @@
     </div>
   </section>
 
-  <!-- ═══ THE SNIFF — LIVE DEMO ═══ -->
+  <!-- ═══ THE SNIFF — TEASER ═══ -->
   <section class="demo" id="demoSection">
-    <div class="demo-intro reveal"><div class="demo-tag">A live Sniff</div><h2 class="demo-h">See what's actually in there.</h2><p class="demo-sub">Click a brand above, or start with India's most-fed — Whiskas Ocean Fish.</p></div>
-    <div class="card reveal d1" id="analysisCard">
-      <div class="card-loading" id="cardLoader">
-        <div class="sniff-loader">
-          <svg viewBox="0 0 80 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path class="sniff-w" d="M32 28 Q26 18 29 8" stroke="var(--ginger)" stroke-width="2.5" stroke-linecap="round"/>
-            <path class="sniff-w" d="M40 26 Q38 16 40 6" stroke="var(--ginger)" stroke-width="2.5" stroke-linecap="round"/>
-            <path class="sniff-w" d="M48 28 Q54 18 51 8" stroke="var(--ginger)" stroke-width="2.5" stroke-linecap="round"/>
-            <path d="M40 36 L30 48 Q40 54 50 48 Z" fill="var(--ginger)"/>
-            <circle cx="37" cy="43" r="1.5" fill="var(--charcoal)" opacity="0.25"/>
-            <circle cx="43" cy="43" r="1.5" fill="var(--charcoal)" opacity="0.25"/>
-          </svg>
-        </div>
-        <div class="loading-text">Sniffing…</div>
-      </div>
+    <div class="demo-intro reveal"><div class="demo-tag">A live Sniff</div><h2 class="demo-h">See what's actually in there.</h2><p class="demo-sub">Here's what we found in India's most-fed — Whiskas Ocean Fish.</p></div>
+    <div class="card reveal d1" id="analysisCard" style="cursor:pointer" onclick="openOverlay(0)">
       <div class="card-content" id="cardContent">
-        <div class="card-head"><div class="card-brand" id="cBrand">Whiskas · Dry food</div><div class="card-title" id="cTitle">Ocean Fish, Adult 1+</div><div class="card-price" id="cPrice">₹60/100g · ≈ ₹33/day for a 4kg indoor cat</div></div>
-        <div class="card-body">
-          <div class="findings reveal d2">
-            <div class="find co" id="f1"><div class="find-label">Checks out</div><div class="find-val" data-target="33"><span class="counter">0</span>%</div><div class="find-what">Protein (DM)</div><div class="tip" id="f1tip">Protein at 33% dry matter exceeds the 26% AAFCO minimum. Adequate for adult maintenance.</div></div>
-            <div class="find ws" id="f2"><div class="find-label">Worth a sniff</div><div class="find-val" data-target="39">≈<span class="counter">0</span>%</div><div class="find-what">Carbs (calc)</div><div class="tip" id="f2tip">Cats are obligate carnivores. Wild prey is ~5% carbs. 39% means the protein was padded with grain.</div></div>
-            <div class="find gm" id="f3"><div class="find-label">Gone missing</div><div class="find-val" id="f3val">not disclosed</div><div class="find-what">Taurine</div><div class="tip" id="f3tip">Taurine is essential — deficiency causes blindness and heart failure. Why won't they print the number?</div></div>
-          </div>
-          <div class="bar-wrap reveal d3"><div class="bar-head"><span>Protein — where this sits</span><span>dry matter</span></div><div class="bar-track"><div class="bar-ideal"></div><div class="bar-dot" id="barDot" style="left:0%"></div></div><div class="bar-labels"><span>26% min</span><span id="barHere">← 33% here</span><span class="ideal">50%+ ideal →</span></div></div>
-          <div class="ing-section reveal d4"><div class="ing-label">First ingredient by weight</div><div class="ing-first" id="cIng">Cereals</div><div class="ing-rest" id="cIngRest">then: meat & by-products · oils · minerals · vitamins. <strong>Meat source not named.</strong></div></div>
-          <div class="missing-section reveal d5"><div class="ing-label">Gone missing</div><div class="missing-grid" id="missingGrid"><div class="miss-box"><div class="miss-name">Taurine</div><div class="miss-status">Not disclosed</div></div><div class="miss-box"><div class="miss-name">Ash</div><div class="miss-status">Not disclosed</div></div><div class="miss-box"><div class="miss-name">Ca:P ratio</div><div class="miss-status">Not disclosed</div></div><div class="miss-box"><div class="miss-name">Named meat</div><div class="miss-status">Withheld</div></div></div></div>
-          <div class="nose reveal d6"><div class="nose-label">🐾 The Nose Knows</div><div class="nose-text" id="cNose">Meets minimums. Cereal-first, won't name the meat, and declines to publish taurine. Adequate as a base — but at ₹60/100g, options exist with named protein and full disclosure.</div></div>
+        <div class="card-head">
+          <div class="card-brand" id="cBrand">Whiskas · Dry food</div>
+          <div class="card-title" id="cTitle">Ocean Fish, Adult 1+</div>
+          <div class="card-price" id="cPrice">₹60/100g · ≈ ₹33/day for a 4kg indoor cat</div>
         </div>
-        <div class="card-source"><span>Updated May 2026</span><a href="#">The Receipts →</a></div>
+
+        <div class="verdict" id="verdict">
+          <div class="verdict-tag">Sniff verdict</div>
+          <div class="verdict-labels" id="verdictLabels"></div>
+          <div class="verdict-summary" id="verdictSummary"></div>
+        </div>
+
+        <div class="card-body">
+          <div class="reasons-section">
+            <div class="reasons-label">What you should know</div>
+            <div class="reasons" id="reasons"></div>
+          </div>
+
+          <div class="teaser-cta">
+            <button class="teaser-cta-btn" onclick="event.stopPropagation(); openOverlay(0)">See full report</button>
+            <div class="teaser-cta-hint">Worry level, action plan, best use, tech details & more</div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -1278,6 +1616,113 @@
     </div>
   </div>
 
+  <!-- ═══ PRODUCT OVERLAY ═══ -->
+  <div class="overlay-backdrop" id="overlayBackdrop" onclick="closeOverlay(event)">
+    <div class="overlay-panel" onclick="event.stopPropagation()">
+      <div class="overlay-header">
+        <span class="overlay-mark">sn<span class="dot">●</span>ff</span>
+        <button class="overlay-close" onclick="closeOverlay()" aria-label="Close">&times;</button>
+      </div>
+      <div class="overlay-scroll">
+        <div class="overlay-body">
+          <div class="overlay-card">
+            <div class="overlay-loading" id="overlayLoader">
+              <div class="sniff-loader">
+                <svg viewBox="0 0 80 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path class="sniff-w" d="M32 28 Q26 18 29 8" stroke="var(--ginger)" stroke-width="2.5" stroke-linecap="round"/>
+                  <path class="sniff-w" d="M40 26 Q38 16 40 6" stroke="var(--ginger)" stroke-width="2.5" stroke-linecap="round"/>
+                  <path class="sniff-w" d="M48 28 Q54 18 51 8" stroke="var(--ginger)" stroke-width="2.5" stroke-linecap="round"/>
+                  <path d="M40 36 L30 48 Q40 54 50 48 Z" fill="var(--ginger)"/>
+                  <circle cx="37" cy="43" r="1.5" fill="var(--charcoal)" opacity="0.25"/>
+                  <circle cx="43" cy="43" r="1.5" fill="var(--charcoal)" opacity="0.25"/>
+                </svg>
+              </div>
+              <div class="loading-text">Sniffing…</div>
+            </div>
+            <div class="overlay-content" id="overlayContent">
+              <div class="card-head">
+                <div class="card-brand" id="oBrand"></div>
+                <div class="card-title" id="oTitle"></div>
+                <div class="card-price" id="oPrice"></div>
+              </div>
+
+              <div class="verdict" id="oVerdict">
+                <div class="verdict-tag">Sniff verdict</div>
+                <div class="verdict-labels" id="oVerdictLabels"></div>
+                <div class="verdict-summary" id="oVerdictSummary"></div>
+              </div>
+
+              <div class="card-body">
+                <div class="worry" id="oWorry">
+                  <div class="worry-level">
+                    <div class="worry-dots" id="oWorryDots"></div>
+                    <span class="worry-label" id="oWorryLabel"></span>
+                  </div>
+                  <div class="worry-note" id="oWorryNote"></div>
+                </div>
+
+                <div class="action-card">
+                  <div class="action-label">What to do</div>
+                  <div class="action-text" id="oActionText"></div>
+                </div>
+
+                <div class="reasons-section">
+                  <div class="reasons-label">What you should know</div>
+                  <div class="reasons" id="oReasons"></div>
+                </div>
+
+                <div class="best-use-section">
+                  <div class="best-use-label">Best use</div>
+                  <div class="best-use" id="oBestUse"></div>
+                </div>
+
+                <div class="parent-take">
+                  <div class="parent-take-label">If this were my cat</div>
+                  <div class="parent-take-text" id="oParentTakeText"></div>
+                </div>
+
+                <div class="tech-section">
+                  <button class="tech-toggle" onclick="toggleOverlayTech()">
+                    <span>Full technical details</span>
+                    <span class="tech-arrow" id="oTechArrow">&#9662;</span>
+                  </button>
+                  <div class="tech-details" id="oTechDetails">
+                    <div class="findings">
+                      <div class="find co" id="of1"><div class="find-label">Checks out</div><div class="find-val"><span class="counter" data-target="33">0</span>%</div><div class="find-what">Protein (DM)</div><div class="tip" id="of1tip"></div></div>
+                      <div class="find ws" id="of2"><div class="find-label">Worth a sniff</div><div class="find-val">≈<span class="counter" data-target="39">0</span>%</div><div class="find-what">Carbs (calc)</div><div class="tip" id="of2tip"></div></div>
+                      <div class="find gm" id="of3"><div class="find-label">Gone missing</div><div class="find-val" id="of3val">not disclosed</div><div class="find-what">Taurine</div><div class="tip" id="of3tip"></div></div>
+                    </div>
+                    <div class="bar-wrap"><div class="bar-head"><span>Protein — where this sits</span><span>dry matter</span></div><div class="bar-track"><div class="bar-ideal"></div><div class="bar-dot" id="oBarDot" style="left:0%"></div></div><div class="bar-labels"><span>26% min</span><span id="oBarHere">← 33% here</span><span class="ideal">50%+ ideal →</span></div></div>
+                    <div class="ing-section"><div class="ing-label">First ingredient by weight</div><div class="ing-first" id="oIng">Cereals</div><div class="ing-rest" id="oIngRest"></div></div>
+                    <div class="missing-section"><div class="ing-label">Gone missing</div><div class="missing-grid" id="oMissingGrid"></div></div>
+                    <div class="nose"><div class="nose-label">🐾 The Nose Knows</div><div class="nose-text" id="oNose"></div></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card-source"><span>Updated May 2026</span><a href="#">The Receipts →</a></div>
+            </div>
+          </div>
+
+          <div class="overlay-sniff-another">
+            <div class="overlay-sniff-another-label">Sniff another food</div>
+            <div class="overlay-search-field">
+              <input type="text" placeholder="Search a brand or product…" id="overlaySearchInput" autocomplete="off">
+              <button onclick="overlaySearch()">Sniff it</button>
+            </div>
+            <div class="overlay-chips">
+              <button class="chip" onclick="openOverlay(0)">Whiskas</button>
+              <button class="chip" onclick="openOverlay(1)">Royal Canin</button>
+              <button class="chip" onclick="openOverlay(2)">Me-O</button>
+              <button class="chip" onclick="openOverlay(3)">Drools</button>
+              <button class="chip" onclick="openOverlay(4)">Sheba</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- pspsps easter egg toast -->
   <div class="pspsps-toast" id="pspspsToast">
     <span class="pspsps-ears">△ △</span>
@@ -1286,78 +1731,267 @@
 
   <script>
     const foods = [
-      { brand:'Whiskas · Dry food', title:'Ocean Fish, Adult 1+', price:'₹60/100g · ≈ ₹33/day for a 4kg indoor cat', f1:{type:'co',label:'Checks out',val:33,unit:'%',what:'Protein (DM)',tip:'Protein at 33% dry matter exceeds the 26% AAFCO minimum.'}, f2:{type:'ws',label:'Worth a sniff',val:39,prefix:'≈',unit:'%',what:'Carbs (calc)',tip:'Wild prey is ~5% carbs. 39% means grain padding.'}, f3:{type:'gm',label:'Gone missing',text:'not disclosed',what:'Taurine',tip:'Essential amino acid. Deficiency causes blindness.'}, barPos:41, barLabel:'← 33% here', ing:'Cereals', ingRest:'then: meat & by-products · oils · minerals · vitamins. <strong>Meat source not named.</strong>', missing:[['Taurine','Not disclosed'],['Ash','Not disclosed'],['Ca:P ratio','Not disclosed'],['Named meat','Withheld']], nose:'Meets minimums. Cereal-first, won\'t name the meat, and declines to publish taurine. Adequate as a base — but at ₹60/100g, options exist with named protein and full disclosure.' },
-      { brand:'Royal Canin · Dry food', title:'Indoor Adult', price:'₹95/100g · ≈ ₹52/day for a 4kg indoor cat', f1:{type:'co',label:'Checks out',val:36,unit:'%',what:'Protein (DM)',tip:'36% dry matter protein is solid for indoor adults.'}, f2:{type:'ws',label:'Worth a sniff',val:33,prefix:'≈',unit:'%',what:'Carbs (calc)',tip:'Still higher than ideal but better than most Indian kibble.'}, f3:{type:'co',label:'Checks out',val:'0.14%',what:'Taurine',tip:'Disclosed at 0.14%. Meets the AAFCO minimum of 0.10%.'}, barPos:52, barLabel:'← 36% here', ing:'Dehydrated poultry protein', ingRest:'then: rice · wheat · animal fats · vegetable fibres. <strong>Named protein — good.</strong>', missing:[['Ca:P ratio','Not disclosed'],['Sodium','Not disclosed']], nose:'Above average. Named protein first, discloses taurine. Carbs still high for indoor cats. The premium price buys transparency, not just ingredients.' },
-      { brand:'Me-O · Dry food', title:'Tuna, Adult', price:'₹32/100g · ≈ ₹18/day for a 4kg indoor cat', f1:{type:'co',label:'Checks out',val:33,unit:'%',what:'Protein (DM)',tip:'Matches Whiskas at nearly half the price.'}, f2:{type:'ws',label:'Worth a sniff',val:38,prefix:'≈',unit:'%',what:'Carbs (calc)',tip:'High carbs, standard for budget kibble in India.'}, f3:{type:'gm',label:'Gone missing',text:'not disclosed',what:'Taurine',tip:'Same gap as Whiskas. Essential, unpublished.'}, barPos:41, barLabel:'← 33% here', ing:'Cereals', ingRest:'then: fish & fish by-products · soybean meal · oils · vitamins. <strong>Generic fish, not named.</strong>', missing:[['Taurine','Not disclosed'],['Ash','Not disclosed'],['Ca:P ratio','Not disclosed'],['Named fish','Generic only']], nose:'Similar to Whiskas at nearly half the price. Same cereal-first problem, same disclosure gaps. Budget-friendly — but you get what you get.' },
-      { brand:'Drools · Dry food', title:'Ocean Fish, Adult', price:'₹22/100g · ≈ ₹12/day for a 4kg indoor cat', f1:{type:'co',label:'Checks out',val:32,unit:'%',what:'Protein (DM)',tip:'Just above AAFCO minimum. Adequate, nothing more.'}, f2:{type:'ws',label:'Worth a sniff',val:40,prefix:'≈',unit:'%',what:'Carbs (calc)',tip:'40% carbs — highest in this group. Heavy on fillers.'}, f3:{type:'gm',label:'Gone missing',text:'not disclosed',what:'Taurine',tip:'Not disclosed. Common in Indian budget brands.'}, barPos:38, barLabel:'← 32% here', ing:'Cereals & cereal by-products', ingRest:'then: fish meal · soybean meal · oils · vitamins. <strong>Ingredient splitting on cereals.</strong>', missing:[['Taurine','Not disclosed'],['Ash','Not disclosed'],['Ca:P ratio','Not disclosed'],['Named meat','Generic']], nose:'The cheapest option. Meets minimums, barely. Cereal-heavy with likely ingredient splitting. For tight budgets only — supplement with wet food if you can.' },
-      { brand:'Sheba · Wet food', title:'Tuna in Jelly', price:'₹85/100g · ≈ ₹28/day for a 4kg indoor cat', f1:{type:'co',label:'Checks out',val:52,unit:'%',what:'Protein (DM)',tip:'52% dry-matter protein. Close to prey-matched levels.'}, f2:{type:'co',label:'Checks out',val:8,prefix:'≈',unit:'%',what:'Carbs (calc)',tip:'8% carbs — excellent. Wet food naturally runs lower.'}, f3:{type:'co',label:'Checks out',val:'yes',what:'Hydration',tip:'80% moisture. Cats evolved to get water from food.'}, barPos:82, barLabel:'← 52% here', ing:'Tuna', ingRest:'then: water · tapioca starch · gelling agents. <strong>Named protein. Short list.</strong>', missing:[['Ash','Not disclosed']], nose:'Strong. Named protein first, low carbs, high moisture. Doesn\'t replace dry food for dental health — but as the primary protein source, this is what a cat\'s body actually expects.' }
+      {
+        brand:'Whiskas · Dry food', title:'Ocean Fish, Adult 1+', price:'₹60/100g · ≈ ₹33/day for a 4kg indoor cat',
+        verdict:{ label:'Okay for now', tag:'Low transparency', labelClass:'vp-okay', tagClass:'vp-muted', summary:'Safe enough for a healthy adult cat, but the label hides important details like carbs, taurine, and mineral balance.' },
+        worry:{ level:'medium', filled:2, label:'Medium concern', note:'No need to panic. The main issue is that this brand doesn\'t reveal enough for you to confidently judge long-term quality.' },
+        action:'Finish the current pack if your cat is healthy. Don\'t bulk buy. Before your next refill, compare options with named meat sources and taurine disclosure.',
+        reasons:[
+          { status:'good', q:'Enough protein? Yes, likely.', a:'33% dry matter protein — above the 26% minimum for adult cats.' },
+          { status:'caution', q:'More carbs than your cat naturally needs', a:'~39% estimated. Cats in the wild eat around 5%. This is grain padding.' },
+          { status:'missing', q:'Heart & eye nutrient not clearly listed', a:'Taurine is essential for cats. This brand doesn\'t disclose how much is present.' }
+        ],
+        bestUse:[
+          { q:'Daily base food?', a:'Maybe, not ideal', cls:'bu-okay' },
+          { q:'Backup food?', a:'Yes', cls:'bu-good' },
+          { q:'For picky cats?', a:'Okay if tolerated', cls:'bu-okay' },
+          { q:'Kidney / urinary?', a:'Ask vet first', cls:'bu-vet' }
+        ],
+        parentTake:'I wouldn\'t throw this away immediately. But I also wouldn\'t make it the only daily food long-term. I\'d finish the pack, then compare options with clearer meat sources, taurine disclosure, and lower estimated carbs.',
+        f1:{type:'co',label:'Checks out',val:33,unit:'%',what:'Protein (DM)',tip:'Protein at 33% dry matter exceeds the 26% AAFCO minimum.'}, f2:{type:'ws',label:'Worth a sniff',val:39,prefix:'≈',unit:'%',what:'Carbs (calc)',tip:'Wild prey is ~5% carbs. 39% means grain padding.'}, f3:{type:'gm',label:'Gone missing',text:'not disclosed',what:'Taurine',tip:'Essential amino acid. Deficiency causes blindness.'}, barPos:41, barLabel:'← 33% here', ing:'Cereals', ingRest:'then: meat & by-products · oils · minerals · vitamins. <strong>Meat source not named.</strong>', missing:[['Taurine','Not disclosed'],['Ash','Not disclosed'],['Ca:P ratio','Not disclosed'],['Named meat','Withheld']], nose:'Meets minimums. Cereal-first, won\'t name the meat, and declines to publish taurine. Adequate as a base — but at ₹60/100g, options exist with named protein and full disclosure.'
+      },
+      {
+        brand:'Royal Canin · Dry food', title:'Indoor Adult', price:'₹95/100g · ≈ ₹52/day for a 4kg indoor cat',
+        verdict:{ label:'Good enough', tag:'Decent transparency', labelClass:'vp-good', tagClass:'vp-muted', summary:'One of the more transparent options in India. Names its protein, discloses taurine. The premium price buys accountability, not just marketing.' },
+        worry:{ level:'low', filled:1, label:'Low concern', note:'Nothing here screams concern. This is one of the more transparent options available in India.' },
+        action:'Keep feeding this with reasonable confidence. The premium price buys transparency, not just ingredients. Still worth supplementing with wet food for hydration.',
+        reasons:[
+          { status:'good', q:'Solid protein? Yes.', a:'36% dry matter — well above the minimum. Good for indoor adults.' },
+          { status:'caution', q:'Still more carbs than ideal', a:'~33% estimated. Better than most Indian kibble, but higher than what cats naturally eat.' },
+          { status:'good', q:'Names its protein, discloses taurine', a:'Dehydrated poultry protein first. Taurine at 0.14% — above the 0.10% minimum. That\'s rare in India.' }
+        ],
+        bestUse:[
+          { q:'Daily base food?', a:'Yes', cls:'bu-good' },
+          { q:'Backup food?', a:'Overqualified for backup', cls:'bu-good' },
+          { q:'For picky cats?', a:'Usually well-accepted', cls:'bu-good' },
+          { q:'Kidney / urinary?', a:'Ask vet about sodium', cls:'bu-vet' }
+        ],
+        parentTake:'I\'d feel reasonably confident feeding this daily. It\'s not perfect — carbs are still higher than I\'d like — but it\'s transparent, names its protein, and discloses taurine. That puts it ahead of most options in India.',
+        f1:{type:'co',label:'Checks out',val:36,unit:'%',what:'Protein (DM)',tip:'36% dry matter protein is solid for indoor adults.'}, f2:{type:'ws',label:'Worth a sniff',val:33,prefix:'≈',unit:'%',what:'Carbs (calc)',tip:'Still higher than ideal but better than most Indian kibble.'}, f3:{type:'co',label:'Checks out',val:'0.14%',what:'Taurine',tip:'Disclosed at 0.14%. Meets the AAFCO minimum of 0.10%.'}, barPos:52, barLabel:'← 36% here', ing:'Dehydrated poultry protein', ingRest:'then: rice · wheat · animal fats · vegetable fibres. <strong>Named protein — good.</strong>', missing:[['Ca:P ratio','Not disclosed'],['Sodium','Not disclosed']], nose:'Above average. Named protein first, discloses taurine. Carbs still high for indoor cats. The premium price buys transparency, not just ingredients.'
+      },
+      {
+        brand:'Me-O · Dry food', title:'Tuna, Adult', price:'₹32/100g · ≈ ₹18/day for a 4kg indoor cat',
+        verdict:{ label:'Okay for now', tag:'Budget pick, low transparency', labelClass:'vp-okay', tagClass:'vp-muted', summary:'Similar nutrition profile to Whiskas at nearly half the price. Same transparency gaps, same tradeoffs.' },
+        worry:{ level:'medium', filled:2, label:'Medium concern', note:'Not dangerous, but the brand tells you very little. Same disclosure gaps as Whiskas at a lower price.' },
+        action:'If budget is the main constraint, this does the job short-term. Don\'t assume cheaper means worse — compare what each brand actually discloses before your next purchase.',
+        reasons:[
+          { status:'good', q:'Protein is acceptable', a:'33% dry matter — same as Whiskas, at nearly half the price.' },
+          { status:'caution', q:'Carbs are high', a:'~38% estimated. Standard for budget kibble in India, but not great for daily feeding.' },
+          { status:'missing', q:'Same transparency gaps as the big brands', a:'No taurine, no ash, no mineral balance disclosed. Generic fish source — not named.' }
+        ],
+        bestUse:[
+          { q:'Daily base food?', a:'Only if budget-limited', cls:'bu-okay' },
+          { q:'Backup food?', a:'Yes', cls:'bu-good' },
+          { q:'For picky cats?', a:'If tolerated', cls:'bu-okay' },
+          { q:'Kidney / urinary?', a:'Ask vet first', cls:'bu-vet' }
+        ],
+        parentTake:'I\'d use this if budget mattered most. It\'s essentially Whiskas at a lower price point — same strengths, same gaps. I wouldn\'t feel great about it long-term, but I also wouldn\'t panic.',
+        f1:{type:'co',label:'Checks out',val:33,unit:'%',what:'Protein (DM)',tip:'Matches Whiskas at nearly half the price.'}, f2:{type:'ws',label:'Worth a sniff',val:38,prefix:'≈',unit:'%',what:'Carbs (calc)',tip:'High carbs, standard for budget kibble in India.'}, f3:{type:'gm',label:'Gone missing',text:'not disclosed',what:'Taurine',tip:'Same gap as Whiskas. Essential, unpublished.'}, barPos:41, barLabel:'← 33% here', ing:'Cereals', ingRest:'then: fish & fish by-products · soybean meal · oils · vitamins. <strong>Generic fish, not named.</strong>', missing:[['Taurine','Not disclosed'],['Ash','Not disclosed'],['Ca:P ratio','Not disclosed'],['Named fish','Generic only']], nose:'Similar to Whiskas at nearly half the price. Same cereal-first problem, same disclosure gaps. Budget-friendly — but you get what you get.'
+      },
+      {
+        brand:'Drools · Dry food', title:'Ocean Fish, Adult', price:'₹22/100g · ≈ ₹12/day for a 4kg indoor cat',
+        verdict:{ label:'Not transparent enough', tag:'Budget baseline', labelClass:'vp-weak', tagClass:'vp-muted', summary:'The cheapest option available. Meets bare minimums, but reveals almost nothing beyond what regulations force.' },
+        worry:{ level:'high', filled:3, label:'Higher concern', note:'This is the bare minimum. Cereal-heavy, minimal protein, and the least transparent label in this group.' },
+        action:'Use only if budget is very tight. Supplement with wet food when you can. This should be a stepping stone, not a permanent choice. Plan to upgrade when budget allows.',
+        reasons:[
+          { status:'caution', q:'Protein barely passes', a:'32% dry matter — just above the 26% minimum. Adequate, nothing more.' },
+          { status:'caution', q:'Highest carbs in this group', a:'~40% estimated. Heavy on cereals and fillers. Likely ingredient splitting.' },
+          { status:'missing', q:'Least transparent label available', a:'No taurine, no ash, no mineral balance, generic meat source. Almost nothing disclosed beyond what\'s legally required.' }
+        ],
+        bestUse:[
+          { q:'Daily base food?', a:'Not ideal', cls:'bu-flag' },
+          { q:'Backup food?', a:'If needed', cls:'bu-okay' },
+          { q:'For picky cats?', a:'Usually accepted', cls:'bu-okay' },
+          { q:'Kidney / urinary?', a:'Ask vet first', cls:'bu-vet' }
+        ],
+        parentTake:'I\'d treat this as a temporary solution, not a permanent choice. At ₹22/100g it\'s the cheapest option, but you can feel the corners being cut. I\'d supplement with wet food and plan to upgrade when budget allows.',
+        f1:{type:'co',label:'Checks out',val:32,unit:'%',what:'Protein (DM)',tip:'Just above AAFCO minimum. Adequate, nothing more.'}, f2:{type:'ws',label:'Worth a sniff',val:40,prefix:'≈',unit:'%',what:'Carbs (calc)',tip:'40% carbs — highest in this group. Heavy on fillers.'}, f3:{type:'gm',label:'Gone missing',text:'not disclosed',what:'Taurine',tip:'Not disclosed. Common in Indian budget brands.'}, barPos:38, barLabel:'← 32% here', ing:'Cereals & cereal by-products', ingRest:'then: fish meal · soybean meal · oils · vitamins. <strong>Ingredient splitting on cereals.</strong>', missing:[['Taurine','Not disclosed'],['Ash','Not disclosed'],['Ca:P ratio','Not disclosed'],['Named meat','Generic']], nose:'The cheapest option. Meets minimums, barely. Cereal-heavy with likely ingredient splitting. For tight budgets only — supplement with wet food if you can.'
+      },
+      {
+        brand:'Sheba · Wet food', title:'Tuna in Jelly', price:'₹85/100g · ≈ ₹28/day for a 4kg indoor cat',
+        verdict:{ label:'Strong choice', tag:'Close to what cats naturally eat', labelClass:'vp-good', tagClass:'vp-good', summary:'Named protein, low carbs, high moisture. This is what a cat\'s body actually expects from food.' },
+        worry:{ level:'low', filled:1, label:'Low concern', note:'This is one of the better options available. Your cat\'s body was designed for food like this.' },
+        action:'Keep feeding this. It doesn\'t replace dry food for dental health, but as a primary protein source, this is excellent. Pair with a transparent dry food for a strong daily rotation.',
+        reasons:[
+          { status:'good', q:'Excellent protein', a:'52% dry matter — close to what cats eat in the wild. Among the highest available.' },
+          { status:'good', q:'Very low carbs', a:'~8% estimated. Wet food naturally runs lower, and this is excellent.' },
+          { status:'good', q:'Named protein, short ingredient list', a:'Tuna first. You know what your cat is eating. That transparency matters.' }
+        ],
+        bestUse:[
+          { q:'Daily base food?', a:'Yes, as primary protein', cls:'bu-good' },
+          { q:'Backup food?', a:'Overqualified', cls:'bu-good' },
+          { q:'For picky cats?', a:'Most cats love it', cls:'bu-good' },
+          { q:'Kidney / urinary?', a:'Good hydration, ask vet', cls:'bu-vet' }
+        ],
+        parentTake:'This would be a staple in my rotation. Named tuna, low carbs, 80% moisture — it\'s close to what cats evolved to eat. I\'d pair it with a transparent dry food for dental health and call it a solid diet.',
+        f1:{type:'co',label:'Checks out',val:52,unit:'%',what:'Protein (DM)',tip:'52% dry-matter protein. Close to prey-matched levels.'}, f2:{type:'co',label:'Checks out',val:8,prefix:'≈',unit:'%',what:'Carbs (calc)',tip:'8% carbs — excellent. Wet food naturally runs lower.'}, f3:{type:'co',label:'Checks out',val:'yes',what:'Hydration',tip:'80% moisture. Cats evolved to get water from food.'}, barPos:82, barLabel:'← 52% here', ing:'Tuna', ingRest:'then: water · tapioca starch · gelling agents. <strong>Named protein. Short list.</strong>', missing:[['Ash','Not disclosed']], nose:'Strong. Named protein first, low carbs, high moisture. Doesn\'t replace dry food for dental health — but as the primary protein source, this is what a cat\'s body actually expects.'
+      }
     ];
 
     let currentFood = 0;
+    let overlayFood = -1;
 
+    const foodSlugs = ['whiskas-ocean-fish','royal-canin-indoor','me-o-tuna','drools-ocean-fish','sheba-tuna-jelly'];
+
+    // hero chips now open the overlay
     function selectFood(idx, chipEl) {
-      if (idx === currentFood && chipEl) return;
-      currentFood = idx;
-      document.querySelectorAll('.chip').forEach((c,i) => c.classList.toggle('active', i === idx));
-      const loader = document.getElementById('cardLoader');
-      const content = document.getElementById('cardContent');
-      loader.classList.add('show');
-      content.classList.add('hide');
-      document.getElementById('demoSection').scrollIntoView({ behavior:'smooth', block:'start' });
-      setTimeout(() => { updateCard(foods[idx]); loader.classList.remove('show'); content.classList.remove('hide'); animateCard(); }, 1200);
+      openOverlay(idx);
     }
 
-    function updateCard(f) {
+    // populate the teaser card on the landing page
+    function updateTeaser(f) {
       document.getElementById('cBrand').textContent = f.brand;
       document.getElementById('cTitle').textContent = f.title;
       document.getElementById('cPrice').textContent = f.price;
-      const f1=document.getElementById('f1'), f2=document.getElementById('f2'), f3=document.getElementById('f3');
-      f1.className=`find ${f.f1.type}`; f1.querySelector('.find-label').textContent=f.f1.label; f1.querySelector('.find-what').textContent=f.f1.what; document.getElementById('f1tip').textContent=f.f1.tip;
-      f2.className=`find ${f.f2.type}`; f2.querySelector('.find-label').textContent=f.f2.label; f2.querySelector('.find-what').textContent=f.f2.what; document.getElementById('f2tip').textContent=f.f2.tip;
-      f3.className=`find ${f.f3.type}`; f3.querySelector('.find-label').textContent=f.f3.label; f3.querySelector('.find-what').textContent=f.f3.what; document.getElementById('f3tip').textContent=f.f3.tip;
-      if (f.f3.type==='gm') { document.getElementById('f3val').textContent=f.f3.text; } else { document.getElementById('f3val').textContent=f.f3.val; }
-      document.getElementById('barDot').style.left='0%';
-      document.getElementById('barHere').textContent=f.barLabel;
-      document.getElementById('cIng').textContent=f.ing;
-      document.getElementById('cIngRest').innerHTML=f.ingRest;
-      document.getElementById('missingGrid').innerHTML=f.missing.map(m=>`<div class="miss-box"><div class="miss-name">${m[0]}</div><div class="miss-status">${m[1]}</div></div>`).join('');
-      document.getElementById('cNose').textContent=f.nose;
-      if (typeof f.f1.val==='number') { f1.querySelector('.find-val').innerHTML=`<span class="counter" data-target="${f.f1.val}">0</span>${f.f1.unit}`; } else { f1.querySelector('.find-val').textContent=f.f1.val; }
-      if (typeof f.f2.val==='number') { f2.querySelector('.find-val').innerHTML=`${f.f2.prefix||''}<span class="counter" data-target="${f.f2.val}">0</span>${f.f2.unit}`; } else { f2.querySelector('.find-val').textContent=f.f2.val; }
+      document.getElementById('verdictLabels').innerHTML =
+        `<span class="verdict-pill ${f.verdict.labelClass}">${f.verdict.label}</span>` +
+        `<span class="verdict-sep">·</span>` +
+        `<span class="verdict-pill ${f.verdict.tagClass}">${f.verdict.tag}</span>`;
+      document.getElementById('verdictSummary').textContent = f.verdict.summary;
+      document.getElementById('reasons').innerHTML = f.reasons.map((r, i) =>
+        `<div class="reason r-${r.status}">` +
+          `<div class="reason-num">${i + 1}</div>` +
+          `<div class="reason-body"><div class="reason-q">${r.q}</div><div class="reason-a">${r.a}</div></div>` +
+        `</div>`
+      ).join('');
     }
 
-    function animateCard() {
-      const f=foods[currentFood];
-      document.querySelectorAll('.counter').forEach(el => {
+    // ═══ OVERLAY ═══
+    function openOverlay(idx) {
+      overlayFood = idx;
+      const backdrop = document.getElementById('overlayBackdrop');
+      const loader = document.getElementById('overlayLoader');
+      const content = document.getElementById('overlayContent');
+
+      loader.classList.add('show');
+      content.classList.add('hide');
+      backdrop.classList.add('show');
+      document.body.style.overflow = 'hidden';
+
+      // scroll overlay to top
+      document.querySelector('.overlay-scroll').scrollTop = 0;
+
+      // highlight chip in overlay
+      document.querySelectorAll('.overlay-chips .chip').forEach((c,i) => c.classList.toggle('active', i === idx));
+      // highlight chip in hero
+      document.querySelectorAll('.hero .chips .chip').forEach((c,i) => c.classList.toggle('active', i === idx));
+
+      // update hash
+      history.replaceState(null, '', '#' + foodSlugs[idx]);
+
+      setTimeout(() => {
+        updateOverlayCard(foods[idx]);
+        loader.classList.remove('show');
+        content.classList.remove('hide');
+        animateOverlayCard();
+      }, 800);
+    }
+
+    function closeOverlay(e) {
+      if (e && e.target && e.target !== e.currentTarget) return;
+      document.getElementById('overlayBackdrop').classList.remove('show');
+      document.body.style.overflow = '';
+      history.replaceState(null, '', window.location.pathname);
+    }
+
+    function updateOverlayCard(f) {
+      document.getElementById('oBrand').textContent = f.brand;
+      document.getElementById('oTitle').textContent = f.title;
+      document.getElementById('oPrice').textContent = f.price;
+
+      document.getElementById('oVerdictLabels').innerHTML =
+        `<span class="verdict-pill ${f.verdict.labelClass}">${f.verdict.label}</span>` +
+        `<span class="verdict-sep">·</span>` +
+        `<span class="verdict-pill ${f.verdict.tagClass}">${f.verdict.tag}</span>`;
+      document.getElementById('oVerdictSummary').textContent = f.verdict.summary;
+
+      const worry = document.getElementById('oWorry');
+      worry.className = `worry wl-${f.worry.level}`;
+      document.getElementById('oWorryDots').innerHTML =
+        [1,2,3,4].map(i => `<span class="wd${i <= f.worry.filled ? ' filled' : ''}"></span>`).join('');
+      document.getElementById('oWorryLabel').textContent = f.worry.label;
+      document.getElementById('oWorryNote').textContent = f.worry.note;
+
+      document.getElementById('oActionText').textContent = f.action;
+
+      document.getElementById('oReasons').innerHTML = f.reasons.map((r, i) =>
+        `<div class="reason r-${r.status}">` +
+          `<div class="reason-num">${i + 1}</div>` +
+          `<div class="reason-body"><div class="reason-q">${r.q}</div><div class="reason-a">${r.a}</div></div>` +
+        `</div>`
+      ).join('');
+
+      document.getElementById('oBestUse').innerHTML = f.bestUse.map(b =>
+        `<div class="best-use-row"><span class="bu-q">${b.q}</span><span class="bu-a ${b.cls}">${b.a}</span></div>`
+      ).join('');
+
+      document.getElementById('oParentTakeText').textContent = f.parentTake;
+
+      // Tech details
+      const f1=document.getElementById('of1'), f2=document.getElementById('of2'), f3=document.getElementById('of3');
+      f1.className=`find ${f.f1.type}`; f1.querySelector('.find-label').textContent=f.f1.label; f1.querySelector('.find-what').textContent=f.f1.what; document.getElementById('of1tip').textContent=f.f1.tip;
+      f2.className=`find ${f.f2.type}`; f2.querySelector('.find-label').textContent=f.f2.label; f2.querySelector('.find-what').textContent=f.f2.what; document.getElementById('of2tip').textContent=f.f2.tip;
+      f3.className=`find ${f.f3.type}`; f3.querySelector('.find-label').textContent=f.f3.label; f3.querySelector('.find-what').textContent=f.f3.what; document.getElementById('of3tip').textContent=f.f3.tip;
+      if (f.f3.type==='gm') { document.getElementById('of3val').textContent=f.f3.text; } else { document.getElementById('of3val').textContent=f.f3.val; }
+      document.getElementById('oBarDot').style.left='0%';
+      document.getElementById('oBarHere').textContent=f.barLabel;
+      document.getElementById('oIng').textContent=f.ing;
+      document.getElementById('oIngRest').innerHTML=f.ingRest;
+      document.getElementById('oMissingGrid').innerHTML=f.missing.map(m=>`<div class="miss-box"><div class="miss-name">${m[0]}</div><div class="miss-status">${m[1]}</div></div>`).join('');
+      document.getElementById('oNose').textContent=f.nose;
+      if (typeof f.f1.val==='number') { f1.querySelector('.find-val').innerHTML=`<span class="counter" data-target="${f.f1.val}">0</span>${f.f1.unit}`; } else { f1.querySelector('.find-val').textContent=f.f1.val; }
+      if (typeof f.f2.val==='number') { f2.querySelector('.find-val').innerHTML=`${f.f2.prefix||''}<span class="counter" data-target="${f.f2.val}">0</span>${f.f2.unit}`; } else { f2.querySelector('.find-val').textContent=f.f2.val; }
+
+      document.getElementById('oTechDetails').classList.remove('open');
+      document.getElementById('oTechArrow').classList.remove('open');
+    }
+
+    function toggleOverlayTech() {
+      document.getElementById('oTechDetails').classList.toggle('open');
+      document.getElementById('oTechArrow').classList.toggle('open');
+    }
+
+    function animateOverlayCard() {
+      const f=foods[overlayFood];
+      document.querySelectorAll('#overlayContent .counter').forEach(el => {
         const target=parseInt(el.dataset.target); if(isNaN(target))return;
         let current=0; const step=target/30;
         const interval=setInterval(()=>{current+=step;if(current>=target){el.textContent=target;clearInterval(interval);}else{el.textContent=Math.floor(current);}},30);
       });
-      setTimeout(()=>{document.getElementById('barDot').style.left=f.barPos+'%';},200);
-      setTimeout(()=>{document.querySelectorAll('.miss-box').forEach((box,i)=>{setTimeout(()=>box.classList.add('jitter'),i*100);setTimeout(()=>box.classList.remove('jitter'),i*100+300);});},500);
+      setTimeout(()=>{document.getElementById('oBarDot').style.left=f.barPos+'%';},200);
+      setTimeout(()=>{document.querySelectorAll('#oMissingGrid .miss-box').forEach((box,i)=>{setTimeout(()=>box.classList.add('jitter'),i*100);setTimeout(()=>box.classList.remove('jitter'),i*100+300);});},500);
     }
 
     function doSearch() {
       const val=document.getElementById('searchInput').value.toLowerCase();
       const idx=foods.findIndex(f=>f.brand.toLowerCase().includes(val)||f.title.toLowerCase().includes(val));
-      if(idx>=0){selectFood(idx);}else{document.getElementById('demoSection').scrollIntoView({behavior:'smooth'});}
+      if(idx>=0){openOverlay(idx);}else{document.getElementById('demoSection').scrollIntoView({behavior:'smooth'});}
     }
 
     function ctaSearch() {
       const val=document.getElementById('ctaInput').value.toLowerCase();
       const idx=foods.findIndex(f=>f.brand.toLowerCase().includes(val)||f.title.toLowerCase().includes(val));
-      if(idx>=0){selectFood(idx);}else{document.getElementById('searchInput').value=document.getElementById('ctaInput').value;document.getElementById('demoSection').scrollIntoView({behavior:'smooth'});}
+      if(idx>=0){openOverlay(idx);}else{document.getElementById('searchInput').value=document.getElementById('ctaInput').value;document.getElementById('demoSection').scrollIntoView({behavior:'smooth'});}
+    }
+
+    function overlaySearch() {
+      const val=document.getElementById('overlaySearchInput').value.toLowerCase();
+      const idx=foods.findIndex(f=>f.brand.toLowerCase().includes(val)||f.title.toLowerCase().includes(val));
+      if(idx>=0){
+        document.querySelector('.overlay-scroll').scrollTop = 0;
+        openOverlay(idx);
+      }
     }
 
     document.getElementById('searchInput').addEventListener('keydown',e=>{if(e.key==='Enter')doSearch();});
     document.getElementById('ctaInput').addEventListener('keydown',e=>{if(e.key==='Enter')ctaSearch();});
+    document.getElementById('overlaySearchInput').addEventListener('keydown',e=>{if(e.key==='Enter')overlaySearch();});
 
     // scroll reveal
     const observer = new IntersectionObserver((entries)=>{
       entries.forEach(entry=>{
         if(entry.isIntersecting){
           entry.target.classList.add('visible');
-          if(entry.target.id==='analysisCard' && !entry.target.dataset.animated){entry.target.dataset.animated='true';setTimeout(animateCard,300);}
         }
       });
     },{threshold:0.15});
@@ -1377,7 +2011,17 @@
     const gapList=document.getElementById('gapList');
     if(gapList) gapObserver.observe(gapList);
 
-    updateCard(foods[0]);
+    updateTeaser(foods[0]);
+
+    // URL hash support — open overlay if hash matches a food slug
+    function handleHash() {
+      const hash = window.location.hash.slice(1);
+      if (!hash) return;
+      const idx = foodSlugs.indexOf(hash);
+      if (idx >= 0) openOverlay(idx);
+    }
+    handleHash();
+    window.addEventListener('hashchange', handleHash);
 
     // ═══ EASTER EGGS ═══
 
@@ -1463,7 +2107,10 @@
     }
 
     document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape') closeDogModal();
+      if (e.key === 'Escape') {
+        if (document.getElementById('overlayBackdrop').classList.contains('show')) { closeOverlay(); return; }
+        closeDogModal();
+      }
     });
 
     function handleDogWaitlist(e) {
