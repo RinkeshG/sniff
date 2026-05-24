@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      width: 1200px;
+      height: 630px;
+      overflow: hidden;
+      background: #2A2725;
+      font-family: 'Sora', system-ui, sans-serif;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      padding: 0 80px;
+      position: relative;
+    }
+
+    .left {
+      max-width: 680px;
+    }
+
+    .mark {
+      font-family: 'Young Serif', Georgia, serif;
+      font-size: 36px;
+      color: #F5F0E5;
+      margin-bottom: 40px;
+    }
+    .mark .dot {
+      color: #E08A3A;
+      font-size: 0.65em;
+      vertical-align: 0.1em;
+    }
+
+    h1 {
+      font-family: 'Young Serif', Georgia, serif;
+      font-size: 62px;
+      line-height: 1.05;
+      letter-spacing: -0.025em;
+      color: #F5F0E5;
+      margin-bottom: 28px;
+    }
+    h1 .em { color: #E08A3A; }
+    h1 .dim {
+      color: #B8A88E;
+      display: block;
+      font-size: 52px;
+      margin-top: 4px;
+    }
+
+    .sub {
+      font-size: 18px;
+      color: #8B7355;
+      line-height: 1.5;
+      max-width: 460px;
+    }
+
+    .right {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cat-ill {
+      color: #E08A3A;
+      opacity: 0.8;
+    }
+
+    /* accent line */
+    .accent {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 6px;
+      height: 100%;
+      background: #E08A3A;
+    }
+
+    .bottom-bar {
+      position: absolute;
+      bottom: 36px;
+      left: 80px;
+      right: 80px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 20px;
+      border-top: 1px solid rgba(245,240,229,0.08);
+    }
+
+    .tag {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #8B7355;
+    }
+    .tag .g { color: #E08A3A; }
+  </style>
+</head>
+<body>
+  <div class="accent"></div>
+
+  <div class="left">
+    <div class="mark">sn<span class="dot">●</span>ff</div>
+    <h1>She eats it.<br>So it's probably <span class="em">fine.</span><span class="dim">Right?</span></h1>
+    <p class="sub">Your cat's food, decoded.</p>
+  </div>
+
+  <div class="right">
+    <svg class="cat-ill" width="280" height="320" viewBox="0 0 280 320" fill="none" stroke="currentColor" stroke-linecap="round">
+      <!-- cat looking at you, slightly suspicious -->
+      <path d="M200 40 C196 65, 184 100, 160 125 C140 142, 115 145, 95 140 C82 137, 74 130, 68 122" stroke-width="3"/>
+      <path d="M68 122 C62 116, 57 114, 54 117 C48 124, 45 132, 47 138 C49 144, 58 148, 70 143 C80 139, 88 134, 94 130" stroke-width="3"/>
+      <!-- ears -->
+      <path d="M60 110 L52 76 L72 106" stroke-width="2.5" stroke-linejoin="round"/>
+      <path d="M78 112 L86 74 L84 108" stroke-width="2.5" stroke-linejoin="round"/>
+      <!-- belly -->
+      <path d="M94 130 C102 136, 118 150, 138 156 C158 162, 176 158, 190 146" stroke-width="3"/>
+      <!-- legs -->
+      <line x1="114" y1="152" x2="112" y2="218" stroke-width="2.5"/>
+      <line x1="132" y1="156" x2="130" y2="218" stroke-width="2.5"/>
+      <line x1="172" y1="152" x2="174" y2="218" stroke-width="2.5"/>
+      <!-- face -->
+      <circle cx="47" cy="134" r="2.5" fill="currentColor" stroke="none"/>
+      <ellipse cx="63" cy="122" rx="2" ry="5.5" fill="currentColor" stroke="none"/>
+      <!-- whiskers -->
+      <line x1="45" y1="130" x2="20" y2="124" stroke-width="1.5" opacity="0.35"/>
+      <line x1="45" y1="134" x2="18" y2="134" stroke-width="1.5" opacity="0.35"/>
+      <line x1="45" y1="138" x2="20" y2="144" stroke-width="1.5" opacity="0.35"/>
+      <!-- wisps -->
+      <path d="M36 126 Q28 118 32 108" stroke-width="2" opacity="0.3"/>
+      <path d="M30 133 Q22 126 25 116" stroke-width="2" opacity="0.3"/>
+
+      <!-- ground -->
+      <line x1="30" y1="220" x2="220" y2="220" stroke-width="1" opacity="0.1"/>
+    </svg>
+  </div>
+
+  <div class="bottom-bar">
+    <span class="tag">Cat food <span class="g">·</span> Decoded</span>
+    <span class="tag">No scores <span class="g">·</span> No sponsors <span class="g">·</span> Just the math</span>
+  </div>
+</body>
+</html>

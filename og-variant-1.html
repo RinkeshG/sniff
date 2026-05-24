@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      width: 1200px;
+      height: 630px;
+      overflow: hidden;
+      background: #2A2725;
+      font-family: 'Sora', system-ui, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+
+    .content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+    }
+
+    .mark {
+      font-family: 'Young Serif', Georgia, serif;
+      font-size: 120px;
+      color: #F5F0E5;
+      letter-spacing: -0.03em;
+      margin-bottom: 24px;
+    }
+    .mark .dot {
+      color: #E08A3A;
+      font-size: 0.6em;
+      vertical-align: 0.12em;
+    }
+
+    .tagline {
+      font-family: 'Young Serif', Georgia, serif;
+      font-size: 32px;
+      color: #B8A88E;
+      margin-bottom: 48px;
+      letter-spacing: -0.01em;
+    }
+
+    .bottom {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+    }
+
+    .pill {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #E08A3A;
+      border: 1.5px solid rgba(224,138,58,0.3);
+      padding: 8px 20px;
+      border-radius: 100px;
+    }
+
+    .sep { color: rgba(245,240,229,0.15); font-size: 20px; }
+
+    /* corner cat silhouette */
+    .corner-cat {
+      position: absolute;
+      bottom: 32px;
+      right: 40px;
+      opacity: 0.08;
+      color: #E08A3A;
+    }
+  </style>
+</head>
+<body>
+  <div class="content">
+    <div class="mark">sn<span class="dot">●</span>ff</div>
+    <div class="tagline">Your cat's food, decoded.</div>
+    <div class="bottom">
+      <span class="pill">No scores</span>
+      <span class="sep">·</span>
+      <span class="pill">No sponsors</span>
+      <span class="sep">·</span>
+      <span class="pill">Just the math</span>
+    </div>
+  </div>
+
+  <svg class="corner-cat" width="120" height="80" viewBox="0 0 120 80" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+    <path d="M100 8 C98 20, 92 35, 82 44 C72 52, 60 53, 50 50 C44 48, 40 44, 36 40"/>
+    <path d="M36 40 C33 37, 30 36, 29 38 C26 42, 25 46, 26 48 C27 50, 32 52, 38 49 C44 47, 48 44, 52 42"/>
+    <path d="M34 35 L31 24 L38 34" stroke-width="1.8"/>
+    <path d="M40 36 L43 23 L43 34" stroke-width="1.8"/>
+    <path d="M52 42 C56 46, 64 52, 74 54 C82 56, 90 54, 96 48"/>
+    <circle cx="26" cy="46" r="1.5" fill="currentColor" stroke="none"/>
+  </svg>
+</body>
+</html>

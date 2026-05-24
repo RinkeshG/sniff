@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      width: 1200px;
+      height: 630px;
+      overflow: hidden;
+      background: #FCEBD4;
+      font-family: 'Sora', system-ui, sans-serif;
+      position: relative;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      height: 100%;
+    }
+
+    .left {
+      background: #2A2725;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 60px 56px;
+      position: relative;
+    }
+
+    /* ginger edge accent */
+    .left::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 10%;
+      height: 80%;
+      width: 4px;
+      background: #E08A3A;
+      border-radius: 2px;
+    }
+
+    .mark {
+      font-family: 'Young Serif', Georgia, serif;
+      font-size: 32px;
+      color: #F5F0E5;
+      margin-bottom: 36px;
+    }
+    .mark .dot {
+      color: #E08A3A;
+      font-size: 0.65em;
+      vertical-align: 0.1em;
+    }
+
+    h1 {
+      font-family: 'Young Serif', Georgia, serif;
+      font-size: 48px;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: #F5F0E5;
+      margin-bottom: 20px;
+    }
+    h1 .g { color: #E08A3A; }
+
+    .sub {
+      font-size: 16px;
+      color: #B8A88E;
+      line-height: 1.5;
+      max-width: 380px;
+      margin-bottom: 32px;
+    }
+
+    .pills {
+      display: flex;
+      gap: 10px;
+    }
+    .pill {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #E08A3A;
+      border: 1.5px solid rgba(224,138,58,0.35);
+      padding: 6px 14px;
+      border-radius: 100px;
+    }
+
+    .right {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cat-scene {
+      color: #E08A3A;
+      transform: translateX(-10px);
+    }
+
+    /* floating analysis preview card */
+    .mini-card {
+      position: absolute;
+      bottom: 48px;
+      right: 40px;
+      background: white;
+      border-radius: 12px;
+      padding: 16px 20px;
+      width: 220px;
+      box-shadow: 0 8px 32px rgba(42,39,37,0.12);
+      border: 1px solid #E8DCC8;
+    }
+
+    .mc-brand {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #8B7355;
+      margin-bottom: 3px;
+    }
+    .mc-title {
+      font-family: 'Young Serif', Georgia, serif;
+      font-size: 16px;
+      color: #2A2725;
+      margin-bottom: 10px;
+    }
+
+    .mc-findings {
+      display: flex;
+      gap: 6px;
+    }
+
+    .mc-find {
+      flex: 1;
+      padding: 8px 6px;
+      border-radius: 6px;
+      text-align: center;
+    }
+    .mc-find.co { background: rgba(74,143,92,0.1); }
+    .mc-find.ws { background: rgba(198,138,44,0.1); }
+    .mc-find.gm { background: rgba(160,154,144,0.06); border: 1px dashed #A09A90; }
+
+    .mc-find-label {
+      font-size: 7px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+    .mc-find.co .mc-find-label { color: #4A8F5C; }
+    .mc-find.ws .mc-find-label { color: #C68A2C; }
+    .mc-find.gm .mc-find-label { color: #A09A90; }
+
+    .mc-find-val {
+      font-weight: 800;
+      font-size: 18px;
+      color: #2A2725;
+      font-feature-settings: 'tnum';
+      letter-spacing: -0.02em;
+    }
+    .mc-find.gm .mc-find-val {
+      font-family: 'Young Serif', Georgia, serif;
+      font-size: 9px;
+      font-weight: 400;
+      color: #A09A90;
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <div class="left">
+      <div class="mark">sn<span class="dot">●</span>ff</div>
+      <h1>You care what<br>they <span class="g">eat.</span><br>We check<br>what's <span class="g">in it.</span></h1>
+      <p class="sub">Your cat's food, decoded.</p>
+      <div class="pills">
+        <span class="pill">No scores</span>
+        <span class="pill">No sponsors</span>
+      </div>
+    </div>
+
+    <div class="right">
+      <svg class="cat-scene" width="360" height="380" viewBox="0 0 360 380" fill="none" stroke="currentColor" stroke-linecap="round">
+        <!-- bowl -->
+        <path d="M30 288 Q35 258 70 248 L140 248 Q175 258 180 288" stroke-width="2.5"/>
+        <ellipse cx="105" cy="288" rx="76" ry="14" stroke-width="2.5"/>
+        <circle cx="85" cy="274" r="3.5" fill="currentColor" opacity="0.15" stroke="none"/>
+        <circle cx="100" cy="271" r="4" fill="currentColor" opacity="0.15" stroke="none"/>
+        <circle cx="118" cy="273" r="3.5" fill="currentColor" opacity="0.15" stroke="none"/>
+
+        <!-- cat sniffing the bowl -->
+        <path d="M310 60 C306 85, 292 120, 268 145 C248 162, 220 166, 198 160 C184 156, 174 148, 168 140" stroke-width="3"/>
+        <path d="M168 140 C162 134, 158 132, 155 135 C149 142, 147 150, 149 156 C151 162, 160 166, 172 160 C182 156, 190 150, 196 146" stroke-width="3"/>
+        <!-- ears -->
+        <path d="M160 128 L152 98 L170 124" stroke-width="2.5" stroke-linejoin="round"/>
+        <path d="M175 130 L182 96 L180 126" stroke-width="2.5" stroke-linejoin="round"/>
+        <!-- belly -->
+        <path d="M196 146 C204 152, 222 168, 244 174 C264 180, 282 176, 296 164" stroke-width="3"/>
+        <!-- legs -->
+        <line x1="218" y1="170" x2="215" y2="240" stroke-width="2.5"/>
+        <line x1="236" y1="174" x2="234" y2="240" stroke-width="2.5"/>
+        <line x1="280" y1="168" x2="282" y2="240" stroke-width="2.5"/>
+        <!-- face -->
+        <circle cx="149" cy="152" r="2.5" fill="currentColor" stroke="none"/>
+        <ellipse cx="163" cy="140" rx="1.6" ry="5" fill="currentColor" stroke="none"/>
+        <!-- whiskers -->
+        <line x1="147" y1="148" x2="122" y2="142" stroke-width="1.5" opacity="0.35"/>
+        <line x1="147" y1="152" x2="120" y2="152" stroke-width="1.5" opacity="0.35"/>
+        <line x1="147" y1="156" x2="122" y2="162" stroke-width="1.5" opacity="0.35"/>
+        <!-- wisps (prominent) -->
+        <path d="M138 144 Q128 134 132 122" stroke-width="2.5" opacity="0.4"/>
+        <path d="M132 152 Q122 143 126 132" stroke-width="2.5" opacity="0.4"/>
+        <path d="M136 160 Q126 154 128 144" stroke-width="2.5" opacity="0.4"/>
+
+        <!-- ground -->
+        <line x1="20" y1="242" x2="300" y2="242" stroke-width="1" opacity="0.08"/>
+      </svg>
+
+      <!-- floating mini analysis card -->
+      <div class="mini-card">
+        <div class="mc-brand">Whiskas · Dry</div>
+        <div class="mc-title">Ocean Fish, Adult 1+</div>
+        <div class="mc-findings">
+          <div class="mc-find co">
+            <div class="mc-find-label">Checks out</div>
+            <div class="mc-find-val">33%</div>
+          </div>
+          <div class="mc-find ws">
+            <div class="mc-find-label">Worth a sniff</div>
+            <div class="mc-find-val">≈39%</div>
+          </div>
+          <div class="mc-find gm">
+            <div class="mc-find-label">Gone missing</div>
+            <div class="mc-find-val">not disclosed</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
