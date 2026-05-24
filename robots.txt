@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+
+# AI crawlers
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+Sitemap: https://sniff-olive.vercel.app/sitemap.xml

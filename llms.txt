@@ -1,0 +1,40 @@
+# Sniff
+
+> Your cat's food, decoded. A tool that breaks down every cat food sold in India — what's in it, what's missing, what it means. No scores. No sponsors. Just the math.
+
+Sniff is built for Indian cat parents who want to understand what they're feeding their cats. It analyzes commercial cat food labels, calculates undisclosed nutrients (like carbohydrates), and flags transparency gaps (like missing taurine or unnamed meat sources).
+
+## How it works
+
+1. Pick a cat food brand or product sold in India
+2. Sniff breaks down the label: protein (dry matter), estimated carbs, missing nutrients
+3. You decide — no scores, no ratings, just clear information
+
+## What Sniff checks
+
+- Protein percentage (dry matter basis)
+- Estimated carbohydrate content (calculated from guaranteed analysis)
+- Taurine disclosure (essential amino acid for cats)
+- Ash content and Ca:P ratio (kidney health markers)
+- Named vs unnamed meat sources
+- First ingredient by weight
+- Price per 100g and estimated daily cost
+
+## Brands currently analyzed
+
+Whiskas, Royal Canin, Me-O, Drools, Sheba — covering India's most popular cat food brands.
+
+## Key findings
+
+- 0 out of 6 top brands in India disclose carbohydrate content
+- Only 1 out of 6 disclose taurine levels
+- 0 out of 6 disclose calcium-to-phosphorus ratio
+- Pet food quality regulation in India (IS 11968:2019) is voluntary, not mandatory
+
+## About
+
+Built by one person in Bangalore. For cats first — dogs later.
+
+## Contact
+
+Website: https://sniff-olive.vercel.app
