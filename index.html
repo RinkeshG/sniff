@@ -597,113 +597,71 @@
 
     .cta-field button:hover { background: var(--ginger-deep); }
 
-    /* ═══ DOG WAITLIST ═══ */
-    .dog-waitlist {
-      background: var(--ginger-soft);
-      padding: 56px 40px;
-      border-top: 1px solid var(--tabby-soft);
-    }
-
-    .dog-inner {
-      max-width: 640px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 32px;
-      align-items: center;
-    }
-
-    .dog-ill {
+    /* ═══ DOG WAITLIST (footer inline) ═══ */
+    .foot-dog-trigger {
       color: var(--ginger);
-      flex-shrink: 0;
+      cursor: pointer;
+      border-bottom: 1px dashed var(--ginger);
+      transition: opacity 0.2s;
     }
+    .foot-dog-trigger:hover { opacity: 0.8; }
 
-    @keyframes wagTail {
-      0%, 100% { transform: rotate(-8deg); }
-      50% { transform: rotate(12deg); }
+    .foot-dog-inline {
+      display: none;
+      width: 100%;
+      max-width: 360px;
+      margin: 12px auto 0;
     }
-    .wag { animation: wagTail 0.6s ease-in-out infinite; transform-origin: 52px 50px; }
+    .foot-dog-inline.show { display: block; }
 
-    @keyframes sniffGround {
-      0%, 70%, 100% { transform: translateY(0) rotate(0); }
-      20% { transform: translateY(3px) rotate(2deg); }
-      40% { transform: translateY(1px) rotate(-1deg); }
-    }
-    .dog-head-g { animation: sniffGround 3s ease-in-out infinite; transform-origin: 65px 85px; }
-
-    .dog-text-wrap {}
-
-    .dog-tag {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--ginger-deep);
-      margin-bottom: 8px;
-    }
-
-    .dog-title {
-      font-family: var(--serif);
-      font-size: 24px;
-      color: var(--charcoal);
-      margin-bottom: 6px;
-    }
-
-    .dog-sub {
-      font-size: 14px;
-      color: var(--indie);
-      margin-bottom: 16px;
-      line-height: 1.5;
-    }
-
-    .dog-form {
+    .foot-dog-form {
       display: flex;
       border: 1.5px solid var(--tabby);
-      border-radius: 10px;
+      border-radius: 8px;
       overflow: hidden;
       background: white;
       transition: border-color 0.2s;
     }
-    .dog-form:focus-within { border-color: var(--ginger); }
+    .foot-dog-form:focus-within { border-color: var(--ginger); }
 
-    .dog-form input {
+    .foot-dog-form input {
       flex: 1;
       border: none;
       background: transparent;
       font-family: var(--sans);
-      font-size: 14px;
-      padding: 14px 16px;
+      font-size: 13px;
+      padding: 10px 14px;
       outline: none;
       color: var(--charcoal);
       min-width: 0;
     }
-    .dog-form input::placeholder { color: var(--indie-soft); }
+    .foot-dog-form input::placeholder { color: var(--indie-soft); }
 
-    .dog-form button {
+    .foot-dog-form button {
       background: var(--ginger);
       border: none;
       color: var(--charcoal);
       font-family: var(--sans);
       font-weight: 700;
-      font-size: 12px;
+      font-size: 10px;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      padding: 0 20px;
+      padding: 0 16px;
       cursor: pointer;
       transition: background 0.2s;
       white-space: nowrap;
     }
-    .dog-form button:hover { background: var(--ginger-deep); }
+    .foot-dog-form button:hover { background: var(--ginger-deep); }
 
-    .dog-success {
+    .foot-dog-success {
       display: none;
       font-family: var(--serif);
-      font-size: 16px;
+      font-size: 14px;
       color: var(--good);
-      padding: 14px 0;
+      padding: 8px 0;
     }
-    .dog-success.show { display: block; }
-    .dog-form.hide { display: none; }
+    .foot-dog-success.show { display: block; }
+    .foot-dog-form.hide { display: none; }
 
     /* ═══ FOOTER ═══ */
     .foot {
@@ -712,6 +670,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
       border-top: 1px solid var(--tabby-soft);
       position: relative;
     }
@@ -817,9 +776,7 @@
       .gap-row { grid-template-columns: 1fr 1fr 50px; }
       .gap-name { grid-column: 1 / -1; }
       .manifesto { padding: 80px 24px; }
-      .dog-waitlist { padding: 48px 24px; }
-      .dog-inner { grid-template-columns: 1fr; gap: 24px; text-align: center; justify-items: center; }
-      .dog-ill svg { width: 120px; height: 100px; }
+      .foot-dog-inline { max-width: none; }
       .foot { flex-direction: column; gap: 16px; text-align: center; padding: 32px 24px; }
       .foot-tail { right: 50%; transform: translateX(50%); }
     }
@@ -836,8 +793,9 @@
       .search-field { flex-direction: column; border-radius: 12px; }
       .search-field input { padding: 16px 16px; font-size: 16px; text-align: center; }
       .search-btn { padding: 16px 20px; border-radius: 0 0 10px 10px; font-size: 14px; min-height: 48px; }
-      .chips { gap: 6px; justify-content: center; }
-      .chip { font-size: 12px; padding: 8px 14px; min-height: 36px; display: flex; align-items: center; }
+      .chips { gap: 8px; justify-content: center; flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding-bottom: 4px; mask-image: linear-gradient(to right, transparent 0%, black 3%, black 97%, transparent 100%); -webkit-mask-image: linear-gradient(to right, transparent 0%, black 3%, black 97%, transparent 100%); }
+      .chips::-webkit-scrollbar { display: none; }
+      .chip { font-size: 12px; padding: 8px 14px; min-height: 36px; display: flex; align-items: center; white-space: nowrap; flex-shrink: 0; }
       .hero-ill { max-width: 220px; margin-bottom: 8px; }
 
       .demo { padding: 56px 16px; }
@@ -908,14 +866,10 @@
       .foot-mark { font-size: 20px; }
       .foot-meta { font-size: 12px; line-height: 1.6; max-width: 300px; margin: 0 auto; }
 
-      .dog-waitlist { padding: 40px 20px; }
-      .dog-inner { gap: 20px; }
-      .dog-ill svg { width: 100px; height: 84px; }
-      .dog-title { font-size: 20px; }
-      .dog-sub { font-size: 13px; margin-bottom: 12px; }
-      .dog-form { flex-direction: column; border-radius: 12px; }
-      .dog-form input { padding: 14px 16px; font-size: 15px; text-align: center; }
-      .dog-form button { padding: 14px 16px; border-radius: 0 0 10px 10px; min-height: 48px; font-size: 13px; }
+      .foot-dog-form { border-radius: 10px; }
+      .foot-dog-form input { font-size: 15px; padding: 12px 14px; text-align: center; }
+      .foot-dog-form button { padding: 12px 14px; border-radius: 0 0 8px 8px; min-height: 44px; font-size: 11px; }
+      .foot-dog-inline .foot-dog-form { flex-direction: column; }
       .foot-tail { top: -18px; }
 
       .pspsps-toast { font-size: 15px; padding: 14px 20px; border-radius: 12px; max-width: calc(100vw - 32px); white-space: nowrap; }
@@ -926,7 +880,7 @@
       .hero h1 { font-size: 32px; }
       .hero-sub { font-size: 13px; max-width: 260px; }
       .hero-ill { max-width: 180px; }
-      .chip { font-size: 11px; padding: 7px 11px; }
+      .chip { font-size: 11px; padding: 7px 12px; }
       .search-field input { padding: 14px 14px; }
 
       .card-head { padding: 16px 16px 14px; }
@@ -962,8 +916,8 @@
       .hero h1 { font-size: 28px; }
       .hero-sub { font-size: 12px; }
       .hero-ill { max-width: 160px; }
-      .chips { gap: 4px; }
-      .chip { font-size: 10px; padding: 6px 9px; }
+      .chips { gap: 6px; }
+      .chip { font-size: 10px; padding: 6px 10px; }
       .demo-h, .how-h, .gap-h { font-size: 24px; }
       .manifesto h2 { font-size: 24px; }
       .card-title { font-size: 16px; }
@@ -1196,56 +1150,6 @@
     </div>
   </section>
 
-  <!-- ═══ DOG WAITLIST ═══ -->
-  <section class="dog-waitlist reveal">
-    <div class="dog-inner">
-      <div class="dog-ill">
-        <svg width="140" height="120" viewBox="0 0 140 120" fill="none" stroke="currentColor" stroke-linecap="round">
-          <!-- dog body -->
-          <g class="wag">
-            <path d="M52 50 Q44 30 38 18" stroke-width="3" opacity="0.6"/>
-          </g>
-          <path d="M55 52 C62 48, 78 44, 92 48 C106 52, 116 62, 118 72" stroke-width="3"/>
-          <!-- dog head -->
-          <g class="dog-head-g">
-            <path d="M55 52 C48 54, 42 60, 40 68 C38 76, 42 84, 50 86 C56 88, 64 84, 68 78 C72 72, 74 66, 72 60" stroke-width="3"/>
-            <!-- ears (floppy) -->
-            <path d="M56 54 C50 44, 42 42, 38 48" stroke-width="2.5"/>
-            <path d="M68 56 C72 46, 78 44, 80 50" stroke-width="2.5"/>
-            <!-- face -->
-            <circle cx="50" cy="68" r="2" fill="currentColor" stroke="none"/>
-            <circle cx="62" cy="66" r="2" fill="currentColor" stroke="none"/>
-            <path d="M54 76 Q56 80 60 76" stroke-width="2"/>
-            <circle cx="57" cy="78" r="2.5" fill="currentColor" opacity="0.4" stroke="none"/>
-            <!-- sniff wisps -->
-            <path d="M46 72 Q38 68 40 60" stroke-width="2" opacity="0.3"/>
-            <path d="M44 78 Q36 76 38 68" stroke-width="2" opacity="0.3"/>
-          </g>
-          <!-- legs -->
-          <line x1="72" y1="72" x2="70" y2="102" stroke-width="2.5"/>
-          <line x1="82" y1="70" x2="80" y2="102" stroke-width="2.5"/>
-          <line x1="108" y1="68" x2="110" y2="102" stroke-width="2.5"/>
-          <line x1="116" y1="72" x2="118" y2="102" stroke-width="2.5"/>
-          <!-- ground -->
-          <line x1="30" y1="104" x2="130" y2="104" stroke-width="1" opacity="0.1"/>
-          <!-- bowl -->
-          <path d="M20 98 Q22 88 32 86 L46 86 Q56 88 58 98" stroke-width="2" opacity="0.4"/>
-          <ellipse cx="39" cy="98" rx="20" ry="4" stroke-width="2" opacity="0.4"/>
-        </svg>
-      </div>
-      <div class="dog-text-wrap">
-        <div class="dog-tag">Coming soon</div>
-        <div class="dog-title">Dog parent?</div>
-        <p class="dog-sub">We're building the same thing for dog food. Drop your email — we'll let you know when it's ready.</p>
-        <form class="dog-form" id="dogForm" onsubmit="return handleDogWaitlist(event)">
-          <input type="email" placeholder="your@email.com" id="dogEmail" required autocomplete="email">
-          <button type="submit">Join waitlist</button>
-        </form>
-        <div class="dog-success" id="dogSuccess">Good human. We'll bark when it's ready.</div>
-      </div>
-    </div>
-  </section>
-
   <!-- ═══ FOOTER ═══ -->
   <footer class="foot">
     <div class="foot-tail">
@@ -1254,7 +1158,14 @@
       </svg>
     </div>
     <span class="foot-mark">sn●ff</span>
-    <span class="foot-meta">Made by one person in Bangalore who got tired of guessing <span class="dot">·</span> For cats first <span class="dot">·</span> Dogs later</span>
+    <span class="foot-meta">Made by one person in Bangalore who got tired of guessing <span class="dot">·</span> For cats first <span class="dot">·</span> <span class="foot-dog-trigger" onclick="toggleDogWaitlist()">Dogs later</span></span>
+    <div class="foot-dog-inline" id="footDogInline">
+      <form class="foot-dog-form" id="dogForm" onsubmit="return handleDogWaitlist(event)">
+        <input type="email" placeholder="your@email.com" id="dogEmail" required autocomplete="email">
+        <button type="submit">Notify me</button>
+      </form>
+      <div class="foot-dog-success" id="dogSuccess">Good human. We'll bark when it's ready.</div>
+    </div>
   </footer>
 
   <!-- pspsps easter egg toast -->
@@ -1429,15 +1340,20 @@
     });
 
     // 6. Dog waitlist form
+    function toggleDogWaitlist() {
+      const el = document.getElementById('footDogInline');
+      el.classList.toggle('show');
+      if (el.classList.contains('show')) {
+        el.querySelector('input').focus();
+      }
+    }
+
     function handleDogWaitlist(e) {
       e.preventDefault();
       const email = document.getElementById('dogEmail').value;
       if (!email) return false;
-      const form = document.getElementById('dogForm');
-      const success = document.getElementById('dogSuccess');
-      form.classList.add('hide');
-      success.classList.add('show');
-      // Store locally for now — wire up to backend later
+      document.getElementById('dogForm').classList.add('hide');
+      document.getElementById('dogSuccess').classList.add('show');
       const waitlist = JSON.parse(localStorage.getItem('sniff_dog_waitlist') || '[]');
       waitlist.push({ email, ts: Date.now() });
       localStorage.setItem('sniff_dog_waitlist', JSON.stringify(waitlist));
