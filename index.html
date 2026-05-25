@@ -1075,24 +1075,71 @@
 
     .foot-tail {
       position: absolute;
-      top: -20px;
-      right: 72px;
-      width: 28px;
-      height: 32px;
-      pointer-events: none;
+      top: -32px;
+      left: 0;
+      right: 0;
+      height: 44px;
       overflow: hidden;
-      padding-top: 4px;
     }
-    .foot-tail svg {
-      width: 100%;
+    .foot-tail-walk {
+      position: absolute;
+      width: 32px;
+      height: 44px;
+      padding: 0 14px;
+      margin-left: -14px;
+      box-sizing: content-box;
+      cursor: pointer;
+      animation: tailWalk 22s linear infinite;
+    }
+    .foot-tail-walk:hover,
+    .foot-tail-walk.tapped {
+      animation-play-state: paused;
+    }
+    .foot-tail-walk::after {
+      content: 'mrrp?';
+      position: absolute;
+      top: -6px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--serif);
+      font-size: 13px;
+      font-style: italic;
+      color: var(--ginger);
+      opacity: 0;
+      transition: opacity 0.4s;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    .foot-tail-walk:hover::after,
+    .foot-tail-walk.tapped::after {
+      opacity: 0.7;
+    }
+    @keyframes tailWalk {
+      0% { left: calc(100% + 40px); }
+      6% { left: 88%; }
+      78% { left: -3%; }
+      84% { left: -6%; }
+      84.5%, 100% { left: calc(100% + 40px); }
+    }
+    .foot-tail-sway {
+      width: 32px;
       height: 100%;
-      animation: tailPeek 3s ease-in-out infinite;
+      animation: tailSway 1.3s ease-in-out infinite;
       transform-origin: 50% 100%;
-      filter: drop-shadow(0 -2px 4px rgba(224,138,58,0.15));
+      filter: drop-shadow(0 -2px 4px rgba(224,138,58,0.12));
+      transition: animation-duration 0.3s;
     }
-    @keyframes tailPeek {
-      0%, 100% { transform: rotate(-6deg); }
-      50% { transform: rotate(6deg); }
+    .foot-tail-walk:hover .foot-tail-sway,
+    .foot-tail-walk.tapped .foot-tail-sway {
+      animation: tailSwayFast 0.5s ease-in-out infinite;
+    }
+    @keyframes tailSway {
+      0%, 100% { transform: rotate(-9deg); }
+      50% { transform: rotate(9deg); }
+    }
+    @keyframes tailSwayFast {
+      0%, 100% { transform: rotate(-14deg); }
+      50% { transform: rotate(14deg); }
     }
 
     /* ═══ PSPSPS TOAST ═══ */
@@ -1170,7 +1217,7 @@
       .manifesto { padding: 80px 24px; }
       .dog-modal { padding: 32px 24px; }
       .foot { flex-direction: column; gap: 16px; text-align: center; padding: 32px 24px; }
-      .foot-tail { right: 50%; transform: translateX(50%); }
+      .foot-tail { top: -28px; }
     }
 
     @media (max-width: 600px) {
@@ -1256,7 +1303,8 @@
       .dog-modal-form { flex-direction: column; border-radius: 12px; }
       .dog-modal-form input { padding: 14px 16px; font-size: 15px; text-align: center; }
       .dog-modal-form button { padding: 14px 16px; border-radius: 0 0 10px 10px; min-height: 48px; font-size: 12px; }
-      .foot-tail { top: -18px; }
+      .foot-tail { top: -24px; }
+      .foot-tail-walk { width: 28px; height: 38px; }
 
       .pspsps-toast { font-size: 15px; padding: 14px 20px; border-radius: 12px; max-width: calc(100vw - 32px); white-space: nowrap; }
     }
@@ -1694,9 +1742,11 @@
   <!-- ═══ FOOTER ═══ -->
   <footer class="foot">
     <div class="foot-tail">
-      <svg viewBox="0 0 28 36" fill="none" stroke="var(--ginger)" stroke-width="3" stroke-linecap="round">
-        <path d="M14 36 C14 28, 6 22, 8 12 Q9 6, 14 8 Q18 10, 16 16"/>
-      </svg>
+      <div class="foot-tail-walk">
+        <svg class="foot-tail-sway" viewBox="0 0 32 44" fill="none" stroke="var(--ginger)" stroke-width="3" stroke-linecap="round">
+          <path d="M16 44 C16 36, 10 30, 9 22 Q8 14, 13 10 Q18 6, 22 11 Q24 14, 21 18"/>
+        </svg>
+      </div>
     </div>
     <span class="foot-mark">sn●ff</span>
     <span class="foot-meta">Made by one person in Bangalore who got tired of guessing <span class="dot">·</span> For cats first <span class="dot">·</span> <span class="foot-dog-trigger" onclick="toggleDogModal()">Dogs later</span></span>
@@ -2252,7 +2302,17 @@
       }
     });
 
-    // 6. Dog waitlist form
+    // 6. Tail tap easter egg (mobile)
+    const tailWalk = document.querySelector('.foot-tail-walk');
+    if (tailWalk) {
+      tailWalk.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        tailWalk.classList.add('tapped');
+        setTimeout(() => tailWalk.classList.remove('tapped'), 2500);
+      }, { passive: false });
+    }
+
+    // 7. Dog waitlist form
     function toggleDogModal() {
       document.getElementById('dogModalBackdrop').classList.add('show');
       document.body.style.overflow = 'hidden';
