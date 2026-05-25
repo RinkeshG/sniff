@@ -1695,6 +1695,96 @@
     .v2-metric-status.warn { background: rgba(198,138,44,0.12); color: #9F6D1F; }
     .v2-metric-status.bad { background: rgba(179,58,42,0.12); color: #7A2419; }
 
+    /* Quick-facts strip: analyzed-for + daily portion */
+    .v2-quickfacts {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      padding: 18px 28px;
+      background: var(--cream);
+      border-bottom: 1px solid var(--cream-deep);
+      border-top: 1px solid var(--cream-deep);
+    }
+    .v2-qf-cell { padding: 0 16px; position: relative; }
+    .v2-qf-cell + .v2-qf-cell::before {
+      content: ''; position: absolute; left: 0; top: 4px; bottom: 4px;
+      width: 1px; background: var(--tabby-soft);
+    }
+    .v2-qf-cell:first-child { padding-left: 0; }
+    .v2-qf-cell:last-child { padding-right: 0; }
+    .v2-qf-label {
+      font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--indie); font-weight: 700; margin-bottom: 4px;
+    }
+    .v2-qf-value { font-family: var(--serif); font-size: 16px; color: var(--charcoal); line-height: 1.3; }
+    .v2-qf-note { font-size: 11px; color: var(--indie); margin-top: 2px; }
+    .v2-qf-adjust { font-size: 11px; color: var(--ginger); cursor: pointer; margin-top: 4px; display: inline-block; font-weight: 600; }
+    .v2-qf-adjust::after { content: ' →'; }
+    @media (max-width: 600px) {
+      .v2-quickfacts { grid-template-columns: 1fr; gap: 14px; padding: 14px 20px; }
+      .v2-qf-cell { padding: 0; }
+      .v2-qf-cell + .v2-qf-cell::before { display: none; }
+      .v2-qf-cell + .v2-qf-cell { padding-top: 12px; border-top: 1px solid var(--tabby-soft); }
+    }
+
+    /* Recently viewed cards (replaces brand chips) */
+    .recent-block {
+      max-width: 540px;
+      margin: 32px auto 0;
+      text-align: center;
+    }
+    .recent-block-label {
+      font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--indie); font-weight: 700; margin-bottom: 14px;
+    }
+    .recent-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 10px;
+    }
+    .recent-card {
+      display: flex;
+      gap: 10px;
+      padding: 10px;
+      background: white;
+      border: 1px solid var(--tabby-soft);
+      border-radius: 10px;
+      cursor: pointer;
+      text-align: left;
+      align-items: center;
+      transition: border-color 0.2s, transform 0.15s;
+    }
+    .recent-card:hover { border-color: var(--ginger); transform: translateY(-1px); }
+    .recent-card-img {
+      width: 44px; height: 44px; flex-shrink: 0;
+      border-radius: 6px;
+      background: var(--cream-deep);
+      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .recent-card-img img { width: 100%; height: 100%; object-fit: cover; }
+    .recent-card-info { flex: 1; min-width: 0; }
+    .recent-card-brand {
+      font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--indie); font-weight: 700; margin-bottom: 2px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .recent-card-title {
+      font-family: var(--serif); font-size: 13px;
+      color: var(--charcoal); line-height: 1.2;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* Hero "popular" cards (landing page, no localStorage) — uses same styling */
+    .hero-popular { margin-top: 20px; }
+    .hero-popular .recent-block-label { color: var(--indie-soft); }
+    .hero-popular .recent-card { background: rgba(255,255,255,0.06); border-color: var(--indie); }
+    .hero-popular .recent-card:hover { border-color: var(--ginger); }
+    .hero-popular .recent-card-brand { color: var(--indie-soft); }
+    .hero-popular .recent-card-title { color: var(--cream); }
+    .hero-popular .recent-card-img { background: rgba(245,240,229,0.1); }
+
     /* Autocomplete dropdown — anchored to search-box/cta-search wrapper so it sits below the entire search field */
     .autocomplete-results {
       position: absolute;
@@ -1760,12 +1850,9 @@
             <input type="text" placeholder="Search a brand or product…" id="searchInput" autocomplete="off">
             <button class="search-btn" onclick="doSearch()">Sniff it</button>
           </div>
-          <div class="chips">
-            <button class="chip active" onclick="selectFood(0,this)">Whiskas</button>
-            <button class="chip" onclick="selectFood(1,this)">Royal Canin</button>
-            <button class="chip" onclick="selectFood(2,this)">Me-O</button>
-            <button class="chip" onclick="selectFood(3,this)">Drools</button>
-            <button class="chip" onclick="selectFood(4,this)">Sheba</button>
+          <div class="recent-block hero-popular" id="heroRecent">
+            <div class="recent-block-label" id="heroRecentLabel">Popular foods</div>
+            <div class="recent-cards" id="heroRecentCards"></div>
           </div>
         </div>
       </div>
@@ -2031,6 +2118,19 @@
                 <div class="v2-verdict-summary" id="oVerdictSummary"></div>
               </div>
 
+              <div class="v2-quickfacts">
+                <div class="v2-qf-cell">
+                  <div class="v2-qf-label">Analyzed for</div>
+                  <div class="v2-qf-value" id="oAnalyzedFor">Healthy adult indoor cat</div>
+                  <div class="v2-qf-note">4kg, default profile</div>
+                </div>
+                <div class="v2-qf-cell">
+                  <div class="v2-qf-label" id="oServingLabel">Daily portion</div>
+                  <div class="v2-qf-value" id="oServingValue">~55g</div>
+                  <div class="v2-qf-note" id="oServingNote">split into 2 meals</div>
+                </div>
+              </div>
+
               <div class="v2-worry-action" id="oWorryAction">
                 <div class="v2-wa-worry">
                   <div class="v2-wa-dots" id="oWorryDots"></div>
@@ -2083,12 +2183,9 @@
               <input type="text" placeholder="Search a brand or product…" id="overlaySearchInput" autocomplete="off">
               <button onclick="overlaySearch()">Sniff it</button>
             </div>
-            <div class="overlay-chips">
-              <button class="chip" onclick="openOverlay(0)">Whiskas</button>
-              <button class="chip" onclick="openOverlay(1)">Royal Canin</button>
-              <button class="chip" onclick="openOverlay(2)">Me-O</button>
-              <button class="chip" onclick="openOverlay(3)">Drools</button>
-              <button class="chip" onclick="openOverlay(4)">Sheba</button>
+            <div class="recent-block" id="overlayRecent" style="display:none">
+              <div class="recent-block-label" id="overlayRecentLabel">Recently viewed</div>
+              <div class="recent-cards" id="overlayRecentCards"></div>
             </div>
           </div>
         </div>
@@ -2132,10 +2229,102 @@
       } catch (e) { console.error('sbSearch', e); return []; }
     }
 
-    // Bootstrap: load teaser
+    // ═══ Recently viewed (localStorage) ═══
+    const RECENT_KEY = 'sniff:recent';
+    const POPULAR_SLUGS = [
+      'whiskas-ocean-fish-adult',
+      'sheba-tuna-in-jelly',
+      'royal-canin-indoor-adult',
+      'orijen-original-cat-kitten',
+      'inaba-churu-tuna',
+    ];
+    function getRecent() {
+      try { return JSON.parse(localStorage.getItem(RECENT_KEY) || '[]'); } catch { return []; }
+    }
+    function pushRecent(slug) {
+      const list = getRecent().filter(s => s !== slug);
+      list.unshift(slug);
+      try { localStorage.setItem(RECENT_KEY, JSON.stringify(list.slice(0, 6))); } catch {}
+    }
+    async function fetchMany(slugs) {
+      if (!slugs.length) return [];
+      const q = slugs.map(s => `"${s}"`).join(',');
+      const url = `${SUPABASE_URL}/rest/v1/products?slug=in.(${encodeURIComponent(slugs.join(','))})&select=slug,brand,title,image_url`;
+      try {
+        const r = await fetch(url, { headers: SUPABASE_HEADERS });
+        const arr = await r.json();
+        // Reorder to match input slug order
+        const map = {};
+        arr.forEach(p => { map[p.slug] = p; });
+        return slugs.map(s => map[s]).filter(Boolean);
+      } catch (e) { console.error('fetchMany', e); return []; }
+    }
+    function renderRecentCards(containerId, labelId, products, defaultLabel) {
+      const container = document.getElementById(containerId);
+      const labelEl = document.getElementById(labelId);
+      if (!container) return;
+      if (!products.length) { container.innerHTML = ''; return; }
+      if (labelEl) labelEl.textContent = defaultLabel;
+      container.innerHTML = products.map(p => {
+        const imgEl = p.image_url
+          ? `<img src="${p.image_url}" alt="" onerror="this.parentElement.innerHTML='<div style=&quot;font-size:9px&quot;>${(p.brand||'').split(' ')[0]}</div>'">`
+          : `<div style="font-size:9px;color:#8B7355">${(p.brand||'').split(' ')[0]}</div>`;
+        return `<div class="recent-card" onclick="openOverlaySlug('${p.slug}')">` +
+          `<div class="recent-card-img">${imgEl}</div>` +
+          `<div class="recent-card-info">` +
+            `<div class="recent-card-brand">${p.brand||''}</div>` +
+            `<div class="recent-card-title">${p.title||''}</div>` +
+          `</div>` +
+        `</div>`;
+      }).join('');
+    }
+    async function refreshRecentCards() {
+      const recent = getRecent();
+      // Hero: show recent if user has any, else popular
+      const heroSlugs = recent.length ? recent.slice(0, 5) : POPULAR_SLUGS;
+      const heroLabel = recent.length ? 'Recently sniffed' : 'Popular foods';
+      const heroProducts = await fetchMany(heroSlugs);
+      renderRecentCards('heroRecentCards', 'heroRecentLabel', heroProducts, heroLabel);
+      // Overlay: show recent excluding current product, fall back to popular foods
+      const overlayBlock = document.getElementById('overlayRecent');
+      const currentSlug = currentProduct?.slug;
+      const recentExclCurrent = recent.filter(s => s !== currentSlug);
+      const overlayUsesRecent = recentExclCurrent.length > 0;
+      const overlaySlugs = (overlayUsesRecent ? recentExclCurrent : POPULAR_SLUGS.filter(s => s !== currentSlug)).slice(0, 4);
+      if (overlaySlugs.length) {
+        const overlayProducts = await fetchMany(overlaySlugs);
+        renderRecentCards('overlayRecentCards', 'overlayRecentLabel', overlayProducts, overlayUsesRecent ? 'Recently viewed' : 'Try these next');
+        if (overlayBlock) overlayBlock.style.display = '';
+      } else {
+        if (overlayBlock) overlayBlock.style.display = 'none';
+      }
+    }
+
+    // ═══ Serving info per category ═══
+    function getServingInfo(product) {
+      const cat = product.category;
+      const ls = product.life_stage;
+      if (cat === 'treat') {
+        return { label: 'Treat use', value: '5–8 treats', note: 'max 2–3× per week' };
+      }
+      if (cat === 'wet') {
+        return { label: 'Daily portion', value: '1–2 pouches', note: 'paired with dry food' };
+      }
+      if (ls === 'kitten' || cat === 'kitten') {
+        return { label: 'Daily portion', value: '~70g', note: 'for a growing kitten' };
+      }
+      if (cat === 'prescription') {
+        return { label: 'Daily portion', value: 'Per vet guidance', note: 'follow prescription' };
+      }
+      // Default dry food
+      return { label: 'Daily portion', value: '~55g', note: 'split into 2 meals' };
+    }
+
+    // Bootstrap: load teaser + recent cards
     (async () => {
       teaserFood = await sbFetchOne('whiskas-ocean-fish-adult');
       if (teaserFood) updateTeaser(teaserFood);
+      refreshRecentCards();
     })();
 
     function slugify(s) { return s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,''); }
@@ -2197,6 +2386,9 @@
       currentProduct = product;
       renderProduct(product);
       showOverlayState('content');
+      // Track as recently viewed + refresh sidebar cards
+      pushRecent(product.slug);
+      refreshRecentCards();
     }
 
     // Backwards compat: openOverlay(idx) for hero chips
@@ -2309,6 +2501,23 @@
       document.getElementById('oVerdictLabel').textContent = v.label || '';
       document.getElementById('oVerdictSub').textContent = v.tag || '';
       document.getElementById('oVerdictSummary').textContent = v.summary || '';
+
+      // Quickfacts: Analyzed-for + Daily portion
+      const ls = p.life_stage;
+      const analyzedFor = ls === 'kitten' ? 'Growing kitten (1–12mo)'
+                       : ls === 'senior' ? 'Senior cat (10yr+)'
+                       : p.category === 'prescription' ? 'Cats with this condition'
+                       : 'Healthy adult cat';
+      const profileNote = ls === 'kitten' ? '~2kg, baseline'
+                       : ls === 'senior' ? '4kg, baseline'
+                       : p.category === 'prescription' ? 'follow vet guidance'
+                       : '4kg indoor, default';
+      document.getElementById('oAnalyzedFor').textContent = analyzedFor;
+      document.querySelector('#oAnalyzedFor + .v2-qf-note').textContent = profileNote;
+      const serving = getServingInfo(p);
+      document.getElementById('oServingLabel').textContent = serving.label;
+      document.getElementById('oServingValue').textContent = serving.value;
+      document.getElementById('oServingNote').textContent = serving.note;
 
       // Worry + Action
       const worry = a.worry || { level: 'low', filled: 1, label: '', note: '' };
