@@ -1,0 +1,152 @@
+{
+  "whiskas-ocean-fish-adult": {
+    "type": "cat",
+    "brand": "Whiskas · Dry food",
+    "title": "Ocean Fish, Adult 1+",
+    "price": "₹60/100g · ≈ ₹33/day for a 4kg indoor cat",
+    "verdict": { "label": "Okay for now", "tag": "Low transparency", "labelClass": "vp-okay", "tagClass": "vp-muted", "summary": "Safe enough for a healthy adult cat, but the label hides important details like carbs, taurine, and mineral balance." },
+    "worry": { "level": "medium", "filled": 2, "label": "Medium concern", "note": "No need to panic. The main issue is that this brand doesn't reveal enough for you to confidently judge long-term quality." },
+    "action": "Finish the current pack if your cat is healthy. Don't bulk buy. Before your next refill, compare options with named meat sources and taurine disclosure.",
+    "reasons": [
+      { "status": "good", "q": "Enough protein? Yes, likely.", "a": "33% dry matter protein — above the 26% minimum for adult cats." },
+      { "status": "caution", "q": "More carbs than your cat naturally needs", "a": "~39% estimated. Cats in the wild eat around 5%. This is grain padding." },
+      { "status": "missing", "q": "Heart & eye nutrient not clearly listed", "a": "Taurine is essential for cats. This brand doesn't disclose how much is present." }
+    ],
+    "bestUse": [
+      { "q": "Daily base food?", "a": "Maybe, not ideal", "cls": "bu-okay" },
+      { "q": "Backup food?", "a": "Yes", "cls": "bu-good" },
+      { "q": "For picky cats?", "a": "Okay if tolerated", "cls": "bu-okay" },
+      { "q": "Kidney / urinary?", "a": "Ask vet first", "cls": "bu-vet" }
+    ],
+    "parentTake": "I wouldn't throw this away immediately. But I also wouldn't make it the only daily food long-term. I'd finish the pack, then compare options with clearer meat sources, taurine disclosure, and lower estimated carbs.",
+    "f1": { "type": "co", "label": "Checks out", "val": 33, "unit": "%", "what": "Protein (DM)", "tip": "Protein at 33% dry matter exceeds the 26% AAFCO minimum." },
+    "f2": { "type": "ws", "label": "Worth a sniff", "val": 39, "prefix": "≈", "unit": "%", "what": "Carbs (calc)", "tip": "Wild prey is ~5% carbs. 39% means grain padding." },
+    "f3": { "type": "gm", "label": "Gone missing", "text": "not disclosed", "what": "Taurine", "tip": "Essential amino acid. Deficiency causes blindness." },
+    "barPos": 41,
+    "barLabel": "← 33% here",
+    "ing": "Cereals",
+    "ingRest": "then: meat & by-products · oils · minerals · vitamins. <strong>Meat source not named.</strong>",
+    "missing": [["Taurine", "Not disclosed"], ["Ash", "Not disclosed"], ["Ca:P ratio", "Not disclosed"], ["Named meat", "Withheld"]],
+    "nose": "Meets minimums. Cereal-first, won't name the meat, and declines to publish taurine. Adequate as a base — but at ₹60/100g, options exist with named protein and full disclosure."
+  },
+  "royal-canin-indoor-adult": {
+    "type": "cat",
+    "brand": "Royal Canin · Dry food",
+    "title": "Indoor Adult",
+    "price": "₹95/100g · ≈ ₹52/day for a 4kg indoor cat",
+    "verdict": { "label": "Good enough", "tag": "Decent transparency", "labelClass": "vp-good", "tagClass": "vp-muted", "summary": "One of the more transparent options in India. Names its protein, discloses taurine. The premium price buys accountability, not just marketing." },
+    "worry": { "level": "low", "filled": 1, "label": "Low concern", "note": "Nothing here screams concern. This is one of the more transparent options available in India." },
+    "action": "Keep feeding this with reasonable confidence. The premium price buys transparency, not just ingredients. Still worth supplementing with wet food for hydration.",
+    "reasons": [
+      { "status": "good", "q": "Solid protein? Yes.", "a": "36% dry matter — well above the minimum. Good for indoor adults." },
+      { "status": "caution", "q": "Still more carbs than ideal", "a": "~33% estimated. Better than most Indian kibble, but higher than what cats naturally eat." },
+      { "status": "good", "q": "Names its protein, discloses taurine", "a": "Dehydrated poultry protein first. Taurine at 0.14% — above the 0.10% minimum. That's rare in India." }
+    ],
+    "bestUse": [
+      { "q": "Daily base food?", "a": "Yes", "cls": "bu-good" },
+      { "q": "Backup food?", "a": "Overqualified for backup", "cls": "bu-good" },
+      { "q": "For picky cats?", "a": "Usually well-accepted", "cls": "bu-good" },
+      { "q": "Kidney / urinary?", "a": "Ask vet about sodium", "cls": "bu-vet" }
+    ],
+    "parentTake": "I'd feel reasonably confident feeding this daily. It's not perfect — carbs are still higher than I'd like — but it's transparent, names its protein, and discloses taurine. That puts it ahead of most options in India.",
+    "f1": { "type": "co", "label": "Checks out", "val": 36, "unit": "%", "what": "Protein (DM)", "tip": "36% dry matter protein is solid for indoor adults." },
+    "f2": { "type": "ws", "label": "Worth a sniff", "val": 33, "prefix": "≈", "unit": "%", "what": "Carbs (calc)", "tip": "Still higher than ideal but better than most Indian kibble." },
+    "f3": { "type": "co", "label": "Checks out", "val": "0.14%", "what": "Taurine", "tip": "Disclosed at 0.14%. Meets the AAFCO minimum of 0.10%." },
+    "barPos": 52,
+    "barLabel": "← 36% here",
+    "ing": "Dehydrated poultry protein",
+    "ingRest": "then: rice · wheat · animal fats · vegetable fibres. <strong>Named protein — good.</strong>",
+    "missing": [["Ca:P ratio", "Not disclosed"], ["Sodium", "Not disclosed"]],
+    "nose": "Above average. Named protein first, discloses taurine. Carbs still high for indoor cats. The premium price buys transparency, not just ingredients."
+  },
+  "me-o-tuna-adult": {
+    "type": "cat",
+    "brand": "Me-O · Dry food",
+    "title": "Tuna, Adult",
+    "price": "₹32/100g · ≈ ₹18/day for a 4kg indoor cat",
+    "verdict": { "label": "Okay for now", "tag": "Budget pick, low transparency", "labelClass": "vp-okay", "tagClass": "vp-muted", "summary": "Similar nutrition profile to Whiskas at nearly half the price. Same transparency gaps, same tradeoffs." },
+    "worry": { "level": "medium", "filled": 2, "label": "Medium concern", "note": "Not dangerous, but the brand tells you very little. Same disclosure gaps as Whiskas at a lower price." },
+    "action": "If budget is the main constraint, this does the job short-term. Don't assume cheaper means worse — compare what each brand actually discloses before your next purchase.",
+    "reasons": [
+      { "status": "good", "q": "Protein is acceptable", "a": "33% dry matter — same as Whiskas, at nearly half the price." },
+      { "status": "caution", "q": "Carbs are high", "a": "~38% estimated. Standard for budget kibble in India, but not great for daily feeding." },
+      { "status": "missing", "q": "Same transparency gaps as the big brands", "a": "No taurine, no ash, no mineral balance disclosed. Generic fish source — not named." }
+    ],
+    "bestUse": [
+      { "q": "Daily base food?", "a": "Only if budget-limited", "cls": "bu-okay" },
+      { "q": "Backup food?", "a": "Yes", "cls": "bu-good" },
+      { "q": "For picky cats?", "a": "If tolerated", "cls": "bu-okay" },
+      { "q": "Kidney / urinary?", "a": "Ask vet first", "cls": "bu-vet" }
+    ],
+    "parentTake": "I'd use this if budget mattered most. It's essentially Whiskas at a lower price point — same strengths, same gaps. I wouldn't feel great about it long-term, but I also wouldn't panic.",
+    "f1": { "type": "co", "label": "Checks out", "val": 33, "unit": "%", "what": "Protein (DM)", "tip": "Matches Whiskas at nearly half the price." },
+    "f2": { "type": "ws", "label": "Worth a sniff", "val": 38, "prefix": "≈", "unit": "%", "what": "Carbs (calc)", "tip": "High carbs, standard for budget kibble in India." },
+    "f3": { "type": "gm", "label": "Gone missing", "text": "not disclosed", "what": "Taurine", "tip": "Same gap as Whiskas. Essential, unpublished." },
+    "barPos": 41,
+    "barLabel": "← 33% here",
+    "ing": "Cereals",
+    "ingRest": "then: fish & fish by-products · soybean meal · oils · vitamins. <strong>Generic fish, not named.</strong>",
+    "missing": [["Taurine", "Not disclosed"], ["Ash", "Not disclosed"], ["Ca:P ratio", "Not disclosed"], ["Named fish", "Generic only"]],
+    "nose": "Similar to Whiskas at nearly half the price. Same cereal-first problem, same disclosure gaps. Budget-friendly — but you get what you get."
+  },
+  "drools-ocean-fish-adult": {
+    "type": "cat",
+    "brand": "Drools · Dry food",
+    "title": "Ocean Fish, Adult",
+    "price": "₹22/100g · ≈ ₹12/day for a 4kg indoor cat",
+    "verdict": { "label": "Not transparent enough", "tag": "Budget baseline", "labelClass": "vp-weak", "tagClass": "vp-muted", "summary": "The cheapest option available. Meets bare minimums, but reveals almost nothing beyond what regulations force." },
+    "worry": { "level": "high", "filled": 3, "label": "Higher concern", "note": "This is the bare minimum. Cereal-heavy, minimal protein, and the least transparent label in this group." },
+    "action": "Use only if budget is very tight. Supplement with wet food when you can. This should be a stepping stone, not a permanent choice. Plan to upgrade when budget allows.",
+    "reasons": [
+      { "status": "caution", "q": "Protein barely passes", "a": "32% dry matter — just above the 26% minimum. Adequate, nothing more." },
+      { "status": "caution", "q": "Highest carbs in this group", "a": "~40% estimated. Heavy on cereals and fillers. Likely ingredient splitting." },
+      { "status": "missing", "q": "Least transparent label available", "a": "No taurine, no ash, no mineral balance, generic meat source. Almost nothing disclosed beyond what's legally required." }
+    ],
+    "bestUse": [
+      { "q": "Daily base food?", "a": "Not ideal", "cls": "bu-flag" },
+      { "q": "Backup food?", "a": "If needed", "cls": "bu-okay" },
+      { "q": "For picky cats?", "a": "Usually accepted", "cls": "bu-okay" },
+      { "q": "Kidney / urinary?", "a": "Ask vet first", "cls": "bu-vet" }
+    ],
+    "parentTake": "I'd treat this as a temporary solution, not a permanent choice. At ₹22/100g it's the cheapest option, but you can feel the corners being cut. I'd supplement with wet food and plan to upgrade when budget allows.",
+    "f1": { "type": "co", "label": "Checks out", "val": 32, "unit": "%", "what": "Protein (DM)", "tip": "Just above AAFCO minimum. Adequate, nothing more." },
+    "f2": { "type": "ws", "label": "Worth a sniff", "val": 40, "prefix": "≈", "unit": "%", "what": "Carbs (calc)", "tip": "40% carbs — highest in this group. Heavy on fillers." },
+    "f3": { "type": "gm", "label": "Gone missing", "text": "not disclosed", "what": "Taurine", "tip": "Not disclosed. Common in Indian budget brands." },
+    "barPos": 38,
+    "barLabel": "← 32% here",
+    "ing": "Cereals & cereal by-products",
+    "ingRest": "then: fish meal · soybean meal · oils · vitamins. <strong>Ingredient splitting on cereals.</strong>",
+    "missing": [["Taurine", "Not disclosed"], ["Ash", "Not disclosed"], ["Ca:P ratio", "Not disclosed"], ["Named meat", "Generic"]],
+    "nose": "The cheapest option. Meets minimums, barely. Cereal-heavy with likely ingredient splitting. For tight budgets only — supplement with wet food if you can."
+  },
+  "sheba-tuna-in-jelly": {
+    "type": "cat",
+    "brand": "Sheba · Wet food",
+    "title": "Tuna in Jelly",
+    "price": "₹85/100g · ≈ ₹28/day for a 4kg indoor cat",
+    "verdict": { "label": "Strong choice", "tag": "Close to what cats naturally eat", "labelClass": "vp-good", "tagClass": "vp-good", "summary": "Named protein, low carbs, high moisture. This is what a cat's body actually expects from food." },
+    "worry": { "level": "low", "filled": 1, "label": "Low concern", "note": "This is one of the better options available. Your cat's body was designed for food like this." },
+    "action": "Keep feeding this. It doesn't replace dry food for dental health, but as a primary protein source, this is excellent. Pair with a transparent dry food for a strong daily rotation.",
+    "reasons": [
+      { "status": "good", "q": "Excellent protein", "a": "52% dry matter — close to what cats eat in the wild. Among the highest available." },
+      { "status": "good", "q": "Very low carbs", "a": "~8% estimated. Wet food naturally runs lower, and this is excellent." },
+      { "status": "good", "q": "Named protein, short ingredient list", "a": "Tuna first. You know what your cat is eating. That transparency matters." }
+    ],
+    "bestUse": [
+      { "q": "Daily base food?", "a": "Yes, as primary protein", "cls": "bu-good" },
+      { "q": "Backup food?", "a": "Overqualified", "cls": "bu-good" },
+      { "q": "For picky cats?", "a": "Most cats love it", "cls": "bu-good" },
+      { "q": "Kidney / urinary?", "a": "Good hydration, ask vet", "cls": "bu-vet" }
+    ],
+    "parentTake": "This would be a staple in my rotation. Named tuna, low carbs, 80% moisture — it's close to what cats evolved to eat. I'd pair it with a transparent dry food for dental health and call it a solid diet.",
+    "f1": { "type": "co", "label": "Checks out", "val": 52, "unit": "%", "what": "Protein (DM)", "tip": "52% dry-matter protein. Close to prey-matched levels." },
+    "f2": { "type": "co", "label": "Checks out", "val": 8, "prefix": "≈", "unit": "%", "what": "Carbs (calc)", "tip": "8% carbs — excellent. Wet food naturally runs lower." },
+    "f3": { "type": "co", "label": "Checks out", "val": "yes", "what": "Hydration", "tip": "80% moisture. Cats evolved to get water from food." },
+    "barPos": 82,
+    "barLabel": "← 52% here",
+    "ing": "Tuna",
+    "ingRest": "then: water · tapioca starch · gelling agents. <strong>Named protein. Short list.</strong>",
+    "missing": [["Ash", "Not disclosed"]],
+    "nose": "Strong. Named protein first, low carbs, high moisture. Doesn't replace dry food for dental health — but as the primary protein source, this is what a cat's body actually expects."
+  }
+}

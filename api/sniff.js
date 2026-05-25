@@ -15,10 +15,6 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'Server configuration error' });
   }
 
-  const searchResults = await webSearch(query.trim());
-
-  const prompt = buildPrompt(query.trim(), searchResults);
-
   try {
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -30,7 +26,7 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
         max_tokens: 2048,
-        messages: [{ role: 'user', content: prompt }],
+        messages: [{ role: 'user', content: buildPrompt(query.trim()) }],
       }),
     });
 
@@ -56,42 +52,13 @@ export default async function handler(req, res) {
   }
 }
 
-async function webSearch(query) {
-  const braveKey = process.env.BRAVE_SEARCH_API_KEY;
-  if (!braveKey) return '';
-
-  try {
-    const searchQuery = `${query} cat food ingredients guaranteed analysis nutrition`;
-    const url = `https://api.search.brave.com/res/v1/web/search?q=${encodeURIComponent(searchQuery)}&count=5`;
-    const response = await fetch(url, {
-      headers: { 'X-Subscription-Token': braveKey, Accept: 'application/json' },
-    });
-
-    if (!response.ok) return '';
-
-    const data = await response.json();
-    const results = (data.web?.results || []).slice(0, 5);
-    return results
-      .map((r) => `[${r.title}]\n${r.description}`)
-      .join('\n\n');
-  } catch {
-    return '';
-  }
-}
-
-function buildPrompt(query, searchResults) {
-  const searchSection = searchResults
-    ? `\n\nWEB SEARCH RESULTS for "${query}":\n${searchResults}\n`
-    : '';
-
+function buildPrompt(query) {
   return `You are Sniff's analysis engine. A cat parent in India just typed "${query}" into the search bar.
 
 Your job:
 1. Figure out what product this is
-2. Research its ingredients, guaranteed analysis, and nutritional profile
+2. Use your knowledge of its ingredients, guaranteed analysis, and nutritional profile
 3. Generate an honest, opinionated analysis
-
-${searchSection}
 
 IMPORTANT CLASSIFICATION:
 First, determine what type of product this is:
@@ -144,66 +111,54 @@ For type "cat":
   "price": "₹XX/100g · ≈ ₹XX/day for a 4kg indoor cat",
   "verdict": {
     "label": "One of the verdict labels above",
-    "tag": "Short qualifier (e.g. 'Low transparency', 'Decent option')",
+    "tag": "Short qualifier",
     "labelClass": "vp-good | vp-okay | vp-weak",
     "tagClass": "vp-good | vp-muted",
-    "summary": "2-3 sentences. The honest take on this food. Decision-oriented, not technical."
+    "summary": "2-3 sentences. The honest take on this food."
   },
   "worry": {
     "level": "low | medium | high",
     "filled": 1-3,
     "label": "Low concern | Medium concern | Higher concern",
-    "note": "1-2 sentences explaining what to actually worry about (or not)."
+    "note": "1-2 sentences."
   },
-  "action": "2-3 sentences. Concrete next steps. What to do right now + before next purchase.",
+  "action": "2-3 sentences. Concrete next steps.",
   "reasons": [
-    { "status": "good | caution | missing", "q": "Short finding as a question-answer (e.g. 'Enough protein? Yes.')", "a": "1-2 sentence explanation." },
-    { "status": "good | caution | missing", "q": "...", "a": "..." },
-    { "status": "good | caution | missing", "q": "...", "a": "..." }
+    { "status": "good | caution | missing", "q": "Short finding", "a": "1-2 sentence explanation." },
+    { "status": "...", "q": "...", "a": "..." },
+    { "status": "...", "q": "...", "a": "..." }
   ],
   "bestUse": [
-    { "q": "Daily base food?", "a": "Yes / Maybe / Not ideal / Only if budget-limited", "cls": "bu-good | bu-okay | bu-flag | bu-vet" },
+    { "q": "Daily base food?", "a": "...", "cls": "bu-good | bu-okay | bu-flag | bu-vet" },
     { "q": "Backup food?", "a": "...", "cls": "..." },
     { "q": "For picky cats?", "a": "...", "cls": "..." },
-    { "q": "Kidney / urinary?", "a": "Ask vet first / Good option / etc", "cls": "bu-vet | bu-good | bu-okay" }
+    { "q": "Kidney / urinary?", "a": "...", "cls": "bu-vet | bu-good | bu-okay" }
   ],
-  "parentTake": "3-4 sentences. This is the most important field. Write like you're talking to a friend. What would YOU do if this were your cat's food? Be specific and honest.",
-  "f1": { "type": "co | ws | gm", "label": "Checks out | Worth a sniff | Gone missing", "val": 33, "unit": "%", "what": "Protein (DM)", "tip": "Short explanation" },
-  "f2": { "type": "co | ws | gm", "label": "Checks out | Worth a sniff | Gone missing", "val": 39, "prefix": "≈", "unit": "%", "what": "Carbs (calc)", "tip": "Short explanation" },
-  "f3": { "type": "co | ws | gm", "label": "Checks out | Worth a sniff | Gone missing", "val": "0.14%" OR "text": "not disclosed", "what": "Taurine | Hydration | other key metric", "tip": "Short explanation" },
+  "parentTake": "3-4 sentences. The most important field. Write like texting a friend.",
+  "f1": { "type": "co | ws | gm", "label": "Checks out | Worth a sniff | Gone missing", "val": 33, "unit": "%", "what": "Protein (DM)", "tip": "..." },
+  "f2": { "type": "co | ws | gm", "label": "...", "val": 39, "prefix": "≈", "unit": "%", "what": "Carbs (calc)", "tip": "..." },
+  "f3": { "type": "co | ws | gm", "label": "...", "val": "0.14%" OR "text": "not disclosed", "what": "Taurine | Hydration | ...", "tip": "..." },
   "barPos": 41,
   "barLabel": "← 33% here",
   "ing": "First ingredient name",
-  "ingRest": "then: rest of key ingredients. <strong>Commentary on ingredient quality.</strong>",
-  "missing": [["Nutrient name", "Not disclosed"], ["...", "..."]],
-  "nose": "2-3 sentences. The Sniff summary — punchy, direct, opinionated. Think closing argument."
+  "ingRest": "then: rest of key ingredients. <strong>Commentary.</strong>",
+  "missing": [["Nutrient", "Not disclosed"], ...],
+  "nose": "2-3 sentences. Punchy, direct, opinionated."
 }
 
 For type "dog":
-{
-  "type": "dog",
-  "brand": "Brand name",
-  "title": "Product name"
-}
+{ "type": "dog", "brand": "Brand name", "title": "Product name" }
 
 For type "not_food":
-{
-  "type": "not_food",
-  "query": "${query}"
-}
+{ "type": "not_food", "query": "${query}" }
 
 For type "not_found":
-{
-  "type": "not_found",
-  "query": "${query}",
-  "suggestion": "A brief suggestion of what to search instead, or null"
-}
+{ "type": "not_found", "query": "${query}", "suggestion": "Brief suggestion or null" }
 
 CRITICAL:
-- For price, use Indian Rupees (₹). Research actual Indian market prices.
+- Use Indian Rupees (₹). Use actual Indian market prices.
 - Calculate protein on dry matter basis: protein% / (100 - moisture%) × 100
-- Calculate estimated carbs: 100 - protein - fat - fibre - moisture - ash (estimate ash at 7-8% if not disclosed)
-- Return ONLY the JSON object. No markdown fences, no explanation text before or after.
-- If you're not confident about specific numbers, use reasonable estimates based on similar products and note the uncertainty.
-- For f3, use "val" for known values (like "0.14%") and "text" for unknown ones (like "not disclosed"). Never include both.`;
+- Estimate carbs: 100 - protein - fat - fibre - moisture - ash (estimate ash at 7-8% if not disclosed)
+- Return ONLY the JSON object. No markdown fences, no text before or after.
+- For f3, use "val" for known values and "text" for unknown ones. Never both.`;
 }
