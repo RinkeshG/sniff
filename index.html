@@ -1928,30 +1928,35 @@
     .ac-item:focus, .ac-item.kb-focus { background: var(--cream); outline: none; }
     .ac-fallback:focus, .ac-fallback.kb-focus { background: var(--cream); outline: none; }
 
-    /* Clear (×) button inside search input */
+    /* Search input wrapper — gives the clear (×) button a proper anchor inside the input area */
+    .search-input-wrap {
+      flex: 1; position: relative; display: flex; min-width: 0;
+    }
+    .search-input-wrap > input { flex: 1; padding-right: 36px; min-width: 0; }
     .search-clear {
       position: absolute;
-      right: 12px;
+      right: 8px;
       top: 50%;
       transform: translateY(-50%);
-      width: 24px; height: 24px;
+      width: 22px; height: 22px;
       border-radius: 50%;
-      background: rgba(184,168,142,0.3);
+      background: rgba(184,168,142,0.25);
       border: none;
       color: var(--cream);
-      font-size: 14px;
+      font-size: 12px;
+      line-height: 1;
       cursor: pointer;
       display: none;
       align-items: center;
       justify-content: center;
       padding: 0;
       z-index: 5;
+      transition: background 0.15s;
     }
     .search-clear.show { display: flex; }
-    .search-clear:hover { background: rgba(184,168,142,0.5); }
-    .cta-field .search-clear { color: var(--cream); }
-    .overlay-search-field .search-clear { background: rgba(139,115,85,0.2); color: var(--charcoal); }
-    .overlay-search-field .search-clear:hover { background: rgba(139,115,85,0.35); }
+    .search-clear:hover { background: rgba(184,168,142,0.45); }
+    .overlay-search-field .search-clear { background: rgba(139,115,85,0.18); color: var(--charcoal); }
+    .overlay-search-field .search-clear:hover { background: rgba(139,115,85,0.32); }
 
     /* Focus rings for keyboard accessibility */
     .hero-chip:focus-visible,
@@ -2866,10 +2871,14 @@
         dropdown.id = inputId + 'Ac';
         document.body.appendChild(dropdown);
       }
-      // Add a clear button to the search field
+      // Wrap the input in a relative container, then put the clear (×) button INSIDE that wrapper.
+      // This way the × is anchored to the input area, not the whole search-field (which contains the SNIFF IT button).
       const wrap = input.closest('.search-field, .cta-field, .overlay-search-field');
-      if (wrap && !wrap.querySelector('.search-clear')) {
-        wrap.style.position = wrap.style.position || 'relative';
+      if (wrap && !input.parentElement.classList.contains('search-input-wrap')) {
+        const inputWrap = document.createElement('div');
+        inputWrap.className = 'search-input-wrap';
+        input.parentNode.insertBefore(inputWrap, input);
+        inputWrap.appendChild(input);
         const clearBtn = document.createElement('button');
         clearBtn.type = 'button';
         clearBtn.className = 'search-clear';
@@ -2882,12 +2891,9 @@
           clearBtn.classList.remove('show');
           hideAutocomplete(inputId);
         });
-        // Insert before the SNIFF IT button so it sits inside the field
-        const btn = wrap.querySelector('button:not(.search-clear)');
-        if (btn) wrap.insertBefore(clearBtn, btn);
-        else wrap.appendChild(clearBtn);
+        inputWrap.appendChild(clearBtn);
       }
-      const clearBtn = wrap && wrap.querySelector('.search-clear');
+      const clearBtn = input.parentElement.querySelector('.search-clear');
       input.addEventListener('input', () => {
         clearTimeout(acTimers[inputId]);
         const q = input.value;
