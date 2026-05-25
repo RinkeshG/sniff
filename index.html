@@ -1575,6 +1575,172 @@
     @media (max-width: 380px) {
       .overlay-body { padding: 12px 8px 48px; }
     }
+
+    /* ═══ V2 OVERLAY STYLES (new format) ═══ */
+    .v2-product-header {
+      display: flex;
+      gap: 20px;
+      padding: 24px 28px 20px;
+      border-bottom: 1px solid var(--cream-deep);
+      align-items: center;
+    }
+    .v2-product-image {
+      width: 80px; height: 80px; flex-shrink: 0;
+      border-radius: 12px;
+      background: var(--cream-deep);
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden; position: relative;
+      border: 1px solid var(--tabby-soft);
+    }
+    .v2-product-image img { width: 100%; height: 100%; object-fit: cover; }
+    .v2-product-image .placeholder { font-family: var(--serif); color: var(--indie); font-size: 11px; text-align: center; padding: 6px; }
+    .v2-product-info { flex: 1; min-width: 0; }
+    .v2-product-brand { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--indie); font-weight: 700; margin-bottom: 4px; }
+    .v2-product-title { font-family: var(--serif); font-size: 21px; color: var(--charcoal); letter-spacing: -0.01em; line-height: 1.2; margin-bottom: 8px; }
+    .v2-product-link { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; color: var(--ginger); text-decoration: none; font-weight: 600; }
+    .v2-product-link:hover { color: var(--ginger-deep); }
+    .v2-product-link::after { content: '→'; }
+
+    .v2-verdict-hero { padding: 36px 28px 32px; }
+    .v2-verdict-hero.v-good { background: linear-gradient(180deg, #EEF5EF 0%, #E6EFE8 100%); }
+    .v2-verdict-hero.v-okay,
+    .v2-verdict-hero.v-caution { background: linear-gradient(180deg, #FBF1DD 0%, #F6E6C5 100%); }
+    .v2-verdict-hero.v-weak,
+    .v2-verdict-hero.v-flag { background: linear-gradient(180deg, var(--charcoal) 0%, var(--charcoal-soft) 100%); color: var(--cream); }
+    .v2-verdict-tag { font-size: 10px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; margin-bottom: 16px; opacity: 0.7; }
+    .v2-verdict-hero.v-good .v2-verdict-tag { color: var(--good-deep, #356642); }
+    .v2-verdict-hero.v-okay .v2-verdict-tag,
+    .v2-verdict-hero.v-caution .v2-verdict-tag { color: #9F6D1F; }
+    .v2-verdict-hero.v-weak .v2-verdict-tag,
+    .v2-verdict-hero.v-flag .v2-verdict-tag { color: var(--ginger); opacity: 1; }
+    .v2-verdict-label { font-family: var(--serif); font-size: clamp(32px, 5.5vw, 46px); line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 6px; }
+    .v2-verdict-hero.v-good .v2-verdict-label { color: #356642; }
+    .v2-verdict-hero.v-okay .v2-verdict-label,
+    .v2-verdict-hero.v-caution .v2-verdict-label { color: #9F6D1F; }
+    .v2-verdict-hero.v-weak .v2-verdict-label,
+    .v2-verdict-hero.v-flag .v2-verdict-label { color: var(--ginger); }
+    .v2-verdict-sub { font-size: 13px; font-weight: 600; letter-spacing: 0.04em; margin-bottom: 18px; opacity: 0.75; }
+    .v2-verdict-summary { font-family: var(--serif); font-size: 17px; line-height: 1.5; max-width: 460px; }
+    .v2-verdict-hero.v-weak .v2-verdict-summary,
+    .v2-verdict-hero.v-flag .v2-verdict-summary { color: var(--cream); }
+
+    .v2-worry-action { padding: 24px 28px; border-bottom: 1px solid var(--cream-deep); }
+    .v2-wa-worry { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .v2-wa-dots { display: flex; gap: 5px; }
+    .v2-wa-dots .wd { width: 9px; height: 9px; border-radius: 50%; background: transparent; border: 1.5px solid var(--indie-soft); }
+    .v2-worry-action.wl-low .wd.filled { background: var(--good); border-color: var(--good); }
+    .v2-worry-action.wl-medium .wd.filled { background: var(--caution); border-color: var(--caution); }
+    .v2-worry-action.wl-high .wd.filled { background: var(--flag); border-color: var(--flag); }
+    .v2-wa-worry-label { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+    .v2-worry-action.wl-low .v2-wa-worry-label { color: var(--good); }
+    .v2-worry-action.wl-medium .v2-wa-worry-label { color: var(--caution); }
+    .v2-worry-action.wl-high .v2-wa-worry-label { color: var(--flag); }
+    .v2-wa-action-label { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ginger); font-weight: 700; margin-bottom: 8px; margin-top: 4px; }
+    .v2-wa-action-text { font-size: 15px; line-height: 1.55; color: var(--charcoal); font-weight: 500; }
+
+    .v2-reasons { padding: 24px 28px; border-bottom: 1px solid var(--cream-deep); }
+    .v2-section-label { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--indie); font-weight: 700; margin-bottom: 14px; }
+    .v2-reason { display: flex; gap: 12px; padding: 12px 0; align-items: flex-start; border-bottom: 1px solid var(--cream-deep); }
+    .v2-reason:last-child { border-bottom: none; padding-bottom: 0; }
+    .v2-reason:first-child { padding-top: 0; }
+    .v2-reason-icon { flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: white; margin-top: 1px; }
+    .v2-reason.r-good .v2-reason-icon { background: var(--good); }
+    .v2-reason.r-good .v2-reason-icon::after { content: '✓'; }
+    .v2-reason.r-caution .v2-reason-icon { background: var(--caution); }
+    .v2-reason.r-caution .v2-reason-icon::after { content: '!'; }
+    .v2-reason.r-bad .v2-reason-icon,
+    .v2-reason.r-missing .v2-reason-icon { background: var(--flag); }
+    .v2-reason.r-bad .v2-reason-icon::after,
+    .v2-reason.r-missing .v2-reason-icon::after { content: '✕'; }
+    .v2-reason-q { font-family: var(--serif); font-size: 16px; color: var(--charcoal); margin-bottom: 3px; line-height: 1.3; }
+    .v2-reason-a { font-size: 13.5px; color: var(--indie); line-height: 1.5; }
+
+    .v2-fit-check { padding: 24px 28px; border-bottom: 1px solid var(--cream-deep); }
+    .v2-fit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+    .v2-fit-col-header { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; margin-bottom: 12px; }
+    .v2-fit-col.fits .v2-fit-col-header { color: var(--good); }
+    .v2-fit-col.doesnt .v2-fit-col-header { color: var(--flag); }
+    .v2-fit-item { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 10px; font-size: 13.5px; line-height: 1.45; color: var(--charcoal); }
+    .v2-fit-item:last-child { margin-bottom: 0; }
+    .v2-fit-item-icon { flex-shrink: 0; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: white; margin-top: 2px; }
+    .v2-fit-col.fits .v2-fit-item-icon { background: var(--good); }
+    .v2-fit-col.fits .v2-fit-item-icon::after { content: '✓'; }
+    .v2-fit-col.doesnt .v2-fit-item-icon { background: var(--flag); }
+    .v2-fit-col.doesnt .v2-fit-item-icon::after { content: '✕'; }
+    @media (max-width: 600px) { .v2-fit-grid { grid-template-columns: 1fr; gap: 22px; } }
+
+    .v2-parent-take { padding: 22px 28px; background: var(--cream); border-bottom: 1px solid var(--cream-deep); display: flex; gap: 14px; align-items: flex-start; }
+    .v2-pt-quote { font-family: var(--serif); font-size: 38px; color: var(--ginger); line-height: 1; flex-shrink: 0; }
+    .v2-pt-body { flex: 1; }
+    .v2-pt-label { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ginger); font-weight: 700; margin-bottom: 6px; }
+    .v2-pt-text { font-size: 13.5px; line-height: 1.55; color: var(--charcoal); font-style: italic; }
+
+    .v2-tech-toggle { width: 100%; background: white; border: none; padding: 16px 28px; font-family: var(--sans); font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--indie); cursor: pointer; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--cream-deep); }
+    .v2-tech-toggle:hover { background: var(--cream); }
+    .v2-tech-arrow { transition: transform 0.2s; }
+    .v2-tech-details { display: none; padding: 6px 28px 24px; background: var(--cream); }
+    .v2-tech-details.open { display: block; }
+    .v2-tech-toggle.open .v2-tech-arrow { transform: rotate(180deg); }
+    .v2-metric { padding: 16px 0; border-bottom: 1px solid var(--tabby-soft); }
+    .v2-metric:last-child { border-bottom: none; }
+    .v2-metric-header { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 6px; }
+    .v2-metric-name { font-family: var(--serif); font-size: 17px; color: var(--charcoal); }
+    .v2-metric-value { font-family: var(--serif); font-size: 22px; color: var(--charcoal); letter-spacing: -0.01em; }
+    .v2-metric-value.good { color: var(--good); }
+    .v2-metric-value.warn { color: var(--caution); }
+    .v2-metric-value.bad { color: var(--flag); }
+    .v2-metric-meta { display: flex; align-items: center; gap: 10px; font-size: 12.5px; color: var(--indie); flex-wrap: wrap; }
+    .v2-metric-status { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 8px; border-radius: 4px; }
+    .v2-metric-status.good { background: rgba(74,143,92,0.12); color: #356642; }
+    .v2-metric-status.warn { background: rgba(198,138,44,0.12); color: #9F6D1F; }
+    .v2-metric-status.bad { background: rgba(179,58,42,0.12); color: #7A2419; }
+
+    /* Autocomplete dropdown — anchored to search-box/cta-search wrapper so it sits below the entire search field */
+    .autocomplete-results {
+      position: absolute;
+      top: calc(100% + 4px); left: 0; right: 0;
+      background: white;
+      border: 1px solid var(--tabby-soft);
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(42,39,37,0.18);
+      max-height: 400px;
+      overflow-y: auto;
+      z-index: 100;
+      display: none;
+    }
+    .autocomplete-results.show { display: block; }
+    .ac-item {
+      display: flex;
+      gap: 12px;
+      padding: 10px 14px;
+      align-items: center;
+      cursor: pointer;
+      border-bottom: 1px solid var(--cream-deep);
+      transition: background 0.1s;
+    }
+    .ac-item:last-child { border-bottom: none; }
+    .ac-item:hover, .ac-item.active { background: var(--cream); }
+    .ac-item-img {
+      width: 40px; height: 40px; flex-shrink: 0;
+      border-radius: 6px; background: var(--cream-deep);
+      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .ac-item-img img { width: 100%; height: 100%; object-fit: cover; }
+    .ac-item-info { flex: 1; min-width: 0; }
+    .ac-item-brand { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--indie); font-weight: 700; margin-bottom: 2px; }
+    .ac-item-title { font-family: var(--serif); font-size: 14px; color: var(--charcoal); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ac-fallback {
+      padding: 12px 14px;
+      font-size: 13px;
+      color: var(--ginger);
+      font-weight: 600;
+      cursor: pointer;
+      border-top: 1px solid var(--cream-deep);
+    }
+    .ac-fallback:hover { background: var(--cream); }
+
+    .search-field { position: relative; }
   </style>
 </head>
 <body>
@@ -1849,67 +2015,65 @@
               <div class="overlay-edge-p">We couldn't complete the analysis right now. Try again in a moment, or pick one of the foods below.</div>
             </div>
             <div class="overlay-content" id="overlayContent">
-              <div class="card-head">
-                <div class="card-brand" id="oBrand"></div>
-                <div class="card-title" id="oTitle"></div>
-                <div class="card-price" id="oPrice"></div>
+              <div class="v2-product-header">
+                <div class="v2-product-image" id="oImage"><div class="placeholder">…</div></div>
+                <div class="v2-product-info">
+                  <div class="v2-product-brand" id="oBrand"></div>
+                  <div class="v2-product-title" id="oTitle"></div>
+                  <a class="v2-product-link" id="oLink" target="_blank" rel="noopener" style="display:none">See it</a>
+                </div>
               </div>
 
-              <div class="verdict" id="oVerdict">
-                <div class="verdict-tag">Sniff verdict</div>
-                <div class="verdict-labels" id="oVerdictLabels"></div>
-                <div class="verdict-summary" id="oVerdictSummary"></div>
+              <div class="v2-verdict-hero" id="oVerdictHero">
+                <div class="v2-verdict-tag">Sniff verdict</div>
+                <div class="v2-verdict-label" id="oVerdictLabel"></div>
+                <div class="v2-verdict-sub" id="oVerdictSub"></div>
+                <div class="v2-verdict-summary" id="oVerdictSummary"></div>
               </div>
 
-              <div class="card-body">
-                <div class="worry" id="oWorry">
-                  <div class="worry-level">
-                    <div class="worry-dots" id="oWorryDots"></div>
-                    <span class="worry-label" id="oWorryLabel"></span>
+              <div class="v2-worry-action" id="oWorryAction">
+                <div class="v2-wa-worry">
+                  <div class="v2-wa-dots" id="oWorryDots"></div>
+                  <span class="v2-wa-worry-label" id="oWorryLabel"></span>
+                </div>
+                <div class="v2-wa-action-label">What to do</div>
+                <div class="v2-wa-action-text" id="oActionText"></div>
+              </div>
+
+              <div class="v2-reasons">
+                <div class="v2-section-label">Why Sniff says this</div>
+                <div id="oReasons"></div>
+              </div>
+
+              <div class="v2-fit-check">
+                <div class="v2-section-label">Is this for your cat?</div>
+                <div class="v2-fit-grid">
+                  <div class="v2-fit-col fits">
+                    <div class="v2-fit-col-header">Fits if</div>
+                    <div id="oFitsIf"></div>
                   </div>
-                  <div class="worry-note" id="oWorryNote"></div>
-                </div>
-
-                <div class="action-card">
-                  <div class="action-label">What to do</div>
-                  <div class="action-text" id="oActionText"></div>
-                </div>
-
-                <div class="reasons-section">
-                  <div class="reasons-label">What you should know</div>
-                  <div class="reasons" id="oReasons"></div>
-                </div>
-
-                <div class="best-use-section">
-                  <div class="best-use-label">Best use</div>
-                  <div class="best-use" id="oBestUse"></div>
-                </div>
-
-                <div class="parent-take">
-                  <div class="parent-take-label">If this were my cat</div>
-                  <div class="parent-take-text" id="oParentTakeText"></div>
-                </div>
-
-                <div class="tech-section">
-                  <button class="tech-toggle" onclick="toggleOverlayTech()">
-                    <span>Full technical details</span>
-                    <span class="tech-arrow" id="oTechArrow">&#9662;</span>
-                  </button>
-                  <div class="tech-details" id="oTechDetails">
-                    <div class="findings">
-                      <div class="find co" id="of1"><div class="find-label">Checks out</div><div class="find-val"><span class="counter" data-target="33">0</span>%</div><div class="find-what">Protein (DM)</div><div class="tip" id="of1tip"></div></div>
-                      <div class="find ws" id="of2"><div class="find-label">Worth a sniff</div><div class="find-val">≈<span class="counter" data-target="39">0</span>%</div><div class="find-what">Carbs (calc)</div><div class="tip" id="of2tip"></div></div>
-                      <div class="find gm" id="of3"><div class="find-label">Gone missing</div><div class="find-val" id="of3val">not disclosed</div><div class="find-what">Taurine</div><div class="tip" id="of3tip"></div></div>
-                    </div>
-                    <div class="bar-wrap"><div class="bar-head"><span>Protein — where this sits</span><span>dry matter</span></div><div class="bar-track"><div class="bar-ideal"></div><div class="bar-dot" id="oBarDot" style="left:0%"></div></div><div class="bar-labels"><span>26% min</span><span id="oBarHere">← 33% here</span><span class="ideal">50%+ ideal →</span></div></div>
-                    <div class="ing-section"><div class="ing-label">First ingredient by weight</div><div class="ing-first" id="oIng">Cereals</div><div class="ing-rest" id="oIngRest"></div></div>
-                    <div class="missing-section"><div class="ing-label">Gone missing</div><div class="missing-grid" id="oMissingGrid"></div></div>
-                    <div class="nose"><div class="nose-label">🐾 The Nose Knows</div><div class="nose-text" id="oNose"></div></div>
+                  <div class="v2-fit-col doesnt">
+                    <div class="v2-fit-col-header">Doesn't fit if</div>
+                    <div id="oDoesntFitIf"></div>
                   </div>
                 </div>
               </div>
 
-              <div class="card-source"><span>Updated May 2026</span><a href="#">The Receipts →</a></div>
+              <div class="v2-parent-take">
+                <div class="v2-pt-quote">"</div>
+                <div class="v2-pt-body">
+                  <div class="v2-pt-label">If this were my cat</div>
+                  <div class="v2-pt-text" id="oParentTakeText"></div>
+                </div>
+              </div>
+
+              <button class="v2-tech-toggle" id="oTechToggle" onclick="toggleOverlayTech()">
+                <span>The numbers</span>
+                <span class="v2-tech-arrow">&#9662;</span>
+              </button>
+              <div class="v2-tech-details" id="oTechDetails">
+                <div id="oMetrics"></div>
+              </div>
             </div>
           </div>
 
@@ -1939,57 +2103,64 @@
   </div>
 
   <script>
-    let foodsDb = {};
-    let foods = [];
-    let foodSlugs = [];
-    let dbReady = false;
+    // ═══ Supabase config ═══
+    const SUPABASE_URL = 'https://hjscicnzlplxpgxzvdex.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_q8CsjF6ub7apLI79mzsc2Q_Hg7-T2IA';
+    const SUPABASE_HEADERS = { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` };
 
     const HERO_SLUGS = ['whiskas-ocean-fish-adult','royal-canin-indoor-adult','me-o-tuna-adult','drools-ocean-fish-adult','sheba-tuna-in-jelly'];
-    const HERO_LABELS = ['Whiskas','Royal Canin','Me-O','Drools','Sheba'];
 
-    fetch('/foods.json').then(r=>r.json()).then(db=>{
-      foodsDb = db;
-      foods = HERO_SLUGS.map(s => db[s]);
-      foodSlugs = HERO_SLUGS;
-      dbReady = true;
-      updateTeaser(foods[0]);
-    }).catch(()=>{});
+    let teaserFood = null;
+    let currentProduct = null;
+
+    async function sbFetchOne(slug) {
+      const url = `${SUPABASE_URL}/rest/v1/products?slug=eq.${encodeURIComponent(slug)}&select=*`;
+      try {
+        const r = await fetch(url, { headers: SUPABASE_HEADERS });
+        const arr = await r.json();
+        return arr && arr[0] ? arr[0] : null;
+      } catch (e) { console.error('sbFetchOne', e); return null; }
+    }
+
+    async function sbSearch(query, limit = 6) {
+      const q = query.trim();
+      if (!q) return [];
+      const url = `${SUPABASE_URL}/rest/v1/products?or=(brand.ilike.*${encodeURIComponent(q)}*,title.ilike.*${encodeURIComponent(q)}*,slug.ilike.*${encodeURIComponent(q)}*)&select=slug,brand,title,image_url,category&limit=${limit}`;
+      try {
+        const r = await fetch(url, { headers: SUPABASE_HEADERS });
+        return await r.json();
+      } catch (e) { console.error('sbSearch', e); return []; }
+    }
+
+    // Bootstrap: load teaser
+    (async () => {
+      teaserFood = await sbFetchOne('whiskas-ocean-fish-adult');
+      if (teaserFood) updateTeaser(teaserFood);
+    })();
 
     function slugify(s) { return s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,''); }
 
-    function findInDb(query) {
-      const q = query.toLowerCase().trim();
-      const slug = slugify(q);
-      if (foodsDb[slug]) return foodsDb[slug];
-      for (const [key, val] of Object.entries(foodsDb)) {
-        if (key.includes(slug)) return val;
-        const brand = (val.brand || '').toLowerCase();
-        const title = (val.title || '').toLowerCase();
-        if (brand.includes(q) || title.includes(q) || (brand + ' ' + title).includes(q)) return val;
-      }
-      return null;
-    }
-
-    let currentFood = 0;
-    let overlayFood = -1;
-
-    // hero chips now open the overlay
+    // hero chips → open overlay by hardcoded slug
     function selectFood(idx, chipEl) {
-      openOverlay(idx);
+      openOverlaySlug(HERO_SLUGS[idx]);
     }
 
-    // populate the teaser card on the landing page
-    function updateTeaser(f) {
-      document.getElementById('cBrand').textContent = f.brand;
-      document.getElementById('cTitle').textContent = f.title;
-      document.getElementById('cPrice').textContent = f.price;
+    // teaser card on landing page (uses v2 shape)
+    function updateTeaser(p) {
+      const a = p.analysis || p;
+      document.getElementById('cBrand').textContent = p.brand || a.brand;
+      document.getElementById('cTitle').textContent = p.title || a.title;
+      const v = a.verdict || {};
+      const vClass = (v.labelClass || 'vp-okay').replace('vp-', '');
+      const cPrice = document.getElementById('cPrice');
+      if (cPrice) cPrice.textContent = ''; // v2 has no price
       document.getElementById('verdictLabels').innerHTML =
-        `<span class="verdict-pill ${f.verdict.labelClass}">${f.verdict.label}</span>` +
-        `<span class="verdict-sep">·</span>` +
-        `<span class="verdict-pill ${f.verdict.tagClass}">${f.verdict.tag}</span>`;
-      document.getElementById('verdictSummary').textContent = f.verdict.summary;
-      document.getElementById('reasons').innerHTML = f.reasons.map((r, i) =>
-        `<div class="reason r-${r.status}">` +
+        `<span class="verdict-pill ${v.labelClass || ''}">${v.label || ''}</span>` +
+        (v.tag ? `<span class="verdict-sep">·</span><span class="verdict-pill vp-muted">${v.tag}</span>` : '');
+      document.getElementById('verdictSummary').textContent = v.summary || '';
+      const reasons = a.reasons || [];
+      document.getElementById('reasons').innerHTML = reasons.slice(0,3).map((r, i) =>
+        `<div class="reason r-${r.status === 'bad' ? 'missing' : r.status}">` +
           `<div class="reason-num">${i + 1}</div>` +
           `<div class="reason-body"><div class="reason-q">${r.q}</div><div class="reason-a">${r.a}</div></div>` +
         `</div>`
@@ -1997,37 +2168,40 @@
     }
 
     // ═══ OVERLAY ═══
-    let lastApiFood = null;
-
     function showOverlayState(state) {
       const map = { overlayLoader:'loading', overlayContent:'content', overlayDog:'dog', overlayNotFood:'notfood', overlayNotFound:'notfound', overlayError:'error' };
       Object.entries(map).forEach(([id, key]) => {
         const el = document.getElementById(id);
+        if (!el) return;
         if (id === 'overlayContent') el.classList.toggle('hide', state !== 'content');
         else el.classList.toggle('show', state === key);
       });
     }
 
-    function openOverlay(idx) {
-      overlayFood = idx;
-      lastApiFood = null;
+    async function openOverlaySlug(slug) {
       const backdrop = document.getElementById('overlayBackdrop');
       backdrop.classList.add('show');
       document.body.style.overflow = 'hidden';
       document.querySelector('.overlay-scroll').scrollTop = 0;
-
       showOverlayState('loading');
+      startLoadingText();
 
-      document.querySelectorAll('.overlay-chips .chip').forEach((c,i) => c.classList.toggle('active', i === idx));
-      document.querySelectorAll('.hero .chips .chip').forEach((c,i) => c.classList.toggle('active', i === idx));
+      history.replaceState(null, '', '#' + slug);
 
-      history.replaceState(null, '', '#' + foodSlugs[idx]);
+      const product = await sbFetchOne(slug);
+      stopLoadingText();
+      if (!product) {
+        showOverlayState('notfound');
+        return;
+      }
+      currentProduct = product;
+      renderProduct(product);
+      showOverlayState('content');
+    }
 
-      setTimeout(() => {
-        updateOverlayCard(foods[idx]);
-        showOverlayState('content');
-        animateOverlayCard();
-      }, 800);
+    // Backwards compat: openOverlay(idx) for hero chips
+    function openOverlay(idx) {
+      openOverlaySlug(HERO_SLUGS[idx]);
     }
 
     let loadingInterval = null;
@@ -2106,127 +2280,188 @@
       history.replaceState(null, '', window.location.pathname);
     }
 
-    function updateOverlayCard(f) {
-      document.getElementById('oBrand').textContent = f.brand;
-      document.getElementById('oTitle').textContent = f.title;
-      document.getElementById('oPrice').textContent = f.price;
+    // Render a v2 product from Supabase (analysis is JSONB stored inside `product.analysis`)
+    function renderProduct(p) {
+      const a = p.analysis || {};
+      // Header
+      const imgEl = document.getElementById('oImage');
+      if (p.image_url) {
+        imgEl.innerHTML = `<img src="${p.image_url}" alt="" onerror="this.parentElement.innerHTML='<div class=&quot;placeholder&quot;>${(p.brand||'').split(' ')[0]}</div>'">`;
+      } else {
+        imgEl.innerHTML = `<div class="placeholder">${(p.brand||'').split(' ')[0]}</div>`;
+      }
+      document.getElementById('oBrand').textContent = p.brand || '';
+      document.getElementById('oTitle').textContent = p.title || '';
+      const linkEl = document.getElementById('oLink');
+      if (p.product_link) {
+        linkEl.href = p.product_link;
+        linkEl.textContent = `See on ${p.link_source || 'store'} `;
+        linkEl.style.display = '';
+      } else {
+        linkEl.style.display = 'none';
+      }
 
-      document.getElementById('oVerdictLabels').innerHTML =
-        `<span class="verdict-pill ${f.verdict.labelClass}">${f.verdict.label}</span>` +
-        `<span class="verdict-sep">·</span>` +
-        `<span class="verdict-pill ${f.verdict.tagClass}">${f.verdict.tag}</span>`;
-      document.getElementById('oVerdictSummary').textContent = f.verdict.summary;
+      // Verdict hero
+      const v = a.verdict || {};
+      const heroClass = (v.labelClass || 'vp-okay').replace('vp-', 'v-');
+      const hero = document.getElementById('oVerdictHero');
+      hero.className = 'v2-verdict-hero ' + heroClass;
+      document.getElementById('oVerdictLabel').textContent = v.label || '';
+      document.getElementById('oVerdictSub').textContent = v.tag || '';
+      document.getElementById('oVerdictSummary').textContent = v.summary || '';
 
-      const worry = document.getElementById('oWorry');
-      worry.className = `worry wl-${f.worry.level}`;
+      // Worry + Action
+      const worry = a.worry || { level: 'low', filled: 1, label: '', note: '' };
+      const waEl = document.getElementById('oWorryAction');
+      waEl.className = 'v2-worry-action wl-' + (worry.level || 'low');
       document.getElementById('oWorryDots').innerHTML =
-        [1,2,3,4].map(i => `<span class="wd${i <= f.worry.filled ? ' filled' : ''}"></span>`).join('');
-      document.getElementById('oWorryLabel').textContent = f.worry.label;
-      document.getElementById('oWorryNote').textContent = f.worry.note;
+        [1,2,3,4].map(i => `<span class="wd${i <= (worry.filled||0) ? ' filled' : ''}"></span>`).join('');
+      document.getElementById('oWorryLabel').textContent = worry.label || '';
+      document.getElementById('oActionText').textContent = a.action || '';
 
-      document.getElementById('oActionText').textContent = f.action;
-
-      document.getElementById('oReasons').innerHTML = f.reasons.map((r, i) =>
-        `<div class="reason r-${r.status}">` +
-          `<div class="reason-num">${i + 1}</div>` +
-          `<div class="reason-body"><div class="reason-q">${r.q}</div><div class="reason-a">${r.a}</div></div>` +
+      // Reasons (variable length, status-driven icons)
+      const reasons = a.reasons || [];
+      document.getElementById('oReasons').innerHTML = reasons.map(r =>
+        `<div class="v2-reason r-${r.status === 'bad' ? 'bad' : r.status}">` +
+          `<div class="v2-reason-icon"></div>` +
+          `<div><div class="v2-reason-q">${r.q || ''}</div><div class="v2-reason-a">${r.a || ''}</div></div>` +
         `</div>`
       ).join('');
 
-      document.getElementById('oBestUse').innerHTML = f.bestUse.map(b =>
-        `<div class="best-use-row"><span class="bu-q">${b.q}</span><span class="bu-a ${b.cls}">${b.a}</span></div>`
+      // Fits / Doesn't fit
+      const fits = a.fitsIf || [];
+      const noFit = a.doesntFitIf || [];
+      document.getElementById('oFitsIf').innerHTML = fits.map(t =>
+        `<div class="v2-fit-item"><span class="v2-fit-item-icon"></span><span>${t}</span></div>`
+      ).join('');
+      document.getElementById('oDoesntFitIf').innerHTML = noFit.map(t =>
+        `<div class="v2-fit-item"><span class="v2-fit-item-icon"></span><span>${t}</span></div>`
       ).join('');
 
-      document.getElementById('oParentTakeText').textContent = f.parentTake;
+      // Parent take
+      document.getElementById('oParentTakeText').textContent = a.parentTake || '';
 
-      // Tech details
-      const f1=document.getElementById('of1'), f2=document.getElementById('of2'), f3=document.getElementById('of3');
-      f1.className=`find ${f.f1.type}`; f1.querySelector('.find-label').textContent=f.f1.label; f1.querySelector('.find-what').textContent=f.f1.what; document.getElementById('of1tip').textContent=f.f1.tip;
-      f2.className=`find ${f.f2.type}`; f2.querySelector('.find-label').textContent=f.f2.label; f2.querySelector('.find-what').textContent=f.f2.what; document.getElementById('of2tip').textContent=f.f2.tip;
-      f3.className=`find ${f.f3.type}`; f3.querySelector('.find-label').textContent=f.f3.label; f3.querySelector('.find-what').textContent=f.f3.what; document.getElementById('of3tip').textContent=f.f3.tip;
-      if (f.f3.type==='gm') { document.getElementById('of3val').textContent=f.f3.text; } else { document.getElementById('of3val').textContent=f.f3.val; }
-      document.getElementById('oBarDot').style.left='0%';
-      document.getElementById('oBarHere').textContent=f.barLabel;
-      document.getElementById('oIng').textContent=f.ing;
-      document.getElementById('oIngRest').innerHTML=f.ingRest;
-      document.getElementById('oMissingGrid').innerHTML=f.missing.map(m=>`<div class="miss-box"><div class="miss-name">${m[0]}</div><div class="miss-status">${m[1]}</div></div>`).join('');
-      document.getElementById('oNose').textContent=f.nose;
-      if (typeof f.f1.val==='number') { f1.querySelector('.find-val').innerHTML=`<span class="counter" data-target="${f.f1.val}">0</span>${f.f1.unit}`; } else { f1.querySelector('.find-val').textContent=f.f1.val; }
-      if (typeof f.f2.val==='number') { f2.querySelector('.find-val').innerHTML=`${f.f2.prefix||''}<span class="counter" data-target="${f.f2.val}">0</span>${f.f2.unit}`; } else { f2.querySelector('.find-val').textContent=f.f2.val; }
+      // Metrics
+      const metrics = a.metrics || [];
+      document.getElementById('oMetrics').innerHTML = metrics.map(m =>
+        `<div class="v2-metric">` +
+          `<div class="v2-metric-header">` +
+            `<div class="v2-metric-name">${m.name || ''}</div>` +
+            `<div class="v2-metric-value ${m.status || ''}">${m.value || ''}</div>` +
+          `</div>` +
+          `<div class="v2-metric-meta">` +
+            `<span>${m.target || ''}</span>` +
+            (m.statusLabel ? `<span class="v2-metric-status ${m.status || ''}">${m.statusLabel}</span>` : '') +
+          `</div>` +
+        `</div>`
+      ).join('');
 
+      // Reset tech state collapsed
       document.getElementById('oTechDetails').classList.remove('open');
-      document.getElementById('oTechArrow').classList.remove('open');
+      document.getElementById('oTechToggle').classList.remove('open');
     }
 
     function toggleOverlayTech() {
       document.getElementById('oTechDetails').classList.toggle('open');
-      document.getElementById('oTechArrow').classList.toggle('open');
+      document.getElementById('oTechToggle').classList.toggle('open');
     }
 
-    function animateOverlayCard() {
-      const f = overlayFood >= 0 ? foods[overlayFood] : lastApiFood;
-      if (!f) return;
-      document.querySelectorAll('#overlayContent .counter').forEach(el => {
-        const target=parseInt(el.dataset.target); if(isNaN(target))return;
-        let current=0; const step=target/30;
-        const interval=setInterval(()=>{current+=step;if(current>=target){el.textContent=target;clearInterval(interval);}else{el.textContent=Math.floor(current);}},30);
-      });
-      setTimeout(()=>{document.getElementById('oBarDot').style.left=f.barPos+'%';},200);
-      setTimeout(()=>{document.querySelectorAll('#oMissingGrid .miss-box').forEach((box,i)=>{setTimeout(()=>box.classList.add('jitter'),i*100);setTimeout(()=>box.classList.remove('jitter'),i*100+300);});},500);
-    }
+    function animateOverlayCard() { /* no animation in v2 */ }
 
-    function findLocalMatch(val) {
-      if (!val) return -1;
-      val = val.toLowerCase().trim();
-      return foods.findIndex(f=>f.brand.toLowerCase().includes(val)||f.title.toLowerCase().includes(val));
-    }
-
-    function searchFood(query) {
+    // Search dispatch — slug-first, then DB search
+    async function searchFood(query) {
       if (!query) return;
-      const idx = findLocalMatch(query);
-      if (idx >= 0) { openOverlay(idx); return; }
-      const dbMatch = findInDb(query);
-      if (dbMatch) { openOverlayWithData(dbMatch); return; }
-      openOverlayWithQuery(query);
-    }
-
-    function openOverlayWithData(foodData) {
-      overlayFood = -1;
-      lastApiFood = foodData;
-      const backdrop = document.getElementById('overlayBackdrop');
-      backdrop.classList.add('show');
-      document.body.style.overflow = 'hidden';
-      document.querySelector('.overlay-scroll').scrollTop = 0;
-
-      document.querySelectorAll('.overlay-chips .chip').forEach(c => c.classList.remove('active'));
-      document.querySelectorAll('.hero .chips .chip').forEach(c => c.classList.remove('active'));
-
-      showOverlayState('loading');
-      setTimeout(() => {
-        updateOverlayCard(foodData);
-        showOverlayState('content');
-        animateOverlayCard();
-      }, 600);
+      const q = query.trim();
+      // Try direct slug match
+      const slug = slugify(q);
+      const direct = await sbFetchOne(slug);
+      if (direct) { openOverlaySlug(slug); return; }
+      // Try DB search → take top match
+      const results = await sbSearch(q, 1);
+      if (results && results[0]) {
+        openOverlaySlug(results[0].slug);
+        return;
+      }
+      // Fallback to API
+      openOverlayWithQuery(q);
     }
 
     function doSearch() {
+      hideAutocomplete('searchInput');
       searchFood(document.getElementById('searchInput').value.trim());
     }
-
     function ctaSearch() {
+      hideAutocomplete('ctaInput');
       searchFood(document.getElementById('ctaInput').value.trim());
     }
-
     function overlaySearch() {
+      hideAutocomplete('overlaySearchInput');
       const val = document.getElementById('overlaySearchInput').value.trim();
       if (!val) return;
       document.querySelector('.overlay-scroll').scrollTop = 0;
       searchFood(val);
     }
 
+    // ═══ AUTOCOMPLETE ═══
+    let acTimers = {};
+    function setupAutocomplete(inputId) {
+      const input = document.getElementById(inputId);
+      if (!input) return;
+      // Attach dropdown to .search-box / .cta-search / .overlay-sniff-another (avoids overflow:hidden on .search-field)
+      const innerWrap = input.closest('.search-field, .cta-field, .overlay-search-field');
+      const outerWrap = input.closest('.search-box, .cta-search, .overlay-sniff-another') || innerWrap?.parentElement;
+      if (!outerWrap) return;
+      outerWrap.style.position = 'relative';
+      let dropdown = outerWrap.querySelector('.autocomplete-results');
+      if (!dropdown) {
+        dropdown = document.createElement('div');
+        dropdown.className = 'autocomplete-results';
+        dropdown.id = inputId + 'Ac';
+        outerWrap.appendChild(dropdown);
+      }
+      input.addEventListener('input', () => {
+        clearTimeout(acTimers[inputId]);
+        const q = input.value.trim();
+        if (q.length < 2) { hideAutocomplete(inputId); return; }
+        acTimers[inputId] = setTimeout(() => runAutocomplete(inputId, q), 180);
+      });
+      input.addEventListener('blur', () => setTimeout(() => hideAutocomplete(inputId), 200));
+      input.addEventListener('focus', () => {
+        const q = input.value.trim();
+        if (q.length >= 2) runAutocomplete(inputId, q);
+      });
+    }
+    async function runAutocomplete(inputId, q) {
+      const dropdown = document.getElementById(inputId + 'Ac');
+      if (!dropdown) return;
+      const results = await sbSearch(q, 6);
+      if (!results || !results.length) {
+        dropdown.innerHTML = `<div class="ac-fallback" onclick="document.getElementById('${inputId}').blur();searchFood('${q.replace(/'/g,"\\'")}')">Sniff "${q}" anyway →</div>`;
+        dropdown.classList.add('show');
+        return;
+      }
+      dropdown.innerHTML = results.map(r => {
+        const img = r.image_url ? `<img src="${r.image_url}" alt="" onerror="this.parentElement.innerHTML='<div style=&quot;font-size:9px;color:#8B7355&quot;>${(r.brand||'').split(' ')[0]}</div>'">` : `<div style="font-size:9px;color:#8B7355">${(r.brand||'').split(' ')[0]}</div>`;
+        return `<div class="ac-item" onclick="document.getElementById('${inputId}').value='';hideAutocomplete('${inputId}');openOverlaySlug('${r.slug}')">` +
+          `<div class="ac-item-img">${img}</div>` +
+          `<div class="ac-item-info"><div class="ac-item-brand">${r.brand||''}</div><div class="ac-item-title">${r.title||''}</div></div>` +
+        `</div>`;
+      }).join('') + `<div class="ac-fallback" onclick="document.getElementById('${inputId}').blur();searchFood('${q.replace(/'/g,"\\'")}')">Sniff "${q}" anyway →</div>`;
+      dropdown.classList.add('show');
+    }
+    function hideAutocomplete(inputId) {
+      const dropdown = document.getElementById(inputId + 'Ac');
+      if (dropdown) dropdown.classList.remove('show');
+    }
+
     document.getElementById('searchInput').addEventListener('keydown',e=>{if(e.key==='Enter')doSearch();});
     document.getElementById('ctaInput').addEventListener('keydown',e=>{if(e.key==='Enter')ctaSearch();});
     document.getElementById('overlaySearchInput').addEventListener('keydown',e=>{if(e.key==='Enter')overlaySearch();});
+
+    // Wire up autocomplete on all 3 search inputs
+    setupAutocomplete('searchInput');
+    setupAutocomplete('ctaInput');
+    setupAutocomplete('overlaySearchInput');
 
     // scroll reveal
     const observer = new IntersectionObserver((entries)=>{
@@ -2237,8 +2472,6 @@
       });
     },{threshold:0.15});
     document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
-
-    updateTeaser(foods[0]);
 
     // journey search card typewriter
     const jmSearch = document.getElementById('jmSearch');
@@ -2288,12 +2521,11 @@
       }, { threshold: 0.15 }).observe(jmSearch);
     }
 
-    // URL hash support — open overlay if hash matches a food slug
+    // URL hash support — open overlay if hash matches a product slug
     function handleHash() {
       const hash = window.location.hash.slice(1);
       if (!hash) return;
-      const idx = foodSlugs.indexOf(hash);
-      if (idx >= 0) openOverlay(idx);
+      openOverlaySlug(hash);
     }
     handleHash();
     window.addEventListener('hashchange', handleHash);
