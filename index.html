@@ -1776,14 +1776,88 @@
       overflow: hidden;
     }
 
-    /* Hero "popular" cards (landing page, no localStorage) — uses same styling */
-    .hero-popular { margin-top: 20px; }
-    .hero-popular .recent-block-label { color: var(--indie-soft); }
-    .hero-popular .recent-card { background: rgba(255,255,255,0.06); border-color: var(--indie); }
-    .hero-popular .recent-card:hover { border-color: var(--ginger); }
-    .hero-popular .recent-card-brand { color: var(--indie-soft); }
-    .hero-popular .recent-card-title { color: var(--cream); }
-    .hero-popular .recent-card-img { background: rgba(245,240,229,0.1); }
+    /* Hero chips — slim text-only pills with full product names */
+    .hero-chips {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      margin-top: 16px;
+      opacity: 0; animation: rise 0.8s 0.8s ease-out forwards;
+    }
+    .hero-chip {
+      font-size: 12.5px; font-weight: 500; color: var(--indie-soft);
+      background: transparent; border: 1px solid var(--indie);
+      border-radius: 100px; padding: 7px 14px; cursor: pointer;
+      transition: all 0.2s;
+      max-width: 100%;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .hero-chip:hover { border-color: var(--ginger); color: var(--ginger); background: rgba(224,138,58,0.08); }
+    @media (max-width: 600px) {
+      .hero-chips { gap: 6px; }
+      .hero-chip { font-size: 11.5px; padding: 6px 12px; max-width: 100%; }
+    }
+
+    /* Mini v2 teaser card on landing — preview of the full report */
+    .teaser-mini {
+      max-width: 540px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid var(--tabby-soft);
+      box-shadow: 0 4px 12px rgba(42,39,37,0.06), 0 24px 64px rgba(42,39,37,0.08);
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .teaser-mini:hover { transform: translateY(-2px); }
+    .teaser-mini-head {
+      display: flex; gap: 14px; padding: 20px 24px; align-items: center;
+      border-bottom: 1px solid var(--cream-deep);
+    }
+    .teaser-mini-img {
+      width: 56px; height: 56px; flex-shrink: 0; border-radius: 10px;
+      background: var(--cream-deep);
+      overflow: hidden; display: flex; align-items: center; justify-content: center;
+      border: 1px solid var(--tabby-soft);
+    }
+    .teaser-mini-img img { width: 100%; height: 100%; object-fit: cover; }
+    .teaser-mini-info { flex: 1; min-width: 0; }
+    .teaser-mini-brand { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--indie); font-weight: 700; }
+    .teaser-mini-title { font-family: var(--serif); font-size: 18px; color: var(--charcoal); margin-top: 3px; }
+    .teaser-mini-verdict { padding: 24px 24px; }
+    .teaser-mini-verdict.v-good { background: linear-gradient(180deg, #EEF5EF 0%, #E6EFE8 100%); }
+    .teaser-mini-verdict.v-okay,
+    .teaser-mini-verdict.v-caution { background: linear-gradient(180deg, #FBF1DD 0%, #F6E6C5 100%); }
+    .teaser-mini-verdict.v-weak,
+    .teaser-mini-verdict.v-flag { background: linear-gradient(180deg, var(--charcoal) 0%, var(--charcoal-soft) 100%); color: var(--cream); }
+    .teaser-mini-vtag { font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 8px; opacity: 0.7; }
+    .teaser-mini-verdict.v-good .teaser-mini-vtag { color: #356642; }
+    .teaser-mini-verdict.v-okay .teaser-mini-vtag,
+    .teaser-mini-verdict.v-caution .teaser-mini-vtag { color: #9F6D1F; }
+    .teaser-mini-verdict.v-weak .teaser-mini-vtag,
+    .teaser-mini-verdict.v-flag .teaser-mini-vtag { color: var(--ginger); opacity: 1; }
+    .teaser-mini-vlabel { font-family: var(--serif); font-size: 30px; line-height: 1.1; letter-spacing: -0.01em; margin-bottom: 4px; }
+    .teaser-mini-verdict.v-good .teaser-mini-vlabel { color: #356642; }
+    .teaser-mini-verdict.v-okay .teaser-mini-vlabel,
+    .teaser-mini-verdict.v-caution .teaser-mini-vlabel { color: #9F6D1F; }
+    .teaser-mini-verdict.v-weak .teaser-mini-vlabel,
+    .teaser-mini-verdict.v-flag .teaser-mini-vlabel { color: var(--ginger); }
+    .teaser-mini-vsub { font-size: 12px; font-weight: 600; opacity: 0.75; }
+    .teaser-mini-vsummary { font-family: var(--serif); font-size: 15px; line-height: 1.5; margin-top: 12px; max-width: 420px; }
+    .teaser-mini-verdict.v-weak .teaser-mini-vsummary,
+    .teaser-mini-verdict.v-flag .teaser-mini-vsummary { color: var(--cream); }
+    .teaser-mini-cta {
+      padding: 18px 24px; text-align: center;
+      border-top: 1px solid var(--cream-deep); background: white;
+    }
+    .teaser-mini-cta-btn {
+      display: inline-block; background: var(--ginger); color: var(--charcoal);
+      font-family: var(--sans); font-weight: 700; font-size: 12px;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 11px 26px; border-radius: 10px; border: none; cursor: pointer;
+      transition: background 0.2s;
+    }
+    .teaser-mini-cta-btn:hover { background: var(--ginger-deep); }
+    .teaser-mini-cta-hint { font-size: 11px; color: var(--indie); margin-top: 8px; }
 
     /* Autocomplete dropdown — position:fixed so it escapes parent overflow:hidden on .hero / .manifesto */
     .autocomplete-results {
@@ -1849,10 +1923,7 @@
             <input type="text" placeholder="Search a brand or product…" id="searchInput" autocomplete="off">
             <button class="search-btn" onclick="doSearch()">Sniff it</button>
           </div>
-          <div class="recent-block hero-popular" id="heroRecent">
-            <div class="recent-block-label" id="heroRecentLabel">Popular foods</div>
-            <div class="recent-cards" id="heroRecentCards"></div>
-          </div>
+          <div class="hero-chips" id="heroChips"></div>
         </div>
       </div>
       <div class="hero-ill">
@@ -1955,31 +2026,23 @@
   <!-- ═══ THE SNIFF — TEASER ═══ -->
   <section class="demo" id="demoSection">
     <div class="demo-intro reveal"><div class="demo-tag">What Sniff found</div><h2 class="demo-h">Here's what's in India's most-fed cat food.</h2><p class="demo-sub">Whiskas Ocean Fish. Tap to see the full report.</p></div>
-    <div class="card reveal d1" id="analysisCard" style="cursor:pointer" onclick="openOverlay(0)">
-      <div class="card-content" id="cardContent">
-        <div class="card-head">
-          <div class="card-brand" id="cBrand">Whiskas · Dry food</div>
-          <div class="card-title" id="cTitle">Ocean Fish, Adult 1+</div>
-          <div class="card-price" id="cPrice">₹60/100g · ≈ ₹33/day for a 4kg indoor cat</div>
+    <div class="teaser-mini reveal d1" id="teaserMini" onclick="openOverlaySlug('whiskas-ocean-fish-adult')">
+      <div class="teaser-mini-head">
+        <div class="teaser-mini-img" id="tmImg"></div>
+        <div class="teaser-mini-info">
+          <div class="teaser-mini-brand" id="tmBrand"></div>
+          <div class="teaser-mini-title" id="tmTitle"></div>
         </div>
-
-        <div class="verdict" id="verdict">
-          <div class="verdict-tag">Sniff verdict</div>
-          <div class="verdict-labels" id="verdictLabels"></div>
-          <div class="verdict-summary" id="verdictSummary"></div>
-        </div>
-
-        <div class="card-body">
-          <div class="reasons-section">
-            <div class="reasons-label">What you should know</div>
-            <div class="reasons" id="reasons"></div>
-          </div>
-
-          <div class="teaser-cta">
-            <button class="teaser-cta-btn" onclick="event.stopPropagation(); openOverlay(0)">See full report</button>
-            <div class="teaser-cta-hint">Worry level, action plan, best use, tech details & more</div>
-          </div>
-        </div>
+      </div>
+      <div class="teaser-mini-verdict" id="tmVerdict">
+        <div class="teaser-mini-vtag">Sniff verdict</div>
+        <div class="teaser-mini-vlabel" id="tmVLabel"></div>
+        <div class="teaser-mini-vsub" id="tmVSub"></div>
+        <div class="teaser-mini-vsummary" id="tmVSummary"></div>
+      </div>
+      <div class="teaser-mini-cta">
+        <button class="teaser-mini-cta-btn" onclick="event.stopPropagation(); openOverlaySlug('whiskas-ocean-fish-adult')">See full report</button>
+        <div class="teaser-mini-cta-hint">Worry level, action plan, fits-your-cat check, the numbers</div>
       </div>
     </div>
   </section>
@@ -2279,11 +2342,18 @@
     }
     async function refreshRecentCards() {
       const recent = getRecent();
-      // Hero: show recent if user has any, else popular
-      const heroSlugs = recent.length ? recent.slice(0, 5) : POPULAR_SLUGS;
-      const heroLabel = recent.length ? 'Recently sniffed' : 'Popular foods';
+      // Hero: 3 chips with FULL product names — recent if any, else popular
+      const heroSlugs = (recent.length ? recent : POPULAR_SLUGS).slice(0, 3);
       const heroProducts = await fetchMany(heroSlugs);
-      renderRecentCards('heroRecentCards', 'heroRecentLabel', heroProducts, heroLabel);
+      const heroChipsEl = document.getElementById('heroChips');
+      if (heroChipsEl) {
+        heroChipsEl.innerHTML = heroProducts.map(p => {
+          // Strip the " · Dry food / · Wet food" suffix from brand for chip display
+          const brandClean = (p.brand || '').split(' · ')[0];
+          const label = `${brandClean} ${p.title || ''}`.trim();
+          return `<button class="hero-chip" onclick="openOverlaySlug('${p.slug}')" title="${label}">${label}</button>`;
+        }).join('');
+      }
       // Overlay: show recent excluding current product, fall back to popular foods
       const overlayBlock = document.getElementById('overlayRecent');
       const currentSlug = currentProduct?.slug;
@@ -2333,26 +2403,27 @@
       openOverlaySlug(HERO_SLUGS[idx]);
     }
 
-    // teaser card on landing page (uses v2 shape)
+    // Mini v2 teaser card on landing
     function updateTeaser(p) {
-      const a = p.analysis || p;
-      document.getElementById('cBrand').textContent = p.brand || a.brand;
-      document.getElementById('cTitle').textContent = p.title || a.title;
+      const a = p.analysis || {};
+      const imgEl = document.getElementById('tmImg');
+      if (p.image_url) {
+        imgEl.innerHTML = `<img src="${p.image_url}" alt="" onerror="this.parentElement.innerHTML='<div style=&quot;font-size:10px;color:#8B7355&quot;>${(p.brand||'').split(' ')[0]}</div>'">`;
+      } else {
+        imgEl.innerHTML = '';
+      }
+      document.getElementById('tmBrand').textContent = p.brand || '';
+      document.getElementById('tmTitle').textContent = p.title || '';
       const v = a.verdict || {};
-      const vClass = (v.labelClass || 'vp-okay').replace('vp-', '');
-      const cPrice = document.getElementById('cPrice');
-      if (cPrice) cPrice.textContent = ''; // v2 has no price
-      document.getElementById('verdictLabels').innerHTML =
-        `<span class="verdict-pill ${v.labelClass || ''}">${v.label || ''}</span>` +
-        (v.tag ? `<span class="verdict-sep">·</span><span class="verdict-pill vp-muted">${v.tag}</span>` : '');
-      document.getElementById('verdictSummary').textContent = v.summary || '';
-      const reasons = a.reasons || [];
-      document.getElementById('reasons').innerHTML = reasons.slice(0,3).map((r, i) =>
-        `<div class="reason r-${r.status === 'bad' ? 'missing' : r.status}">` +
-          `<div class="reason-num">${i + 1}</div>` +
-          `<div class="reason-body"><div class="reason-q">${r.q}</div><div class="reason-a">${r.a}</div></div>` +
-        `</div>`
-      ).join('');
+      const heroClass = (v.labelClass || 'vp-okay').replace('vp-', 'v-');
+      document.getElementById('tmVerdict').className = 'teaser-mini-verdict ' + heroClass;
+      document.getElementById('tmVLabel').textContent = v.label || '';
+      document.getElementById('tmVSub').textContent = v.tag || '';
+      document.getElementById('tmVSummary').textContent = v.summary || '';
+      // Wire CTA + click target to the actual product slug
+      const slug = p.slug;
+      document.getElementById('teaserMini').setAttribute('onclick', `openOverlaySlug('${slug}')`);
+      document.querySelector('#teaserMini .teaser-mini-cta-btn').setAttribute('onclick', `event.stopPropagation(); openOverlaySlug('${slug}')`);
     }
 
     // ═══ OVERLAY ═══
