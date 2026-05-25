@@ -1547,6 +1547,15 @@
     .overlay-loading.show { display: block; }
     .overlay-content.hide { display: none; }
 
+    .overlay-edge-state { display: none; padding: 60px 32px; text-align: center; }
+    .overlay-edge-state.show { display: block; }
+    .overlay-edge-tag { font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ginger); margin-bottom: 16px; }
+    .overlay-edge-h { font-family: var(--serif); font-size: 24px; margin-bottom: 12px; color: var(--charcoal); }
+    .overlay-edge-p { font-size: 14px; color: var(--indie); line-height: 1.6; max-width: 360px; margin: 0 auto 24px; }
+    .overlay-edge-btn { display: inline-block; background: var(--ginger); color: var(--charcoal); font-family: var(--sans); font-weight: 700; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; padding: 12px 28px; border-radius: 10px; border: none; cursor: pointer; transition: background 0.2s; }
+    .overlay-edge-btn:hover { background: var(--ginger-deep); }
+    .overlay-edge-ill { font-size: 48px; margin-bottom: 16px; }
+
     @media (max-width: 900px) {
       .overlay-panel { top: 0; border-radius: 0; }
       .overlay-body { padding: 24px 16px 60px; }
@@ -1812,7 +1821,32 @@
                   <circle cx="43" cy="43" r="1.5" fill="var(--charcoal)" opacity="0.25"/>
                 </svg>
               </div>
-              <div class="loading-text">Sniffing…</div>
+              <div class="loading-text" id="loadingText">Sniffing…</div>
+            </div>
+            <div class="overlay-edge-state" id="overlayDog">
+              <div class="overlay-edge-ill">🐕</div>
+              <div class="overlay-edge-tag">Dog food detected</div>
+              <div class="overlay-edge-h">That's a dog food!</div>
+              <div class="overlay-edge-p">We sniffed it and it's definitely for dogs. We're building dog food analysis too — drop your email and we'll let you know when it's ready.</div>
+              <button class="overlay-edge-btn" onclick="closeOverlay(); toggleDogModal();">Join dog waitlist</button>
+            </div>
+            <div class="overlay-edge-state" id="overlayNotFood">
+              <div class="overlay-edge-ill">🤔</div>
+              <div class="overlay-edge-tag">Not a pet food</div>
+              <div class="overlay-edge-h">That doesn't look like cat food.</div>
+              <div class="overlay-edge-p">Sniff analyzes packaged cat food — brands like Whiskas, Royal Canin, Me-O, Sheba, and more. Try searching for a cat food brand or product.</div>
+            </div>
+            <div class="overlay-edge-state" id="overlayNotFound">
+              <div class="overlay-edge-ill">🔍</div>
+              <div class="overlay-edge-tag">Couldn't find it</div>
+              <div class="overlay-edge-h">We couldn't find enough data.</div>
+              <div class="overlay-edge-p" id="overlayNotFoundMsg">Try the exact product name from the packaging, or search for a different brand.</div>
+            </div>
+            <div class="overlay-edge-state" id="overlayError">
+              <div class="overlay-edge-ill">😿</div>
+              <div class="overlay-edge-tag">Something went wrong</div>
+              <div class="overlay-edge-h">Sniff hit a wall.</div>
+              <div class="overlay-edge-p">We couldn't complete the analysis right now. Try again in a moment, or pick one of the foods below.</div>
             </div>
             <div class="overlay-content" id="overlayContent">
               <div class="card-head">
@@ -2032,34 +2066,106 @@
     }
 
     // ═══ OVERLAY ═══
+    let lastApiFood = null;
+
+    function showOverlayState(state) {
+      const map = { overlayLoader:'loading', overlayContent:'content', overlayDog:'dog', overlayNotFood:'notfood', overlayNotFound:'notfound', overlayError:'error' };
+      Object.entries(map).forEach(([id, key]) => {
+        const el = document.getElementById(id);
+        if (id === 'overlayContent') el.classList.toggle('hide', state !== 'content');
+        else el.classList.toggle('show', state === key);
+      });
+    }
+
     function openOverlay(idx) {
       overlayFood = idx;
+      lastApiFood = null;
       const backdrop = document.getElementById('overlayBackdrop');
-      const loader = document.getElementById('overlayLoader');
-      const content = document.getElementById('overlayContent');
-
-      loader.classList.add('show');
-      content.classList.add('hide');
       backdrop.classList.add('show');
       document.body.style.overflow = 'hidden';
-
-      // scroll overlay to top
       document.querySelector('.overlay-scroll').scrollTop = 0;
 
-      // highlight chip in overlay
+      showOverlayState('loading');
+
       document.querySelectorAll('.overlay-chips .chip').forEach((c,i) => c.classList.toggle('active', i === idx));
-      // highlight chip in hero
       document.querySelectorAll('.hero .chips .chip').forEach((c,i) => c.classList.toggle('active', i === idx));
 
-      // update hash
       history.replaceState(null, '', '#' + foodSlugs[idx]);
 
       setTimeout(() => {
         updateOverlayCard(foods[idx]);
-        loader.classList.remove('show');
-        content.classList.remove('hide');
+        showOverlayState('content');
         animateOverlayCard();
       }, 800);
+    }
+
+    let loadingInterval = null;
+    function startLoadingText() {
+      const el = document.getElementById('loadingText');
+      const msgs = ['Sniffing…','Reading the label…','Checking ingredients…','Crunching the numbers…','Almost there…'];
+      let i = 0;
+      el.textContent = msgs[0];
+      loadingInterval = setInterval(() => { i = Math.min(i + 1, msgs.length - 1); el.textContent = msgs[i]; }, 3000);
+    }
+    function stopLoadingText() {
+      clearInterval(loadingInterval);
+      document.getElementById('loadingText').textContent = 'Sniffing…';
+    }
+
+    async function openOverlayWithQuery(query) {
+      overlayFood = -1;
+      lastApiFood = null;
+      const backdrop = document.getElementById('overlayBackdrop');
+      backdrop.classList.add('show');
+      document.body.style.overflow = 'hidden';
+      document.querySelector('.overlay-scroll').scrollTop = 0;
+
+      showOverlayState('loading');
+      startLoadingText();
+
+      document.querySelectorAll('.overlay-chips .chip').forEach(c => c.classList.remove('active'));
+      document.querySelectorAll('.hero .chips .chip').forEach(c => c.classList.remove('active'));
+      history.replaceState(null, '', '#' + encodeURIComponent(query.toLowerCase().replace(/\s+/g,'-')));
+
+      try {
+        const resp = await fetch('/api/sniff', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query }),
+        });
+
+        if (!resp.ok) {
+          const err = await resp.json().catch(() => ({}));
+          console.error('API error:', err);
+          stopLoadingText();
+          showOverlayState('error');
+          return;
+        }
+
+        const result = await resp.json();
+        stopLoadingText();
+
+        if (result.type === 'dog') {
+          showOverlayState('dog');
+        } else if (result.type === 'not_food') {
+          showOverlayState('notfood');
+        } else if (result.type === 'not_found') {
+          const msg = document.getElementById('overlayNotFoundMsg');
+          msg.textContent = result.suggestion || 'Try the exact product name from the packaging, or search for a different brand.';
+          showOverlayState('notfound');
+        } else if (result.type === 'cat') {
+          lastApiFood = result;
+          updateOverlayCard(result);
+          showOverlayState('content');
+          animateOverlayCard();
+        } else {
+          showOverlayState('error');
+        }
+      } catch (err) {
+        console.error('Sniff fetch error:', err);
+        stopLoadingText();
+        showOverlayState('error');
+      }
     }
 
     function closeOverlay(e) {
@@ -2127,7 +2233,8 @@
     }
 
     function animateOverlayCard() {
-      const f=foods[overlayFood];
+      const f = overlayFood >= 0 ? foods[overlayFood] : lastApiFood;
+      if (!f) return;
       document.querySelectorAll('#overlayContent .counter').forEach(el => {
         const target=parseInt(el.dataset.target); if(isNaN(target))return;
         let current=0; const step=target/30;
@@ -2137,25 +2244,34 @@
       setTimeout(()=>{document.querySelectorAll('#oMissingGrid .miss-box').forEach((box,i)=>{setTimeout(()=>box.classList.add('jitter'),i*100);setTimeout(()=>box.classList.remove('jitter'),i*100+300);});},500);
     }
 
+    function findLocalMatch(val) {
+      if (!val) return -1;
+      val = val.toLowerCase().trim();
+      return foods.findIndex(f=>f.brand.toLowerCase().includes(val)||f.title.toLowerCase().includes(val));
+    }
+
     function doSearch() {
-      const val=document.getElementById('searchInput').value.toLowerCase();
-      const idx=foods.findIndex(f=>f.brand.toLowerCase().includes(val)||f.title.toLowerCase().includes(val));
-      if(idx>=0){openOverlay(idx);}else{document.getElementById('demoSection').scrollIntoView({behavior:'smooth'});}
+      const val=document.getElementById('searchInput').value.trim();
+      if (!val) return;
+      const idx=findLocalMatch(val);
+      if(idx>=0){openOverlay(idx);}else{openOverlayWithQuery(val);}
     }
 
     function ctaSearch() {
-      const val=document.getElementById('ctaInput').value.toLowerCase();
-      const idx=foods.findIndex(f=>f.brand.toLowerCase().includes(val)||f.title.toLowerCase().includes(val));
-      if(idx>=0){openOverlay(idx);}else{document.getElementById('searchInput').value=document.getElementById('ctaInput').value;document.getElementById('demoSection').scrollIntoView({behavior:'smooth'});}
+      const val=document.getElementById('ctaInput').value.trim();
+      if (!val) return;
+      const idx=findLocalMatch(val);
+      if(idx>=0){openOverlay(idx);}else{openOverlayWithQuery(val);}
     }
 
     function overlaySearch() {
-      const val=document.getElementById('overlaySearchInput').value.toLowerCase();
-      const idx=foods.findIndex(f=>f.brand.toLowerCase().includes(val)||f.title.toLowerCase().includes(val));
+      const val=document.getElementById('overlaySearchInput').value.trim();
+      if (!val) return;
+      const idx=findLocalMatch(val);
       if(idx>=0){
         document.querySelector('.overlay-scroll').scrollTop = 0;
         openOverlay(idx);
-      }
+      }else{openOverlayWithQuery(val);}
     }
 
     document.getElementById('searchInput').addEventListener('keydown',e=>{if(e.key==='Enter')doSearch();});
