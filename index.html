@@ -1785,17 +1785,16 @@
     .hero-popular .recent-card-title { color: var(--cream); }
     .hero-popular .recent-card-img { background: rgba(245,240,229,0.1); }
 
-    /* Autocomplete dropdown — anchored to search-box/cta-search wrapper so it sits below the entire search field */
+    /* Autocomplete dropdown — position:fixed so it escapes parent overflow:hidden on .hero / .manifesto */
     .autocomplete-results {
-      position: absolute;
-      top: calc(100% + 4px); left: 0; right: 0;
+      position: fixed;
       background: white;
-      border: 1px solid var(--tabby-soft);
-      border-radius: 12px;
-      box-shadow: 0 8px 24px rgba(42,39,37,0.18);
-      max-height: 400px;
+      border: 1px solid var(--tabby);
+      border-radius: 14px;
+      box-shadow: 0 16px 40px rgba(42,39,37,0.35), 0 6px 16px rgba(42,39,37,0.18);
+      max-height: 360px;
       overflow-y: auto;
-      z-index: 100;
+      z-index: 9999;
       display: none;
     }
     .autocomplete-results.show { display: block; }
@@ -2616,17 +2615,13 @@
     function setupAutocomplete(inputId) {
       const input = document.getElementById(inputId);
       if (!input) return;
-      // Attach dropdown to .search-box / .cta-search / .overlay-sniff-another (avoids overflow:hidden on .search-field)
-      const innerWrap = input.closest('.search-field, .cta-field, .overlay-search-field');
-      const outerWrap = input.closest('.search-box, .cta-search, .overlay-sniff-another') || innerWrap?.parentElement;
-      if (!outerWrap) return;
-      outerWrap.style.position = 'relative';
-      let dropdown = outerWrap.querySelector('.autocomplete-results');
+      // Append dropdown to document.body so position:fixed escapes ALL parent overflow:hidden
+      let dropdown = document.getElementById(inputId + 'Ac');
       if (!dropdown) {
         dropdown = document.createElement('div');
         dropdown.className = 'autocomplete-results';
         dropdown.id = inputId + 'Ac';
-        outerWrap.appendChild(dropdown);
+        document.body.appendChild(dropdown);
       }
       input.addEventListener('input', () => {
         clearTimeout(acTimers[inputId]);
@@ -2640,10 +2635,22 @@
         if (q.length >= 2) runAutocomplete(inputId, q);
       });
     }
+    function positionAutocomplete(inputId) {
+      const dropdown = document.getElementById(inputId + 'Ac');
+      const input = document.getElementById(inputId);
+      if (!dropdown || !input) return;
+      // Anchor to the search-field wrapper (so dropdown matches full search width)
+      const wrap = input.closest('.search-field, .cta-field, .overlay-search-field') || input;
+      const rect = wrap.getBoundingClientRect();
+      dropdown.style.top = (rect.bottom + 6) + 'px';
+      dropdown.style.left = rect.left + 'px';
+      dropdown.style.width = rect.width + 'px';
+    }
     async function runAutocomplete(inputId, q) {
       const dropdown = document.getElementById(inputId + 'Ac');
       if (!dropdown) return;
       const results = await sbSearch(q, 6);
+      positionAutocomplete(inputId);
       if (!results || !results.length) {
         dropdown.innerHTML = `<div class="ac-fallback" onclick="document.getElementById('${inputId}').blur();searchFood('${q.replace(/'/g,"\\'")}')">Sniff "${q}" anyway →</div>`;
         dropdown.classList.add('show');
@@ -2658,6 +2665,19 @@
       }).join('') + `<div class="ac-fallback" onclick="document.getElementById('${inputId}').blur();searchFood('${q.replace(/'/g,"\\'")}')">Sniff "${q}" anyway →</div>`;
       dropdown.classList.add('show');
     }
+    // Re-position any visible dropdowns on scroll/resize
+    window.addEventListener('scroll', () => {
+      ['searchInput','ctaInput','overlaySearchInput'].forEach(id => {
+        const d = document.getElementById(id + 'Ac');
+        if (d && d.classList.contains('show')) positionAutocomplete(id);
+      });
+    }, true);
+    window.addEventListener('resize', () => {
+      ['searchInput','ctaInput','overlaySearchInput'].forEach(id => {
+        const d = document.getElementById(id + 'Ac');
+        if (d && d.classList.contains('show')) positionAutocomplete(id);
+      });
+    });
     function hideAutocomplete(inputId) {
       const dropdown = document.getElementById(inputId + 'Ac');
       if (dropdown) dropdown.classList.remove('show');
