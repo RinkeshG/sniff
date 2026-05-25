@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "api/sniff.js": {
+      "maxDuration": 30
+    }
+  }
+}
