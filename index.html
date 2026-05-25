@@ -1866,10 +1866,80 @@
       border: 1px solid var(--tabby);
       border-radius: 14px;
       box-shadow: 0 16px 40px rgba(42,39,37,0.35), 0 6px 16px rgba(42,39,37,0.18);
-      max-height: 360px;
       overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
       z-index: 9999;
       display: none;
+    }
+    .ac-item:focus, .ac-item.kb-focus { background: var(--cream); outline: none; }
+    .ac-fallback:focus, .ac-fallback.kb-focus { background: var(--cream); outline: none; }
+
+    /* Clear (×) button inside search input */
+    .search-clear {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      background: rgba(184,168,142,0.3);
+      border: none;
+      color: var(--cream);
+      font-size: 14px;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      z-index: 5;
+    }
+    .search-clear.show { display: flex; }
+    .search-clear:hover { background: rgba(184,168,142,0.5); }
+    .cta-field .search-clear { color: var(--cream); }
+    .overlay-search-field .search-clear { background: rgba(139,115,85,0.2); color: var(--charcoal); }
+    .overlay-search-field .search-clear:hover { background: rgba(139,115,85,0.35); }
+
+    /* Focus rings for keyboard accessibility */
+    .hero-chip:focus-visible,
+    .search-btn:focus-visible,
+    .recent-card:focus-visible,
+    .teaser-mini-cta-btn:focus-visible,
+    .overlay-edge-btn:focus-visible {
+      outline: 2px solid var(--ginger);
+      outline-offset: 3px;
+    }
+    .search-field:focus-within,
+    .cta-field:focus-within,
+    .overlay-search-field:focus-within {
+      border-color: var(--ginger);
+    }
+
+    /* Title truncation */
+    .v2-product-title {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .teaser-mini-title {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* Improved image-fail placeholder — uses brand color block instead of bare text */
+    .img-fallback {
+      width: 100%; height: 100%;
+      background: linear-gradient(135deg, var(--cream-deep) 0%, var(--tabby-soft) 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--serif);
+      color: var(--indie);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-align: center;
+      padding: 4px;
     }
     .autocomplete-results.show { display: block; }
     .ac-item {
@@ -2328,10 +2398,11 @@
       if (!products.length) { container.innerHTML = ''; return; }
       if (labelEl) labelEl.textContent = defaultLabel;
       container.innerHTML = products.map(p => {
+        const brandShort = ((p.brand||'').split(' · ')[0] || '').slice(0, 10);
         const imgEl = p.image_url
-          ? `<img src="${p.image_url}" alt="" onerror="this.parentElement.innerHTML='<div style=&quot;font-size:9px&quot;>${(p.brand||'').split(' ')[0]}</div>'">`
-          : `<div style="font-size:9px;color:#8B7355">${(p.brand||'').split(' ')[0]}</div>`;
-        return `<div class="recent-card" onclick="openOverlaySlug('${p.slug}')">` +
+          ? `<img src="${p.image_url}" alt="${p.title||''}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=&quot;img-fallback&quot;>${brandShort}</div>'">`
+          : `<div class="img-fallback">${brandShort}</div>`;
+        return `<div class="recent-card" tabindex="0" onclick="openOverlaySlug('${p.slug}')" onkeydown="if(event.key==='Enter')openOverlaySlug('${p.slug}')">` +
           `<div class="recent-card-img">${imgEl}</div>` +
           `<div class="recent-card-info">` +
             `<div class="recent-card-brand">${p.brand||''}</div>` +
@@ -2407,10 +2478,11 @@
     function updateTeaser(p) {
       const a = p.analysis || {};
       const imgEl = document.getElementById('tmImg');
+      const brandShort = ((p.brand||'').split(' · ')[0] || '').slice(0, 12);
       if (p.image_url) {
-        imgEl.innerHTML = `<img src="${p.image_url}" alt="" onerror="this.parentElement.innerHTML='<div style=&quot;font-size:10px;color:#8B7355&quot;>${(p.brand||'').split(' ')[0]}</div>'">`;
+        imgEl.innerHTML = `<img src="${p.image_url}" alt="${p.title||''}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=&quot;img-fallback&quot;>${brandShort}</div>'">`;
       } else {
-        imgEl.innerHTML = '';
+        imgEl.innerHTML = `<div class="img-fallback">${brandShort}</div>`;
       }
       document.getElementById('tmBrand').textContent = p.brand || '';
       document.getElementById('tmTitle').textContent = p.title || '';
@@ -2539,18 +2611,33 @@
       if (e && e.target && e.target !== e.currentTarget) return;
       document.getElementById('overlayBackdrop').classList.remove('show');
       document.body.style.overflow = '';
+      // Also hide any open autocomplete (from overlay search)
+      hideAutocomplete('overlaySearchInput');
       history.replaceState(null, '', window.location.pathname);
     }
+    // Esc to close overlay (when not in autocomplete)
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        const backdrop = document.getElementById('overlayBackdrop');
+        if (backdrop && backdrop.classList.contains('show')) {
+          // If autocomplete is open in overlay search, that handler will catch Escape first
+          const overlayAc = document.getElementById('overlaySearchInputAc');
+          if (overlayAc && overlayAc.classList.contains('show')) return;
+          closeOverlay({ target: backdrop, currentTarget: backdrop });
+        }
+      }
+    });
 
     // Render a v2 product from Supabase (analysis is JSONB stored inside `product.analysis`)
     function renderProduct(p) {
       const a = p.analysis || {};
       // Header
       const imgEl = document.getElementById('oImage');
+      const brandShort = ((p.brand||'').split(' · ')[0] || '').slice(0, 16);
       if (p.image_url) {
-        imgEl.innerHTML = `<img src="${p.image_url}" alt="" onerror="this.parentElement.innerHTML='<div class=&quot;placeholder&quot;>${(p.brand||'').split(' ')[0]}</div>'">`;
+        imgEl.innerHTML = `<img src="${p.image_url}" alt="${p.title||''}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=&quot;img-fallback&quot;>${brandShort}</div>'">`;
       } else {
-        imgEl.innerHTML = `<div class="placeholder">${(p.brand||'').split(' ')[0]}</div>`;
+        imgEl.innerHTML = `<div class="img-fallback">${brandShort}</div>`;
       }
       document.getElementById('oBrand').textContent = p.brand || '';
       document.getElementById('oTitle').textContent = p.title || '';
@@ -2694,16 +2781,72 @@
         dropdown.id = inputId + 'Ac';
         document.body.appendChild(dropdown);
       }
+      // Add a clear button to the search field
+      const wrap = input.closest('.search-field, .cta-field, .overlay-search-field');
+      if (wrap && !wrap.querySelector('.search-clear')) {
+        wrap.style.position = wrap.style.position || 'relative';
+        const clearBtn = document.createElement('button');
+        clearBtn.type = 'button';
+        clearBtn.className = 'search-clear';
+        clearBtn.setAttribute('aria-label', 'Clear search');
+        clearBtn.innerHTML = '✕';
+        clearBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          input.value = '';
+          input.focus();
+          clearBtn.classList.remove('show');
+          hideAutocomplete(inputId);
+        });
+        // Insert before the SNIFF IT button so it sits inside the field
+        const btn = wrap.querySelector('button:not(.search-clear)');
+        if (btn) wrap.insertBefore(clearBtn, btn);
+        else wrap.appendChild(clearBtn);
+      }
+      const clearBtn = wrap && wrap.querySelector('.search-clear');
       input.addEventListener('input', () => {
         clearTimeout(acTimers[inputId]);
-        const q = input.value.trim();
-        if (q.length < 2) { hideAutocomplete(inputId); return; }
-        acTimers[inputId] = setTimeout(() => runAutocomplete(inputId, q), 180);
+        const q = input.value;
+        if (clearBtn) clearBtn.classList.toggle('show', q.length > 0);
+        if (q.trim().length < 2) { hideAutocomplete(inputId); return; }
+        acTimers[inputId] = setTimeout(() => runAutocomplete(inputId, q.trim()), 180);
       });
-      input.addEventListener('blur', () => setTimeout(() => hideAutocomplete(inputId), 200));
+      input.addEventListener('blur', (e) => {
+        // Don't hide if user clicked inside the dropdown
+        setTimeout(() => {
+          const ae = document.activeElement;
+          if (!dropdown.contains(ae)) hideAutocomplete(inputId);
+        }, 150);
+      });
       input.addEventListener('focus', () => {
         const q = input.value.trim();
         if (q.length >= 2) runAutocomplete(inputId, q);
+      });
+      // Keyboard navigation: ↑/↓ to move focus through items, Enter to select, Esc to close
+      input.addEventListener('keydown', (e) => {
+        const visible = dropdown.classList.contains('show');
+        if (!visible && e.key !== 'Enter') return;
+        const items = Array.from(dropdown.querySelectorAll('.ac-item, .ac-fallback'));
+        const focused = dropdown.querySelector('.kb-focus');
+        const idx = items.indexOf(focused);
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          if (focused) focused.classList.remove('kb-focus');
+          const next = items[Math.min(idx + 1, items.length - 1)] || items[0];
+          if (next) { next.classList.add('kb-focus'); next.scrollIntoView({block:'nearest'}); }
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          if (focused) focused.classList.remove('kb-focus');
+          const prev = items[Math.max(idx - 1, 0)] || items[items.length - 1];
+          if (prev) { prev.classList.add('kb-focus'); prev.scrollIntoView({block:'nearest'}); }
+        } else if (e.key === 'Enter') {
+          if (focused) {
+            e.preventDefault();
+            focused.click();
+          }
+        } else if (e.key === 'Escape') {
+          hideAutocomplete(inputId);
+          input.blur();
+        }
       });
     }
     function positionAutocomplete(inputId) {
@@ -2713,7 +2856,20 @@
       // Anchor to the search-field wrapper (so dropdown matches full search width)
       const wrap = input.closest('.search-field, .cta-field, .overlay-search-field') || input;
       const rect = wrap.getBoundingClientRect();
-      dropdown.style.top = (rect.bottom + 6) + 'px';
+      const vh = window.innerHeight;
+      const margin = 16; // breathing room from viewport edge
+      const spaceBelow = vh - rect.bottom - margin;
+      const spaceAbove = rect.top - margin;
+      // Prefer below; flip above if not enough room below AND more room above
+      if (spaceBelow >= 240 || spaceBelow >= spaceAbove) {
+        dropdown.style.top = (rect.bottom + 6) + 'px';
+        dropdown.style.bottom = 'auto';
+        dropdown.style.maxHeight = Math.min(360, spaceBelow) + 'px';
+      } else {
+        dropdown.style.top = 'auto';
+        dropdown.style.bottom = (vh - rect.top + 6) + 'px';
+        dropdown.style.maxHeight = Math.min(360, spaceAbove) + 'px';
+      }
       dropdown.style.left = rect.left + 'px';
       dropdown.style.width = rect.width + 'px';
     }
@@ -2728,8 +2884,11 @@
         return;
       }
       dropdown.innerHTML = results.map(r => {
-        const img = r.image_url ? `<img src="${r.image_url}" alt="" onerror="this.parentElement.innerHTML='<div style=&quot;font-size:9px;color:#8B7355&quot;>${(r.brand||'').split(' ')[0]}</div>'">` : `<div style="font-size:9px;color:#8B7355">${(r.brand||'').split(' ')[0]}</div>`;
-        return `<div class="ac-item" onclick="document.getElementById('${inputId}').value='';hideAutocomplete('${inputId}');openOverlaySlug('${r.slug}')">` +
+        const brandShort = ((r.brand||'').split(' · ')[0] || '').slice(0, 10);
+        const img = r.image_url
+          ? `<img src="${r.image_url}" alt="${r.title||''}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=&quot;img-fallback&quot; style=&quot;font-size:9px&quot;>${brandShort}</div>'">`
+          : `<div class="img-fallback" style="font-size:9px">${brandShort}</div>`;
+        return `<div class="ac-item" tabindex="-1" onclick="document.getElementById('${inputId}').value='';hideAutocomplete('${inputId}');openOverlaySlug('${r.slug}')">` +
           `<div class="ac-item-img">${img}</div>` +
           `<div class="ac-item-info"><div class="ac-item-brand">${r.brand||''}</div><div class="ac-item-title">${r.title||''}</div></div>` +
         `</div>`;
