@@ -1,7 +1,10 @@
 {
   "functions": {
-    "api/sniff.js": {
-      "maxDuration": 30
-    }
-  }
+    "api/sniff.js": { "maxDuration": 30 },
+    "api/r/[slug].js": { "maxDuration": 10 }
+  },
+  "rewrites": [
+    { "source": "/r/:slug", "destination": "/api/r/:slug" },
+    { "source": "/og/:slug", "destination": "/api/og/:slug" }
+  ]
 }

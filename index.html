@@ -1615,7 +1615,70 @@
     .v2-product-link:hover { color: var(--ginger-deep); }
     .v2-product-link::after { content: '→'; }
 
-    .v2-verdict-hero { padding: 36px 28px 32px; }
+    .v2-verdict-hero { padding: 36px 28px 32px; position: relative; }
+
+    /* ═══ SHARE BUTTON ═══ */
+    .v2-share-btn {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 12px 7px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(43,35,29,0.18);
+      background: rgba(255,255,255,0.6);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      color: var(--charcoal);
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      transition: background 0.18s ease, transform 0.18s ease, border-color 0.18s ease;
+    }
+    .v2-share-btn:hover { background: rgba(255,255,255,0.92); transform: translateY(-1px); }
+    .v2-share-btn:active { transform: translateY(0); }
+    .v2-share-btn:focus-visible { outline: 2px solid var(--ginger); outline-offset: 2px; }
+    .v2-share-btn svg { display: block; }
+    .v2-verdict-hero.v-weak .v2-share-btn,
+    .v2-verdict-hero.v-flag .v2-share-btn {
+      border-color: rgba(252,239,213,0.32);
+      background: rgba(252,239,213,0.12);
+      color: var(--cream);
+    }
+    .v2-verdict-hero.v-weak .v2-share-btn:hover,
+    .v2-verdict-hero.v-flag .v2-share-btn:hover { background: rgba(252,239,213,0.22); }
+    .v2-share-btn.is-copied { background: var(--good); border-color: var(--good); color: #fff; }
+    .v2-verdict-hero.v-weak .v2-share-btn.is-copied,
+    .v2-verdict-hero.v-flag .v2-share-btn.is-copied { background: var(--good); border-color: var(--good); color: #fff; }
+
+    /* tiny floating toast */
+    .share-toast {
+      position: fixed;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--charcoal);
+      color: var(--cream);
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 500;
+      padding: 12px 20px;
+      border-radius: 999px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      z-index: 9999;
+      box-shadow: 0 10px 32px rgba(0,0,0,0.18);
+    }
+    .share-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    @media (max-width: 640px) {
+      .v2-share-btn { top: 14px; right: 14px; padding: 6px 11px 6px 9px; font-size: 11px; }
+      .v2-share-btn svg { width: 13px; height: 13px; }
+    }
     .v2-verdict-hero.v-good { background: linear-gradient(180deg, #EEF5EF 0%, #E6EFE8 100%); }
     .v2-verdict-hero.v-okay,
     .v2-verdict-hero.v-caution { background: linear-gradient(180deg, #FBF1DD 0%, #F6E6C5 100%); }
@@ -2231,6 +2294,9 @@
     <span class="foot-meta">Made by one person in Bangalore who got tired of guessing <span class="dot">·</span> For cats first <span class="dot">·</span> <span class="foot-dog-trigger" onclick="toggleDogModal()">Dogs later</span></span>
   </footer>
 
+  <!-- ═══ SHARE TOAST ═══ -->
+  <div class="share-toast" id="shareToast" role="status" aria-live="polite">Link copied</div>
+
   <!-- ═══ DOG WAITLIST MODAL ═══ -->
   <div class="dog-modal-backdrop" id="dogModalBackdrop" onclick="closeDogModal(event)">
     <div class="dog-modal" onclick="event.stopPropagation()">
@@ -2329,6 +2395,16 @@
               </div>
 
               <div class="v2-verdict-hero" id="oVerdictHero">
+                <button class="v2-share-btn" id="oShareBtn" type="button" onclick="shareCurrentReport()" aria-label="Share this report">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="18" cy="5" r="3"></circle>
+                    <circle cx="6" cy="12" r="3"></circle>
+                    <circle cx="18" cy="19" r="3"></circle>
+                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                  </svg>
+                  <span id="oShareBtnText">Share</span>
+                </button>
                 <div class="v2-verdict-tag">Sniff verdict</div>
                 <div class="v2-verdict-label" id="oVerdictLabel"></div>
                 <div class="v2-verdict-sub" id="oVerdictSub"></div>
@@ -3105,14 +3181,139 @@
       }, { threshold: 0.15 }).observe(jmSearch);
     }
 
-    // URL hash support — open overlay if hash matches a product slug
+    // URL hash + query support — open overlay if hash or ?p= matches a product slug
     function handleHash() {
       const hash = window.location.hash.slice(1);
-      if (!hash) return;
-      openOverlaySlug(hash);
+      const qp = new URLSearchParams(window.location.search).get('p');
+      const slug = hash || qp;
+      if (!slug) return;
+      // Came in via a share link? log the referred-search event.
+      if (document.referrer && !document.referrer.includes(location.host)) {
+        logShareEvent('share_referred_search', slug, 'link');
+      }
+      openOverlaySlug(slug);
     }
     handleHash();
     window.addEventListener('hashchange', handleHash);
+
+    // ═══ SHARE ═══
+    const SHARE_BASE = 'https://sniff.fyi';
+
+    function buildShareText(product) {
+      // Strip the " · Dry food"/"· Wet food"/"· Treat" category suffix from brand
+      // so the share text reads naturally to someone outside Sniff.
+      const brandRaw = product?.brand || '';
+      const brand = brandRaw.split(/\s*[·•]\s*/)[0].trim() || 'a cat food';
+      const title = (product?.title || '').trim();
+      const item = title ? `${brand} ${title}` : brand;
+      return `Just looked up ${item} on Sniff — it tells you if your cat's food is any good in 5 seconds. Try yours:`;
+    }
+
+    function showShareToast(msg) {
+      const t = document.getElementById('shareToast');
+      if (!t) return;
+      t.textContent = msg;
+      t.classList.add('show');
+      clearTimeout(showShareToast._t);
+      showShareToast._t = setTimeout(() => t.classList.remove('show'), 2200);
+    }
+
+    function logShareEvent(eventType, slug, method) {
+      try {
+        fetch(`${SUPABASE_URL}/rest/v1/share_events`, {
+          method: 'POST',
+          headers: { ...SUPABASE_HEADERS, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+          body: JSON.stringify({
+            event_type: eventType,
+            product_slug: slug || null,
+            share_method: method || null,
+            referrer: document.referrer || null,
+            user_agent: (navigator.userAgent || '').slice(0, 500),
+          }),
+          keepalive: true,
+        }).catch(() => {});
+      } catch {}
+    }
+
+    function isTouchDevice() {
+      return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
+        || (navigator.maxTouchPoints > 1 && /Mac/i.test(navigator.platform));
+    }
+
+    function setShareButtonCopied() {
+      const btn = document.getElementById('oShareBtn');
+      const btnText = document.getElementById('oShareBtnText');
+      if (!btn || !btnText) return;
+      btn.classList.add('is-copied');
+      btnText.textContent = 'Copied';
+      setTimeout(() => { btn.classList.remove('is-copied'); btnText.textContent = 'Share'; }, 2000);
+    }
+
+    async function copyToClipboard(text) {
+      // Modern path first.
+      if (navigator.clipboard && window.isSecureContext) {
+        try { await navigator.clipboard.writeText(text); return true; } catch {}
+      }
+      // Fallback for older browsers / permission-denied edge cases.
+      try {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.top = '0';
+        ta.style.left = '0';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        ta.setSelectionRange(0, text.length);
+        const ok = document.execCommand('copy');
+        document.body.removeChild(ta);
+        return !!ok;
+      } catch { return false; }
+    }
+
+    async function shareCurrentReport() {
+      if (!currentProduct) {
+        console.warn('[sniff] share clicked but no currentProduct');
+        return;
+      }
+      const slug = currentProduct.slug;
+      const url = `${SHARE_BASE}/r/${encodeURIComponent(slug)}`;
+      const text = buildShareText(currentProduct);
+      const fullText = `${text} ${url}`;
+      const shareTitle = 'Sniff';
+      const shareData = { title: shareTitle, text, url };
+
+      // Mobile / touch devices: prefer the OS share sheet.
+      // Desktop Chrome also exposes navigator.share but the sheet UX is unreliable —
+      // so we route desktop straight to clipboard for predictable feedback.
+      const wantNativeShare = isTouchDevice()
+        && typeof navigator.share === 'function'
+        && (!navigator.canShare || navigator.canShare(shareData));
+
+      if (wantNativeShare) {
+        try {
+          await navigator.share(shareData);
+          logShareEvent('share_clicked', slug, 'native');
+          return;
+        } catch (err) {
+          if (err && err.name === 'AbortError') return; // user cancelled — no feedback needed
+          // any other error → fall through to clipboard
+        }
+      }
+
+      const copied = await copyToClipboard(fullText);
+      if (copied) {
+        setShareButtonCopied();
+        showShareToast('Link copied · paste anywhere');
+        logShareEvent('share_clicked', slug, 'copy');
+        return;
+      }
+
+      // Last-ditch — surface the URL so the click is never a dead end.
+      showShareToast('Couldn’t auto-copy — link shown');
+      try { window.prompt('Copy this Sniff link:', url); } catch {}
+    }
 
     // ═══ EASTER EGGS ═══
 
@@ -3214,9 +3415,9 @@
       }
     });
 
-    function handleDogWaitlist(e) {
+    async function handleDogWaitlist(e) {
       e.preventDefault();
-      const email = document.getElementById('dogEmail').value;
+      const email = (document.getElementById('dogEmail').value || '').trim();
       if (!email) return false;
       document.getElementById('dogForm').classList.add('hide');
       document.getElementById('dogSuccess').classList.add('show');
@@ -3224,6 +3425,24 @@
       waitlist.push({ email, ts: Date.now() });
       localStorage.setItem('sniff_dog_waitlist', JSON.stringify(waitlist));
       posthog.capture('dog_waitlist_signup');
+      try {
+        await fetch(`${SUPABASE_URL}/rest/v1/dog_waitlist`, {
+          method: 'POST',
+          headers: {
+            ...SUPABASE_HEADERS,
+            'Content-Type': 'application/json',
+            Prefer: 'return=minimal,resolution=ignore-duplicates',
+          },
+          body: JSON.stringify({
+            email,
+            source: 'web',
+            user_agent: navigator.userAgent,
+            referrer: document.referrer || null,
+          }),
+        });
+      } catch (err) {
+        console.warn('dog waitlist sync failed; kept locally', err);
+      }
       return false;
     }
 
