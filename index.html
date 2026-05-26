@@ -3180,15 +3180,33 @@
       }
     });
 
-    function handleDogWaitlist(e) {
+    async function handleDogWaitlist(e) {
       e.preventDefault();
-      const email = document.getElementById('dogEmail').value;
+      const email = (document.getElementById('dogEmail').value || '').trim();
       if (!email) return false;
       document.getElementById('dogForm').classList.add('hide');
       document.getElementById('dogSuccess').classList.add('show');
       const waitlist = JSON.parse(localStorage.getItem('sniff_dog_waitlist') || '[]');
       waitlist.push({ email, ts: Date.now() });
       localStorage.setItem('sniff_dog_waitlist', JSON.stringify(waitlist));
+      try {
+        await fetch(`${SUPABASE_URL}/rest/v1/dog_waitlist`, {
+          method: 'POST',
+          headers: {
+            ...SUPABASE_HEADERS,
+            'Content-Type': 'application/json',
+            Prefer: 'return=minimal,resolution=ignore-duplicates',
+          },
+          body: JSON.stringify({
+            email,
+            source: 'web',
+            user_agent: navigator.userAgent,
+            referrer: document.referrer || null,
+          }),
+        });
+      } catch (err) {
+        console.warn('dog waitlist sync failed; kept locally', err);
+      }
       return false;
     }
   </script>
