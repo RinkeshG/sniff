@@ -44,6 +44,20 @@
   }
   </script>
 
+  <!-- PostHog Analytics -->
+  <script>
+    !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty createPersonProfile opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug getPageviewId".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+    posthog.init('phc_qR9FCfPVW4g9uh3fr89c8qXPtMyKUHdFWvduLFJjQQEp', {
+      api_host: 'https://us.i.posthog.com',
+      person_profiles: 'anonymous',
+      capture_pageview: true,
+      capture_pageleave: true,
+      autocapture: true,
+      capture_exceptions: true,
+      enable_recording_console_log: true
+    });
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -2618,6 +2632,11 @@
       currentProduct = product;
       renderProduct(product);
       showOverlayState('content');
+      posthog.capture('product_viewed', {
+        product_slug: product.slug,
+        product_name: product.analysis?.product || slug,
+        source: 'database'
+      });
       // Track as recently viewed + refresh sidebar cards
       pushRecent(product.slug);
       refreshRecentCards();
@@ -2666,6 +2685,7 @@
         if (!resp.ok) {
           const err = await resp.json().catch(() => ({}));
           console.error('API error:', err);
+          posthog.capture('search_error', { query: query, error_type: 'api_error' });
           stopLoadingText();
           showOverlayState('error');
           return;
@@ -2673,6 +2693,12 @@
 
         const result = await resp.json();
         stopLoadingText();
+
+        posthog.capture('search_result', {
+          query: query,
+          result_type: result.type || 'unknown',
+          product_name: result.product || null
+        });
 
         if (result.type === 'dog') {
           showOverlayState('dog');
@@ -2692,6 +2718,7 @@
         }
       } catch (err) {
         console.error('Sniff fetch error:', err);
+        posthog.capture('search_error', { query: query, error_type: 'network_error' });
         stopLoadingText();
         showOverlayState('error');
       }
@@ -2818,8 +2845,14 @@
     }
 
     function toggleOverlayTech() {
+      const isOpening = !document.getElementById('oTechDetails').classList.contains('open');
       document.getElementById('oTechDetails').classList.toggle('open');
       document.getElementById('oTechToggle').classList.toggle('open');
+      if (isOpening) {
+        posthog.capture('report_tech_details_expanded', {
+          product_slug: currentProduct?.slug || null
+        });
+      }
     }
 
     function animateOverlayCard() { /* no animation in v2 */ }
@@ -2828,6 +2861,7 @@
     async function searchFood(query) {
       if (!query) return;
       const q = query.trim();
+      posthog.capture('product_searched', { query: q });
       // Try direct slug match
       const slug = slugify(q);
       const direct = await sbFetchOne(slug);
@@ -3189,8 +3223,121 @@
       const waitlist = JSON.parse(localStorage.getItem('sniff_dog_waitlist') || '[]');
       waitlist.push({ email, ts: Date.now() });
       localStorage.setItem('sniff_dog_waitlist', JSON.stringify(waitlist));
+      posthog.capture('dog_waitlist_signup');
       return false;
     }
+
+    // ═══ POSTHOG: LANDING PAGE SCROLL DEPTH ═══
+    (function() {
+      const firedDepths = {};
+      window.addEventListener('scroll', function() {
+        const scrollPct = Math.round((window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100);
+        [25, 50, 75, 100].forEach(function(d) {
+          if (scrollPct >= d && !firedDepths[d]) {
+            firedDepths[d] = true;
+            posthog.capture('scroll_depth', { percent: d });
+          }
+        });
+      }, { passive: true });
+    })();
+
+    // ═══ POSTHOG: SECTION VISIBILITY (where users drop off) ═══
+    (function() {
+      const sections = [
+        { sel: '.hero', name: 'hero' },
+        { sel: '#journey', name: 'journey' },
+        { sel: '#teaserMini', name: 'teaser_card' },
+        { sel: '.cta-search', name: 'cta_search' },
+        { sel: '.foot-mark', name: 'footer' }
+      ];
+      const seen = {};
+      const sectionObs = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          var name = entry.target.dataset.phSection;
+          if (entry.isIntersecting && name && !seen[name]) {
+            seen[name] = true;
+            posthog.capture('section_viewed', { section: name });
+          }
+        });
+      }, { threshold: 0.3 });
+      sections.forEach(function(s) {
+        var el = document.querySelector(s.sel);
+        if (el) {
+          el.dataset.phSection = s.name;
+          sectionObs.observe(el);
+        }
+      });
+    })();
+
+    // ═══ POSTHOG: REPORT SCROLL DEPTH (inside overlay) ═══
+    (function() {
+      var reportDepths = {};
+      var overlayScroll = document.querySelector('.overlay-scroll');
+      if (!overlayScroll) return;
+      overlayScroll.addEventListener('scroll', function() {
+        var pct = Math.round((overlayScroll.scrollTop / (overlayScroll.scrollHeight - overlayScroll.clientHeight)) * 100);
+        [25, 50, 75, 100].forEach(function(d) {
+          if (pct >= d && !reportDepths[d]) {
+            reportDepths[d] = true;
+            posthog.capture('report_scroll_depth', {
+              percent: d,
+              product_slug: currentProduct?.slug || null
+            });
+          }
+        });
+      }, { passive: true });
+      // Reset when overlay opens a new product
+      var origOpen = openOverlaySlug;
+      openOverlaySlug = async function(slug) {
+        reportDepths = {};
+        return origOpen(slug);
+      };
+      var origOpenQ = openOverlayWithQuery;
+      openOverlayWithQuery = async function(query) {
+        reportDepths = {};
+        return origOpenQ(query);
+      };
+    })();
+
+    // ═══ POSTHOG: REPORT SECTION VISIBILITY (what users read inside the report) ═══
+    (function() {
+      var reportSections = [
+        { sel: '.v2-reasons', name: 'reasons' },
+        { sel: '.v2-parent-take', name: 'parent_take' },
+        { sel: '#oTechToggle', name: 'tech_toggle_area' }
+      ];
+      var reportSeen = {};
+      var reportObs = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          var name = entry.target.dataset.phReport;
+          if (entry.isIntersecting && name && !reportSeen[name]) {
+            reportSeen[name] = true;
+            posthog.capture('report_section_viewed', {
+              section: name,
+              product_slug: currentProduct?.slug || null
+            });
+          }
+        });
+      }, { threshold: 0.3, root: document.querySelector('.overlay-scroll') });
+      reportSections.forEach(function(s) {
+        var el = document.querySelector(s.sel);
+        if (el) {
+          el.dataset.phReport = s.name;
+          reportObs.observe(el);
+        }
+      });
+      // Reset seen flags when a new product opens
+      var origOpen2 = openOverlaySlug;
+      openOverlaySlug = async function(slug) {
+        reportSeen = {};
+        return origOpen2(slug);
+      };
+      var origOpenQ2 = openOverlayWithQuery;
+      openOverlayWithQuery = async function(query) {
+        reportSeen = {};
+        return origOpenQ2(query);
+      };
+    })();
   </script>
 
 </body>
