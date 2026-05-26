@@ -917,14 +917,14 @@
 
     .cta-field input::placeholder { color: var(--indie-soft); }
 
-    .cta-field button {
+    .cta-field button:not(.search-clear) {
       background: var(--ginger); border: none; color: var(--charcoal);
       font-family: var(--sans); font-weight: 700; font-size: 14px;
       letter-spacing: 0.08em; padding: 0 32px; cursor: pointer;
       transition: background 0.2s; text-transform: uppercase;
     }
 
-    .cta-field button:hover { background: var(--ginger-deep); }
+    .cta-field button:not(.search-clear):hover { background: var(--ginger-deep); }
 
     /* ═══ DOG WAITLIST (modal) ═══ */
     .foot-dog-trigger {
@@ -1307,7 +1307,7 @@
       .cta-label { font-size: 10px; margin-bottom: 12px; }
       .cta-field { flex-direction: column; border-radius: 12px; }
       .cta-field input { padding: 16px 16px; font-size: 16px; text-align: center; }
-      .cta-field button { padding: 16px 20px; border-radius: 0 0 10px 10px; font-size: 14px; min-height: 48px; }
+      .cta-field button:not(.search-clear) { padding: 16px 20px; border-radius: 0 0 10px 10px; font-size: 14px; min-height: 48px; }
 
       .foot { padding: 28px 20px; gap: 10px; }
       .foot-mark { font-size: 20px; }
@@ -1501,7 +1501,7 @@
       color: var(--charcoal);
     }
     .overlay-search-field input::placeholder { color: var(--indie-soft); }
-    .overlay-search-field button {
+    .overlay-search-field button:not(.search-clear) {
       background: var(--ginger);
       border: none;
       color: var(--charcoal);
@@ -1514,7 +1514,7 @@
       cursor: pointer;
       transition: background 0.2s;
     }
-    .overlay-search-field button:hover { background: var(--ginger-deep); }
+    .overlay-search-field button:not(.search-clear):hover { background: var(--ginger-deep); }
 
     .overlay-chips {
       display: flex;
@@ -1583,7 +1583,7 @@
       .overlay-card { border-radius: 14px; }
       .overlay-search-field { flex-direction: column; border-radius: 12px; }
       .overlay-search-field input { text-align: center; font-size: 16px; padding: 14px 16px; }
-      .overlay-search-field button { padding: 14px 16px; border-radius: 0 0 10px 10px; min-height: 48px; }
+      .overlay-search-field button:not(.search-clear) { padding: 14px 16px; border-radius: 0 0 10px 10px; min-height: 48px; }
     }
 
     @media (max-width: 380px) {
@@ -2075,28 +2075,29 @@
     .search-input-wrap > input { flex: 1; padding-right: 36px; min-width: 0; }
     .search-clear {
       position: absolute;
-      right: 8px;
+      right: 10px;
       top: 50%;
       transform: translateY(-50%);
-      width: 22px; height: 22px;
+      width: 20px; height: 20px;
       border-radius: 50%;
-      background: rgba(184,168,142,0.25);
+      background: none;
       border: none;
-      color: var(--cream);
-      font-size: 12px;
-      line-height: 1;
+      color: var(--indie-soft);
       cursor: pointer;
       display: none;
       align-items: center;
       justify-content: center;
       padding: 0;
       z-index: 5;
-      transition: background 0.15s;
+      transition: color 0.15s, background 0.15s;
     }
+    .search-clear svg { width: 14px; height: 14px; pointer-events: none; }
     .search-clear.show { display: flex; }
-    .search-clear:hover { background: rgba(184,168,142,0.45); }
-    .overlay-search-field .search-clear { background: rgba(139,115,85,0.18); color: var(--charcoal); }
-    .overlay-search-field .search-clear:hover { background: rgba(139,115,85,0.32); }
+    .search-clear:hover { color: var(--charcoal); background: rgba(139,115,85,0.12); }
+    .search-field .search-clear,
+    .cta-field .search-clear { color: var(--indie-soft); }
+    .search-field .search-clear:hover,
+    .cta-field .search-clear:hover { color: var(--cream); background: rgba(184,168,142,0.3); }
 
     /* Focus rings for keyboard accessibility */
     .hero-chip:focus-visible,
@@ -2584,7 +2585,14 @@
     async function sbSearch(query, limit = 6) {
       const q = query.trim();
       if (!q) return [];
-      const url = `${SUPABASE_URL}/rest/v1/products?or=(brand.ilike.*${encodeURIComponent(q)}*,title.ilike.*${encodeURIComponent(q)}*,slug.ilike.*${encodeURIComponent(q)}*)&select=slug,brand,title,image_url,category&limit=${limit}`;
+      const words = q.toLowerCase().split(/\s+/).filter(w => w.length >= 2);
+      let url;
+      if (words.length > 1) {
+        const andFilters = words.map(w => `search_text.ilike.*${encodeURIComponent(w)}*`).join(',');
+        url = `${SUPABASE_URL}/rest/v1/products?and=(${andFilters})&select=slug,brand,title,image_url,category&limit=${limit}`;
+      } else {
+        url = `${SUPABASE_URL}/rest/v1/products?or=(search_text.ilike.*${encodeURIComponent(q)}*,slug.ilike.*${encodeURIComponent(q)}*)&select=slug,brand,title,image_url,category&limit=${limit}`;
+      }
       try {
         const r = await fetch(url, { headers: SUPABASE_HEADERS });
         return await r.json();
@@ -3073,7 +3081,7 @@
         clearBtn.type = 'button';
         clearBtn.className = 'search-clear';
         clearBtn.setAttribute('aria-label', 'Clear search');
-        clearBtn.innerHTML = '✕';
+        clearBtn.innerHTML = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="4" x2="12" y2="12"/><line x1="12" y1="4" x2="4" y2="12"/></svg>';
         clearBtn.addEventListener('click', (e) => {
           e.preventDefault();
           input.value = '';
