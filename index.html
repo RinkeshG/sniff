@@ -1804,6 +1804,69 @@
       .v2-qf-cell + .v2-qf-cell { padding-top: 12px; border-top: 1px solid var(--tabby-soft); }
     }
 
+    /* ═══ ALTERNATIVES / RECOMMENDATIONS ═══ */
+    .v2-alts {
+      padding: 24px 28px;
+      background: var(--cream);
+      border-bottom: 1px solid var(--cream-deep);
+      display: none;
+    }
+    .v2-alts.show { display: block; }
+    .v2-alts-header {
+      font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--indie); font-weight: 700; margin-bottom: 6px;
+    }
+    .v2-alts-sub {
+      font-size: 13px; color: var(--indie); line-height: 1.5; margin-bottom: 18px;
+    }
+    .v2-alts-list { display: flex; flex-direction: column; gap: 14px; }
+    .v2-alt-card {
+      display: grid; grid-template-columns: 52px 1fr; gap: 14px;
+      padding: 16px; background: white; border-radius: 12px;
+      border: 1px solid var(--cream-deep); cursor: pointer;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .v2-alt-card:hover {
+      border-color: var(--ginger); box-shadow: 0 2px 12px rgba(224,138,58,0.1);
+    }
+    .v2-alt-img {
+      width: 52px; height: 52px; border-radius: 8px; background: var(--cream-deep);
+      overflow: hidden; display: flex; align-items: center; justify-content: center;
+      font-size: 9px; font-weight: 700; color: var(--indie); text-align: center;
+      line-height: 1.2; padding: 4px;
+    }
+    .v2-alt-img img { width: 100%; height: 100%; object-fit: cover; }
+    .v2-alt-body { min-width: 0; }
+    .v2-alt-brand { font-size: 11px; color: var(--indie); margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .v2-alt-title { font-family: var(--serif); font-size: 15px; color: var(--charcoal); line-height: 1.3; margin-bottom: 8px; }
+    .v2-alt-verdict {
+      display: inline-block; font-size: 11px; font-weight: 700;
+      padding: 3px 10px; border-radius: 20px; margin-bottom: 10px;
+    }
+    .v2-alt-verdict.av-good { background: var(--good-soft); color: var(--good); }
+    .v2-alt-verdict.av-okay { background: var(--caution-soft); color: var(--caution); }
+    .v2-alt-improvements { display: flex; flex-direction: column; gap: 4px; }
+    .v2-alt-imp {
+      font-size: 12px; color: var(--charcoal); line-height: 1.4;
+      display: flex; align-items: baseline; gap: 6px;
+    }
+    .v2-alt-imp::before {
+      content: '↑'; color: var(--good); font-weight: 700; font-size: 11px; flex-shrink: 0;
+    }
+    .v2-alt-price {
+      font-size: 11px; color: var(--indie); margin-top: 6px;
+    }
+    .v2-alts-loading {
+      text-align: center; padding: 12px 0; font-size: 12px; color: var(--indie);
+      letter-spacing: 0.1em; text-transform: uppercase;
+    }
+    @media (max-width: 600px) {
+      .v2-alts { padding: 20px 20px; }
+      .v2-alt-card { grid-template-columns: 44px 1fr; gap: 12px; padding: 14px; }
+      .v2-alt-img { width: 44px; height: 44px; }
+      .v2-alt-title { font-size: 14px; }
+    }
+
     /* Recently viewed cards (replaces brand chips) */
     .recent-block {
       max-width: 540px;
@@ -2460,6 +2523,12 @@
                 </div>
               </div>
 
+              <div class="v2-alts" id="oAlternatives">
+                <div class="v2-alts-header">What could work better?</div>
+                <div class="v2-alts-sub" id="oAltsSub"></div>
+                <div class="v2-alts-list" id="oAltsList"></div>
+              </div>
+
               <button class="v2-tech-toggle" id="oTechToggle" onclick="toggleOverlayTech()">
                 <span>The numbers</span>
                 <span class="v2-tech-arrow">&#9662;</span>
@@ -2716,6 +2785,8 @@
       // Track as recently viewed + refresh sidebar cards
       pushRecent(product.slug);
       refreshRecentCards();
+      // Fetch alternatives async (don't block render)
+      fetchAlternatives(product).then(alts => renderAlternatives(product, alts));
     }
 
     // Backwards compat: openOverlay(idx) for hero chips
@@ -2789,6 +2860,11 @@
           updateOverlayCard(result);
           showOverlayState('content');
           animateOverlayCard();
+          // Build pseudo-product for recommendations
+          var brandStr = (result.brand || '').toLowerCase();
+          var pseudoCat = brandStr.includes('wet') ? 'wet' : brandStr.includes('treat') ? 'treat' : 'dry';
+          var pseudoProduct = { slug: '__api__', category: pseudoCat, life_stage: 'adult', analysis: result };
+          fetchAlternatives(pseudoProduct).then(function(alts) { renderAlternatives(pseudoProduct, alts); });
         } else {
           showOverlayState('error');
         }
@@ -2918,6 +2994,10 @@
       // Reset tech state collapsed
       document.getElementById('oTechDetails').classList.remove('open');
       document.getElementById('oTechToggle').classList.remove('open');
+
+      // Reset alternatives (will be populated async)
+      document.getElementById('oAlternatives').classList.remove('show');
+      document.getElementById('oAltsList').innerHTML = '';
     }
 
     function toggleOverlayTech() {
@@ -3444,6 +3524,161 @@
         console.warn('dog waitlist sync failed; kept locally', err);
       }
       return false;
+    }
+
+    // ═══ RECOMMENDATION ENGINE ═══
+    const VERDICT_RANK = {
+      'Strong choice': 6, 'Good enough': 5, 'Okay for now': 4,
+      'Not ideal daily': 3, 'Not transparent enough': 2, 'Caution': 1
+    };
+
+    function getMetric(analysis, prefix) {
+      return (analysis.metrics || []).find(m => m.name && m.name.toLowerCase().startsWith(prefix.toLowerCase()));
+    }
+    function parseMetricNum(m) {
+      if (!m || !m.value) return null;
+      var n = parseInt(m.value, 10);
+      return isNaN(n) ? null : n;
+    }
+
+    function scoreProduct(analysis) {
+      if (!analysis) return 0;
+      var v = analysis.verdict || {};
+      var w = analysis.worry || {};
+      var vLabel = (v.label || '').replace(/\.$/, '');
+      var vRank = VERDICT_RANK[vLabel] || 0;
+      var protein = parseMetricNum(getMetric(analysis, 'protein')) || 0;
+      var carbs = parseMetricNum(getMetric(analysis, 'carb')) || 50;
+      var reasons = analysis.reasons || [];
+      var goodCount = reasons.filter(function(r) { return r.status === 'good'; }).length;
+      var badCount = reasons.filter(function(r) { return r.status === 'caution' || r.status === 'missing' || r.status === 'bad'; }).length;
+      return (vRank * 20) + ((4 - (w.filled || 2)) * 10) + (protein * 0.5) - (carbs * 0.3) + (goodCount * 3) - (badCount * 2);
+    }
+
+    function getImprovements(currentA, altA) {
+      var imps = [];
+      var cProtein = parseMetricNum(getMetric(currentA, 'protein'));
+      var aProtein = parseMetricNum(getMetric(altA, 'protein'));
+      if (aProtein !== null && cProtein !== null && aProtein > cProtein) {
+        imps.push(aProtein + '% protein (yours: ' + cProtein + '%)');
+      }
+      var cCarbs = parseMetricNum(getMetric(currentA, 'carb'));
+      var aCarbs = parseMetricNum(getMetric(altA, 'carb'));
+      if (aCarbs !== null && cCarbs !== null && aCarbs < cCarbs - 3) {
+        imps.push('~' + aCarbs + '% carbs (yours: ~' + cCarbs + '%)');
+      }
+      var cIng = getMetric(currentA, 'first ingredient');
+      var aIng = getMetric(altA, 'first ingredient');
+      var cIngVal = (cIng && cIng.value || '').toLowerCase();
+      var aIngVal = (aIng && aIng.value || '').toLowerCase();
+      if (cIngVal && aIngVal && cIng.status !== 'good' && aIng.status === 'good') {
+        imps.push('Named meat first (' + (aIng.value) + ')');
+      }
+      var cTaurine = getMetric(currentA, 'taurine');
+      var aTaurine = getMetric(altA, 'taurine');
+      if (cTaurine && cTaurine.status !== 'good' && aTaurine && aTaurine.status === 'good') {
+        imps.push('Taurine disclosed');
+      }
+      var cWorry = (currentA.worry || {}).filled || 2;
+      var aWorry = (altA.worry || {}).filled || 2;
+      if (aWorry < cWorry && imps.length < 2) {
+        imps.push('Lower concern level');
+      }
+      var cVLabel = ((currentA.verdict || {}).label || '').replace(/\.$/, '');
+      var aVLabel = ((altA.verdict || {}).label || '').replace(/\.$/, '');
+      if ((VERDICT_RANK[aVLabel] || 0) > (VERDICT_RANK[cVLabel] || 0) && imps.length < 2) {
+        imps.push('Rated "' + aVLabel + '"');
+      }
+      return imps.slice(0, 2);
+    }
+
+    function parsePrice100g(priceStr) {
+      if (!priceStr) return null;
+      const m = priceStr.match(/₹(\d+)\/100g/);
+      return m ? parseInt(m[1], 10) : null;
+    }
+
+    async function fetchAlternatives(product) {
+      const a = product.analysis || {};
+      const v = a.verdict || {};
+      const vLabel = (v.label || '').replace(/\.$/, '');
+      if (vLabel === 'Strong choice' || product.category === 'prescription') return [];
+      const cat = product.category || 'dry';
+      const stage = product.life_stage || 'adult';
+      const url = `${SUPABASE_URL}/rest/v1/products?category=eq.${encodeURIComponent(cat)}&life_stage=eq.${encodeURIComponent(stage)}&slug=neq.${encodeURIComponent(product.slug)}&select=slug,brand,title,image_url,analysis&limit=80`;
+      try {
+        const r = await fetch(url, { headers: SUPABASE_HEADERS });
+        const candidates = await r.json();
+        if (!Array.isArray(candidates)) return [];
+        const currentScore = scoreProduct(a);
+        const scored = candidates
+          .filter(c => c.analysis && scoreProduct(c.analysis) > currentScore)
+          .map(c => ({ ...c, _score: scoreProduct(c.analysis) }))
+          .sort((a, b) => b._score - a._score);
+        return scored.slice(0, 3);
+      } catch (e) {
+        console.error('fetchAlternatives', e);
+        return [];
+      }
+    }
+
+    function renderAlternatives(product, alts) {
+      const container = document.getElementById('oAlternatives');
+      const list = document.getElementById('oAltsList');
+      const sub = document.getElementById('oAltsSub');
+      if (!alts || alts.length === 0) {
+        container.classList.remove('show');
+        return;
+      }
+      const currentA = product.analysis || {};
+      const weakPoints = [];
+      if (currentA.f2?.val > 30) weakPoints.push('high carbs');
+      if (currentA.ing && currentA.ing.toLowerCase().includes('cereal')) weakPoints.push('cereal-first ingredients');
+      if (currentA.f3?.text) weakPoints.push('missing nutrient data');
+      if (currentA.worry?.filled >= 2) weakPoints.push('transparency gaps');
+      sub.textContent = weakPoints.length
+        ? `This food has ${weakPoints.slice(0, 2).join(' and ')}. These alternatives score higher on what matters.`
+        : 'These alternatives score higher overall for your cat.';
+
+      list.innerHTML = alts.map(alt => {
+        const aa = alt.analysis || {};
+        const imps = getImprovements(currentA, aa);
+        const brandShort = (alt.brand || '').split(' · ')[0].slice(0, 20);
+        const vLabel = aa.verdict?.label || '';
+        const vClass = (aa.verdict?.labelClass === 'vp-good') ? 'av-good' : 'av-okay';
+        const imgHtml = alt.image_url
+          ? `<img src="${alt.image_url}" alt="${alt.title||''}" loading="lazy" onerror="this.parentElement.innerHTML='${brandShort}'">`
+          : brandShort;
+        const currentPrice = parsePrice100g(currentA.price);
+        const altPrice = parsePrice100g(aa.price);
+        let priceHtml = '';
+        if (altPrice) {
+          if (currentPrice && altPrice !== currentPrice) {
+            const diff = altPrice - currentPrice;
+            const sign = diff > 0 ? '+' : '';
+            priceHtml = `<div class="v2-alt-price">₹${altPrice}/100g (${sign}₹${diff})</div>`;
+          } else {
+            priceHtml = `<div class="v2-alt-price">₹${altPrice}/100g</div>`;
+          }
+        }
+        return `<div class="v2-alt-card" onclick="posthog.capture('alternative_clicked',{from_slug:'${product.slug}',to_slug:'${alt.slug}'});openOverlaySlug('${alt.slug}')" tabindex="0" onkeydown="if(event.key==='Enter'){posthog.capture('alternative_clicked',{from_slug:'${product.slug}',to_slug:'${alt.slug}'});openOverlaySlug('${alt.slug}')}">
+          <div class="v2-alt-img">${imgHtml}</div>
+          <div class="v2-alt-body">
+            <div class="v2-alt-brand">${alt.brand || ''}</div>
+            <div class="v2-alt-title">${alt.title || ''}</div>
+            <div class="v2-alt-verdict ${vClass}">${vLabel}</div>
+            <div class="v2-alt-improvements">${imps.map(i => `<div class="v2-alt-imp">${i}</div>`).join('')}</div>
+            ${priceHtml}
+          </div>
+        </div>`;
+      }).join('');
+
+      container.classList.add('show');
+      posthog.capture('alternatives_shown', {
+        product_slug: product.slug,
+        alternatives_count: alts.length,
+        alternative_slugs: alts.map(a => a.slug)
+      });
     }
 
     // ═══ POSTHOG: LANDING PAGE SCROLL DEPTH ═══
