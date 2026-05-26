@@ -3201,46 +3201,84 @@
       } catch {}
     }
 
+    function isTouchDevice() {
+      return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
+        || (navigator.maxTouchPoints > 1 && /Mac/i.test(navigator.platform));
+    }
+
+    function setShareButtonCopied() {
+      const btn = document.getElementById('oShareBtn');
+      const btnText = document.getElementById('oShareBtnText');
+      if (!btn || !btnText) return;
+      btn.classList.add('is-copied');
+      btnText.textContent = 'Copied';
+      setTimeout(() => { btn.classList.remove('is-copied'); btnText.textContent = 'Share'; }, 2000);
+    }
+
+    async function copyToClipboard(text) {
+      // Modern path first.
+      if (navigator.clipboard && window.isSecureContext) {
+        try { await navigator.clipboard.writeText(text); return true; } catch {}
+      }
+      // Fallback for older browsers / permission-denied edge cases.
+      try {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.top = '0';
+        ta.style.left = '0';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        ta.setSelectionRange(0, text.length);
+        const ok = document.execCommand('copy');
+        document.body.removeChild(ta);
+        return !!ok;
+      } catch { return false; }
+    }
+
     async function shareCurrentReport() {
-      if (!currentProduct) return;
+      if (!currentProduct) {
+        console.warn('[sniff] share clicked but no currentProduct');
+        return;
+      }
       const slug = currentProduct.slug;
       const url = `${SHARE_BASE}/r/${encodeURIComponent(slug)}`;
       const text = buildShareText(currentProduct);
-      const brandTitle = [currentProduct.brand, currentProduct.title].filter(Boolean).join(' — ');
-      const shareTitle = `Sniff · ${brandTitle}`;
+      const fullText = `${text} ${url}`;
+      const shareTitle = 'Sniff';
+      const shareData = { title: shareTitle, text, url };
 
-      const btn = document.getElementById('oShareBtn');
-      const btnText = document.getElementById('oShareBtnText');
+      // Mobile / touch devices: prefer the OS share sheet.
+      // Desktop Chrome also exposes navigator.share but the sheet UX is unreliable —
+      // so we route desktop straight to clipboard for predictable feedback.
+      const wantNativeShare = isTouchDevice()
+        && typeof navigator.share === 'function'
+        && (!navigator.canShare || navigator.canShare(shareData));
 
-      const canNativeShare = typeof navigator.share === 'function';
-      if (canNativeShare) {
+      if (wantNativeShare) {
         try {
-          await navigator.share({ title: shareTitle, text, url });
+          await navigator.share(shareData);
           logShareEvent('share_clicked', slug, 'native');
           return;
         } catch (err) {
-          // user cancelled, fall through to clipboard fallback only if it was a real error
-          if (err && err.name !== 'AbortError') {
-            // try clipboard as fallback
-          } else {
-            return;
-          }
+          if (err && err.name === 'AbortError') return; // user cancelled — no feedback needed
+          // any other error → fall through to clipboard
         }
       }
-      // Clipboard fallback
-      try {
-        await navigator.clipboard.writeText(`${text}\n\n${url}`);
-        if (btn && btnText) {
-          btn.classList.add('is-copied');
-          btnText.textContent = 'Copied';
-          setTimeout(() => { btn.classList.remove('is-copied'); btnText.textContent = 'Share'; }, 2000);
-        }
-        showShareToast('Link copied');
+
+      const copied = await copyToClipboard(fullText);
+      if (copied) {
+        setShareButtonCopied();
+        showShareToast('Link copied · paste anywhere');
         logShareEvent('share_clicked', slug, 'copy');
-      } catch {
-        // last-ditch — prompt
-        try { window.prompt('Copy this link:', url); } catch {}
+        return;
       }
+
+      // Last-ditch — surface the URL so the click is never a dead end.
+      showShareToast('Couldn’t auto-copy — link shown');
+      try { window.prompt('Copy this Sniff link:', url); } catch {}
     }
 
     // ═══ EASTER EGGS ═══
