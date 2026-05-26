@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sniff · OG Card v3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Young+Serif&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F5F0E5;
+    --cream-deep: #EAE3D2;
+    --charcoal: #2A2725;
+    --charcoal-soft: #3D3835;
+    --ginger: #E08A3A;
+    --ginger-soft: #FCEBD4;
+    --indie: #8B7355;
+    --indie-soft: #B8A88E;
+    --serif: 'Young Serif', Georgia, serif;
+    --sans: 'Sora', system-ui, sans-serif;
+  }
+  html, body { margin: 0; padding: 0; background: var(--cream-deep); }
+  body { font-family: var(--sans); padding: 48px 32px; color: var(--charcoal); }
+  h1 { font-family: var(--serif); font-size: 22px; margin: 0 0 6px; }
+  .sub { color: var(--indie); margin-bottom: 32px; font-size: 13px; max-width: 720px; line-height: 1.5; }
+  .group { margin-bottom: 64px; }
+  .group-h { font-family: var(--serif); font-size: 18px; margin: 0 0 4px; color: var(--charcoal); }
+  .group-sub { color: var(--indie); margin-bottom: 24px; font-size: 13px; line-height: 1.5; max-width: 760px; }
+  .cards { display: flex; flex-direction: column; gap: 40px; align-items: center; }
+  .card-meta { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--indie); margin-bottom: 10px; font-weight: 600; text-align: center; }
+
+  /* Common card */
+  .og {
+    width: 1200px; height: 630px;
+    box-sizing: border-box;
+    position: relative;
+    border-radius: 8px;
+    box-shadow: 0 12px 48px rgba(0,0,0,0.10);
+    overflow: hidden;
+    font-family: var(--sans);
+    background: var(--cream);
+    color: var(--charcoal);
+  }
+
+  /* === A — Product-as-hero (magazine cover) === */
+  .og-a {
+    padding: 64px 80px 64px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .og-a .top {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 16px;
+    color: var(--indie);
+    letter-spacing: 0.04em;
+  }
+  .og-a .top .mark {
+    font-family: var(--serif);
+    font-size: 28px;
+    color: var(--charcoal);
+    letter-spacing: -0.01em;
+  }
+  .og-a .top .mark .dot { color: var(--ginger); font-size: 0.7em; vertical-align: 0.18em; margin: 0 2px; }
+  .og-a .top .sep { color: var(--indie-soft); }
+  .og-a .top .tag { font-size: 14px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--indie); font-weight: 600; }
+
+  .og-a .hero { display: flex; flex-direction: column; gap: 18px; }
+  .og-a .eyebrow {
+    font-size: 14px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ginger);
+    font-weight: 700;
+  }
+  .og-a .product {
+    font-family: var(--serif);
+    font-size: 100px;
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+    color: var(--charcoal);
+    max-width: 1020px;
+  }
+
+  .og-a .foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 17px;
+    color: var(--indie);
+  }
+  .og-a .foot .cta {
+    color: var(--charcoal);
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .og-a .foot .cta .arrow { color: var(--ginger); }
+  .og-a .foot .url { font-weight: 600; color: var(--charcoal); letter-spacing: 0.02em; }
+
+  /* === B — Sniff-as-hero (invitation) === */
+  .og-b {
+    padding: 80px 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .og-b .top {
+    font-family: var(--serif);
+    font-size: 28px;
+    color: var(--charcoal);
+    letter-spacing: -0.01em;
+  }
+  .og-b .top .dot { color: var(--ginger); font-size: 0.7em; vertical-align: 0.18em; margin: 0 2px; }
+
+  .og-b .hero {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .og-b .question {
+    font-family: var(--serif);
+    font-size: 96px;
+    line-height: 1.0;
+    letter-spacing: -0.025em;
+    color: var(--charcoal);
+    max-width: 1000px;
+  }
+  .og-b .question em { color: var(--ginger); font-style: normal; }
+
+  .og-b .foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    font-size: 17px;
+    color: var(--indie);
+  }
+  .og-b .foot .latest {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .og-b .foot .latest-label {
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--indie-soft);
+    font-weight: 700;
+  }
+  .og-b .foot .latest-name {
+    color: var(--charcoal);
+    font-weight: 500;
+    font-size: 18px;
+  }
+  .og-b .foot .url { font-weight: 600; color: var(--charcoal); letter-spacing: 0.02em; font-size: 18px; }
+
+  /* dark dial-back for product card on darker mood — but skip — keep all light, brand-consistent */
+
+  @media (max-width: 1300px) {
+    body { padding: 20px 12px; }
+    .og { transform: scale(0.6); transform-origin: top center; margin-bottom: -252px; }
+  }
+</style>
+</head>
+<body>
+  <h1>Sniff · OG card v3</h1>
+  <div class="sub">Two directions — the card's job alongside the share text is to <i>reinforce what's being shared</i>, not spoil the verdict. Pick A or B; we'll port to @vercel/og.</div>
+
+  <div class="group">
+    <div class="group-h">Direction A — Product as the hero</div>
+    <div class="group-sub">The product is the visual centerpiece, like a magazine cover. Recipient sees what was checked, knows Sniff did the checking, gets curious to click. Different image per product (still cached per slug).</div>
+    <div class="cards">
+      <div>
+        <div class="card-meta">A · Whiskas Ocean Fish</div>
+        <div class="og og-a">
+          <div class="top">
+            <div class="mark">Sniff<span class="dot">·</span></div>
+            <div class="sep">·</div>
+            <div class="tag">Cat food, decoded.</div>
+          </div>
+          <div class="hero">
+            <div class="eyebrow">Sniff report</div>
+            <div class="product">Whiskas Ocean Fish, Adult 1+</div>
+          </div>
+          <div class="foot">
+            <div class="cta">Tap to see what's actually in it <span class="arrow">→</span></div>
+            <div class="url">sniff.fyi</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="card-meta">A · Applaws Tuna with Anchovy</div>
+        <div class="og og-a">
+          <div class="top">
+            <div class="mark">Sniff<span class="dot">·</span></div>
+            <div class="sep">·</div>
+            <div class="tag">Cat food, decoded.</div>
+          </div>
+          <div class="hero">
+            <div class="eyebrow">Sniff report</div>
+            <div class="product">Applaws Tuna Fillet with Whole Anchovy</div>
+          </div>
+          <div class="foot">
+            <div class="cta">Tap to see what's actually in it <span class="arrow">→</span></div>
+            <div class="url">sniff.fyi</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="group">
+    <div class="group-h">Direction B — Sniff as the hero (invitation)</div>
+    <div class="group-sub">Sniff is the centerpiece. Same beautiful card for every share, with the checked product as a small footnote. Looks like an invitation to the tool, not a product page.</div>
+    <div class="cards">
+      <div>
+        <div class="card-meta">B · invitation card (Whiskas footnote)</div>
+        <div class="og og-b">
+          <div class="top">Sniff<span class="dot">·</span></div>
+          <div class="hero">
+            <div class="question">What's <em>actually</em> in your cat's food?</div>
+          </div>
+          <div class="foot">
+            <div class="latest">
+              <div class="latest-label">Latest read</div>
+              <div class="latest-name">Whiskas Ocean Fish, Adult 1+</div>
+            </div>
+            <div class="url">sniff.fyi</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="card-meta">B · invitation card (Applaws footnote)</div>
+        <div class="og og-b">
+          <div class="top">Sniff<span class="dot">·</span></div>
+          <div class="hero">
+            <div class="question">What's <em>actually</em> in your cat's food?</div>
+          </div>
+          <div class="foot">
+            <div class="latest">
+              <div class="latest-label">Latest read</div>
+              <div class="latest-name">Applaws Tuna Fillet with Whole Anchovy</div>
+            </div>
+            <div class="url">sniff.fyi</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
