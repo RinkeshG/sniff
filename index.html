@@ -1676,6 +1676,7 @@
     }
     .share-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
     @media (max-width: 640px) {
+      .v2-verdict-hero { padding-top: 50px; }
       .v2-share-btn { top: 14px; right: 14px; padding: 6px 11px 6px 9px; font-size: 11px; }
       .v2-share-btn svg { width: 13px; height: 13px; }
     }
@@ -1856,6 +1857,15 @@
     .v2-alt-price {
       font-size: 11px; color: var(--indie); margin-top: 6px;
     }
+    .v2-alt-footer {
+      grid-column: 1 / -1; margin-top: 4px; padding-top: 12px;
+      border-top: 1px dashed var(--cream-deep);
+      display: flex; align-items: center; gap: 6px;
+      font-family: var(--sans); font-size: 11px; font-weight: 600;
+      color: var(--indie); cursor: pointer; transition: color 0.15s;
+    }
+    .v2-alt-footer:hover { color: var(--ginger); }
+    .v2-alt-footer svg { flex-shrink: 0; }
     .v2-alts-loading {
       text-align: center; padding: 12px 0; font-size: 12px; color: var(--indie);
       letter-spacing: 0.1em; text-transform: uppercase;
@@ -1865,6 +1875,241 @@
       .v2-alt-card { grid-template-columns: 44px 1fr; gap: 12px; padding: 14px; }
       .v2-alt-img { width: 44px; height: 44px; }
       .v2-alt-title { font-size: 14px; }
+    }
+
+    /* ═══ COMPARISON VIEW ═══ */
+    .v2-compare { display: none; }
+    .v2-compare.show { display: block; }
+
+    /* --- Header: two products with vs --- */
+    .cmp-header {
+      display: flex; align-items: center; gap: 8px;
+      padding: 24px 28px 20px; border-bottom: 1px solid var(--cream-deep);
+    }
+    .cmp-product {
+      flex: 1; min-width: 0; display: flex; gap: 10px; align-items: center;
+      cursor: pointer; border-radius: 10px; padding: 6px;
+      transition: background 0.15s;
+    }
+    .cmp-product:hover { background: var(--cream-deep); }
+    .cmp-product-img {
+      width: 44px; height: 44px; border-radius: 8px; background: var(--cream-deep);
+      overflow: hidden; display: flex; align-items: center; justify-content: center;
+      font-size: 9px; font-weight: 700; color: var(--indie); text-align: center;
+      line-height: 1.2; flex-shrink: 0;
+    }
+    .cmp-product-img img { width: 100%; height: 100%; object-fit: cover; }
+    .cmp-product-info { min-width: 0; }
+    .cmp-product-brand { font-size: 10px; color: var(--indie); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .cmp-product-title { font-family: var(--serif); font-size: 13px; color: var(--charcoal); line-height: 1.25; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .cmp-vs {
+      flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%;
+      background: var(--cream-deep); display: flex; align-items: center; justify-content: center;
+      font-family: var(--serif); font-size: 11px; font-weight: 700; color: var(--indie);
+    }
+    .cmp-search-slot { flex: 1; min-width: 0; }
+    .cmp-search-field {
+      display: flex; border-radius: 10px; overflow: hidden;
+      border: 1.5px solid var(--cream-deep); background: white;
+    }
+    .cmp-search-field input {
+      flex: 1; border: none; background: none; padding: 10px 14px;
+      font-family: var(--sans); font-size: 13px; color: var(--charcoal); min-width: 0;
+    }
+    .cmp-search-field input::placeholder { color: var(--indie-soft); }
+    .cmp-search-field input:focus { outline: none; }
+    .cmp-search-prompt {
+      font-size: 13px; color: var(--indie); text-align: center; padding: 40px 28px;
+      line-height: 1.6; font-family: var(--serif);
+    }
+
+    /* --- Verdict card: the headline answer --- */
+    .cmp-verdict-banner {
+      margin: 20px 20px 0; padding: 28px 24px 24px;
+      border-radius: 16px; text-align: center;
+    }
+    .cmp-verdict-banner.tone-clear {
+      background: linear-gradient(170deg, #EEF5EF 0%, #F7F5F0 100%);
+      border: 1px solid rgba(74,143,92,0.12);
+    }
+    .cmp-verdict-banner.tone-same {
+      background: #F7F5F0; border: 1px solid var(--cream-deep);
+    }
+    .cmp-verdict-insight {
+      font-family: var(--serif); font-size: clamp(18px, 4vw, 22px); line-height: 1.35;
+      color: var(--charcoal); max-width: 440px; margin: 0 auto 16px;
+    }
+    .cmp-verdict-summary {
+      font-family: var(--sans); font-size: 13px; line-height: 1.5;
+      color: var(--indie); max-width: 440px; margin: 0 auto 18px;
+    }
+    .cmp-verdict-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 400px; margin: 0 auto; }
+    .cmp-verdict-card {
+      padding: 12px 14px; border-radius: 10px;
+      background: rgba(255,255,255,0.6); text-align: left;
+    }
+    .cmp-verdict-card.better { background: rgba(74,143,92,0.08); }
+    .cmp-verdict-card-label { font-family: var(--serif); font-size: 16px; color: var(--charcoal); margin-bottom: 4px; }
+    .cmp-verdict-card-tag {
+      display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px;
+      border-radius: 12px; width: fit-content;
+    }
+    .cmp-verdict-card-tag.t-good { background: var(--good-soft); color: var(--good); }
+    .cmp-verdict-card-tag.t-okay { background: var(--caution-soft); color: var(--caution); }
+    .cmp-verdict-card-tag.t-weak { background: rgba(193,77,60,0.1); color: var(--flag); }
+    .cmp-verdict-card-name { font-size: 10px; color: var(--indie); margin-bottom: 6px; font-weight: 600; letter-spacing: 0.04em; }
+    .cmp-worry-mini { display: flex; align-items: center; gap: 6px; margin-top: 8px; }
+    .cmp-worry-mini-dots { display: flex; gap: 3px; }
+    .cmp-worry-mini-dots .wd { width: 7px; height: 7px; border-radius: 50%; border: 1.5px solid var(--cream-deep); background: transparent; }
+    .cmp-worry-mini-dots .wd.filled { border-color: currentColor; background: currentColor; }
+    .cmp-worry-mini.wl-low .wd.filled { color: var(--good); }
+    .cmp-worry-mini.wl-medium .wd.filled { color: var(--caution); }
+    .cmp-worry-mini.wl-high .wd.filled { color: var(--flag); }
+    .cmp-worry-mini-label { font-size: 10px; color: var(--indie); }
+    .cmp-category-note {
+      font-size: 11px; color: var(--indie); text-align: center;
+      padding: 0 28px 8px; font-style: italic; margin-top: -8px;
+    }
+
+    /* --- Scorecard: metric comparison grid --- */
+    .cmp-scorecard { padding: 24px 20px 16px; }
+    .cmp-scorecard-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--indie); margin-bottom: 14px;
+      text-align: center;
+    }
+    .cmp-scorecard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .cmp-metric-card {
+      background: white; border-radius: 12px; border: 1px solid var(--cream-deep);
+      padding: 14px 16px; position: relative; overflow: hidden;
+    }
+    .cmp-metric-card.win-a { border-left: 3px solid rgba(74,143,92,0.3); }
+    .cmp-metric-card.win-b { border-right: 3px solid rgba(74,143,92,0.3); }
+    .cmp-metric-card.card-wide { grid-column: 1 / -1; }
+    .cmp-metric-name {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--indie); margin-bottom: 2px;
+    }
+    .cmp-metric-ref {
+      font-size: 9px; color: rgba(139,115,85,0.5); margin-bottom: 12px; line-height: 1.3;
+    }
+    .cmp-metric-vals { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+    .cmp-metric-col { flex: 1; min-width: 0; }
+    .cmp-metric-col:last-child { text-align: right; }
+    .cmp-metric-val {
+      font-family: var(--serif); font-size: 15px; color: var(--charcoal);
+      line-height: 1.3; word-break: break-word;
+    }
+    .cmp-metric-val.winner { color: var(--good); font-weight: 600; }
+    .cmp-metric-who {
+      font-size: 9px; color: rgba(139,115,85,0.5); margin-top: 2px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+
+    /* --- Nutrition section --- */
+    .cmp-section {
+      padding: 20px 28px; border-bottom: 1px solid var(--cream-deep);
+    }
+    .cmp-section-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--indie); margin-bottom: 14px;
+    }
+    .cmp-table { width: 100%; border-collapse: separate; border-spacing: 0; }
+    .cmp-table th {
+      font-size: 10px; font-weight: 600; color: var(--indie); text-align: left;
+      padding: 6px 0; border-bottom: 1px solid var(--cream-deep);
+    }
+    .cmp-table th:not(:first-child) { text-align: center; }
+    .cmp-table td {
+      padding: 10px 0; border-bottom: 1px solid rgba(222,213,198,0.4);
+      font-size: 13px; color: var(--charcoal); vertical-align: middle;
+    }
+    .cmp-table td:not(:first-child) { text-align: center; font-family: var(--serif); font-size: 15px; }
+    .cmp-table tr:last-child td { border-bottom: none; }
+    .cmp-table .metric-name { font-weight: 600; font-size: 12px; }
+    .cmp-table .metric-ref { font-size: 10px; color: var(--indie); display: block; font-weight: 400; }
+    .cmp-table .s-good { color: var(--good); }
+    .cmp-table .s-caution { color: var(--caution); }
+    .cmp-table .s-missing { color: var(--flag); }
+
+    /* --- Actions --- */
+    .cmp-actions {
+      padding: 20px; display: flex; flex-direction: column; gap: 10px;
+    }
+    .cmp-action-row { display: flex; gap: 10px; }
+    .cmp-action-btn {
+      flex: 1; padding: 12px 16px; border-radius: 10px; border: 1.5px solid var(--cream-deep);
+      background: white; font-family: var(--sans); font-size: 12px; font-weight: 600;
+      color: var(--charcoal); cursor: pointer; text-align: center; transition: all 0.15s;
+    }
+    .cmp-action-btn:hover { border-color: var(--ginger); background: rgba(224,138,58,0.04); }
+    .cmp-share-btn {
+      width: 100%; padding: 10px 16px; border-radius: 10px; border: 1.5px solid var(--cream-deep);
+      background: white; font-family: var(--sans); font-size: 11px; font-weight: 600;
+      color: var(--indie); cursor: pointer; text-align: center; transition: all 0.15s;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .cmp-share-btn:hover { border-color: var(--ginger); color: var(--charcoal); }
+
+    .cmp-same-warning {
+      text-align: center; padding: 40px 28px; color: var(--indie);
+      font-family: var(--serif); font-size: 16px; line-height: 1.5;
+    }
+
+    .cmp-expand-toggle {
+      width: 100%; padding: 14px 28px; border: none; border-bottom: 1px solid var(--cream-deep);
+      background: none; font-family: var(--sans); font-size: 10px; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--indie);
+      cursor: pointer; display: flex; align-items: center; justify-content: space-between;
+      transition: background 0.15s;
+    }
+    .cmp-expand-toggle:hover { background: rgba(222,213,198,0.12); }
+    .cmp-expand-toggle .cmp-arrow { transition: transform 0.2s; font-size: 12px; }
+    .cmp-expand-toggle.open .cmp-arrow { transform: rotate(180deg); }
+    .cmp-expand-body { display: none; }
+    .cmp-expand-body.open { display: block; }
+
+    @media (max-width: 600px) {
+      .cmp-header { padding: 20px 20px 16px; gap: 6px; }
+      .cmp-product-img { width: 38px; height: 38px; }
+      .cmp-product-title { font-size: 12px; }
+      .cmp-vs { width: 24px; height: 24px; font-size: 10px; }
+      .cmp-verdict-banner { margin: 16px 16px 0; padding: 22px 18px 20px; }
+      .cmp-verdict-insight { font-size: 17px; }
+      .cmp-scorecard { padding: 20px 16px 12px; }
+      .cmp-section { padding: 16px 20px; }
+      .cmp-actions { padding: 16px; }
+    }
+    @media (max-width: 380px) {
+      .cmp-product-title { font-size: 11px; -webkit-line-clamp: 1; }
+      .cmp-product-brand { font-size: 9px; }
+      .cmp-verdict-grid { gap: 8px; }
+      .cmp-verdict-card { padding: 10px 12px; }
+      .cmp-scorecard-grid { grid-template-columns: 1fr; }
+      .cmp-metric-card { padding: 12px 14px; }
+    }
+
+    /* Compare button in verdict hero */
+    .v2-compare-btn {
+      position: absolute; top: 18px; right: 100px;
+      display: flex; align-items: center; gap: 4px;
+      padding: 6px 12px; border-radius: 20px; border: 1.5px solid rgba(139,115,85,0.2);
+      background: rgba(255,255,255,0.6); backdrop-filter: blur(4px);
+      font-family: var(--sans); font-size: 11px; font-weight: 600;
+      color: var(--indie); cursor: pointer; transition: all 0.15s;
+    }
+    .v2-compare-btn:hover { border-color: var(--ginger); color: var(--charcoal); background: rgba(255,255,255,0.85); }
+    .v2-verdict-hero.v-weak .v2-compare-btn,
+    .v2-verdict-hero.v-flag .v2-compare-btn {
+      border-color: rgba(252,239,213,0.2); color: var(--cream); background: rgba(255,255,255,0.08);
+    }
+    .v2-verdict-hero.v-weak .v2-compare-btn:hover,
+    .v2-verdict-hero.v-flag .v2-compare-btn:hover {
+      background: rgba(255,255,255,0.18); border-color: var(--ginger); color: var(--ginger);
+    }
+    @media (max-width: 640px) {
+      .v2-compare-btn { top: 14px; right: auto; left: 14px; padding: 6px 8px; }
+      .v2-compare-btn span { display: none; }
     }
 
     /* Recently viewed cards (replaces brand chips) */
@@ -2459,6 +2704,14 @@
               </div>
 
               <div class="v2-verdict-hero" id="oVerdictHero">
+                <button class="v2-compare-btn" id="oCompareBtn" type="button" onclick="openCompareFromReport()" aria-label="Compare with another food">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <line x1="18" y1="20" x2="18" y2="10"></line>
+                    <line x1="12" y1="20" x2="12" y2="4"></line>
+                    <line x1="6" y1="20" x2="6" y2="14"></line>
+                  </svg>
+                  <span>Compare with another</span>
+                </button>
                 <button class="v2-share-btn" id="oShareBtn" type="button" onclick="shareCurrentReport()" aria-label="Share this report">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <circle cx="18" cy="5" r="3"></circle>
@@ -2538,6 +2791,16 @@
                 <div id="oMetrics"></div>
               </div>
             </div>
+          </div>
+
+          <!-- ═══ COMPARISON VIEW ═══ -->
+          <div class="v2-compare" id="compareView">
+            <div class="cmp-header" id="cmpHeader">
+              <div class="cmp-product" id="cmpProductA" onclick="exitCompareToReport('a')"></div>
+              <div class="cmp-vs">vs</div>
+              <div id="cmpSlotB"></div>
+            </div>
+            <div id="cmpBody"></div>
           </div>
 
           <div class="overlay-sniff-another">
@@ -2764,9 +3027,12 @@
         if (id === 'overlayContent') el.classList.toggle('hide', state !== 'content');
         else el.classList.toggle('show', state === key);
       });
+      var cmpView = document.getElementById('compareView');
+      if (cmpView && !compareMode) cmpView.classList.remove('show');
     }
 
     async function openOverlaySlug(slug) {
+      if (compareMode) exitCompare();
       const backdrop = document.getElementById('overlayBackdrop');
       backdrop.classList.add('show');
       document.body.style.overflow = 'hidden';
@@ -2888,8 +3154,9 @@
       if (e && e.target && e.target !== e.currentTarget) return;
       document.getElementById('overlayBackdrop').classList.remove('show');
       document.body.style.overflow = '';
-      // Also hide any open autocomplete (from overlay search)
       hideAutocomplete('overlaySearchInput');
+      hideAutocomplete('cmpSearchInput');
+      if (compareMode) exitCompare();
       history.replaceState(null, '', window.location.pathname);
     }
     // Esc to close overlay (when not in autocomplete)
@@ -2897,9 +3164,11 @@
       if (e.key === 'Escape') {
         const backdrop = document.getElementById('overlayBackdrop');
         if (backdrop && backdrop.classList.contains('show')) {
-          // If autocomplete is open in overlay search, that handler will catch Escape first
           const overlayAc = document.getElementById('overlaySearchInputAc');
           if (overlayAc && overlayAc.classList.contains('show')) return;
+          const cmpAc = document.getElementById('cmpSearchInputAc');
+          if (cmpAc && cmpAc.classList.contains('show')) { hideAutocomplete('cmpSearchInput'); return; }
+          if (compareMode) { exitCompare(); openOverlaySlug(compareProductA?.slug || currentProduct?.slug); return; }
           closeOverlay({ target: backdrop, currentTarget: backdrop });
         }
       }
@@ -3172,27 +3441,31 @@
         dropdown.classList.add('show');
         return;
       }
+      const isCmp = inputId === 'cmpSearchInput';
       dropdown.innerHTML = results.map(r => {
         const brandShort = ((r.brand||'').split(' · ')[0] || '').slice(0, 10);
         const img = r.image_url
           ? `<img src="${r.image_url}" alt="${r.title||''}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=&quot;img-fallback&quot; style=&quot;font-size:9px&quot;>${brandShort}</div>'">`
           : `<div class="img-fallback" style="font-size:9px">${brandShort}</div>`;
-        return `<div class="ac-item" tabindex="-1" onclick="document.getElementById('${inputId}').value='';hideAutocomplete('${inputId}');openOverlaySlug('${r.slug}')">` +
+        const action = isCmp
+          ? `hideAutocomplete('${inputId}');selectCompareProduct('${r.slug}')`
+          : `document.getElementById('${inputId}').value='';hideAutocomplete('${inputId}');openOverlaySlug('${r.slug}')`;
+        return `<div class="ac-item" tabindex="-1" onclick="${action}">` +
           `<div class="ac-item-img">${img}</div>` +
           `<div class="ac-item-info"><div class="ac-item-brand">${r.brand||''}</div><div class="ac-item-title">${r.title||''}</div></div>` +
         `</div>`;
-      }).join('') + `<div class="ac-fallback" onclick="document.getElementById('${inputId}').blur();searchFood('${q.replace(/'/g,"\\'")}')">Sniff "${q}" anyway →</div>`;
+      }).join('') + (isCmp ? '' : `<div class="ac-fallback" onclick="document.getElementById('${inputId}').blur();searchFood('${q.replace(/'/g,"\\'")}')">Sniff "${q}" anyway →</div>`);
       dropdown.classList.add('show');
     }
     // Re-position any visible dropdowns on scroll/resize
     window.addEventListener('scroll', () => {
-      ['searchInput','ctaInput','overlaySearchInput'].forEach(id => {
+      ['searchInput','ctaInput','overlaySearchInput','cmpSearchInput'].forEach(id => {
         const d = document.getElementById(id + 'Ac');
         if (d && d.classList.contains('show')) positionAutocomplete(id);
       });
     }, true);
     window.addEventListener('resize', () => {
-      ['searchInput','ctaInput','overlaySearchInput'].forEach(id => {
+      ['searchInput','ctaInput','overlaySearchInput','cmpSearchInput'].forEach(id => {
         const d = document.getElementById(id + 'Ac');
         if (d && d.classList.contains('show')) positionAutocomplete(id);
       });
@@ -3272,10 +3545,16 @@
     // URL hash + query support — open overlay if hash or ?p= matches a product slug
     function handleHash() {
       const hash = window.location.hash.slice(1);
+      if (hash.startsWith('compare/')) {
+        const parts = hash.split('/');
+        if (parts.length >= 3 && parts[1] && parts[2]) {
+          openCompareFromUrl(decodeURIComponent(parts[1]), decodeURIComponent(parts[2]));
+          return;
+        }
+      }
       const qp = new URLSearchParams(window.location.search).get('p');
       const slug = hash || qp;
       if (!slug) return;
-      // Came in via a share link? log the referred-search event.
       if (document.referrer && !document.referrer.includes(location.host)) {
         logShareEvent('share_referred_search', slug, 'link');
       }
@@ -3678,6 +3957,10 @@
             <div class="v2-alt-improvements">${imps.map(i => `<div class="v2-alt-imp">${i}</div>`).join('')}</div>
             ${priceHtml}
           </div>
+          <div class="v2-alt-footer" onclick="event.stopPropagation();openCompareWithAlt('${alt.slug}',event)" onkeydown="event.stopPropagation()" role="button" tabindex="0">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            <span>Compare with yours</span>
+          </div>
         </div>`;
       }).join('');
 
@@ -3686,6 +3969,593 @@
         product_slug: product.slug,
         alternatives_count: alts.length,
         alternative_slugs: alts.map(a => a.slug)
+      });
+    }
+
+    // ═══ COMPARISON VIEW ═══
+    var compareMode;
+    var compareProductA;
+    var compareProductB;
+    if (!compareMode) { compareMode = false; compareProductA = null; compareProductB = null; }
+
+    function openCompareFromReport() {
+      compareProductA = currentProduct;
+      compareProductB = null;
+      compareMode = true;
+      posthog.capture('comparison_opened', { source: 'report', product_a_slug: compareProductA?.slug });
+      renderCompareView();
+    }
+
+    function openCompareWithAlt(slug, ev) {
+      if (ev) { ev.stopPropagation(); ev.preventDefault(); }
+      compareProductA = currentProduct;
+      compareProductB = null;
+      compareMode = true;
+      posthog.capture('comparison_opened', { source: 'alternative', product_a_slug: compareProductA?.slug });
+      renderCompareView();
+      sbFetchOne(slug).then(function(p) {
+        if (!p) return;
+        compareProductB = p;
+        renderCompareView();
+      });
+    }
+
+    function openCompareFromUrl(slugA, slugB) {
+      const backdrop = document.getElementById('overlayBackdrop');
+      backdrop.classList.add('show');
+      document.body.style.overflow = 'hidden';
+      document.querySelector('.overlay-scroll').scrollTop = 0;
+      showOverlayState('content');
+      compareMode = true;
+      posthog.capture('comparison_opened', { source: 'url', product_a_slug: slugA });
+      Promise.all([sbFetchOne(slugA), sbFetchOne(slugB)]).then(function(results) {
+        compareProductA = results[0];
+        compareProductB = results[1];
+        renderCompareView();
+      });
+    }
+
+    function renderCompareView() {
+      var view = document.getElementById('compareView');
+      var content = document.getElementById('overlayContent');
+      var card = content.closest('.overlay-card');
+      // Hide normal report + loader states, show compare
+      content.classList.add('hide');
+      document.querySelectorAll('.overlay-loading, .overlay-edge-state').forEach(function(el) { el.classList.remove('show'); });
+      view.classList.add('show');
+      document.querySelector('.overlay-scroll').scrollTop = 0;
+
+      // Product A header
+      renderCmpProductSlot('cmpProductA', compareProductA);
+
+      // Product B — either show search or render product
+      var slotB = document.getElementById('cmpSlotB');
+      if (!compareProductB) {
+        slotB.className = 'cmp-search-slot';
+        slotB.innerHTML = '<div class="cmp-search-field"><input type="text" placeholder="Search a food to compare…" id="cmpSearchInput" autocomplete="off"></div>';
+        slotB.onclick = null;
+        setupAutocomplete('cmpSearchInput');
+        document.getElementById('cmpSearchInput').focus();
+        document.getElementById('cmpBody').innerHTML = '<div class="cmp-search-prompt">Search for any cat food to see how it stacks up.</div>';
+        updateCompareHash();
+        return;
+      }
+
+      slotB.className = 'cmp-product';
+      slotB.onclick = function() { exitCompareToReport('b'); };
+      renderCmpProductSlot('cmpSlotB', compareProductB);
+
+      // Same product?
+      if (compareProductA && compareProductB && compareProductA.slug === compareProductB.slug) {
+        document.getElementById('cmpBody').innerHTML = '<div class="cmp-same-warning">That\'s the same food! Pick a different one to compare.</div>';
+        updateCompareHash();
+        return;
+      }
+
+      // Build comparison body
+      var html = '';
+      var aA = compareProductA.analysis || {};
+      var aB = compareProductB.analysis || {};
+
+      // Category mismatch note
+      if (compareProductA.category !== compareProductB.category) {
+        html += '<div class="cmp-category-note">Different food types — portions and nutrition targets differ.</div>';
+      }
+
+      // Verdict banner
+      html += buildVerdictBanner(compareProductA, compareProductB);
+
+      // Scorecard: metric comparison grid
+      html += buildScorecard(compareProductA, compareProductB);
+
+      // Expandable all-metrics
+      html += buildMetricsToggle(compareProductA, compareProductB);
+
+      // Actions
+      var nameA = shortTitle(compareProductA);
+      var nameB = shortTitle(compareProductB);
+      html += '<div class="cmp-actions">';
+      html += '<div class="cmp-action-row">';
+      html += '<button class="cmp-action-btn" onclick="exitCompareToReport(\'a\')">' + nameA + '\'s full report</button>';
+      html += '<button class="cmp-action-btn" onclick="exitCompareToReport(\'b\')">' + nameB + '\'s full report</button>';
+      html += '</div>';
+      if (compareProductA.slug !== '__api__' && compareProductB.slug !== '__api__') {
+        html += '<button class="cmp-share-btn" onclick="shareComparison()">';
+        html += '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>';
+        html += '<span>Share this comparison</span></button>';
+      }
+      html += '</div>';
+
+      document.getElementById('cmpBody').innerHTML = html;
+      updateCompareHash();
+
+      posthog.capture('comparison_viewed', {
+        product_a_slug: compareProductA.slug,
+        product_b_slug: compareProductB.slug
+      });
+    }
+
+    function renderCmpProductSlot(containerId, product) {
+      var el = document.getElementById(containerId);
+      if (!product) { el.innerHTML = ''; return; }
+      var brandShort = ((product.brand || '').split(' · ')[0] || '').slice(0, 16);
+      var imgHtml = product.image_url
+        ? '<img src="' + product.image_url + '" alt="' + (product.title || '') + '" loading="lazy" onerror="this.parentElement.innerHTML=\'' + brandShort + '\'">'
+        : brandShort;
+      el.innerHTML =
+        '<div class="cmp-product-img">' + imgHtml + '</div>' +
+        '<div class="cmp-product-info">' +
+          '<div class="cmp-product-brand">' + (product.brand || '') + '</div>' +
+          '<div class="cmp-product-title">' + (product.title || '') + '</div>' +
+        '</div>';
+    }
+
+    function shortTitle(product) {
+      var t = product.title || product.brand || '';
+      return t.length > 20 ? t.slice(0, 18) + '…' : t;
+    }
+
+    function buildComparisonInsight(pA, pB) {
+      var aA = pA.analysis || {};
+      var aB = pB.analysis || {};
+      var vLabelA = (aA.verdict?.label || '').replace(/\.$/, '');
+      var vLabelB = (aB.verdict?.label || '').replace(/\.$/, '');
+      var vRankA = VERDICT_RANK[vLabelA] || 0;
+      var vRankB = VERDICT_RANK[vLabelB] || 0;
+      var gap = Math.abs(vRankA - vRankB);
+      var priceA = parsePrice100g(aA.price);
+      var priceB = parsePrice100g(aB.price);
+      var proteinA = parseMetricNum(getMetric(aA, 'protein'));
+      var proteinB = parseMetricNum(getMetric(aB, 'protein'));
+      var nameA = shortTitle(pA);
+      var nameB = shortTitle(pB);
+      var better = vRankA >= vRankB ? nameA : nameB;
+      var worse = vRankA >= vRankB ? nameB : nameA;
+      var betterPrice = vRankA >= vRankB ? priceA : priceB;
+      var worsePrice = vRankA >= vRankB ? priceB : priceA;
+
+      if (gap >= 3) {
+        return better + ' is a clear upgrade over ' + worse + '.';
+      }
+      if (gap === 2) {
+        var extra = (betterPrice && worsePrice && betterPrice > worsePrice)
+          ? ' Costs more, but you get what you pay for.' : '';
+        return better + ' is the better pick.' + extra;
+      }
+      if (gap === 1) {
+        var priceBit = '';
+        if (betterPrice && worsePrice && betterPrice > worsePrice) {
+          priceBit = ' It costs more — but the quality is there.';
+        } else if (betterPrice && worsePrice && betterPrice < worsePrice) {
+          priceBit = ' And it costs less.';
+        }
+        return better + ' is the stronger pick here.' + priceBit;
+      }
+      // Same verdict — compare on specifics
+      var advantages = [];
+      if (proteinA && proteinB && proteinA - proteinB >= 3) advantages.push(nameA + ' has more protein');
+      if (proteinB && proteinA && proteinB - proteinA >= 3) advantages.push(nameB + ' has more protein');
+      if (priceA && priceB && priceB - priceA >= 10) advantages.push(nameA + ' costs less');
+      if (priceA && priceB && priceA - priceB >= 10) advantages.push(nameB + ' costs less');
+      if (advantages.length >= 2) return 'Same verdict — but ' + advantages[0] + ', while ' + advantages[1] + '.';
+      if (advantages.length === 1) return 'Same verdict, but ' + advantages[0] + '.';
+      return 'Nearly identical. Go with whichever your cat eats better.';
+    }
+
+    function buildComparisonSummary(pA, pB) {
+      var aA = pA.analysis || {};
+      var aB = pB.analysis || {};
+      var vRankA = VERDICT_RANK[(aA.verdict?.label || '').replace(/\.$/, '')] || 0;
+      var vRankB = VERDICT_RANK[(aB.verdict?.label || '').replace(/\.$/, '')] || 0;
+      if (vRankA === vRankB) return '';
+      var winA = vRankA > vRankB;
+      var wA = winA ? aA : aB;
+      var lA = winA ? aB : aA;
+      var wName = shortTitle(winA ? pA : pB);
+      var reasons = [];
+      var wProt = parseMetricNum(getMetric(wA, 'protein'));
+      var lProt = parseMetricNum(getMetric(lA, 'protein'));
+      if (wProt && lProt && wProt > lProt) reasons.push('more protein');
+      var wCarbs = parseMetricNum(getMetric(wA, 'carb'));
+      var lCarbs = parseMetricNum(getMetric(lA, 'carb'));
+      if (wCarbs && lCarbs && wCarbs < lCarbs) reasons.push('fewer empty carbs');
+      var wIng = getMetric(wA, 'first ingredient');
+      var lIng = getMetric(lA, 'first ingredient');
+      if (wIng?.status === 'good' && lIng?.status !== 'good') reasons.push('real meat over fillers');
+      var wTaur = getMetric(wA, 'taurine');
+      var lTaur = getMetric(lA, 'taurine');
+      if (wTaur?.status === 'good' && lTaur?.status !== 'good') reasons.push('taurine on the label');
+      if (!reasons.length) return '';
+      var r = reasons.slice(0, 3);
+      if (r.length === 1) return r[0].charAt(0).toUpperCase() + r[0].slice(1) + ' — ' + wName + ' feeds your cat better.';
+      var last = r.pop();
+      var sentence = r.length === 1 ? r[0] + ' and ' + last : r.join(', ') + ', and ' + last;
+      return sentence.charAt(0).toUpperCase() + sentence.slice(1) + ' — ' + wName + ' is better nutrition for your cat.';
+    }
+
+    function buildComparisonChips(pA, pB) {
+      var chips = [];
+      var aA = pA.analysis || {};
+      var aB = pB.analysis || {};
+      var protA = parseMetricNum(getMetric(aA, 'protein'));
+      var protB = parseMetricNum(getMetric(aB, 'protein'));
+      if (protA && protB && Math.abs(protA - protB) >= 2) {
+        if (protA > protB) chips.push({ text: '+' + (protA - protB) + '% protein', cls: 'favor-a' });
+        else chips.push({ text: '+' + (protB - protA) + '% protein', cls: 'favor-b' });
+      }
+      var carbA = parseMetricNum(getMetric(aA, 'carb'));
+      var carbB = parseMetricNum(getMetric(aB, 'carb'));
+      if (carbA && carbB && Math.abs(carbA - carbB) >= 3) {
+        if (carbA < carbB) chips.push({ text: (carbB - carbA) + '% fewer carbs', cls: 'favor-a' });
+        else chips.push({ text: (carbA - carbB) + '% fewer carbs', cls: 'favor-b' });
+      }
+      var priceA = parsePrice100g(aA.price);
+      var priceB = parsePrice100g(aB.price);
+      if (priceA && priceB && Math.abs(priceA - priceB) >= 5) {
+        if (priceA < priceB) chips.push({ text: '₹' + (priceB - priceA) + ' cheaper', cls: 'favor-a' });
+        else chips.push({ text: '₹' + (priceA - priceB) + ' cheaper', cls: 'favor-b' });
+      }
+      var ingA = getMetric(aA, 'first ingredient');
+      var ingB = getMetric(aB, 'first ingredient');
+      if (ingA && ingB && ingA.status !== ingB.status) {
+        if (ingA.status === 'good') chips.push({ text: 'Named meat first', cls: 'favor-a' });
+        else if (ingB.status === 'good') chips.push({ text: 'Named meat first', cls: 'favor-b' });
+      }
+      var taurA = getMetric(aA, 'taurine');
+      var taurB = getMetric(aB, 'taurine');
+      if (taurA && taurB && (taurA.status === 'good') !== (taurB.status === 'good')) {
+        if (taurA.status === 'good') chips.push({ text: 'Taurine disclosed', cls: 'favor-a' });
+        else chips.push({ text: 'Taurine disclosed', cls: 'favor-b' });
+      }
+      return chips.slice(0, 5);
+    }
+
+    function verdictTagClass(verdict) {
+      var lc = (verdict?.labelClass || 'vp-okay');
+      if (lc === 'vp-good') return 't-good';
+      if (lc === 'vp-weak') return 't-weak';
+      return 't-okay';
+    }
+
+    function worryMiniHtml(worry) {
+      var w = worry || { filled: 1, level: 'low', label: '' };
+      var html = '<div class="cmp-worry-mini wl-' + (w.level || 'low') + '">';
+      html += '<div class="cmp-worry-mini-dots">';
+      for (var i = 1; i <= 4; i++) html += '<span class="wd' + (i <= (w.filled || 0) ? ' filled' : '') + '"></span>';
+      html += '</div>';
+      html += '<div class="cmp-worry-mini-label">' + (w.label || '') + '</div>';
+      html += '</div>';
+      return html;
+    }
+
+    function buildVerdictBanner(pA, pB) {
+      var aA = pA.analysis || {};
+      var aB = pB.analysis || {};
+      var vA = aA.verdict || {};
+      var vB = aB.verdict || {};
+      var vRankA = VERDICT_RANK[(vA.label || '').replace(/\.$/, '')] || 0;
+      var vRankB = VERDICT_RANK[(vB.label || '').replace(/\.$/, '')] || 0;
+      var gap = Math.abs(vRankA - vRankB);
+      var tone = gap >= 1 ? 'tone-clear' : 'tone-same';
+      var betterA = vRankA > vRankB;
+      var betterB = vRankB > vRankA;
+
+      var html = '<div class="cmp-verdict-banner ' + tone + '">';
+      html += '<div class="cmp-verdict-insight">' + buildComparisonInsight(pA, pB) + '</div>';
+      var summary = buildComparisonSummary(pA, pB);
+      if (summary) html += '<div class="cmp-verdict-summary">' + summary + '</div>';
+      html += '<div class="cmp-verdict-grid">';
+
+      // Card A
+      html += '<div class="cmp-verdict-card' + (betterA ? ' better' : '') + '">';
+      html += '<div class="cmp-verdict-card-name">' + shortTitle(pA).toUpperCase() + '</div>';
+      html += '<div class="cmp-verdict-card-label">' + (vA.label || '—') + '</div>';
+      if (vA.tag) html += '<div class="cmp-verdict-card-tag ' + verdictTagClass(vA) + '">' + vA.tag + '</div>';
+      html += worryMiniHtml(aA.worry);
+      html += '</div>';
+
+      // Card B
+      html += '<div class="cmp-verdict-card' + (betterB ? ' better' : '') + '">';
+      html += '<div class="cmp-verdict-card-name">' + shortTitle(pB).toUpperCase() + '</div>';
+      html += '<div class="cmp-verdict-card-label">' + (vB.label || '—') + '</div>';
+      if (vB.tag) html += '<div class="cmp-verdict-card-tag ' + verdictTagClass(vB) + '">' + vB.tag + '</div>';
+      html += worryMiniHtml(aB.worry);
+      html += '</div>';
+
+      html += '</div></div>';
+      return html;
+    }
+
+    function buildScorecard(pA, pB) {
+      var aA = pA.analysis || {};
+      var aB = pB.analysis || {};
+      var nameA = shortTitle(pA);
+      var nameB = shortTitle(pB);
+      var cards = [];
+
+      var protA = getMetric(aA, 'protein');
+      var protB = getMetric(aB, 'protein');
+      var protNA = parseMetricNum(protA);
+      var protNB = parseMetricNum(protB);
+      cards.push({
+        name: 'Protein', ref: 'Min 26% for adults',
+        valA: protA ? protA.value : '—', valB: protB ? protB.value : '—',
+        winA: protNA && protNB && protNA > protNB,
+        winB: protNA && protNB && protNB > protNA
+      });
+
+      var carbA = getMetric(aA, 'carb');
+      var carbB = getMetric(aB, 'carb');
+      var carbNA = parseMetricNum(carbA);
+      var carbNB = parseMetricNum(carbB);
+      cards.push({
+        name: 'Carbs', ref: 'Wild prey ≈ 5%',
+        valA: carbA ? carbA.value : '—', valB: carbB ? carbB.value : '—',
+        winA: carbNA && carbNB && carbNA < carbNB,
+        winB: carbNA && carbNB && carbNB < carbNA
+      });
+
+      var ingA = getMetric(aA, 'first ingredient');
+      var ingB = getMetric(aB, 'first ingredient');
+      cards.push({
+        name: '1st ingredient', ref: 'Named meat = better',
+        valA: (ingA ? ingA.value : null) || aA.ing || '—',
+        valB: (ingB ? ingB.value : null) || aB.ing || '—',
+        winA: ingA && ingB && ingA.status === 'good' && ingB.status !== 'good',
+        winB: ingA && ingB && ingB.status === 'good' && ingA.status !== 'good',
+        wide: true
+      });
+
+      var priceA = parsePrice100g(aA.price);
+      var priceB = parsePrice100g(aB.price);
+      if (priceA || priceB) {
+        cards.push({
+          name: 'Price', ref: 'per 100g',
+          valA: priceA ? '₹' + priceA : '—', valB: priceB ? '₹' + priceB : '—',
+          winA: priceA && priceB && priceA < priceB,
+          winB: priceA && priceB && priceB < priceA
+        });
+      }
+
+      var taurA = getMetric(aA, 'taurine');
+      var taurB = getMetric(aB, 'taurine');
+      if (taurA || taurB) {
+        cards.push({
+          name: 'Taurine', ref: 'Min 0.10% AAFCO',
+          valA: taurA ? taurA.value : 'Not disclosed',
+          valB: taurB ? taurB.value : 'Not disclosed',
+          winA: taurA && taurA.status === 'good' && (!taurB || taurB.status !== 'good'),
+          winB: taurB && taurB.status === 'good' && (!taurA || taurA.status !== 'good')
+        });
+      }
+
+      var html = '<div class="cmp-scorecard">';
+      html += '<div class="cmp-scorecard-label">Head-to-head</div>';
+      html += '<div class="cmp-scorecard-grid">';
+      cards.forEach(function(c) {
+        var cls = c.winA ? ' win-a' : c.winB ? ' win-b' : '';
+        if (c.wide) cls += ' card-wide';
+        html += '<div class="cmp-metric-card' + cls + '">';
+        html += '<div class="cmp-metric-name">' + c.name + '</div>';
+        html += '<div class="cmp-metric-ref">' + c.ref + '</div>';
+        html += '<div class="cmp-metric-vals">';
+        html += '<div class="cmp-metric-col"><div class="cmp-metric-val' + (c.winA ? ' winner' : '') + '">' + c.valA + '</div><div class="cmp-metric-who">' + nameA + '</div></div>';
+        html += '<div class="cmp-metric-col"><div class="cmp-metric-val' + (c.winB ? ' winner' : '') + '">' + c.valB + '</div><div class="cmp-metric-who">' + nameB + '</div></div>';
+        html += '</div></div>';
+      });
+      html += '</div></div>';
+      return html;
+    }
+
+    function buildKeyDiffItems(pA, pB) {
+      var items = [];
+      var aA = pA.analysis || {};
+      var aB = pB.analysis || {};
+      var protA = parseMetricNum(getMetric(aA, 'protein'));
+      var protB = parseMetricNum(getMetric(aB, 'protein'));
+      if (protA && protB && Math.abs(protA - protB) >= 2) {
+        items.push({ metric: 'Protein', valA: protA + '%', valB: protB + '%', winA: protA > protB, winB: protB > protA });
+      }
+      var carbA = parseMetricNum(getMetric(aA, 'carb'));
+      var carbB = parseMetricNum(getMetric(aB, 'carb'));
+      if (carbA && carbB && Math.abs(carbA - carbB) >= 3) {
+        items.push({ metric: 'Carbs', valA: '~' + carbA + '%', valB: '~' + carbB + '%', winA: carbA < carbB, winB: carbB < carbA });
+      }
+      var priceA = parsePrice100g(aA.price);
+      var priceB = parsePrice100g(aB.price);
+      if (priceA && priceB && Math.abs(priceA - priceB) >= 5) {
+        items.push({ metric: 'Price', valA: '₹' + priceA, valB: '₹' + priceB, winA: priceA < priceB, winB: priceB < priceA });
+      }
+      var ingA = getMetric(aA, 'first ingredient');
+      var ingB = getMetric(aB, 'first ingredient');
+      if (ingA && ingB && ingA.status !== ingB.status) {
+        items.push({ metric: '1st ingredient', valA: ingA.value || '—', valB: ingB.value || '—', winA: ingA.status === 'good', winB: ingB.status === 'good' });
+      }
+      var taurA = getMetric(aA, 'taurine');
+      var taurB = getMetric(aB, 'taurine');
+      if (taurA && taurB && (taurA.status === 'good') !== (taurB.status === 'good')) {
+        items.push({ metric: 'Taurine', valA: taurA.value || 'Not disclosed', valB: taurB.value || 'Not disclosed', winA: taurA.status === 'good', winB: taurB.status === 'good' });
+      }
+      return items.slice(0, 5);
+    }
+
+    function buildKeyDiffsSection(pA, pB) {
+      var items = buildKeyDiffItems(pA, pB);
+      if (!items.length) return '';
+      var html = '<div class="cmp-diffs">';
+      html += '<div class="cmp-diffs-label">Key differences</div>';
+      html += '<div class="cmp-diff-list">';
+      items.forEach(function(d) {
+        html += '<div class="cmp-diff-item">';
+        html += '<div class="cmp-diff-val' + (d.winA ? ' winner' : '') + '">' + d.valA + '</div>';
+        html += '<div class="cmp-diff-metric">' + d.metric + '</div>';
+        html += '<div class="cmp-diff-val' + (d.winB ? ' winner' : '') + '">' + d.valB + '</div>';
+        html += '</div>';
+      });
+      html += '</div></div>';
+      return html;
+    }
+
+    function buildNutritionTable(pA, pB) {
+      var aA = pA.analysis || {};
+      var aB = pB.analysis || {};
+      var nameA = shortTitle(pA);
+      var nameB = shortTitle(pB);
+
+      var rows = [];
+      var protA = getMetric(aA, 'protein');
+      var protB = getMetric(aB, 'protein');
+      rows.push({ name: 'Protein', ref: 'Min 26% for adults', valA: protA?.value || '—', valB: protB?.value || '—', sA: protA?.status, sB: protB?.status });
+
+      var carbA = getMetric(aA, 'carb');
+      var carbB = getMetric(aB, 'carb');
+      rows.push({ name: 'Carbs', ref: 'Wild prey ≈ 5%', valA: carbA?.value || '—', valB: carbB?.value || '—', sA: carbA?.status, sB: carbB?.status });
+
+      var priceA = parsePrice100g(aA.price);
+      var priceB = parsePrice100g(aB.price);
+      if (priceA || priceB) {
+        var pBetter = (priceA && priceB) ? (priceA <= priceB ? 'good' : 'caution') : null;
+        var pBetterB = (priceA && priceB) ? (priceB <= priceA ? 'good' : 'caution') : null;
+        rows.push({ name: 'Price', ref: 'per 100g', valA: priceA ? '₹' + priceA : '—', valB: priceB ? '₹' + priceB : '—', sA: pBetter, sB: pBetterB });
+      }
+
+      var ingA = getMetric(aA, 'first ingredient');
+      var ingB = getMetric(aB, 'first ingredient');
+      rows.push({ name: '1st ingredient', ref: 'Named meat = better', valA: ingA?.value || aA.ing || '—', valB: ingB?.value || aB.ing || '—', sA: ingA?.status, sB: ingB?.status });
+
+      var taurA = getMetric(aA, 'taurine');
+      var taurB = getMetric(aB, 'taurine');
+      if (taurA || taurB) {
+        rows.push({ name: 'Taurine', ref: 'Min 0.10% AAFCO', valA: taurA?.value || 'Not disclosed', valB: taurB?.value || 'Not disclosed', sA: taurA?.status || 'missing', sB: taurB?.status || 'missing' });
+      }
+
+      var html = '<div class="cmp-section">';
+      html += '<div class="cmp-section-label">Nutrition breakdown</div>';
+      html += '<table class="cmp-table"><thead><tr><th></th><th>' + nameA + '</th><th>' + nameB + '</th></tr></thead><tbody>';
+      rows.forEach(function(r) {
+        var clsA = r.sA ? ' class="s-' + r.sA + '"' : '';
+        var clsB = r.sB ? ' class="s-' + r.sB + '"' : '';
+        html += '<tr>';
+        html += '<td><span class="metric-name">' + r.name + '</span><span class="metric-ref">' + r.ref + '</span></td>';
+        html += '<td' + clsA + '>' + r.valA + '</td>';
+        html += '<td' + clsB + '>' + r.valB + '</td>';
+        html += '</tr>';
+      });
+      html += '</tbody></table></div>';
+      return html;
+    }
+
+    function buildMetricsToggle(pA, pB) {
+      var aA = pA.analysis || {};
+      var aB = pB.analysis || {};
+      var metricsA = aA.metrics || [];
+      var metricsB = aB.metrics || [];
+      if (!metricsA.length && !metricsB.length) return '';
+      var allNames = [];
+      var nameSet = {};
+      metricsA.concat(metricsB).forEach(function(m) {
+        var n = (m.name || '').toLowerCase();
+        if (n && !nameSet[n]) { nameSet[n] = true; allNames.push(m.name); }
+      });
+
+      var tableHtml = '<table class="cmp-table"><thead><tr><th></th><th>' + shortTitle(pA) + '</th><th>' + shortTitle(pB) + '</th></tr></thead><tbody>';
+      allNames.forEach(function(name) {
+        var mA = metricsA.find(function(m) { return (m.name || '').toLowerCase() === name.toLowerCase(); });
+        var mB = metricsB.find(function(m) { return (m.name || '').toLowerCase() === name.toLowerCase(); });
+        var clsA = mA?.status ? ' class="s-' + mA.status + '"' : '';
+        var clsB = mB?.status ? ' class="s-' + mB.status + '"' : '';
+        tableHtml += '<tr><td><span class="metric-name">' + name + '</span></td>';
+        tableHtml += '<td' + clsA + '>' + (mA?.value || '—') + '</td>';
+        tableHtml += '<td' + clsB + '>' + (mB?.value || '—') + '</td></tr>';
+      });
+      tableHtml += '</tbody></table>';
+
+      return '<button class="cmp-expand-toggle" id="cmpMetricsToggle" onclick="toggleCmpMetrics()">' +
+        '<span>All metrics</span><span class="cmp-arrow">&#9662;</span></button>' +
+        '<div class="cmp-expand-body cmp-section" id="cmpMetricsBody">' + tableHtml + '</div>';
+    }
+
+    function toggleCmpMetrics() {
+      var btn = document.getElementById('cmpMetricsToggle');
+      var body = document.getElementById('cmpMetricsBody');
+      if (btn) btn.classList.toggle('open');
+      if (body) body.classList.toggle('open');
+    }
+
+    function exitCompare() {
+      compareMode = false;
+      compareProductA = null;
+      compareProductB = null;
+      document.getElementById('compareView').classList.remove('show');
+      document.getElementById('overlayContent').classList.remove('hide');
+    }
+
+    function exitCompareToReport(which) {
+      var product = which === 'b' ? compareProductB : compareProductA;
+      if (!product) return;
+      posthog.capture('comparison_full_report_clicked', {
+        clicked_product: product.slug,
+        other_product: (which === 'b' ? compareProductA : compareProductB)?.slug
+      });
+      exitCompare();
+      openOverlaySlug(product.slug);
+    }
+
+    function updateCompareHash() {
+      if (compareProductA && compareProductB) {
+        history.replaceState(null, '', '#compare/' + compareProductA.slug + '/' + compareProductB.slug);
+      } else if (compareProductA) {
+        history.replaceState(null, '', '#compare/' + compareProductA.slug);
+      }
+    }
+
+    function shareComparison() {
+      if (!compareProductA || !compareProductB) return;
+      var url = window.location.origin + '/#compare/' + compareProductA.slug + '/' + compareProductB.slug;
+      var text = 'Compare: ' + (compareProductA.title || '') + ' vs ' + (compareProductB.title || '') + ' — ' + url;
+      if (navigator.share) {
+        navigator.share({ title: 'Sniff comparison', text: text, url: url }).catch(function() {});
+      } else {
+        copyToClipboard(url).then(function(ok) {
+          showShareToast(ok ? 'Comparison link copied' : 'Couldn\'t copy — link shown');
+        });
+      }
+      posthog.capture('comparison_shared', {
+        product_a_slug: compareProductA.slug,
+        product_b_slug: compareProductB.slug
+      });
+    }
+
+    function selectCompareProduct(slug) {
+      sbFetchOne(slug).then(function(p) {
+        if (!p) return;
+        compareProductB = p;
+        posthog.capture('comparison_product_b_selected', {
+          product_a_slug: compareProductA?.slug,
+          product_b_slug: slug,
+          source: 'search'
+        });
+        renderCompareView();
       });
     }
 
