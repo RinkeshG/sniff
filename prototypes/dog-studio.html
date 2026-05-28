@@ -3,116 +3,65 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Dog studio</title>
+<title>Dog studio v3</title>
 <style>
   :root { --ginger:#E08A3A; --charcoal:#2A2725; --cream:#F5F0E5; }
   * { box-sizing:border-box; margin:0; }
   body { background:var(--charcoal); color:var(--cream); font-family:system-ui, sans-serif; padding:32px; }
-  h1 { font-weight:600; font-size:16px; letter-spacing:0.04em; margin-bottom:6px; }
-  p.note { color:#B8A88E; font-size:13px; margin-bottom:28px; }
-  .grid { display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:24px; max-width:1100px; }
+  h1 { font-weight:600; font-size:16px; margin-bottom:6px; }
+  p.note { color:#B8A88E; font-size:13px; margin-bottom:24px; max-width:760px; }
+  .grid { display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:20px; max-width:1000px; }
   .cell { background:#221f1d; border:1px solid #3D3835; border-radius:16px; padding:14px; }
+  .cell.ref { border-color: var(--ginger); }
   .cell svg { width:100%; height:auto; color:var(--ginger); display:block; }
-  .lab { font-size:12px; letter-spacing:0.12em; text-transform:uppercase; color:#B8A88E; margin-top:10px; font-weight:600; }
-  .ref { border-color: var(--ginger); }
+  .lab { font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:#B8A88E; margin-top:10px; font-weight:600; }
 </style>
 </head>
 <body>
-  <h1>Dog studio — line-art candidates</h1>
-  <p class="note">All on the same scale &amp; stroke as the cat. Each candidate sits to the LEFT of the shared bowl, facing right.</p>
+  <h1>Dog studio v3 — blunt muzzle, short neck, big floppy ear</h1>
+  <p class="note">The fix for "it looks like a duck": a blunt boxy muzzle (not a pointed beak), a short thick neck (not a bird neck), and one big obvious hanging ear — the mark that reads unmistakably as dog.</p>
   <div class="grid">
 
-    <!-- ░░ REFERENCE: the existing cat ░░ -->
+    <!-- cat reference -->
     <div class="cell ref">
-      <svg viewBox="0 0 240 210" fill="none" stroke="currentColor">
-        <!-- cat (mirrored from hero, facing right for comparison kept facing left as-is) -->
-        <g transform="translate(20,-20)">
-          <g><path d="M170 30 C167 56 156 82 140 102 C126 118 110 126 95 123 C84 120 76 116 68 108" stroke-width="3" stroke-linecap="round"/></g>
-          <path d="M68 108 C62 102 54 101 51 106 C46 113 46 123 52 129 C58 135 68 133 76 127" stroke-width="3" stroke-linecap="round"/>
-          <path d="M58 99 L54 78 L66 96" stroke-width="2.5" stroke-linejoin="round"/>
-          <path d="M70 101 L76 79 L77 98" stroke-width="2.5" stroke-linejoin="round"/>
-          <ellipse cx="54" cy="116" rx="1.5" ry="4.5" fill="currentColor" stroke="none"/>
-          <circle cx="48" cy="122" r="1.5" fill="currentColor" stroke="none"/>
-          <g><line x1="46" y1="119" x2="24" y2="112" stroke-width="1.2" opacity="0.4"/><line x1="46" y1="123" x2="22" y2="122" stroke-width="1.2" opacity="0.4"/><line x1="46" y1="127" x2="24" y2="134" stroke-width="1.2" opacity="0.4"/></g>
-          <path d="M76 127 C86 135 104 142 122 140 C138 137 152 125 160 112" stroke-width="3" stroke-linecap="round"/>
-          <line x1="94" y1="140" x2="92" y2="198" stroke-width="2.5" stroke-linecap="round"/>
-          <line x1="112" y1="142" x2="114" y2="198" stroke-width="2.5" stroke-linecap="round"/>
-          <line x1="146" y1="128" x2="149" y2="198" stroke-width="2.5" stroke-linecap="round"/>
+      <svg viewBox="0 0 260 220" fill="none" stroke="currentColor">
+        <g transform="translate(30,8)">
+          <g><path d="M168 24 C165 50 154 76 138 96 C124 112 108 120 93 117 C82 114 74 110 66 102" stroke-width="3" stroke-linecap="round"/></g>
+          <path d="M66 102 C60 96 52 95 49 100 C44 107 44 117 50 123 C56 129 66 127 74 121" stroke-width="3" stroke-linecap="round"/>
+          <path d="M56 93 L52 72 L64 90" stroke-width="2.5" stroke-linejoin="round"/>
+          <path d="M68 95 L74 73 L75 92" stroke-width="2.5" stroke-linejoin="round"/>
+          <ellipse cx="52" cy="110" rx="1.5" ry="4.5" fill="currentColor" stroke="none"/>
+          <circle cx="46" cy="116" r="1.5" fill="currentColor" stroke="none"/>
+          <g><line x1="44" y1="113" x2="22" y2="106" stroke-width="1.2" opacity="0.4"/><line x1="44" y1="117" x2="20" y2="116" stroke-width="1.2" opacity="0.4"/><line x1="44" y1="121" x2="22" y2="128" stroke-width="1.2" opacity="0.4"/></g>
+          <path d="M74 121 C84 129 102 136 120 134 C136 131 150 119 158 106" stroke-width="3" stroke-linecap="round"/>
+          <line x1="92" y1="134" x2="90" y2="198" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="110" y1="136" x2="112" y2="198" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="144" y1="122" x2="147" y2="198" stroke-width="2.5" stroke-linecap="round"/>
         </g>
       </svg>
       <div class="lab">Reference · the cat</div>
     </div>
 
-    <!-- ░░ A: SITTING dog, profile, head up ░░ -->
+    <!-- F: sitting dog, blunt muzzle + big floppy ear + short neck -->
     <div class="cell">
-      <svg viewBox="0 0 240 210" fill="none" stroke="currentColor">
-        <!-- tail curling behind the haunch -->
-        <g><path d="M72 150 C56 148 44 134 46 117 C47 108 55 104 62 108" stroke-width="3.2" stroke-linecap="round"/></g>
-        <!-- spine: nape down the back to the haunch -->
-        <path d="M150 72 C146 86 135 95 120 101 C103 108 88 120 84 138" stroke-width="3" stroke-linecap="round"/>
-        <!-- haunch (rounded seat) down to ground, then along ground to front paws -->
-        <path d="M120 101 C98 110 78 128 76 152 C75 166 83 176 98 178 L168 178" stroke-width="3" stroke-linecap="round"/>
-        <!-- front legs (chest to ground) -->
-        <line x1="156" y1="120" x2="156" y2="178" stroke-width="3" stroke-linecap="round"/>
-        <line x1="168" y1="122" x2="168" y2="178" stroke-width="3" stroke-linecap="round"/>
-        <!-- chest front: throat down to the front legs -->
-        <path d="M150 98 C152 108 154 116 156 120" stroke-width="3" stroke-linecap="round"/>
-        <!-- head + muzzle -->
-        <path d="M142 66 C140 52 151 43 164 46 C175 49 180 59 177 69 C184 72 191 77 194 83 C196 88 192 93 186 91 C181 90 176 87 173 86 C168 92 159 94 151 90 C143 86 139 76 142 67 Z" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-        <!-- floppy ear -->
-        <path d="M150 49 C139 52 132 67 136 84 C138 93 147 94 152 88" stroke-width="2.5" stroke-linecap="round"/>
-        <!-- eye + nose -->
-        <circle cx="161" cy="63" r="2.6" fill="currentColor" stroke="none"/>
-        <ellipse cx="191" cy="86" rx="2.8" ry="3.2" fill="currentColor" stroke="none"/>
+      <svg viewBox="0 0 260 220" fill="none" stroke="currentColor">
+        <!-- tail: soft curl behind the haunch -->
+        <g><path d="M78 162 C62 160 52 146 54 130 C55 121 64 118 71 123" stroke-width="3" stroke-linecap="round"/></g>
+        <!-- back → haunch → seat (one smooth line) -->
+        <path d="M170 104 C162 120 146 130 126 136 C100 144 80 158 78 178 C77 188 86 196 100 196 L182 196" stroke-width="3" stroke-linecap="round"/>
+        <!-- chest front → front paw -->
+        <path d="M170 106 C170 128 170 160 170 196" stroke-width="3" stroke-linecap="round"/>
+        <!-- second front leg, just behind -->
+        <path d="M152 138 C153 160 154 178 154 196" stroke-width="3" stroke-linecap="round"/>
+        <!-- HEAD: rounded skull + BLUNT boxy muzzle (short, thick neck) -->
+        <path d="M168 102 C161 91 165 79 178 78 C190 77 198 84 196 94 L215 96 C220 96 220 103 215 104 L197 103 C191 108 180 108 174 103 Z" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- BIG floppy ear hanging down the side of the face -->
+        <path d="M176 80 C164 83 158 101 165 119 C168 127 177 127 181 118 C183 110 182 89 180 82" stroke-width="2.6" stroke-linecap="round"/>
+        <!-- eye + nose (nose at the blunt front of the muzzle) -->
+        <circle cx="186" cy="91" r="2.4" fill="currentColor" stroke="none"/>
+        <ellipse cx="212" cy="98" rx="2.8" ry="3.2" fill="currentColor" stroke="none"/>
       </svg>
-      <div class="lab">A · sitting, head up</div>
-    </div>
-
-    <!-- ░░ B: SITTING dog, looking down toward bowl ░░ -->
-    <div class="cell">
-      <svg viewBox="0 0 240 210" fill="none" stroke="currentColor">
-        <g><path d="M70 150 C54 149 42 136 44 119 C45 110 53 106 60 110" stroke-width="3.2" stroke-linecap="round"/></g>
-        <!-- spine -->
-        <path d="M138 88 C136 100 127 110 113 116 C97 123 84 132 80 148" stroke-width="3" stroke-linecap="round"/>
-        <!-- haunch to ground to front paws -->
-        <path d="M113 116 C92 124 74 140 73 162 C72 174 80 182 95 182 L170 182" stroke-width="3" stroke-linecap="round"/>
-        <!-- front legs -->
-        <line x1="158" y1="128" x2="158" y2="182" stroke-width="3" stroke-linecap="round"/>
-        <line x1="170" y1="130" x2="170" y2="182" stroke-width="3" stroke-linecap="round"/>
-        <!-- chest -->
-        <path d="M152 116 C155 122 157 126 158 128" stroke-width="3" stroke-linecap="round"/>
-        <!-- head lowered toward bowl (muzzle down-right) -->
-        <path d="M138 86 C132 74 135 60 147 56 C158 52 168 58 170 69 C171 75 170 80 167 83 C173 88 180 95 183 103 C185 108 181 112 175 110 C170 108 166 104 163 101 C158 107 149 108 143 102 C137 97 135 92 138 88 Z" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-        <!-- floppy ear hanging forward -->
-        <path d="M150 58 C140 62 135 76 140 90 C142 98 150 98 154 92" stroke-width="2.5" stroke-linecap="round"/>
-        <circle cx="158" cy="72" r="2.6" fill="currentColor" stroke="none"/>
-        <ellipse cx="180" cy="104" rx="2.8" ry="3.2" fill="currentColor" stroke="none"/>
-      </svg>
-      <div class="lab">B · sitting, nose to bowl</div>
-    </div>
-
-    <!-- ░░ C: standing, alert, tail up (proud) ░░ -->
-    <div class="cell">
-      <svg viewBox="0 0 240 210" fill="none" stroke="currentColor">
-        <!-- tail up -->
-        <g><path d="M58 118 C46 108 40 92 44 76 C46 68 53 66 58 71" stroke-width="3.2" stroke-linecap="round"/></g>
-        <!-- topline: rump → back → withers → neck -->
-        <path d="M58 118 C54 104 60 96 74 95 C104 92 130 96 144 108 C150 113 156 120 160 127" stroke-width="3" stroke-linecap="round"/>
-        <!-- chest + belly -->
-        <path d="M176 146 C180 156 180 160 178 164 C146 174 96 174 66 160" stroke-width="3" stroke-linecap="round"/>
-        <!-- head up, alert (muzzle forward, slightly up) -->
-        <path d="M160 126 C156 116 160 104 172 101 C183 98 193 104 195 115 C195 119 194 123 192 126 C198 128 205 130 210 133 C213 135 211 140 205 139 C200 138 196 137 193 136 C189 141 181 143 174 140 C166 137 160 132 160 126 Z" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-        <!-- floppy ear -->
-        <path d="M172 103 C162 105 156 118 160 132 C162 140 170 141 175 135" stroke-width="2.5" stroke-linecap="round"/>
-        <circle cx="183" cy="116" r="2.5" fill="currentColor" stroke="none"/>
-        <ellipse cx="207" cy="136" rx="2.7" ry="3" fill="currentColor" stroke="none"/>
-        <!-- legs: front pair + back pair -->
-        <line x1="166" y1="146" x2="164" y2="186" stroke-width="3" stroke-linecap="round"/>
-        <line x1="178" y1="148" x2="179" y2="186" stroke-width="3" stroke-linecap="round"/>
-        <path d="M74 150 C73 162 71 176 74 186" stroke-width="3" stroke-linecap="round"/>
-        <path d="M90 151 C89 163 88 176 90 186" stroke-width="3" stroke-linecap="round"/>
-      </svg>
-      <div class="lab">C · standing, alert</div>
+      <div class="lab">F · sitting · blunt muzzle + big ear</div>
     </div>
 
   </div>
