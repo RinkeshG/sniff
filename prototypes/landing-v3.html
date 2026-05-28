@@ -1,0 +1,1168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sniff · honest pet food checker — India</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ginger: #E08A3A;
+    --ginger-deep: #C06E22;
+    --ginger-soft: #FCEBD4;
+    --indie: #8B7355;
+    --indie-soft: #B8A88E;
+    --charcoal: #2A2725;
+    --charcoal-soft: #3D3835;
+    --cream: #F5F0E5;
+    --cream-deep: #EAE3D2;
+    --tabby: #C4A67D;
+    --tabby-soft: #E8DCC8;
+    --good: #4A8F5C;
+    --caution: #C68A2C;
+    --flag: #B33A2A;
+    --serif: 'Young Serif', Georgia, serif;
+    --sans: 'Sora', system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { overflow-x: hidden; }
+  body {
+    background: var(--cream);
+    color: var(--charcoal);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ════════════════ HERO — centered vertical ════════════════ */
+  .hero {
+    background: var(--charcoal);
+    color: var(--cream);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hero-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 40px;
+  }
+  .mark { font-family: var(--serif); font-size: 28px; color: var(--cream); }
+  .mark .dot {
+    color: var(--ginger); font-size: 0.7em; vertical-align: 0.1em;
+    display: inline-block; animation: eyeBlink 4s ease-in-out infinite;
+  }
+  @keyframes eyeBlink {
+    0%, 92%, 100% { transform: scaleY(1); opacity: 1; }
+    95% { transform: scaleY(0.1); opacity: 0.6; }
+  }
+  .hero-nav-tag {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--indie-soft);
+  }
+
+  .hero-center {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 24px 64px;
+    text-align: center;
+  }
+
+  /* illustration: centered above text */
+  .hero-ill {
+    width: 100%; max-width: 400px;
+    margin-bottom: 32px;
+    opacity: 0; animation: fadeScale 1s 0.2s ease-out forwards;
+  }
+  .hero-ill svg { width: 100%; color: var(--ginger); }
+
+  .hero h1 {
+    font-family: var(--serif);
+    font-size: clamp(40px, 7vw, 72px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+    max-width: 640px;
+    opacity: 0; animation: rise 0.8s 0.4s ease-out forwards;
+  }
+  .hero h1 .accent { color: var(--ginger); }
+
+  .hero-sub {
+    font-size: 16px; color: var(--indie-soft); max-width: 440px;
+    margin-bottom: 36px; line-height: 1.6;
+    opacity: 0; animation: rise 0.8s 0.6s ease-out forwards;
+  }
+
+  .search-wrap { opacity: 0; animation: rise 0.8s 0.8s ease-out forwards; width: 100%; max-width: 500px; position: relative; }
+  .search-label {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--ginger); margin-bottom: 12px;
+  }
+  .search-field {
+    display: flex; background: var(--charcoal-soft);
+    border: 1.5px solid var(--indie); border-radius: 10px; overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .search-field:focus-within { border-color: var(--ginger); }
+  .search-field input {
+    flex: 1; background: transparent; border: none;
+    font-family: var(--sans); font-size: 16px; color: var(--cream);
+    padding: 16px 20px; outline: none;
+  }
+  .search-field input::placeholder { color: var(--indie-soft); }
+  .search-btn {
+    background: var(--ginger); border: none; color: var(--charcoal);
+    font-family: var(--sans); font-weight: 700; font-size: 13px;
+    letter-spacing: 0.08em; padding: 0 28px; cursor: pointer;
+    transition: background 0.2s; text-transform: uppercase;
+  }
+  .search-btn:hover { background: var(--ginger-deep); }
+
+  .hero-chips {
+    display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; justify-content: center;
+    opacity: 0; animation: rise 0.8s 1.0s ease-out forwards;
+  }
+  .chip {
+    font-size: 12px; font-weight: 500; color: var(--indie-soft);
+    background: transparent; border: 1px solid var(--indie);
+    border-radius: 100px; padding: 7px 14px; cursor: pointer; transition: all 0.2s;
+    display: inline-flex; align-items: center; gap: 7px;
+  }
+  .chip:hover { border-color: var(--ginger); color: var(--ginger); background: rgba(224,138,58,0.08); }
+  .chip-tag {
+    font-size: 8px; letter-spacing: 0.14em; text-transform: uppercase;
+    font-weight: 700; color: var(--indie);
+    padding: 2px 5px; border-radius: 3px; background: rgba(139,115,85,0.18);
+  }
+
+  .hero-trust {
+    margin-top: 24px; font-size: 12px; color: var(--indie-soft); letter-spacing: 0.02em;
+    opacity: 0; animation: rise 0.8s 1.2s ease-out forwards;
+  }
+  .hero-trust .sep { color: var(--indie); margin: 0 8px; opacity: 0.5; }
+
+  /* ════════════════ SVG ANIMATIONS ════════════════ */
+
+  /* shared */
+  @keyframes wisp { 0%,100% { opacity: 0.2; transform: translateY(0); } 50% { opacity: 0.6; transform: translateY(-5px); } }
+  .wisp { animation: wisp 2.2s ease-in-out infinite; }
+  .wisp:nth-child(2) { animation-delay: 0.5s; }
+
+  /* cat */
+  @keyframes catTail { 0%,100% { transform: rotate(0); } 50% { transform: rotate(2.5deg); } }
+  .cat-tail { animation: catTail 4s ease-in-out infinite; transform-origin: 355px 155px; }
+
+  @keyframes catSniff {
+    0%, 75%, 100% { transform: translate(0, 0) rotate(0); }
+    18% { transform: translate(-14px, 8px) rotate(-6deg); }
+    30%, 50% { transform: translate(-18px, 10px) rotate(-9deg); }
+    60% { transform: translate(-8px, 4px) rotate(-3deg); }
+  }
+  .cat-head { animation: catSniff 7s ease-in-out infinite; transform-origin: 325px 148px; }
+
+  @keyframes whiskerTwitch { 0%,90%,100% { transform: rotate(0); } 93% { transform: rotate(1.5deg); } 96% { transform: rotate(-1deg); } }
+  .cat-whiskers { animation: whiskerTwitch 5s ease-in-out infinite; transform-origin: 304px 159px; }
+
+  /* dog */
+  @keyframes dogWag { 0%,100% { transform: rotate(-10deg); } 50% { transform: rotate(12deg); } }
+  .dog-tail { animation: dogWag 0.5s ease-in-out infinite; transform-origin: 80px 142px; }
+
+  @keyframes dogBob {
+    0%, 65%, 100% { transform: translateY(0) rotate(0); }
+    20% { transform: translateY(3px) rotate(2deg); }
+    40% { transform: translateY(1px) rotate(-1deg); }
+  }
+  .dog-head { animation: dogBob 2.4s ease-in-out infinite; transform-origin: 176px 150px; }
+
+  /* ——— easter-egg interactions ——— */
+  /* clickable / hoverable hotspots */
+  .hot { fill: transparent; stroke: none; cursor: pointer; }
+  @media (hover: none) { .hot { cursor: default; } }
+
+  /* floating SVG captions */
+  .cap {
+    fill: var(--ginger); stroke: none;
+    font-family: var(--serif); font-size: 15px; font-style: italic;
+    opacity: 0; pointer-events: none;
+  }
+  .cap.play { animation: capPop 1.5s ease-out forwards; }
+  @keyframes capPop {
+    0%   { opacity: 0; transform: translateY(5px); }
+    18%  { opacity: 1; transform: translateY(-1px); }
+    72%  { opacity: 1; transform: translateY(-4px); }
+    100% { opacity: 0; transform: translateY(-12px); }
+  }
+
+  /* boop the dog */
+  .d-nose { transform-box: fill-box; transform-origin: center; }
+  .d-nose.boop { animation: noseSquish 0.45s ease-out; }
+  @keyframes noseSquish { 0% { transform: scale(1); } 35% { transform: scale(1.55); } 65% { transform: scale(0.82); } 100% { transform: scale(1); } }
+  .d-eye { transform-box: fill-box; transform-origin: center; }
+  .d-eye.blink { animation: eyeShut 0.32s ease-out; }
+  @keyframes eyeShut { 0%,100% { transform: scaleY(1); } 45% { transform: scaleY(0.12); } }
+  .dog-tail.fast { animation: dogWag 0.17s ease-in-out infinite; }
+
+  /* dog gets excited at the bowl */
+  .dog.eager { animation: dogHop 0.5s ease-in-out infinite; transform-origin: 130px 228px; }
+  @keyframes dogHop { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+  .dog.eager .dog-tail { animation: dogWag 0.17s ease-in-out infinite; }
+  .dog.eager .wisp { opacity: 0.55; animation-duration: 1.1s; }
+
+  /* boop the cat — indignant */
+  .c-ear { transform-box: fill-box; transform-origin: bottom; }
+  .c-ear.flick { animation: earFlick 0.4s ease-out; }
+  @keyframes earFlick { 0%,100% { transform: rotate(0); } 40% { transform: rotate(-16deg); } }
+  .c-eye { transform-box: fill-box; transform-origin: center; }
+  .c-eye.squint { animation: catSquint 0.6s ease-out; }
+  @keyframes catSquint { 0%,100% { transform: scaleY(1); } 40% { transform: scaleY(0.35); } }
+  .cat-tail.snap { animation: tailSnap 0.5s ease-out; }
+  @keyframes tailSnap { 0% { transform: rotate(0); } 30% { transform: rotate(7deg); } 60% { transform: rotate(-4deg); } 100% { transform: rotate(0); } }
+
+  /* cat stays aloof while the dog loses it — a slow blink */
+  .cat.aloof .c-eye { animation: slowBlink 2.6s ease-in-out infinite; }
+  @keyframes slowBlink { 0%,38%,62%,100% { transform: scaleY(1); } 50% { transform: scaleY(0.12); } }
+
+  /* kibble jiggle when the bowl is "noticed" */
+  .bowl-grp.jiggle .kibble { animation: kibbleJiggle 0.5s ease-in-out infinite; }
+  @keyframes kibbleJiggle { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-1.5px); } }
+  .kibble { transform-box: fill-box; transform-origin: center; }
+
+  /* "Good human." affirmation toast */
+  .good-human {
+    position: absolute; left: 50%; top: -46px; transform: translate(-50%, 8px);
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--ginger); color: #fff;
+    font-family: var(--serif); font-size: 15px;
+    padding: 8px 16px 8px 12px; border-radius: 999px;
+    box-shadow: 0 8px 22px rgba(224,138,58,0.35);
+    opacity: 0; visibility: hidden; pointer-events: none;
+    transition: opacity 0.35s ease, transform 0.45s cubic-bezier(.2,1.3,.4,1), visibility 0.35s;
+    white-space: nowrap; z-index: 4;
+  }
+  .good-human.show { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
+  .good-human svg { width: 18px; height: 18px; color: #fff; flex-shrink: 0; }
+
+  /* general */
+  @keyframes rise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeScale { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+
+  /* ════════════════ JOURNEY — same execution as live site ════════════════ */
+  .journey { background: var(--cream-deep); padding: 96px 40px 80px; }
+  .journey-inner { max-width: 1100px; margin: 0 auto; }
+  .journey-h {
+    font-family: var(--serif); font-size: clamp(30px, 5vw, 42px);
+    letter-spacing: -0.015em; line-height: 1.15; text-align: center; margin-bottom: 10px;
+  }
+  .journey-sub { font-size: 14px; color: var(--indie); text-align: center; margin-bottom: 56px; line-height: 1.55; }
+  .journey-moments { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; align-items: start; }
+
+  /* vet card */
+  .jm-vet {
+    position: relative; background: white; border-radius: 16px;
+    padding: 24px 22px 20px; border-left: 3px solid var(--good);
+    box-shadow: 0 2px 12px rgba(42,39,37,0.06);
+  }
+  .jm-vet::after {
+    content: ''; position: absolute; left: 20px; bottom: -8px;
+    width: 14px; height: 14px; background: white; transform: rotate(45deg);
+    border-radius: 0 0 3px 0; box-shadow: 2px 2px 4px rgba(42,39,37,0.04);
+  }
+  .jm-tag { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--indie-soft); margin-bottom: 12px; }
+  .jm-quote { font-family: var(--serif); font-size: 22px; color: var(--charcoal); line-height: 1.3; margin-bottom: 12px; }
+  .jm-context { font-size: 14px; color: var(--indie); line-height: 1.55; }
+
+  /* instagram card */
+  .jm-ig { background: #1a1a1a; border-radius: 14px; padding: 20px 22px; box-shadow: 0 2px 12px rgba(0,0,0,0.15); }
+  .jm-ig-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .jm-ig-avatar { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, var(--ginger), var(--ginger-deep)); flex-shrink: 0; }
+  .jm-ig-user { font-size: 13px; font-weight: 600; color: #e4e4e4; }
+  .jm-ig-time { font-size: 12px; color: #666; margin-left: auto; }
+  .jm-ig-text { font-size: 14px; color: #c8c8c8; line-height: 1.55; }
+  .jm-ig-replies { font-size: 12px; color: var(--ginger); opacity: 0.5; margin-top: 12px; }
+
+  /* google search card */
+  .jm-search { background: var(--charcoal); border-radius: 16px; padding: 28px 24px 24px; text-align: center; box-shadow: 0 4px 20px rgba(42,39,37,0.15); }
+  .jm-searchbar { background: var(--charcoal-soft); border: 1px solid rgba(139,115,85,0.1); border-radius: 10px; padding: 12px 16px; text-align: left; display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .jm-search-icon { flex-shrink: 0; width: 14px; height: 14px; color: var(--indie-soft); opacity: 0.35; }
+  .jm-search-body { flex: 1; min-width: 0; }
+  .jm-search-url { font-size: 10px; color: var(--ginger); opacity: 0.45; margin-bottom: 4px; }
+  .jm-search-input { font-size: 14px; color: var(--cream); opacity: 0.6; min-height: 18px; }
+  .jm-cursor { display: inline-block; width: 1.5px; height: 16px; background: var(--ginger); margin-left: 1px; animation: jm-blink 1s step-end infinite; vertical-align: text-bottom; }
+  @keyframes jm-blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+  .jm-search-time { font-size: 11px; color: var(--indie-soft); opacity: 0.25; letter-spacing: 0.04em; }
+  .jm-search-resolve { font-family: var(--serif); font-size: 17px; color: var(--cream); opacity: 0.7; margin-top: 20px; line-height: 1.35; }
+
+  /* amazon review card */
+  .jm-review { background: white; border: 1px solid var(--tabby-soft); border-radius: 14px; padding: 22px 24px; box-shadow: 0 2px 8px rgba(42,39,37,0.05); }
+  .jm-review-stars { display: flex; align-items: center; gap: 3px; margin-bottom: 8px; }
+  .jm-review-stars svg { width: 16px; height: 16px; color: var(--ginger); }
+  .jm-review-title { font-size: 15px; font-weight: 600; color: var(--charcoal); margin-bottom: 6px; }
+  .jm-review-verified { display: inline-block; font-size: 10px; font-weight: 600; color: var(--good); letter-spacing: 0.04em; margin-bottom: 8px; }
+  .jm-review-body { font-size: 14px; color: var(--indie); line-height: 1.55; font-style: italic; }
+  .jm-review-note { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--tabby-soft); font-size: 13px; color: var(--indie-soft); font-style: italic; line-height: 1.5; }
+
+  /* payoff */
+  .journey-payoff { text-align: center; margin: 64px auto 0; max-width: 600px; }
+  .journey-doubt p { font-family: var(--serif); font-style: italic; color: var(--charcoal); opacity: 0.35; line-height: 1.7; }
+  .journey-doubt p:first-child { font-size: 20px; opacity: 0.5; margin-bottom: 6px; }
+  .journey-doubt p:not(:first-child) { font-size: 16px; }
+  .journey-divider { width: 40px; height: 2px; background: var(--ginger); margin: 32px auto; border-radius: 1px; opacity: 0.4; }
+  .journey-resolve-h { font-family: var(--serif); font-size: clamp(22px, 3.5vw, 28px); color: var(--charcoal); line-height: 1.3; margin-bottom: 20px; }
+  .journey-resolve-link { font-size: 15px; font-weight: 600; color: var(--ginger); cursor: pointer; text-decoration: none; transition: opacity 0.2s; }
+  .journey-resolve-link:hover { opacity: 0.7; }
+
+  @media (max-width: 600px) {
+    .journey { padding: 64px 20px 56px; }
+    .journey-sub { font-size: 13px; margin-bottom: 36px; }
+    .journey-moments { grid-template-columns: 1fr; gap: 20px; }
+    .jm-quote { font-size: 19px; }
+    .journey-payoff { margin-top: 48px; }
+  }
+
+  /* ════════════════ DEMO / teaser card — same execution as live site ════════════════ */
+  .demo { background: var(--cream); padding: 88px 24px 110px; }
+  .demo-intro { text-align: center; margin-bottom: 48px; }
+  .demo-tag { font-size: 11px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--ginger); margin-bottom: 16px; }
+  .demo-h { font-family: var(--serif); font-size: clamp(32px,5vw,52px); letter-spacing: -0.02em; margin-bottom: 12px; line-height: 1.1; }
+  .demo-sub { font-size: 16px; color: var(--indie); max-width: 480px; margin: 0 auto; }
+
+  .teaser-mini { max-width: 540px; margin: 0 auto; background: white; border-radius: 18px; overflow: hidden; border: 1px solid var(--tabby-soft); box-shadow: 0 4px 12px rgba(42,39,37,0.06), 0 24px 64px rgba(42,39,37,0.08); cursor: pointer; transition: transform 0.2s; }
+  .teaser-mini:hover { transform: translateY(-2px); }
+  .teaser-mini-head { display: flex; gap: 14px; padding: 20px 24px; align-items: center; border-bottom: 1px solid var(--cream-deep); }
+  .teaser-mini-img { width: 56px; height: 56px; flex-shrink: 0; border-radius: 10px; background: var(--cream-deep); overflow: hidden; display: flex; align-items: center; justify-content: center; border: 1px solid var(--tabby-soft); font-size: 26px; }
+  .teaser-mini-info { flex: 1; min-width: 0; }
+  .teaser-mini-brand { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--indie); font-weight: 700; }
+  .teaser-mini-title { font-family: var(--serif); font-size: 18px; color: var(--charcoal); margin-top: 3px; }
+  .teaser-mini-verdict { padding: 24px; }
+  .teaser-mini-verdict.v-okay { background: linear-gradient(180deg, #FBF1DD 0%, #F6E6C5 100%); }
+  .teaser-mini-vtag { font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 8px; opacity: 0.7; color: #9F6D1F; }
+  .teaser-mini-vlabel { font-family: var(--serif); font-size: 30px; line-height: 1.1; letter-spacing: -0.01em; margin-bottom: 4px; color: #9F6D1F; }
+  .teaser-mini-vsub { font-size: 12px; font-weight: 600; opacity: 0.75; color: #9F6D1F; }
+  .teaser-mini-vsummary { font-family: var(--serif); font-size: 15px; line-height: 1.5; margin-top: 12px; max-width: 420px; color: var(--charcoal); }
+  .teaser-mini-worry { padding: 18px 24px; border-top: 1px solid var(--cream-deep); background: white; }
+  .teaser-mini-worry-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .teaser-mini-dots { display: flex; gap: 5px; }
+  .teaser-mini-dots .wd { width: 8px; height: 8px; border-radius: 50%; background: transparent; border: 1.5px solid var(--indie-soft); }
+  .teaser-mini-worry.wl-medium .wd.filled { background: var(--caution); border-color: var(--caution); }
+  .teaser-mini-worry-label { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--caution); }
+  .teaser-mini-action-label { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ginger); font-weight: 700; margin-top: 8px; margin-bottom: 4px; }
+  .teaser-mini-action { font-size: 14px; line-height: 1.5; color: var(--charcoal); font-weight: 500; }
+  .teaser-mini-reasons { padding: 14px 24px 18px; border-top: 1px solid var(--cream-deep); background: white; }
+  .teaser-mini-reasons-label { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--indie); font-weight: 700; margin-bottom: 10px; }
+  .teaser-mini-reason { display: flex; gap: 10px; padding: 8px 0; align-items: center; font-size: 13px; color: var(--charcoal); }
+  .teaser-mini-reason-icon { flex-shrink: 0; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; color: white; }
+  .teaser-mini-reason.r-good .teaser-mini-reason-icon { background: var(--good); }
+  .teaser-mini-reason.r-good .teaser-mini-reason-icon::after { content: '✓'; }
+  .teaser-mini-reason.r-caution .teaser-mini-reason-icon { background: var(--caution); }
+  .teaser-mini-reason.r-caution .teaser-mini-reason-icon::after { content: '!'; }
+  .teaser-mini-reason.r-missing .teaser-mini-reason-icon { background: var(--flag); }
+  .teaser-mini-reason.r-missing .teaser-mini-reason-icon::after { content: '✕'; }
+  .teaser-mini-reason-text { font-family: var(--serif); font-size: 14px; line-height: 1.3; }
+  .teaser-mini-cta { padding: 18px 24px; text-align: center; border-top: 1px solid var(--cream-deep); background: white; }
+  .teaser-mini-cta-btn { display: inline-block; background: var(--ginger); color: var(--charcoal); font-family: var(--sans); font-weight: 700; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; padding: 11px 26px; border-radius: 10px; border: none; cursor: pointer; transition: background 0.2s; }
+  .teaser-mini-cta-btn:hover { background: var(--ginger-deep); }
+  .teaser-mini-cta-hint { font-size: 11px; color: var(--indie); margin-top: 8px; }
+
+  /* ════════════════ HOW WE JUDGE — the marked-up label ════════════════ */
+  .judge { background: var(--cream-deep); padding: 100px 24px 110px; }
+  .judge-inner { max-width: 940px; margin: 0 auto; }
+  .judge-tag { font-size: 11px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--ginger); margin-bottom: 16px; text-align: center; }
+  .judge-h { font-family: var(--serif); font-size: clamp(30px,5vw,46px); letter-spacing: -0.015em; line-height: 1.12; text-align: center; margin-bottom: 14px; }
+  .judge-sub { font-size: 15px; color: var(--indie); text-align: center; max-width: 540px; margin: 0 auto 60px; line-height: 1.6; }
+
+  .judge-layout { display: grid; grid-template-columns: minmax(0,0.95fr) minmax(0,1.05fr); gap: 52px; align-items: start; }
+
+  /* label — styled like a real (Indian) pet-food pack back panel */
+  .label-paper { background: #f7f0df; border: 1px solid #cdbf9f; border-radius: 9px; box-shadow: 0 20px 54px rgba(42,39,37,0.22); transform: rotate(-1.1deg); position: relative; overflow: hidden; font-family: var(--sans); }
+  /* coloured brand header band */
+  .label-band { background: var(--charcoal); padding: 11px 15px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .label-band-logo { display: flex; align-items: center; gap: 8px; }
+  .label-band-paw { width: 19px; height: 19px; flex-shrink: 0; color: var(--ginger); }
+  .label-redacted { width: 66px; height: 11px; border-radius: 2px; background: var(--cream); opacity: 0.9; }
+  .label-band-type { font-size: 7.5px; font-weight: 700; letter-spacing: 0.13em; text-transform: uppercase; color: var(--indie-soft); text-align: right; line-height: 1.5; }
+  /* body */
+  .label-body { padding: 15px 15px 12px; position: relative; }
+  .label-badge { float: right; width: 64px; height: 64px; margin: 0 0 8px 12px; border-radius: 50%; background: var(--ginger); color: #fff; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 8px; font-weight: 800; line-height: 1.15; letter-spacing: 0.02em; text-transform: uppercase; transform: rotate(7deg); box-shadow: 0 3px 9px rgba(42,39,37,0.18); padding: 7px; position: relative; }
+  .label-badge::after { content: ''; position: absolute; inset: -4px; border-radius: 50%; border: 1.5px dashed rgba(255,255,255,0.55); }
+  .label-badge.is-active { box-shadow: 0 0 0 4px rgba(224,138,58,0.35), 0 3px 9px rgba(42,39,37,0.18); }
+  .label-h { font-size: 8px; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; color: var(--charcoal); margin-bottom: 5px; }
+  .label-section { margin-bottom: 13px; }
+  .label-ingredients { font-size: 11.5px; line-height: 1.85; color: #4a443e; }
+  .label-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-bottom: 4px; clear: both; }
+  .label-box { border: 1px solid #cdbf9f; border-radius: 4px; padding: 8px 9px; background: #fcf8ee; }
+  .label-box-h { font-size: 7px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--indie); margin-bottom: 5px; padding-bottom: 4px; border-bottom: 1px solid #e6dcc6; }
+  .label-row { display: flex; justify-content: space-between; gap: 8px; font-size: 9.5px; color: #6b6253; padding: 1.5px 0; }
+  .label-row b { color: var(--charcoal); font-weight: 600; }
+  /* printed footer strip */
+  .label-foot { display: flex; align-items: center; gap: 10px; border-top: 1px solid #cdbf9f; padding: 9px 15px; background: #efe6d1; }
+  .label-nonveg { width: 14px; height: 14px; border: 1.5px solid #7a3b1d; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border-radius: 2px; }
+  .label-nonveg::after { content: ''; width: 7px; height: 7px; border-radius: 50%; background: #7a3b1d; }
+  .label-foot-meta { font-size: 7px; line-height: 1.55; color: var(--indie); letter-spacing: 0.02em; flex: 1; }
+  .label-barcode { width: 66px; height: 26px; flex-shrink: 0; background: repeating-linear-gradient(90deg, var(--charcoal) 0 1px, transparent 1px 3px, var(--charcoal) 3px 5px, transparent 5px 6px, var(--charcoal) 6px 8px, transparent 8px 11px, var(--charcoal) 11px 12px, transparent 12px 14px); }
+
+  .hl { background: linear-gradient(transparent 55%, rgba(224,138,58,0.34) 55%); padding: 0 1px; transition: background 0.25s; }
+  .hl.is-active { background: linear-gradient(transparent 28%, rgba(224,138,58,0.62) 28%); }
+  .hl-num { display: inline-flex; align-items: center; justify-content: center; width: 14px; height: 14px; border-radius: 50%; background: var(--ginger); color: #fff; font-size: 8.5px; font-weight: 700; vertical-align: super; margin-left: 2px; }
+
+  .judge-notes { display: flex; flex-direction: column; gap: 2px; }
+  .note { display: flex; gap: 14px; padding: 13px 14px; border-radius: 12px; transition: background 0.2s; }
+  .note.is-active { background: rgba(255,255,255,0.7); }
+  .note-num { flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%; border: 1.5px solid var(--ginger); color: var(--ginger); font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+  .note-title { font-family: var(--serif); font-size: 17px; color: var(--charcoal); line-height: 1.2; margin-bottom: 3px; }
+  .note-desc { font-size: 13px; color: var(--indie); line-height: 1.5; }
+
+  @media (max-width: 820px) {
+    .judge { padding: 72px 20px 80px; }
+    .judge-sub { margin-bottom: 40px; }
+    .judge-layout { grid-template-columns: 1fr; gap: 36px; }
+    .label-paper { transform: rotate(-0.6deg); max-width: 460px; margin: 0 auto; }
+  }
+
+  /* ════════════════ CLOSER — dark manifesto ════════════════ */
+  .closer {
+    background: var(--charcoal);
+    color: var(--cream);
+    padding: 120px 24px 104px;
+    text-align: center;
+  }
+  .closer-inner { max-width: 640px; margin: 0 auto; }
+
+  .closer h2 {
+    font-family: var(--serif);
+    font-size: clamp(36px, 7vw, 68px);
+    line-height: 1.05; letter-spacing: -0.025em;
+    margin-bottom: 20px;
+  }
+  .closer h2 .accent { color: var(--ginger); }
+
+  .closer-sub {
+    font-family: var(--serif); font-size: 19px;
+    color: var(--indie-soft); margin-bottom: 48px; line-height: 1.5;
+  }
+
+  .cta-search { max-width: 480px; margin: 0 auto; }
+  .cta-label { font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ginger); margin-bottom: 14px; }
+  .cta-field {
+    display: flex; background: var(--charcoal-soft);
+    border: 1.5px solid var(--indie); border-radius: 10px; overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .cta-field:focus-within { border-color: var(--ginger); }
+  .cta-field input {
+    flex: 1; background: transparent; border: none;
+    font-family: var(--sans); font-size: 16px; color: var(--cream);
+    padding: 18px 20px; outline: none;
+  }
+  .cta-field input::placeholder { color: var(--indie-soft); }
+  .cta-field button {
+    background: var(--ginger); border: none; color: var(--charcoal);
+    font-family: var(--sans); font-weight: 700; font-size: 14px;
+    letter-spacing: 0.08em; padding: 0 32px; cursor: pointer;
+    transition: background 0.2s; text-transform: uppercase;
+  }
+  .cta-field button:hover { background: var(--ginger-deep); }
+
+  .closer-sig {
+    font-size: 14px; color: var(--indie-soft); line-height: 1.6;
+  }
+  .closer-sig em { font-style: normal; color: var(--ginger); }
+  .closer-sig a { color: var(--ginger); text-decoration: none; border-bottom: 1px dashed var(--ginger); }
+
+  /* ════════════════ FOOTER ════════════════ */
+  .foot {
+    background: var(--cream); padding: 64px 40px 72px;
+    position: relative;
+  }
+  .foot-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: flex-start; gap: 48px; flex-wrap: wrap;
+  }
+  .foot-origin { max-width: 500px; }
+  .foot-mark { font-family: var(--serif); font-size: 24px; color: var(--charcoal); display: inline-block; margin-bottom: 16px; }
+  .foot-mark .dot { color: var(--ginger); }
+  .foot-origin-line { font-size: 14px; color: var(--indie); line-height: 1.7; margin-bottom: 14px; }
+  .foot-origin-line em { font-style: normal; color: var(--ginger); }
+  .foot-sig { font-size: 13px; color: var(--indie-soft); }
+  .foot-sig a { color: var(--ginger); text-decoration: none; border-bottom: 1px dashed var(--ginger); }
+  .foot-meta { font-size: 12px; color: var(--indie-soft); line-height: 1.95; text-align: right; }
+  .foot-meta b { color: var(--indie); font-weight: 600; }
+  @media (max-width: 640px) {
+    .foot-inner { flex-direction: column; gap: 28px; }
+    .foot-meta { text-align: left; }
+  }
+
+  /* walking cat tail */
+  .foot-tail { position: absolute; top: -30px; left: 0; right: 0; height: 42px; overflow: hidden; }
+  .foot-tail-walk {
+    position: absolute; width: 30px; height: 42px;
+    padding: 0 14px; margin-left: -14px; box-sizing: content-box;
+    cursor: pointer; animation: tailWalk 20s linear infinite;
+  }
+  .foot-tail-walk:hover { animation-play-state: paused; }
+  .foot-tail-walk::after {
+    content: 'mrrp?'; position: absolute; top: -6px; left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--serif); font-size: 13px; font-style: italic;
+    color: var(--ginger); opacity: 0; transition: opacity 0.4s;
+    pointer-events: none; white-space: nowrap;
+  }
+  .foot-tail-walk:hover::after { opacity: 0.7; }
+  @keyframes tailWalk {
+    0% { left: calc(100% + 80px); }
+    6% { left: 88%; }
+    76% { left: 5%; }
+    82% { left: calc(0% - 80px); animation-timing-function: steps(1, end); }
+    82.5%, 100% { left: calc(100% + 80px); }
+  }
+  .foot-tail-sway {
+    width: 30px; height: 100%;
+    animation: tailSway 1.3s ease-in-out infinite;
+    transform-origin: 50% 100%;
+    filter: drop-shadow(0 -2px 4px rgba(224,138,58,0.1));
+  }
+  .foot-tail-walk:hover .foot-tail-sway { animation: tailSwayFast 0.5s ease-in-out infinite; }
+  @keyframes tailSway { 0%,100% { transform: rotate(-9deg); } 50% { transform: rotate(9deg); } }
+  @keyframes tailSwayFast { 0%,100% { transform: rotate(-14deg); } 50% { transform: rotate(14deg); } }
+
+  /* ════════════════ SCROLL REVEAL ════════════════ */
+  .rv { opacity: 0; transform: translateY(22px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .rv.show { opacity: 1; transform: translateY(0); }
+  .rv.d1 { transition-delay: 0.12s; }
+  .rv.d2 { transition-delay: 0.24s; }
+  .rv.d3 { transition-delay: 0.36s; }
+
+  /* ════════════════ PAW CURSOR TRAIL ════════════════ */
+  .paw {
+    position: fixed; width: 14px; height: 16px;
+    pointer-events: none; z-index: 5;
+    animation: pawFade 1.2s ease-out forwards;
+    transform: translate(-50%, -50%);
+  }
+  .paw::before {
+    content: ''; display: block;
+    width: 9px; height: 8px;
+    background: var(--ginger); border-radius: 40% 40% 50% 50%;
+    margin: 8px auto 0; opacity: 0.3;
+  }
+  .paw::after {
+    content: ''; display: block; position: absolute;
+    top: 0; left: 1px; width: 4px; height: 4px;
+    background: var(--ginger); border-radius: 50%; opacity: 0.25;
+    box-shadow: 5px 1px 0 var(--ginger), 10px 0 0 var(--ginger);
+  }
+  @keyframes pawFade { 0% { opacity: 1; } 100% { opacity: 0; } }
+  /* every so often a bigger dog paw pads through (4 toes, wider) */
+  .paw.dog { width: 20px; height: 22px; }
+  .paw.dog::before { width: 12px; height: 10px; margin-top: 11px; opacity: 0.32; border-radius: 45% 45% 50% 50%; }
+  .paw.dog::after { width: 4.5px; height: 4.5px; left: 1px; box-shadow: 5px -1px 0 var(--ginger), 10px -1px 0 var(--ginger), 15px 1px 0 var(--ginger); }
+
+  /* ════════════════ RESPONSIVE ════════════════ */
+  @media (max-width: 768px) {
+    .hero-nav { padding: 18px 20px; }
+    .hero-center { padding: 0 20px 48px; }
+    .hero-ill { max-width: 300px; margin-bottom: 24px; }
+    .hero-sub { font-size: 15px; margin-bottom: 28px; }
+    .struggle { padding: 80px 20px 72px; }
+    .moment { margin-bottom: 56px; }
+    .m-vet-quote { font-size: clamp(22px, 5vw, 30px); }
+    .m-search-wrap { padding: 56px 20px; margin-bottom: 56px; }
+    .answer { padding: 80px 20px 72px; }
+    .closer { padding: 96px 20px; }
+  }
+
+  @media (max-width: 480px) {
+    .hero-nav-tag { font-size: 9px; letter-spacing: 0.1em; }
+    .hero-ill { max-width: 250px; margin-bottom: 20px; }
+    .hero h1 { font-size: clamp(32px, 9vw, 48px); margin-bottom: 16px; }
+    .hero-sub { font-size: 14px; max-width: 320px; }
+    .search-field { flex-direction: column; border-radius: 12px; }
+    .search-field input { padding: 16px; text-align: center; }
+    .search-btn { padding: 14px 20px; border-radius: 0 0 10px 10px; }
+    .hero-chips .chip { font-size: 11px; padding: 6px 10px; }
+    .struggle { padding: 64px 16px 56px; }
+    .moment { margin-bottom: 48px; }
+    .m-vet { padding-left: 20px; }
+    .m-social { padding: 18px 20px; }
+    .m-review { padding: 18px 20px; }
+    .pivot-doubt p:first-child { font-size: 17px; }
+    .answer { padding: 64px 16px 56px; }
+    .pr-verdict { font-size: clamp(30px, 8vw, 44px); }
+    .closer { padding: 72px 16px; }
+    .closer h2 { font-size: clamp(28px, 9vw, 48px); }
+    .closer-sub { font-size: 16px; margin-bottom: 36px; }
+    .cta-field { flex-direction: column; border-radius: 12px; }
+    .cta-field input { padding: 16px; text-align: center; }
+    .cta-field button { padding: 14px 20px; border-radius: 0 0 10px 10px; }
+    .foot { padding: 36px 16px 56px; }
+  }
+
+  @supports (padding: env(safe-area-inset-top)) {
+    .hero-nav { padding-top: max(24px, env(safe-area-inset-top)); }
+    .foot { padding-bottom: max(72px, env(safe-area-inset-bottom)); }
+  }
+</style>
+</head>
+
+<body>
+
+<!-- ════════════════════════ HERO ════════════════════════ -->
+<section class="hero">
+  <nav class="hero-nav">
+    <span class="mark">sn<span class="dot">&#9679;</span>ff</span>
+  </nav>
+
+  <div class="hero-center">
+    <!-- Dog + shared bowl + Cat — one scene -->
+    <div class="hero-ill" aria-hidden="true">
+      <svg viewBox="0 0 480 250" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor">
+
+        <!-- ——— Shared food bowl (center) ——— -->
+        <g class="bowl-grp">
+          <path d="M205 218 Q210 196 226 191 L264 191 Q280 196 285 218" stroke-width="2.5" stroke-linecap="round"/>
+          <ellipse cx="245" cy="218" rx="42" ry="10" stroke-width="2.5"/>
+          <circle class="kibble" cx="234" cy="206" r="3" fill="currentColor" opacity="0.15" stroke="none"/>
+          <circle class="kibble" cx="247" cy="204" r="3.5" fill="currentColor" opacity="0.15" stroke="none"/>
+          <circle class="kibble" cx="260" cy="207" r="2.5" fill="currentColor" opacity="0.15" stroke="none"/>
+        </g>
+
+        <!-- ——— DOG (left, standing in profile, facing right toward bowl) ——— -->
+        <g class="dog">
+          <!-- Tail — up, gently curling, wagging -->
+          <g class="dog-tail">
+            <path d="M80 142 C68 132 60 116 64 100 C66 92 73 90 78 95" stroke-width="3.2" stroke-linecap="round"/>
+          </g>
+
+          <!-- Topline: hip → flat back → withers → neck base -->
+          <path d="M80 142 C76 133 82 128 96 129 C124 127 146 130 158 138 C163 141 168 145 172 149" stroke-width="3" stroke-linecap="round"/>
+
+          <!-- Belly: chest → hip (shallow body, long legs) -->
+          <path d="M186 172 C156 179 108 179 84 170" stroke-width="3" stroke-linecap="round"/>
+
+          <!-- Head + muzzle (domed skull, clear stop, snout toward bowl) -->
+          <g class="dog-head">
+            <path d="M172 148 C169 140 175 134 185 134 C194 134 200 140 200 148 C200 151 199 154 198 156 C205 158 212 161 216 165 C219 168 217 172 212 172 C207 172 204 170 201 169 C197 173 191 174 186 171 C179 168 173 162 173 155 Z" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+
+            <!-- Floppy ear (open flap hanging down past the jaw) -->
+            <path class="d-ear" d="M186 138 C173 141 165 155 168 170 C170 180 178 182 183 175" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+            <!-- Eye — round, friendly -->
+            <circle class="d-eye" cx="193" cy="150" r="2.4" fill="currentColor" stroke="none"/>
+
+            <!-- Nose — at muzzle tip -->
+            <ellipse class="d-nose" cx="214" cy="166" rx="3" ry="3.4" fill="currentColor" opacity="0.6" stroke="none"/>
+
+            <!-- Tongue — little curl (happy dog) -->
+            <path d="M204 171 C205 177 210 178 211 173" stroke-width="2" opacity="0.45" stroke-linecap="round"/>
+
+            <!-- Sniff wisps toward bowl -->
+            <path class="wisp" d="M224 163 Q231 156 229 148" stroke-width="2" opacity="0.25" stroke-linecap="round"/>
+            <path class="wisp" d="M226 170 Q234 164 232 156" stroke-width="2" opacity="0.25" stroke-linecap="round"/>
+          </g>
+
+          <!-- Legs — front pair straight, hind pair with a slight hock bend; long & sturdy -->
+          <line x1="178" y1="174" x2="176" y2="228" stroke-width="3" stroke-linecap="round"/>
+          <line x1="192" y1="175" x2="193" y2="228" stroke-width="3" stroke-linecap="round"/>
+          <path d="M90 172 C89 188 86 208 89 228" stroke-width="3" stroke-linecap="round"/>
+          <path d="M107 173 C106 189 105 208 107 228" stroke-width="3" stroke-linecap="round"/>
+        </g>
+
+
+        <!-- ——— CAT (right, sitting upright, facing left toward bowl) ——— -->
+        <g class="cat">
+          <!-- Cat tail — thin, curving up from back, elegant arc -->
+          <g class="cat-tail">
+            <path d="M430 60 C427 86, 416 112, 400 132 C386 148, 370 156, 355 153 C344 150, 336 146, 328 138" stroke-width="3" stroke-linecap="round"/>
+          </g>
+
+          <!-- Cat head — facing left, sniffing toward bowl -->
+          <g class="cat-head">
+            <path d="M328 138 C322 132, 314 131, 311 136 C306 143, 306 153, 312 159 C318 165, 328 163, 336 157" stroke-width="3" stroke-linecap="round"/>
+
+            <!-- Ears — pointed triangles (vs dog's floppy) -->
+            <path class="c-ear" d="M318 129 L314 108 L326 126" stroke-width="2.5" stroke-linejoin="round"/>
+            <path class="c-ear" d="M330 131 L336 109 L337 128" stroke-width="2.5" stroke-linejoin="round"/>
+
+            <!-- Eye — almond shape (catlike, vs dog's round) -->
+            <ellipse class="c-eye" cx="314" cy="146" rx="1.5" ry="4.5" fill="currentColor" stroke="none"/>
+
+            <!-- Nose (tiny) -->
+            <circle class="c-nose" cx="308" cy="152" r="1.5" fill="currentColor" stroke="none"/>
+
+            <!-- Whiskers — 3 lines fanning out -->
+            <g class="cat-whiskers">
+              <line x1="306" y1="149" x2="284" y2="142" stroke-width="1.2" opacity="0.35"/>
+              <line x1="306" y1="153" x2="282" y2="152" stroke-width="1.2" opacity="0.35"/>
+              <line x1="306" y1="157" x2="284" y2="164" stroke-width="1.2" opacity="0.35"/>
+            </g>
+
+            <!-- Cat sniff wisps -->
+            <path class="wisp" d="M300 146 Q293 139 296 131" stroke-width="2" opacity="0.25" stroke-linecap="round"/>
+            <path class="wisp" d="M296 154 Q288 148 291 140" stroke-width="2" opacity="0.25" stroke-linecap="round"/>
+          </g>
+
+          <!-- Cat body — from front chest back to rear -->
+          <path d="M336 157 C346 165, 364 172, 382 170 C398 167, 412 155, 420 142" stroke-width="3" stroke-linecap="round"/>
+
+          <!-- Cat legs — thinner than dog's (2.5 vs 3) -->
+          <line x1="354" y1="170" x2="352" y2="228" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="372" y1="172" x2="374" y2="228" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="406" y1="158" x2="409" y2="228" stroke-width="2.5" stroke-linecap="round"/>
+        </g>
+
+        <!-- ——— floating captions (easter eggs) ——— -->
+        <text class="cap cap-boop"   x="210" y="126" text-anchor="middle">boop!</text>
+        <text class="cap cap-rude"   x="318" y="96"  text-anchor="middle">&hellip;rude.</text>
+        <text class="cap cap-dinner" x="150" y="118" text-anchor="middle">dinner?!</text>
+
+        <!-- ——— interaction hotspots (transparent, on top) ——— -->
+        <circle class="hot hot-dog"  cx="195" cy="156" r="20"/>
+        <circle class="hot hot-cat"  cx="316" cy="148" r="19"/>
+        <rect   class="hot hot-bowl" x="208" y="186" width="80" height="44" rx="10"/>
+
+      </svg>
+    </div>
+
+    <h1>Is your pet eating<br>the <span class="accent">right thing?</span></h1>
+    <p class="hero-sub">You've wondered. Late at night, after a vet visit, after reading the label and still not knowing. Now you can actually find out.</p>
+
+    <div class="search-wrap">
+      <div class="good-human" id="goodHuman" role="status" aria-live="polite">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><ellipse cx="12" cy="16" rx="6" ry="5"/><circle cx="5.5" cy="9.5" r="2.3"/><circle cx="10" cy="6" r="2.4"/><circle cx="14.5" cy="6" r="2.4"/><circle cx="18.5" cy="9.5" r="2.3"/></svg>
+        Good human.
+      </div>
+      <div class="search-label">Type what your pet eats</div>
+      <div class="search-field">
+        <input type="text" placeholder="Search a brand or product..." autocomplete="off">
+        <button class="search-btn" type="button">Sniff it</button>
+      </div>
+      <div class="hero-chips">
+        <button class="chip">Whiskas Ocean Fish <span class="chip-tag">cat</span></button>
+        <button class="chip">Pedigree Adult <span class="chip-tag">dog</span></button>
+        <button class="chip">Royal Canin Persian <span class="chip-tag">cat</span></button>
+        <button class="chip">Drools Chicken <span class="chip-tag">dog</span></button>
+      </div>
+    </div>
+
+    <div class="hero-trust">
+      500+ pet foods analyzed
+      <span class="sep">&middot;</span>No sponsorships
+      <span class="sep">&middot;</span>No paywall
+      <span class="sep">&middot;</span>Free, forever
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════ JOURNEY ════════════════════════ -->
+<section class="journey" id="journey">
+  <div class="journey-inner">
+    <h2 class="journey-h rv">You're not the only one guessing.</h2>
+    <p class="journey-sub rv d1">Every pet parent in India goes through this. The same questions, the same places, the same dead ends.</p>
+
+    <div class="journey-moments">
+
+      <!-- Vet -->
+      <div class="jm-vet rv d1">
+        <div class="jm-tag">Your vet</div>
+        <div class="jm-quote">"Royal Canin dedo. Or Pedigree for the dog."</div>
+        <div class="jm-context">No explanation. No alternatives. Just a brand name and a &#8377;95/100g bill. You trusted it because who else would you ask?</div>
+      </div>
+
+      <!-- Instagram -->
+      <div class="jm-ig rv d2">
+        <div class="jm-ig-head">
+          <div class="jm-ig-avatar"></div>
+          <span class="jm-ig-user">@petmom_blr</span>
+          <span class="jm-ig-time">2d</span>
+        </div>
+        <div class="jm-ig-text">stopped giving whiskas after reading about by-products &#x1F630; switched to Orijen but it's sooo expensive. dog is on Drools idk if that's any better tbh</div>
+        <div class="jm-ig-replies">View 47 replies</div>
+      </div>
+
+      <!-- Google search -->
+      <div class="jm-search rv d3" id="jmSearch">
+        <div class="jm-searchbar">
+          <svg class="jm-search-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="8.5" cy="8.5" r="5.5"/><line x1="12.5" y1="12.5" x2="17" y2="17"/></svg>
+          <div class="jm-search-body">
+            <div class="jm-search-url">google.com</div>
+            <div class="jm-search-input"><span id="jmTyper"></span><span class="jm-cursor"></span></div>
+          </div>
+        </div>
+        <div class="jm-search-time">2:47 AM</div>
+        <div class="jm-search-resolve">47 tabs. 3 Reddit threads. No clear answer.</div>
+      </div>
+
+      <!-- Amazon review -->
+      <div class="jm-review rv d4">
+        <div class="jm-review-stars">
+          <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.4 5.3L18 7.2l-4 4.1 1 5.7L10 14.3 5 17l1-5.7-4-4.1 5.6-.9z"/></svg>
+          <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.4 5.3L18 7.2l-4 4.1 1 5.7L10 14.3 5 17l1-5.7-4-4.1 5.6-.9z"/></svg>
+          <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.4 5.3L18 7.2l-4 4.1 1 5.7L10 14.3 5 17l1-5.7-4-4.1 5.6-.9z"/></svg>
+          <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.4 5.3L18 7.2l-4 4.1 1 5.7L10 14.3 5 17l1-5.7-4-4.1 5.6-.9z"/></svg>
+          <svg viewBox="0 0 20 20" fill="currentColor" opacity="0.2"><path d="M10 1l2.4 5.3L18 7.2l-4 4.1 1 5.7L10 14.3 5 17l1-5.7-4-4.1 5.6-.9z"/></svg>
+        </div>
+        <div class="jm-review-title">"My pet loves it"</div>
+        <div class="jm-review-verified">Verified Purchase</div>
+        <div class="jm-review-body">"He eats it happily so it must be good right? Giving 4 stars because the packaging was slightly damaged."</div>
+        <div class="jm-review-note">432 reviews. Not one mentions what's actually in it.</div>
+      </div>
+
+    </div>
+
+    <div class="journey-payoff rv d5">
+      <div class="journey-doubt">
+        <p>Am I doing this wrong?</p>
+        <p>He seems fine&hellip; but what if he's not?</p>
+        <p>What am I even supposed to look for?</p>
+      </div>
+      <div class="journey-divider"></div>
+      <div class="journey-resolve-h">You didn't need more opinions.<br>You needed one honest answer.</div>
+      <a href="#demoSection" class="journey-resolve-link">That's what we built. &darr;</a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════ DEMO — teaser card ════════════════════════ -->
+<section class="demo" id="demoSection">
+  <div class="demo-intro rv">
+    <div class="demo-tag">What Sniff found</div>
+    <h2 class="demo-h">Here's what's in India's most&#8209;fed cat food.</h2>
+    <p class="demo-sub">Whiskas Ocean Fish. Tap to see the full report.</p>
+  </div>
+
+  <div class="teaser-mini rv d1">
+    <div class="teaser-mini-head">
+      <div class="teaser-mini-img">&#x1F41F;</div>
+      <div class="teaser-mini-info">
+        <div class="teaser-mini-brand">Whiskas &middot; Dry food</div>
+        <div class="teaser-mini-title">Ocean Fish, Adult 1+</div>
+      </div>
+    </div>
+
+    <div class="teaser-mini-verdict v-okay">
+      <div class="teaser-mini-vtag">Sniff verdict</div>
+      <div class="teaser-mini-vlabel">Okay for now.</div>
+      <div class="teaser-mini-vsub">Low transparency</div>
+      <div class="teaser-mini-vsummary">Safe enough for a healthy adult cat, but the label hides important details. Won't harm &mdash; but you can do better at this price.</div>
+    </div>
+
+    <div class="teaser-mini-worry wl-medium">
+      <div class="teaser-mini-worry-row">
+        <div class="teaser-mini-dots">
+          <span class="wd filled"></span><span class="wd filled"></span><span class="wd"></span>
+        </div>
+        <span class="teaser-mini-worry-label">Some worry</span>
+      </div>
+      <div class="teaser-mini-action-label">What to do</div>
+      <div class="teaser-mini-action">Fine as a base, but mix in some real named-meat food and don't rely on it alone long-term.</div>
+    </div>
+
+    <div class="teaser-mini-reasons">
+      <div class="teaser-mini-reasons-label">Why Sniff says this</div>
+      <div class="teaser-mini-reason r-good"><div class="teaser-mini-reason-icon"></div><div class="teaser-mini-reason-text">Protein meets the legal minimum for adult cats.</div></div>
+      <div class="teaser-mini-reason r-caution"><div class="teaser-mini-reason-icon"></div><div class="teaser-mini-reason-text">More cereal than your cat actually needs.</div></div>
+      <div class="teaser-mini-reason r-missing"><div class="teaser-mini-reason-icon"></div><div class="teaser-mini-reason-text">"Animal by-products" listed &mdash; no species named.</div></div>
+    </div>
+
+    <div class="teaser-mini-cta">
+      <button class="teaser-mini-cta-btn" type="button">See full report</button>
+      <div class="teaser-mini-cta-hint">Worry level, action plan, fits-your-cat check, the numbers</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════ HOW WE JUDGE ════════════════════════ -->
+<section class="judge" id="judge">
+  <div class="judge-inner">
+    <div class="judge-tag rv">How Sniff reads it</div>
+    <h2 class="judge-h rv">We read the label so you don't have to squint.</h2>
+    <p class="judge-sub rv d1">Every food gets marked up the same way. Here's what we circle on the pack &mdash; and why it matters for your pet.</p>
+
+    <div class="judge-layout">
+      <!-- the marked-up label artifact -->
+      <div class="label-paper rv d1">
+        <!-- coloured brand header band (brand redacted on purpose) -->
+        <div class="label-band">
+          <div class="label-band-logo">
+            <svg class="label-band-paw" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><ellipse cx="12" cy="16" rx="6" ry="5"/><circle cx="5.5" cy="9.5" r="2.3"/><circle cx="10" cy="6" r="2.4"/><circle cx="14.5" cy="6" r="2.4"/><circle cx="18.5" cy="9.5" r="2.3"/></svg>
+            <div class="label-redacted" title="brand hidden on purpose"></div>
+          </div>
+          <div class="label-band-type">Complete dry food<br>Adult cat &middot; 1+</div>
+        </div>
+
+        <div class="label-body">
+          <!-- marketing flash badge -->
+          <div class="label-badge" data-n="1">With real chicken!<span class="hl-num" style="position:absolute;top:-4px;right:-4px;margin:0">1</span></div>
+
+          <div class="label-section">
+            <div class="label-h">Composition</div>
+            <div class="label-ingredients"><span class="hl" data-n="2">Cereals<span class="hl-num">2</span></span>, <span class="hl" data-n="3">meat &amp; animal derivatives<span class="hl-num">3</span></span> (<span class="hl" data-n="4">min. 4% chicken<span class="hl-num">4</span></span>), <span class="hl" data-n="5">vegetable protein extracts<span class="hl-num">5</span></span>, oils &amp; fats, minerals, <span class="hl" data-n="6">EC permitted additives &amp; colourants<span class="hl-num">6</span></span>.</div>
+          </div>
+
+          <div class="label-grid">
+            <div class="label-box">
+              <div class="label-box-h">Guaranteed analysis</div>
+              <div class="label-row"><span>Crude protein (min)</span><b>30%</b></div>
+              <div class="label-row"><span>Crude fat (min)</span><b>12%</b></div>
+              <div class="label-row"><span>Crude fibre (max)</span><b>3%</b></div>
+              <div class="label-row"><span>Moisture (max)</span><b>10%</b></div>
+            </div>
+            <div class="label-box">
+              <div class="label-box-h">Feeding guide / day</div>
+              <div class="label-row"><span>2&ndash;3 kg</span><b>40 g</b></div>
+              <div class="label-row"><span>3&ndash;4 kg</span><b>55 g</b></div>
+              <div class="label-row"><span>4&ndash;5 kg</span><b>70 g</b></div>
+              <div class="label-row"><span>5&ndash;6 kg</span><b>85 g</b></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- printed regulatory footer strip -->
+        <div class="label-foot">
+          <div class="label-nonveg" title="non-vegetarian"></div>
+          <div class="label-foot-meta">FSSAI Lic. 100&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;2 &nbsp;&middot;&nbsp; Net wt. 1.2&nbsp;kg<br>Best before 12 months from mfg &middot; Batch L04729</div>
+          <div class="label-barcode"></div>
+        </div>
+      </div>
+
+      <!-- annotation notes -->
+      <div class="judge-notes">
+        <div class="note rv d1" data-n="1"><div class="note-num">1</div><div class="note-body"><div class="note-title">Marketing vs reality</div><div class="note-desc">Does the big claim on the front actually match what's on the back?</div></div></div>
+        <div class="note rv d1" data-n="2"><div class="note-num">2</div><div class="note-body"><div class="note-title">Filler load</div><div class="note-desc">How much cheap cereal is padding the bowl instead of feeding your pet.</div></div></div>
+        <div class="note rv d2" data-n="3"><div class="note-num">3</div><div class="note-body"><div class="note-title">Ingredient transparency</div><div class="note-desc">Are the ingredients actually named, or hidden behind vague terms like "animal derivatives"?</div></div></div>
+        <div class="note rv d2" data-n="4"><div class="note-num">4</div><div class="note-body"><div class="note-title">Protein quality</div><div class="note-desc">Real, named meat &mdash; and how little of it is actually in the bag.</div></div></div>
+        <div class="note rv d3" data-n="5"><div class="note-num">5</div><div class="note-body"><div class="note-title">Species match</div><div class="note-desc">Right for a cat or a dog specifically, not just generic "pet food".</div></div></div>
+        <div class="note rv d3" data-n="6"><div class="note-num">6</div><div class="note-body"><div class="note-title">Label honesty</div><div class="note-desc">What's quietly tucked inside catch-all phrases like "permitted additives".</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════ CLOSER ════════════════════════ -->
+<section class="closer">
+  <div class="closer-inner rv">
+    <h2>Your pet can't tell you if the food is <span class="accent">wrong.</span></h2>
+    <p class="closer-sub">But now you can find out for yourself. Free. No sign-up. Just what's in it.</p>
+
+    <div class="cta-search">
+      <div class="cta-label">What does your pet eat?</div>
+      <div class="cta-field">
+        <input type="text" placeholder="Search any cat or dog food..." autocomplete="off">
+        <button type="button">Sniff it</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════ FOOTER ════════════════════════ -->
+<footer class="foot">
+  <!-- walking cat tail (peeks over the top, strolls right→left) -->
+  <div class="foot-tail">
+    <div class="foot-tail-walk">
+      <svg class="foot-tail-sway" viewBox="0 0 30 42" fill="none" stroke="var(--ginger)" stroke-width="3" stroke-linecap="round">
+        <path d="M15 42 C15 34, 10 28, 9 20 Q8 12, 12 8 Q16 4, 20 9 Q22 12, 19 16"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="foot-inner">
+    <div class="foot-origin">
+      <span class="foot-mark">sn<span class="dot">&#9679;</span>ff</span>
+      <p class="foot-origin-line">Sniff is one person in Bangalore who got tired of guessing what's in the bowl. No labs, no sponsors &mdash; just the same 2am questions you have, answered honestly. Built for <em>Simba</em>, and now for your pet too.</p>
+      <p class="foot-sig">Made with too much chai &middot; <a href="https://twitter.com/rinks__g" target="_blank" rel="noopener">@rinks__g</a></p>
+    </div>
+    <div class="foot-meta">
+      <b>For cats &amp; dogs</b><br>
+      No sponsors, no paywall<br>
+      Free, forever
+    </div>
+  </div>
+</footer>
+
+
+<!-- ═══════════════════════════ SCRIPTS ═══════════════════════════ -->
+<script>
+  /* ── Scroll reveal ── */
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('show'); obs.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.rv').forEach(el => obs.observe(el));
+
+  /* ── Example chips populate the search (search-first product should feel alive) ── */
+  (function() {
+    const input = document.querySelector('.search-field input');
+    if (!input) return;
+    document.querySelectorAll('.hero-chips .chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        input.value = chip.childNodes[0].textContent.trim();
+        input.focus();
+      });
+    });
+  })();
+
+  /* ── Google search typing animation ── */
+  (function() {
+    const queries = [
+      'is pedigree actually good for dogs',
+      'best cat food India 2024',
+      'whiskas ingredients safe or not'
+    ];
+    const el = document.getElementById('jmTyper');
+    if (!el) return;
+    let qi = 0, ci = 0, deleting = false;
+    function type() {
+      const q = queries[qi];
+      if (!deleting) {
+        ci++;
+        el.textContent = q.slice(0, ci);
+        if (ci >= q.length) { setTimeout(() => { deleting = true; type(); }, 2200); return; }
+        setTimeout(type, 55 + Math.random() * 35);
+      } else {
+        ci--;
+        el.textContent = q.slice(0, ci);
+        if (ci <= 0) { qi = (qi + 1) % queries.length; deleting = false; setTimeout(type, 500); return; }
+        setTimeout(type, 25);
+      }
+    }
+    const wrap = document.getElementById('jmSearch');
+    if (wrap) {
+      const io = new IntersectionObserver(([e]) => {
+        if (e.isIntersecting) { io.unobserve(wrap); setTimeout(type, 700); }
+      }, { threshold: 0.25 });
+      io.observe(wrap);
+    }
+  })();
+
+  /* ── How-we-judge: link annotation notes ⇄ label highlights ── */
+  (function() {
+    function setActive(n, on) {
+      document.querySelectorAll('[data-n="' + n + '"]').forEach(el => el.classList.toggle('is-active', on));
+    }
+    document.querySelectorAll('.note[data-n], .hl[data-n]').forEach(el => {
+      const n = el.getAttribute('data-n');
+      el.addEventListener('mouseenter', () => setActive(n, true));
+      el.addEventListener('mouseleave', () => setActive(n, false));
+    });
+  })();
+
+  /* ── Paw cursor trail (desktop only) ── */
+  if (window.matchMedia('(hover: hover)').matches) {
+    let last = 0;
+    document.addEventListener('mousemove', (e) => {
+      const now = Date.now();
+      if (now - last < 200) return;
+      last = now;
+      const p = document.createElement('div');
+      // mostly cat paws, but every so often a bigger dog paw pads through
+      p.className = Math.random() < 0.22 ? 'paw dog' : 'paw';
+      p.style.left = e.clientX + 'px';
+      p.style.top = e.clientY + 'px';
+      p.style.transform += ' rotate(' + (Math.random() * 60 - 30) + 'deg)';
+      document.body.appendChild(p);
+      setTimeout(() => p.remove(), 1200);
+    });
+  }
+
+  /* ── Hero easter eggs: boop the snoot, the dinner-bell bowl, "Good human" ── */
+  (function() {
+    const $ = s => document.querySelector(s);
+    const canHover = window.matchMedia('(hover: hover)').matches;
+
+    /* replayable caption */
+    function playCap(cls) {
+      const el = $('.' + cls);
+      if (!el) return;
+      el.classList.remove('play');
+      void el.getBBox; // reflow
+      requestAnimationFrame(() => el.classList.add('play'));
+      el.addEventListener('animationend', () => el.classList.remove('play'), { once: true });
+    }
+    function flash(el, cls, ms) {
+      if (!el) return;
+      el.classList.add(cls);
+      setTimeout(() => el.classList.remove(cls), ms);
+    }
+
+    const dog = $('.dog'), cat = $('.cat'), bowl = $('.bowl-grp');
+    const dogTail = $('.dog .dog-tail');
+
+    /* 1 ── boop the dog: squish + happy blink + tail goes wild */
+    const hotDog = $('.hot-dog');
+    if (hotDog) hotDog.addEventListener('click', () => {
+      flash($('.d-nose'), 'boop', 460);
+      flash($('.d-eye'), 'blink', 340);
+      flash(dogTail, 'fast', 1100);
+      playCap('cap-boop');
+    });
+
+    /* 1b ── boop the cat: ear flick + annoyed squint + tail snap */
+    const hotCat = $('.hot-cat');
+    if (hotCat) hotCat.addEventListener('click', () => {
+      $$('.c-ear').forEach(e => flash(e, 'flick', 420));
+      flash($('.c-eye'), 'squint', 620);
+      flash($('.cat-tail'), 'snap', 520);
+      playCap('cap-rude');
+    });
+    function $$(s){ return document.querySelectorAll(s); }
+
+    /* 3 ── the dinner-bell bowl: dog erupts, cat couldn't care less */
+    const hotBowl = $('.hot-bowl');
+    let dinnerTimer;
+    function dinnerOn() {
+      dog && dog.classList.add('eager');
+      cat && cat.classList.add('aloof');
+      bowl && bowl.classList.add('jiggle');
+      playCap('cap-dinner');
+    }
+    function dinnerOff() {
+      dog && dog.classList.remove('eager');
+      cat && cat.classList.remove('aloof');
+      bowl && bowl.classList.remove('jiggle');
+    }
+    if (hotBowl) {
+      if (canHover) {
+        hotBowl.addEventListener('mouseenter', dinnerOn);
+        hotBowl.addEventListener('mouseleave', dinnerOff);
+      }
+      hotBowl.addEventListener('click', () => {            // touch / tap
+        dinnerOn();
+        clearTimeout(dinnerTimer);
+        dinnerTimer = setTimeout(dinnerOff, 1900);
+      });
+    }
+
+    /* 4 ── "Good human." when a dog parent checks a dog food */
+    const gh = $('#goodHuman');
+    let ghTimer;
+    function goodHuman() {
+      if (!gh) return;
+      gh.classList.add('show');
+      clearTimeout(ghTimer);
+      ghTimer = setTimeout(() => gh.classList.remove('show'), 2600);
+    }
+    document.querySelectorAll('.hero-chips .chip').forEach(chip => {
+      const tag = chip.querySelector('.chip-tag');
+      if (tag && /dog/i.test(tag.textContent)) chip.addEventListener('click', goodHuman);
+    });
+    const dogWords = /\b(dog|pup|puppy|pedigree|drools|chappi|farmina)\b/i;
+    const heroInput = $('.search-field input'), heroBtn = $('.search-btn');
+    if (heroBtn && heroInput) heroBtn.addEventListener('click', () => { if (dogWords.test(heroInput.value)) goodHuman(); });
+  })();
+</script>
+
+</body>
+</html>
