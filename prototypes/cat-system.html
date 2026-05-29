@@ -21,13 +21,17 @@
   /* real Young Serif dotless-i (ı) as the stem; a ginger dot is its tittle */
   .mark{ font-family:var(--serif); color:var(--cream); display:inline-block; line-height:1; }
   .mark .mi{ position:relative; line-height:1; }
-  /* the dot of the i — a ginger tittle matched to Young Serif's own tittle:
-     0.16em dot (real tittle ≈0.155×0.15em), sitting 0.595em above the baseline.
-     bottom is measured from the .mi box bottom, which is 0.16em below the baseline
-     at line-height:1 → 0.595 + 0.16 = 0.755em. A gentle slow blink (cat nod). */
-  .mark .dot{ position:absolute; left:50%; bottom:0.755em; width:0.16em; height:0.16em; margin-left:-0.08em;
+  /* the dot of the i — a ginger tittle floating ABOVE the stem.
+     Geometry measured from the live render (not guessed):
+       • the .mi inline box bottom sits 0.365em below the baseline (font descent)
+       • Young Serif's real tittle bottom sits ~0.595em above the baseline
+       • the i stem top is at ~0.535em → a clear gap above it
+     bottom = 0.365 (box→baseline) + 0.62 (dot bottom above baseline) = 0.985em,
+     giving a touch more air than the native tittle so it reads clearly ABOVE.
+     Blink shrinks about its own centre (stays put, never dips into the word). */
+  .mark .dot{ position:absolute; left:50%; bottom:0.985em; width:0.16em; height:0.16em; margin-left:-0.08em;
     background:var(--ginger); border-radius:50%; transform-origin:50% 50%; animation:dotBlink 5.5s ease-in-out infinite; }
-  @keyframes dotBlink{ 0%,80%,100%{transform:scaleY(1)} 88%{transform:scaleY(0.14)} 94%{transform:scaleY(1)} }
+  @keyframes dotBlink{ 0%,82%,100%{transform:scaleY(1)} 90%{transform:scaleY(0.16)} 96%{transform:scaleY(1)} }
 
   header.hd{ padding:64px 40px 40px; max-width:1100px; margin:0 auto; }
   header.hd .mark{ font-size:64px; }
