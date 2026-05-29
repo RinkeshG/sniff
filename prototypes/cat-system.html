@@ -3,102 +3,242 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Sniff · cat asset system</title>
-<link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+<title>Sniff · design system</title>
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  :root{ --ginger:#E08A3A; --ginger-deep:#C06E22; --charcoal:#2A2725; --charcoal-soft:#3D3835; --cream:#F5F0E5; --cream-deep:#EAE3D2; --indie:#8B7355; --indie-soft:#B8A88E; --good:#4A8F5C; --caution:#C68A2C; --serif:'Young Serif',serif; --sans:'Sora',system-ui,sans-serif; }
+  :root{
+    --ginger:#E08A3A; --ginger-deep:#C06E22; --ginger-soft:#FCEBD4;
+    --charcoal:#2A2725; --charcoal-soft:#3D3835;
+    --cream:#F5F0E5; --cream-deep:#EAE3D2;
+    --indie:#8B7355; --indie-soft:#B8A88E;
+    --good:#4A8F5C; --caution:#C68A2C; --flag:#B33A2A;
+    --serif:'Young Serif',Georgia,serif; --sans:'Sora',system-ui,sans-serif;
+  }
   *{box-sizing:border-box;margin:0;padding:0}
-  body{background:var(--charcoal);color:var(--cream);font-family:var(--sans);padding:48px 32px 80px;}
-  .head{max-width:1080px;margin:0 auto 40px;}
-  .head h1{font-family:var(--serif);font-size:34px;font-weight:400;letter-spacing:-0.01em;}
-  .head h1 .dot{color:var(--ginger);}
-  .head p{color:var(--indie-soft);font-size:15px;margin-top:8px;max-width:640px;line-height:1.6;}
-  .grid{max-width:1080px;margin:0 auto;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;}
-  .card{background:#221f1d;border:1px solid var(--charcoal-soft);border-radius:18px;padding:26px;display:flex;flex-direction:column;}
-  .stage{flex:1;min-height:150px;display:flex;align-items:center;justify-content:center;gap:28px;}
-  .stage.light{background:var(--cream);border-radius:12px;color:var(--charcoal);}
-  .tag{font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--ginger);margin-top:22px;}
-  .name{font-family:var(--serif);font-size:20px;margin-top:6px;}
-  .use{font-size:13px;color:var(--indie-soft);margin-top:6px;line-height:1.55;}
-  svg{display:block;color:var(--ginger);}
+  body{background:var(--charcoal);color:var(--cream);font-family:var(--sans);padding:0 0 90px;}
 
-  /* 1 — sniff loader */
-  .wisp{animation:rise 2s ease-in-out infinite}
-  .wisp:nth-child(2){animation-delay:.4s}
-  .wisp:nth-child(3){animation-delay:.8s}
+  /* ───── the wordmark: sniff, with a blinking cat-eye 'i' ───── */
+  .mark{ font-family:var(--serif); color:var(--cream); display:inline-block; line-height:1; }
+  .mark .mi{ position:relative; display:inline-block; }
+  .mark .mi .glyph{ visibility:hidden; }           /* keep spacing of the dotless stem */
+  .mark .mi .stem{ position:absolute; left:50%; bottom:0; width:0.085em; height:0.5em;
+    background:currentColor; border-radius:0.05em; transform:translateX(-50%); }
+  .mark .eye{ position:absolute; left:50%; bottom:0.6em; width:0.56em; margin-left:-0.28em;
+    color:var(--ginger); transform-origin:50% 100%; animation:catBlink 5.5s ease-in-out infinite; }
+  .mark .eye svg{ display:block; width:100%; height:auto; }
+  @keyframes catBlink{ 0%,72%,100%{transform:scaleY(1)} 81%{transform:scaleY(0.12)} 90%{transform:scaleY(1)} }
+
+  header.hd{ padding:64px 40px 40px; max-width:1100px; margin:0 auto; }
+  header.hd .mark{ font-size:64px; }
+  header.hd p{ color:var(--indie-soft); font-size:16px; margin-top:14px; max-width:620px; line-height:1.6; }
+
+  .sec{ max-width:1100px; margin:0 auto; padding:0 40px; }
+  .sec-h{ font-family:var(--serif); font-size:13px; font-weight:400; letter-spacing:0.2em; text-transform:uppercase; color:var(--ginger); margin:56px 0 18px; padding-bottom:10px; border-bottom:1px solid var(--charcoal-soft); }
+
+  .grid{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; }
+  @media(max-width:900px){ .grid{grid-template-columns:repeat(2,1fr)} }
+  .card{ background:#221f1d; border:1px solid var(--charcoal-soft); border-radius:16px; padding:22px; display:flex; flex-direction:column; }
+  .stage{ flex:1; min-height:140px; display:flex; align-items:center; justify-content:center; gap:14px; flex-wrap:wrap; }
+  .stage.light{ background:var(--cream); border-radius:12px; color:var(--charcoal); }
+  .name{ font-family:var(--serif); font-size:17px; margin-top:14px; }
+  .use{ font-size:12.5px; color:var(--indie-soft); margin-top:5px; line-height:1.5; }
+  svg{ display:block; color:var(--ginger); }
+
+  /* foundations */
+  .found{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  @media(max-width:760px){ .found{grid-template-columns:1fr} }
+  .swatches{ display:flex; flex-wrap:wrap; gap:10px; }
+  .sw{ width:74px; }
+  .sw .chip{ height:48px; border-radius:8px; border:1px solid rgba(255,255,255,0.08); }
+  .sw .nm{ font-size:10px; color:var(--indie-soft); margin-top:6px; }
+  .type-row{ border-top:1px solid var(--charcoal-soft); padding:14px 0; }
+  .type-row:first-child{ border-top:none; }
+  .type-serif{ font-family:var(--serif); font-size:30px; }
+  .type-sans{ font-family:var(--sans); font-size:17px; }
+  .type-lbl{ font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--indie); margin-top:6px; }
+  .logo-show{ display:flex; gap:14px; }
+  .logo-tile{ flex:1; border-radius:12px; display:flex; align-items:center; justify-content:center; padding:26px 0; }
+
+  /* ───── asset animations ───── */
+  .wisp{animation:rise 2s ease-in-out infinite} .wisp:nth-child(2){animation-delay:.4s} .wisp:nth-child(3){animation-delay:.8s}
   @keyframes rise{0%{opacity:0;transform:translateY(6px)}30%{opacity:.9}100%{opacity:0;transform:translateY(-10px)}}
-  .nose-twitch{animation:twitch 2s ease-in-out infinite;transform-origin:center}
+  .nose-twitch{animation:twitch 2s ease-in-out infinite}
   @keyframes twitch{0%,70%,100%{transform:translateY(0)}80%{transform:translateY(-1.5px)}}
-
-  /* 4 — tail scroll cue */
   .tail-bob{animation:bob 1.8s ease-in-out infinite;transform-origin:50% 0}
   @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
-
-  /* worry dots = paws */
   .paws-row{display:flex;gap:10px;align-items:center}
-  .paw-dot{width:22px;height:22px;color:var(--indie-soft)}
-  .paw-dot.on{color:var(--caution)}
-  .worry-label{font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--caution);margin-left:6px}
-
-  /* divider demo */
+  .paw-dot{width:22px;height:22px;color:var(--indie-soft)} .paw-dot.on{color:var(--caution)}
+  .worry-label{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--caution);margin-left:6px}
   .divider-demo{width:100%;text-align:center}
-  .divider-demo .lbl{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--indie);margin-bottom:14px}
+  .divider-demo .lbl{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--indie);margin-bottom:12px}
+  .heart{animation:beat 1.6s ease-in-out infinite;transform-origin:center}
+  @keyframes beat{0%,100%{transform:scale(1)}12%{transform:scale(1.13)}24%{transform:scale(1)}36%{transform:scale(1.07)}48%{transform:scale(1)}}
+  .yarn{animation:spin 2.4s linear infinite;transform-origin:45px 42px}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .qmark{animation:qbob 2.2s ease-in-out infinite;transform-origin:center}
+  @keyframes qbob{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-4px) rotate(-3deg)}}
+  .blink{animation:slowblink 3.6s ease-in-out infinite;transform-origin:center} .blink.b2{animation-delay:.05s}
+  @keyframes slowblink{0%,38%,62%,100%{transform:scaleY(1)}50%{transform:scaleY(0.08)}}
+  .draw path{stroke-dasharray:560;stroke-dashoffset:560;animation:draw 5s ease-in-out infinite}
+  .draw .fillbit{animation:fadein 5s ease-in-out infinite}
+  @keyframes draw{0%{stroke-dashoffset:560}55%,86%{stroke-dashoffset:0}100%{stroke-dashoffset:560}}
+  @keyframes fadein{0%,40%{opacity:0}60%,86%{opacity:1}100%{opacity:0}}
+  .bat{animation:bat 2.4s ease-in-out infinite;transform-origin:112px 52px}
+  @keyframes bat{0%,55%,100%{transform:rotate(0)}65%{transform:rotate(10deg)}}
+  .kibble-fall{animation:fall 2.4s ease-in infinite}
+  @keyframes fall{0%,60%{opacity:0;transform:translateY(-14px)}72%{opacity:1}100%{opacity:0;transform:translateY(20px)}}
+  .sticker{background:var(--cream);border-radius:14px;width:66px;height:66px;display:flex;align-items:center;justify-content:center}
+  .sticker svg{color:var(--charcoal)} .stk-wrap{display:flex;flex-direction:column;align-items:center}
+  .stk-cap{font-size:8.5px;letter-spacing:.05em;color:var(--indie);text-align:center;margin-top:6px;text-transform:uppercase;font-weight:700}
 </style>
 </head>
 <body>
-  <div class="head">
-    <h1>sn<span class="dot">●</span>ff &mdash; the cat, as a system</h1>
-    <p>One mascot, broken into marks that each do a job. The thread: a cat sniffing out the truth about food.</p>
+
+<header class="hd">
+  <span class="mark">sn<span class="mi"><span class="glyph">i</span><span class="stem"></span><span class="eye"><svg viewBox="0 0 22 16" fill="none" stroke="currentColor"><path d="M2 8 Q11 1.5 20 8 Q11 14.5 2 8 Z" stroke-width="2"/><ellipse cx="11" cy="8" rx="2" ry="4.4" fill="currentColor" stroke="none"/></svg></span></span>ff</span>
+  <p>The design system — brand foundations and the cat asset kit. One mascot, broken into marks that each do a job: a cat sniffing out the truth about food.</p>
+</header>
+
+<!-- ══════════ FOUNDATIONS ══════════ -->
+<div class="sec">
+  <div class="sec-h">Foundations</div>
+  <div class="found">
+    <div class="card">
+      <div class="logo-show">
+        <div class="logo-tile" style="background:var(--charcoal)"><span class="mark" style="font-size:40px;color:var(--cream)">sn<span class="mi"><span class="glyph">i</span><span class="stem"></span><span class="eye"><svg viewBox="0 0 22 16" fill="none" stroke="currentColor"><path d="M2 8 Q11 1.5 20 8 Q11 14.5 2 8 Z" stroke-width="2"/><ellipse cx="11" cy="8" rx="2" ry="4.4" fill="currentColor" stroke="none"/></svg></span></span>ff</span></div>
+        <div class="logo-tile" style="background:var(--cream)"><span class="mark" style="font-size:40px;color:var(--charcoal)">sn<span class="mi"><span class="glyph">i</span><span class="stem"></span><span class="eye"><svg viewBox="0 0 22 16" fill="none" stroke="currentColor"><path d="M2 8 Q11 1.5 20 8 Q11 14.5 2 8 Z" stroke-width="2"/><ellipse cx="11" cy="8" rx="2" ry="4.4" fill="currentColor" stroke="none"/></svg></span></span>ff</span></div>
+      </div>
+      <div class="name">Wordmark</div>
+      <div class="use">The dot of the "i" is a cat's eye — almond with a slit pupil — that slow-blinks. Eye stays ginger on any background.</div>
+    </div>
+    <div class="card">
+      <div class="swatches" style="flex:1;align-content:center">
+        <div class="sw"><div class="chip" style="background:var(--ginger)"></div><div class="nm">Ginger</div></div>
+        <div class="sw"><div class="chip" style="background:var(--ginger-deep)"></div><div class="nm">Ginger deep</div></div>
+        <div class="sw"><div class="chip" style="background:var(--charcoal)"></div><div class="nm">Charcoal</div></div>
+        <div class="sw"><div class="chip" style="background:var(--cream)"></div><div class="nm">Cream</div></div>
+        <div class="sw"><div class="chip" style="background:var(--cream-deep)"></div><div class="nm">Cream deep</div></div>
+        <div class="sw"><div class="chip" style="background:var(--indie)"></div><div class="nm">Indie</div></div>
+        <div class="sw"><div class="chip" style="background:var(--good)"></div><div class="nm">Good</div></div>
+        <div class="sw"><div class="chip" style="background:var(--caution)"></div><div class="nm">Caution</div></div>
+        <div class="sw"><div class="chip" style="background:var(--flag)"></div><div class="nm">Flag</div></div>
+      </div>
+      <div class="name">Colour &amp; type</div>
+      <div class="use" style="margin-bottom:8px">Palette above. Type below.</div>
+      <div class="type-row" style="padding-top:0;border:none"><span class="type-serif">Is your cat eating right?</span><div class="type-lbl">Young Serif · display</div></div>
+      <div class="type-row"><span class="type-sans">Safe enough for a healthy adult cat.</span><div class="type-lbl">Sora · text</div></div>
+    </div>
   </div>
+</div>
 
+<!-- ══════════ LOADING ══════════ -->
+<div class="sec">
+  <div class="sec-h">The cat kit · Loading</div>
   <div class="grid">
-
-    <!-- 1. SNIFF LOADER -->
     <div class="card">
       <div class="stage">
-        <svg width="120" height="130" viewBox="0 0 120 130" fill="none" stroke="currentColor">
-          <!-- scent wisps rising -->
+        <svg width="110" height="120" viewBox="0 0 120 130" fill="none" stroke="currentColor">
           <path class="wisp" d="M52 70 Q44 56 52 42 Q58 32 52 22" stroke-width="2.5" stroke-linecap="round" opacity="0.8"/>
           <path class="wisp" d="M60 72 Q68 56 60 40 Q55 30 60 20" stroke-width="2.5" stroke-linecap="round" opacity="0.8"/>
           <path class="wisp" d="M68 70 Q76 58 70 46" stroke-width="2.5" stroke-linecap="round" opacity="0.8"/>
-          <!-- nose + a hint of muzzle + whiskers -->
           <g class="nose-twitch">
             <path d="M40 92 Q60 80 80 92" stroke-width="3" stroke-linecap="round"/>
             <path d="M54 86 L66 86 L60 95 Z" fill="currentColor" stroke="none"/>
-            <line x1="48" y1="90" x2="26" y2="86" stroke-width="1.4" opacity="0.4"/>
-            <line x1="48" y1="93" x2="26" y2="95" stroke-width="1.4" opacity="0.4"/>
-            <line x1="72" y1="90" x2="94" y2="86" stroke-width="1.4" opacity="0.4"/>
-            <line x1="72" y1="93" x2="94" y2="95" stroke-width="1.4" opacity="0.4"/>
+            <line x1="48" y1="90" x2="26" y2="86" stroke-width="1.4" opacity="0.4"/><line x1="48" y1="93" x2="26" y2="95" stroke-width="1.4" opacity="0.4"/>
+            <line x1="72" y1="90" x2="94" y2="86" stroke-width="1.4" opacity="0.4"/><line x1="72" y1="93" x2="94" y2="95" stroke-width="1.4" opacity="0.4"/>
           </g>
         </svg>
       </div>
-      <div class="tag">Loading state</div>
-      <div class="name">Sniffing&hellip;</div>
-      <div class="use">Replaces the spinner while a food is analyzed — the cat literally sniffs, scent wisps curling up. The product's name, animated.</div>
+      <div class="name">Sniffing… loader</div>
+      <div class="use">The cat sniffs while a food is analyzed — wisps rise. Replaces the spinner.</div>
     </div>
+    <div class="card">
+      <div class="stage">
+        <svg width="92" height="118" viewBox="0 0 100 120" fill="none" stroke="currentColor">
+          <path d="M50 64 C58 78 42 84 52 96 C58 103 66 100 63 92" stroke-width="2.6" stroke-linecap="round" opacity="0.85"/>
+          <g class="yarn">
+            <circle cx="45" cy="42" r="24" stroke-width="2.8"/>
+            <path d="M25 33 Q45 24 66 35" stroke-width="2" stroke-linecap="round" opacity="0.8"/><path d="M22 47 Q45 40 67 50" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
+            <path d="M30 22 Q52 44 60 64" stroke-width="2" stroke-linecap="round" opacity="0.8"/><path d="M62 24 Q40 44 30 62" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
+          </g>
+        </svg>
+      </div>
+      <div class="name">Yarn unspool</div>
+      <div class="use">A spinning ball of yarn — a playful loader for lighter moments.</div>
+    </div>
+  </div>
+</div>
 
-    <!-- 2. WHISKER DIVIDER -->
+<!-- ══════════ EMPTY & ERROR ══════════ -->
+<div class="sec">
+  <div class="sec-h">Empty &amp; error states</div>
+  <div class="grid">
+    <div class="card">
+      <div class="stage">
+        <svg width="170" height="115" viewBox="0 0 180 120" fill="none" stroke="currentColor">
+          <path d="M70 44 C44 44 28 64 32 88 C35 106 56 112 84 110 C116 108 138 96 138 76 C138 60 124 50 108 52" stroke-width="3" stroke-linecap="round"/>
+          <path d="M84 110 C108 112 128 104 132 88 C134 80 128 74 121 76" stroke-width="3" stroke-linecap="round"/>
+          <path d="M70 44 C60 46 54 56 58 67 C61 75 72 77 80 72" stroke-width="3" stroke-linecap="round"/>
+          <path d="M64 47 L60 35 L72 44" stroke-width="2.5" stroke-linejoin="round"/><path d="M75 43 L82 33 L82 47" stroke-width="2.5" stroke-linejoin="round"/>
+          <path d="M62 58 Q66 62 70 58" stroke-width="2" stroke-linecap="round"/>
+          <path d="M120 40 L130 40 L120 50 L130 50" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/>
+          <path d="M134 28 L142 28 L134 36 L142 36" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" opacity="0.35"/>
+        </svg>
+      </div>
+      <div class="name">Catnap</div>
+      <div class="use">A curled, napping cat for "no results" / "nothing yet" — instead of a crying emoji.</div>
+    </div>
+    <div class="card">
+      <div class="stage light">
+        <svg width="140" height="112" viewBox="0 0 150 120" fill="none" stroke="currentColor" style="color:var(--ginger)">
+          <path d="M34 60 L34 104 L116 104 L116 60" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M34 60 L52 50 L134 50 L116 60 Z" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M116 60 L116 104 L134 96 L134 50" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/>
+          <path d="M52 50 L44 38" stroke-width="2.4" stroke-linecap="round" opacity="0.7"/><path d="M134 50 L142 40" stroke-width="2.4" stroke-linecap="round" opacity="0.7"/>
+          <path d="M58 60 C56 40 68 30 84 30 C100 30 110 40 108 60" stroke-width="3" stroke-linecap="round"/>
+          <path d="M66 36 L61 22 L77 33" stroke-width="2.5" stroke-linejoin="round"/><path d="M102 36 L107 22 L91 33" stroke-width="2.5" stroke-linejoin="round"/>
+          <circle cx="76" cy="48" r="3" fill="currentColor" stroke="none"/><circle cx="92" cy="48" r="3" fill="currentColor" stroke="none"/>
+          <path d="M66 60 C66 53 73 53 73 60" stroke-width="3" stroke-linecap="round"/><path d="M95 60 C95 53 102 53 102 60" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="name">If it fits, I sits</div>
+      <div class="use">A cat in a box for an empty "saved foods" / collection screen.</div>
+    </div>
+    <div class="card">
+      <div class="stage">
+        <svg width="170" height="118" viewBox="0 0 190 130" fill="none" stroke="currentColor">
+          <line x1="14" y1="54" x2="176" y2="54" stroke-width="3" stroke-linecap="round"/>
+          <path d="M48 54 C45 32 60 22 80 22 C100 22 115 32 112 54" stroke-width="3" stroke-linecap="round"/>
+          <path d="M58 30 L53 14 L70 28" stroke-width="2.6" stroke-linejoin="round"/><path d="M102 30 L107 14 L90 28" stroke-width="2.6" stroke-linejoin="round"/>
+          <circle cx="70" cy="44" r="3" fill="currentColor" stroke="none"/><circle cx="92" cy="44" r="3" fill="currentColor" stroke="none"/>
+          <g class="bat"><path d="M112 52 C122 56 130 64 128 76 C127 83 120 84 117 78" stroke-width="3" stroke-linecap="round"/></g>
+          <g class="kibble-fall"><ellipse cx="138" cy="92" rx="4.5" ry="4" fill="currentColor" opacity="0.55" stroke="none"/></g>
+        </svg>
+      </div>
+      <div class="name">"…oops" knock-off</div>
+      <div class="use">A cat batting a kibble off the edge — the perfect 404 / something-broke.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ MARKERS & DIVIDERS ══════════ -->
+<div class="sec">
+  <div class="sec-h">Markers &amp; dividers</div>
+  <div class="grid">
     <div class="card">
       <div class="stage light">
         <div class="divider-demo">
           <div class="lbl">Why Sniff says this</div>
-          <svg width="260" height="20" viewBox="0 0 260 20" fill="none" stroke="currentColor" style="color:var(--ginger);margin:0 auto">
+          <svg width="240" height="20" viewBox="0 0 260 20" fill="none" stroke="currentColor" style="color:var(--ginger);margin:0 auto">
             <circle cx="130" cy="10" r="2.6" fill="currentColor" stroke="none"/>
-            <line x1="122" y1="10" x2="60" y2="5"  stroke-width="1.5" stroke-linecap="round" opacity="0.85"/>
-            <line x1="122" y1="10" x2="54" y2="10" stroke-width="1.5" stroke-linecap="round" opacity="0.85"/>
-            <line x1="122" y1="10" x2="60" y2="15" stroke-width="1.5" stroke-linecap="round" opacity="0.85"/>
-            <line x1="138" y1="10" x2="200" y2="5"  stroke-width="1.5" stroke-linecap="round" opacity="0.85"/>
-            <line x1="138" y1="10" x2="206" y2="10" stroke-width="1.5" stroke-linecap="round" opacity="0.85"/>
-            <line x1="138" y1="10" x2="200" y2="15" stroke-width="1.5" stroke-linecap="round" opacity="0.85"/>
+            <line x1="122" y1="10" x2="60" y2="5" stroke-width="1.5" stroke-linecap="round" opacity="0.85"/><line x1="122" y1="10" x2="54" y2="10" stroke-width="1.5" stroke-linecap="round" opacity="0.85"/><line x1="122" y1="10" x2="60" y2="15" stroke-width="1.5" stroke-linecap="round" opacity="0.85"/>
+            <line x1="138" y1="10" x2="200" y2="5" stroke-width="1.5" stroke-linecap="round" opacity="0.85"/><line x1="138" y1="10" x2="206" y2="10" stroke-width="1.5" stroke-linecap="round" opacity="0.85"/><line x1="138" y1="10" x2="200" y2="15" stroke-width="1.5" stroke-linecap="round" opacity="0.85"/>
           </svg>
         </div>
       </div>
-      <div class="tag">Section divider</div>
       <div class="name">Whisker rule</div>
-      <div class="use">A whisker flourish instead of a plain line — sensing &amp; precision. Sits under labels and between report/landing sections.</div>
+      <div class="use">A whisker flourish instead of a plain line — under labels, between sections.</div>
     </div>
-
-    <!-- 3. PAW MARKERS / WORRY DOTS -->
     <div class="card">
       <div class="stage light">
         <div class="paws-row">
@@ -108,80 +248,185 @@
           <span class="worry-label">Some worry</span>
         </div>
       </div>
-      <div class="tag">Markers &amp; ratings</div>
       <div class="name">Paw print</div>
-      <div class="use">The cat's mark — fills the worry-level meter (2 of 3 here), bullets the report reasons, stamps "checked".</div>
+      <div class="use">Fills the worry-level meter, bullets the reasons, stamps "checked".</div>
     </div>
-
-    <!-- 4. TAIL SCROLL CUE -->
     <div class="card">
       <div class="stage">
-        <svg class="tail-bob" width="44" height="78" viewBox="0 0 44 78" fill="none" stroke="currentColor">
+        <svg class="tail-bob" width="40" height="72" viewBox="0 0 44 78" fill="none" stroke="currentColor">
           <path d="M22 6 C34 18 34 42 22 56 C16 63 9 62 9 54 C9 49 13 47 17 50" stroke-width="3" stroke-linecap="round"/>
         </svg>
       </div>
-      <div class="tag">Directional cue</div>
-      <div class="name">Tail flick &darr;</div>
-      <div class="use">A tail curling down as a "more below" hint on the hero, and the ▾ on "see full report". Gentle bob draws the eye.</div>
+      <div class="name">Tail flick ↓</div>
+      <div class="use">A tail curling down — "more below" on the hero, the ▾ on "see full report".</div>
     </div>
-
-    <!-- 5. CURLED SLEEPING CAT -->
     <div class="card">
       <div class="stage">
-        <svg width="180" height="120" viewBox="0 0 180 120" fill="none" stroke="currentColor">
-          <!-- curled body (one continuous sweep) -->
-          <path d="M70 44 C44 44 28 64 32 88 C35 106 56 112 84 110 C116 108 138 96 138 76 C138 60 124 50 108 52" stroke-width="3" stroke-linecap="round"/>
-          <!-- tail wrapping around the front -->
-          <path d="M84 110 C108 112 128 104 132 88 C134 80 128 74 121 76" stroke-width="3" stroke-linecap="round"/>
-          <!-- head tucked, lower-left, with two ears -->
-          <path d="M70 44 C60 46 54 56 58 67 C61 75 72 77 80 72" stroke-width="3" stroke-linecap="round"/>
-          <path d="M64 47 L60 35 L72 44" stroke-width="2.5" stroke-linejoin="round"/>
-          <path d="M75 43 L82 33 L82 47" stroke-width="2.5" stroke-linejoin="round"/>
-          <!-- closed, content eye -->
-          <path d="M62 58 Q66 62 70 58" stroke-width="2" stroke-linecap="round"/>
-          <!-- zzz -->
-          <path d="M120 40 L130 40 L120 50 L130 50" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/>
-          <path d="M134 28 L142 28 L134 36 L142 36" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" opacity="0.35"/>
+        <svg class="qmark" width="64" height="100" viewBox="0 0 70 110" fill="none" stroke="currentColor">
+          <path d="M18 32 C16 14 50 10 52 30 C53 44 36 46 35 60 L35 70" stroke-width="3.2" stroke-linecap="round"/>
+          <g fill="currentColor" stroke="none" transform="translate(27,82)"><ellipse cx="8" cy="11" rx="5" ry="4"/><circle cx="3" cy="6" r="1.8"/><circle cx="7" cy="3.5" r="1.9"/><circle cx="11" cy="3.5" r="1.9"/><circle cx="14" cy="6" r="1.8"/></g>
         </svg>
       </div>
-      <div class="tag">Empty &amp; error states</div>
-      <div class="name">Catnap</div>
-      <div class="use">A new pose for "no results", "nothing analyzed yet", and the error screen — a napping cat instead of a crying emoji.</div>
+      <div class="name">Tail "?"</div>
+      <div class="use">The tail curled into a question mark — help / FAQ / "what does this mean?"</div>
     </div>
+  </div>
+</div>
 
-    <!-- 6. VERDICT REACTION -->
+<!-- ══════════ REACTIONS & LOVE ══════════ -->
+<div class="sec">
+  <div class="sec-h">Reactions &amp; love</div>
+  <div class="grid">
     <div class="card">
-      <div class="stage" style="gap:36px">
-        <!-- content (good) -->
+      <div class="stage" style="gap:30px">
         <div style="text-align:center">
-          <svg width="80" height="74" viewBox="0 0 80 74" fill="none" stroke="currentColor" style="color:var(--good)">
+          <svg width="78" height="72" viewBox="0 0 80 74" fill="none" stroke="currentColor" style="color:var(--good)">
             <path d="M26 40 C20 34 14 33 11 38 C6 45 6 55 12 61 C18 67 28 65 36 59" stroke-width="3" stroke-linecap="round"/>
-            <path d="M16 31 L12 13 L24 28" stroke-width="2.5" stroke-linejoin="round"/>
-            <path d="M28 33 L34 13 L35 30" stroke-width="2.5" stroke-linejoin="round"/>
+            <path d="M16 31 L12 13 L24 28" stroke-width="2.5" stroke-linejoin="round"/><path d="M28 33 L34 13 L35 30" stroke-width="2.5" stroke-linejoin="round"/>
             <path d="M9 47 Q13 51 17 47" stroke-width="2" stroke-linecap="round"/>
-            <g><path d="M64 18 C61 40 52 56 40 64" stroke-width="3" stroke-linecap="round"/></g>
+            <path d="M64 18 C61 40 52 56 40 64" stroke-width="3" stroke-linecap="round"/>
           </svg>
-          <div style="font-size:11px;color:var(--good);font-weight:700;letter-spacing:.05em;margin-top:6px">CONTENT</div>
+          <div style="font-size:10px;color:var(--good);font-weight:700;letter-spacing:.05em;margin-top:6px">CONTENT</div>
         </div>
-        <!-- not impressed (caution) -->
         <div style="text-align:center">
-          <svg width="80" height="74" viewBox="0 0 80 74" fill="none" stroke="currentColor" style="color:var(--caution)">
+          <svg width="78" height="72" viewBox="0 0 80 74" fill="none" stroke="currentColor" style="color:var(--caution)">
             <path d="M26 42 C20 36 14 35 11 40 C6 47 6 57 12 63 C18 69 28 67 36 61" stroke-width="3" stroke-linecap="round"/>
-            <!-- ears back / flattened -->
-            <path d="M18 33 L8 24 L22 30" stroke-width="2.5" stroke-linejoin="round"/>
-            <path d="M30 33 L42 25 L34 31" stroke-width="2.5" stroke-linejoin="round"/>
+            <path d="M18 33 L8 24 L22 30" stroke-width="2.5" stroke-linejoin="round"/><path d="M30 33 L42 25 L34 31" stroke-width="2.5" stroke-linejoin="round"/>
             <path d="M9 49 Q13 46 17 49" stroke-width="2" stroke-linecap="round"/>
-            <!-- tail flick -->
             <path d="M62 30 C66 44 60 58 70 64" stroke-width="3" stroke-linecap="round"/>
           </svg>
-          <div style="font-size:11px;color:var(--caution);font-weight:700;letter-spacing:.05em;margin-top:6px">NOT IMPRESSED</div>
+          <div style="font-size:10px;color:var(--caution);font-weight:700;letter-spacing:.05em;margin-top:6px">NOT IMPRESSED</div>
         </div>
       </div>
-      <div class="tag">Beside the verdict</div>
       <div class="name">The cat reacts</div>
-      <div class="use">Ears + tail posture mirror the judgment — content for a good food, ears-back &amp; tail-flick for a poor one. The mascot has an opinion.</div>
+      <div class="use">Ears + tail posture mirror the verdict — content for a good food, ears-back for a poor one.</div>
     </div>
-
+    <div class="card">
+      <div class="stage">
+        <svg width="130" height="100" viewBox="0 0 130 100" fill="none" stroke="currentColor">
+          <path d="M34 62 C30 38 44 26 65 26 C86 26 100 38 96 62 C92 80 38 80 34 62 Z" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M46 32 L40 13 L58 29" stroke-width="2.6" stroke-linejoin="round"/><path d="M84 32 L90 13 L72 29" stroke-width="2.6" stroke-linejoin="round"/>
+          <g class="heart" fill="currentColor" stroke="none">
+            <path d="M52 55 C46 49 43 46 47 41 C49.5 38.5 52 41 52 44.5 C52 41 54.5 38.5 57 41 C61 46 58 49 52 55 Z"/>
+            <path d="M78 55 C72 49 69 46 73 41 C75.5 38.5 78 41 78 44.5 C78 41 80.5 38.5 83 41 C87 46 84 49 78 55 Z"/>
+          </g>
+          <path d="M54 64 Q65 73 76 64" stroke-width="2.4" stroke-linecap="round"/>
+          <line x1="40" y1="60" x2="20" y2="56" stroke-width="1.3" opacity="0.4"/><line x1="40" y1="63" x2="20" y2="66" stroke-width="1.3" opacity="0.4"/>
+          <line x1="90" y1="60" x2="110" y2="56" stroke-width="1.3" opacity="0.4"/><line x1="90" y1="63" x2="110" y2="66" stroke-width="1.3" opacity="0.4"/>
+        </svg>
+      </div>
+      <div class="name">Heart-eyes</div>
+      <div class="use">A top pick / "loved it" / 5-star moment, and a shareable reaction. Hearts beat.</div>
+    </div>
+    <div class="card">
+      <div class="stage">
+        <svg width="150" height="64" viewBox="0 0 160 70" fill="none" stroke="currentColor">
+          <g class="blink"><path d="M40 35 Q56 16 72 35 Q56 50 40 35 Z" stroke-width="2.6"/><ellipse cx="56" cy="35" rx="2.2" ry="8" fill="currentColor" stroke="none"/></g>
+          <g class="blink b2"><path d="M88 35 Q104 16 120 35 Q104 50 88 35 Z" stroke-width="2.6"/><ellipse cx="104" cy="35" rx="2.2" ry="8" fill="currentColor" stroke="none"/></g>
+        </svg>
+      </div>
+      <div class="name">Slow blink</div>
+      <div class="use">The cat "I trust you" blink — a success micro-moment. (Also the logo's eye.)</div>
+    </div>
+    <div class="card">
+      <div class="stage">
+        <svg class="heart" width="100" height="100" viewBox="0 0 110 110" fill="none" stroke="currentColor">
+          <path d="M55 86 C30 64 20 48 32 35 C41 26 51 31 55 42 C59 31 69 26 78 35 C90 48 80 64 55 86 Z" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M55 86 C57 93 63 94 62 88" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="name">Tail heart</div>
+      <div class="use">The tail curled into a heart — the "save / love this food" toggle.</div>
+    </div>
   </div>
+</div>
+
+<!-- ══════════ SOCIAL & BADGES ══════════ -->
+<div class="sec">
+  <div class="sec-h">Social &amp; badges</div>
+  <div class="grid">
+    <div class="card">
+      <div class="stage light">
+        <svg width="130" height="130" viewBox="0 0 130 130" fill="none" stroke="currentColor" style="color:var(--ginger)">
+          <circle cx="65" cy="65" r="58" stroke-width="2"/><circle cx="65" cy="65" r="38" stroke-width="1.2" opacity="0.4"/>
+          <defs><path id="sealTop" d="M 23 65 A 42 42 0 0 1 107 65" fill="none"/></defs>
+          <text font-family="Sora,sans-serif" font-size="11" font-weight="800" letter-spacing="2" fill="currentColor" stroke="none"><textPath href="#sealTop" startOffset="50%" text-anchor="middle">SNIFF · APPROVED</textPath></text>
+          <circle cx="56" cy="103" r="1.7" fill="currentColor" stroke="none"/><circle cx="65" cy="105" r="2.1" fill="currentColor" stroke="none"/><circle cx="74" cy="103" r="1.7" fill="currentColor" stroke="none"/>
+          <g fill="currentColor" stroke="none" transform="translate(52,50)"><ellipse cx="13" cy="17" rx="7.5" ry="6"/><circle cx="5" cy="9" r="2.9"/><circle cx="10.5" cy="5" r="3"/><circle cx="16.5" cy="5" r="3"/><circle cx="22" cy="9" r="2.9"/></g>
+        </svg>
+      </div>
+      <div class="name">"Sniff-approved" seal</div>
+      <div class="use">A mark of approval on genuinely good foods, and a shareable sticker.</div>
+    </div>
+    <div class="card">
+      <div class="stage">
+        <svg width="190" height="110" viewBox="0 0 200 120" fill="none" stroke="currentColor">
+          <line x1="10" y1="86" x2="190" y2="86" stroke-width="3" stroke-linecap="round"/>
+          <path d="M66 86 C63 52 78 38 100 38 C122 38 137 52 134 86" stroke-width="3" stroke-linecap="round"/>
+          <path d="M76 46 L70 26 L88 42" stroke-width="2.6" stroke-linejoin="round"/><path d="M124 46 L130 26 L112 42" stroke-width="2.6" stroke-linejoin="round"/>
+          <circle cx="88" cy="72" r="3.4" fill="currentColor" stroke="none"/><circle cx="112" cy="72" r="3.4" fill="currentColor" stroke="none"/>
+          <ellipse cx="100" cy="80" rx="2" ry="1.6" fill="currentColor" stroke="none" opacity="0.6"/>
+          <path d="M74 86 C74 78 84 78 84 86" stroke-width="3" stroke-linecap="round"/><path d="M116 86 C116 78 126 78 126 86" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="name">Peeking cat</div>
+      <div class="use">Peers over the edge of share/OG cards and story frames.</div>
+    </div>
+    <div class="card">
+      <div class="stage">
+        <svg width="170" height="108" viewBox="0 0 190 120" fill="none" stroke="currentColor">
+          <path d="M28 96 C28 62 46 50 72 49 L120 49 C146 50 162 62 162 96" stroke-width="3" stroke-linecap="round"/>
+          <line x1="30" y1="96" x2="160" y2="96" stroke-width="3" stroke-linecap="round"/>
+          <path d="M52 51 L47 33 L63 48" stroke-width="2.6" stroke-linejoin="round"/><path d="M73 48 L80 32 L82 50" stroke-width="2.6" stroke-linejoin="round"/>
+          <path d="M50 66 Q55 71 60 66" stroke-width="2.2" stroke-linecap="round"/><path d="M70 66 Q75 71 80 66" stroke-width="2.2" stroke-linecap="round"/>
+          <ellipse cx="65" cy="74" rx="2" ry="1.5" fill="currentColor" stroke="none" opacity="0.6"/>
+          <line x1="52" y1="74" x2="34" y2="71" stroke-width="1.2" opacity="0.4"/><line x1="52" y1="77" x2="34" y2="80" stroke-width="1.2" opacity="0.4"/>
+          <path d="M158 96 C158 78 138 74 124 82" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="name">Cat loaf</div>
+      <div class="use">The internet's favourite cat shape — a sticker / footer flourish.</div>
+    </div>
+    <div class="card">
+      <div class="stage" style="gap:10px">
+        <div class="stk-wrap"><div class="sticker"><svg width="44" height="44" viewBox="0 0 50 50" fill="none" stroke="currentColor">
+          <path d="M14 30 C12 18 18 12 25 12 C32 12 38 18 36 30 C34 38 16 38 14 30 Z" stroke-width="2.4"/><path d="M17 16 L14 7 L23 14" stroke-width="2" stroke-linejoin="round"/><path d="M33 16 L36 7 L27 14" stroke-width="2" stroke-linejoin="round"/>
+          <circle cx="21" cy="25" r="1.8" fill="currentColor" stroke="none"/><circle cx="29" cy="25" r="1.8" fill="currentColor" stroke="none"/><path d="M23 30 L27 30 L25 33 Z" fill="currentColor" stroke="none"/></svg></div><div class="stk-cap">sniffing</div></div>
+        <div class="stk-wrap"><div class="sticker"><svg width="44" height="44" viewBox="0 0 50 50" fill="none" stroke="currentColor">
+          <path d="M14 30 C12 18 18 12 25 12 C32 12 38 18 36 30 C34 38 16 38 14 30 Z" stroke-width="2.4"/><path d="M17 16 L14 7 L23 14" stroke-width="2" stroke-linejoin="round"/><path d="M33 16 L36 7 L27 14" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M18 24 Q21 21 24 24" stroke-width="2" stroke-linecap="round"/><path d="M26 24 Q29 21 32 24" stroke-width="2" stroke-linecap="round"/><path d="M21 30 Q25 34 29 30" stroke-width="2" stroke-linecap="round"/></svg></div><div class="stk-cap">approve</div></div>
+        <div class="stk-wrap"><div class="sticker"><svg width="44" height="44" viewBox="0 0 50 50" fill="none" stroke="currentColor">
+          <path d="M14 30 C12 18 18 12 25 12 C32 12 38 18 36 30 C34 38 16 38 14 30 Z" stroke-width="2.4"/><path d="M16 15 L13 5 L23 13" stroke-width="2" stroke-linejoin="round"/><path d="M34 15 L37 5 L27 13" stroke-width="2" stroke-linejoin="round"/>
+          <circle cx="21" cy="24" r="3" stroke-width="1.8"/><circle cx="29" cy="24" r="3" stroke-width="1.8"/><ellipse cx="25" cy="32" rx="2" ry="2.6" stroke-width="1.8"/></svg></div><div class="stk-cap">shocked</div></div>
+      </div>
+      <div class="name">Reaction stickers</div>
+      <div class="use">A sticker pack of cat faces for replies, WhatsApp, share moments.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ EXPERIMENTAL ══════════ -->
+<div class="sec">
+  <div class="sec-h">Experimental</div>
+  <div class="grid">
+    <div class="card">
+      <div class="stage">
+        <svg class="draw" width="200" height="140" viewBox="0 0 240 180" fill="none" stroke="currentColor">
+          <g transform="translate(28,6)">
+            <path d="M168 24 C165 50 154 76 138 96 C124 112 108 120 93 117 C82 114 74 110 66 102" stroke-width="3" stroke-linecap="round"/>
+            <path d="M66 102 C60 96 52 95 49 100 C44 107 44 117 50 123 C56 129 66 127 74 121" stroke-width="3" stroke-linecap="round"/>
+            <path d="M56 93 L52 72 L64 90" stroke-width="2.5" stroke-linejoin="round"/><path d="M68 95 L74 73 L75 92" stroke-width="2.5" stroke-linejoin="round"/>
+            <path d="M74 121 C84 129 102 136 120 134 C136 131 150 119 158 106" stroke-width="3" stroke-linecap="round"/>
+            <path d="M92 134 L90 178" stroke-width="2.5" stroke-linecap="round"/><path d="M110 136 L112 178" stroke-width="2.5" stroke-linecap="round"/><path d="M144 122 L147 178" stroke-width="2.5" stroke-linecap="round"/>
+            <ellipse class="fillbit" cx="52" cy="110" rx="1.5" ry="4.5" fill="currentColor" stroke="none"/><circle class="fillbit" cx="46" cy="116" r="1.5" fill="currentColor" stroke="none"/>
+          </g>
+        </svg>
+      </div>
+      <div class="name">Self-drawing cat</div>
+      <div class="use">The cat's line draws itself on — a hero entrance / between-states animation.</div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
