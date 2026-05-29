@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sniff · Report redesign prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ginger:#E08A3A; --ginger-deep:#C06E22; --ginger-soft:#FCEBD4;
+    --indie:#8B7355; --indie-soft:#B8A88E;
+    --charcoal:#2A2725; --charcoal-soft:#3D3835;
+    --cream:#F5F0E5; --cream-deep:#EAE3D2;
+    --tabby:#C4A67D; --tabby-soft:#E8DCC8;
+    --good:#4A8F5C; --good-deep:#356642; --good-bg:#E6EFE8;
+    --caution:#C68A2C; --caution-deep:#9F6D1F; --caution-bg:#FBF1DD;
+    --missing:#A09A90;
+    --flag:#B33A2A;
+    --serif:'Young Serif',Georgia,serif;
+    --sans:'Sora',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#211e1c;color:var(--charcoal);font-family:var(--sans);-webkit-font-smoothing:antialiased;}
+
+  /* ── prototype scaffold ── */
+  .proto-bar{position:sticky;top:0;z-index:50;background:var(--charcoal);color:var(--cream);
+    display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:14px 22px;border-bottom:1px solid rgba(245,240,229,.12)}
+  .proto-mark{font-family:var(--serif);font-size:20px;color:var(--cream);margin-right:6px}
+  .proto-mark .d{color:var(--ginger)}
+  .proto-bar .grp{display:flex;gap:6px;align-items:center}
+  .proto-bar .lbl{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--indie-soft);margin-right:2px}
+  .proto-btn{font-family:var(--sans);font-size:12px;font-weight:600;color:var(--cream);background:rgba(245,240,229,.08);
+    border:1px solid rgba(245,240,229,.16);border-radius:999px;padding:7px 13px;cursor:pointer;transition:.15s}
+  .proto-btn:hover{background:rgba(245,240,229,.16)}
+  .proto-btn.on{background:var(--ginger);color:var(--charcoal);border-color:var(--ginger)}
+  .proto-note{font-size:11px;color:var(--indie-soft);margin-left:auto}
+
+  .stage{display:flex;justify-content:center;padding:40px 16px 90px}
+  /* phone frame — most parents are on mobile */
+  .phone{width:430px;max-width:100%;background:var(--cream);border-radius:28px;overflow:hidden;
+    box-shadow:0 30px 80px rgba(0,0,0,.45),0 4px 14px rgba(0,0,0,.3);border:1px solid rgba(0,0,0,.4)}
+  .sheet-head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;
+    background:var(--cream);border-bottom:1px solid var(--tabby-soft)}
+  .sheet-mark{font-family:var(--serif);font-size:19px;color:var(--charcoal)}
+  .sheet-mark .d{display:inline-block;width:.16em;height:.16em;background:var(--ginger);border-radius:50%;
+    vertical-align:.18em;margin:0 .02em;animation:blink 5.5s ease-in-out infinite}
+  @keyframes blink{0%,82%,100%{transform:scaleY(1)}90%{transform:scaleY(.16)}96%{transform:scaleY(1)}}
+  .sheet-close{width:32px;height:32px;border:none;border-radius:50%;background:var(--cream-deep);color:var(--indie);
+    font-size:18px;cursor:pointer;flex-shrink:0}
+  .sheet-actions{display:flex;align-items:center;gap:2px}
+  .sheet-act{display:inline-flex;align-items:center;gap:5px;font-family:var(--sans);font-size:12px;font-weight:600;
+    color:var(--indie);background:transparent;border:none;cursor:pointer;padding:7px 9px;border-radius:8px}
+  .sheet-act:hover{color:var(--ginger);background:var(--cream-deep)}
+  .sheet-act svg{width:15px;height:15px}
+  .scroll{max-height:78vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
+
+  /* ════ MOVEMENT 1 · THE ANSWER ════ */
+  .m-id{display:flex;gap:14px;align-items:center;padding:18px 22px 14px}
+  .id-thumb{width:62px;height:62px;border-radius:13px;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+    font-family:var(--serif);font-size:18px;color:var(--cream);background:var(--tabby)}
+  .id-brand{font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--indie);font-weight:700;margin-bottom:3px}
+  .id-title{font-family:var(--serif);font-size:20px;color:var(--charcoal);line-height:1.15;margin-bottom:6px}
+  .id-price{display:inline-flex;flex-wrap:wrap;gap:4px 8px;font-size:11.5px;color:var(--indie)}
+  .id-price b{font-family:var(--sans);font-weight:800;color:var(--charcoal);font-variant-numeric:tabular-nums}
+
+  .hero{position:relative;padding:34px 26px 30px;text-align:center}
+  .hero.v-good{background:var(--good-bg)}
+  .hero.v-okay{background:var(--caution-bg)}
+  .hero.v-weak{background:var(--charcoal);color:var(--cream)}
+  .cat-face{height:58px;width:auto;margin:0 auto 22px;display:block}
+  .v-tag{font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;opacity:.7;margin-bottom:13px}
+  .hero.v-good .v-tag{color:var(--good-deep);opacity:1}
+  .hero.v-okay .v-tag{color:var(--caution-deep);opacity:1}
+  .hero.v-weak .v-tag{color:var(--ginger);opacity:1}
+  .v-label{font-family:var(--serif);font-size:clamp(30px,8vw,40px);line-height:1.04;letter-spacing:-.02em;margin-bottom:15px}
+  .hero.v-good .v-label{color:var(--good-deep)}
+  .hero.v-okay .v-label{color:var(--caution-deep)}
+  .hero.v-weak .v-label{color:var(--ginger)}
+  .v-summary{font-family:var(--serif);font-size:15.5px;line-height:1.55;max-width:320px;margin:0 auto;opacity:.92}
+  /* earned seal — a real circular stamp, applied at an angle like an authority mark (strong only) */
+  .seal-stamp{position:absolute;top:14px;right:12px;width:84px;height:84px;color:var(--good-deep);
+    transform:rotate(-9deg);opacity:.9;pointer-events:none}
+  .seal-stamp svg{width:100%;height:100%;display:block}
+  @media(max-width:480px){.seal-stamp{width:74px;height:74px;top:12px;right:10px}}
+
+  /* worry — its own quiet strip, lifted out of the hero */
+  .worry-strip{display:flex;align-items:center;justify-content:center;gap:11px;padding:15px 22px;background:var(--cream);border-bottom:1px solid var(--cream-deep)}
+  .paws{display:flex;gap:6px}
+  .paws svg{width:16px;height:16px}
+  .paw-empty{opacity:.2}
+  .worry-lbl{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+  .wl-1{color:var(--good)} .wl-2{color:var(--caution)} .wl-3,.wl-4{color:var(--flag)}
+
+  /* The Nose Knows */
+  .nose{display:flex;gap:12px;padding:20px 22px;background:var(--cream);border-top:1px solid var(--cream-deep);border-bottom:1px solid var(--cream-deep)}
+  .nose-q{font-family:var(--serif);font-size:40px;line-height:.8;color:var(--ginger);flex-shrink:0}
+  .nose-l{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ginger);font-weight:700;margin-bottom:6px}
+  .nose-t{font-family:var(--serif);font-size:15.5px;line-height:1.5;color:var(--charcoal)}
+
+  .scroll-cue{display:flex;flex-direction:column;align-items:center;gap:2px;padding:12px 0 2px;color:var(--indie-soft);
+    font-size:10px;letter-spacing:.14em;text-transform:uppercase}
+  .scroll-cue svg{width:20px;height:26px;animation:flick 2.4s ease-in-out infinite}
+  @keyframes flick{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
+
+  /* ════ section shell ════ */
+  .sec{padding:22px}
+  .sec + .sec{border-top:1px solid var(--cream-deep)}
+  .sec-head{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+  .sec-h{font-family:var(--serif);font-size:19px;color:var(--charcoal)}
+  .whisker{flex:1;height:10px}
+  .whisker svg{width:100%;height:10px;opacity:.5}
+
+  /* ════ MOVEMENT 2 · WHAT TO DO ════ */
+  .todo{background:var(--ginger-soft);border-radius:14px;padding:18px 19px}
+  .todo-l{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ginger);font-weight:700;margin-bottom:8px}
+  .todo-t{font-size:14.5px;line-height:1.55;color:var(--charcoal);font-weight:500}
+  .switch-note{display:flex;gap:9px;margin-top:14px;padding-top:13px;border-top:1px solid rgba(42,39,37,.1);
+    font-size:12.5px;line-height:1.5;color:var(--indie)}
+  .switch-note b{color:var(--charcoal);font-weight:700}
+
+  /* ════ MOVEMENT 3 · THE MATH ════ */
+  .metric{margin-bottom:18px}
+  .metric:last-child{margin-bottom:0}
+  .metric-top{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:7px}
+  .metric-name{font-size:13px;color:var(--charcoal);font-weight:600;display:flex;align-items:center;gap:6px}
+  .metric-val{font-family:var(--sans);font-weight:800;font-size:21px;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+  .metric-val.good{color:var(--good)} .metric-val.warn{color:var(--caution)} .metric-val.bad{color:var(--flag)}
+  .track{position:relative;height:8px;border-radius:6px;background:var(--cream-deep);overflow:visible}
+  .ideal{position:absolute;top:0;bottom:0;background:rgba(74,143,92,.22);border-radius:6px}
+  .ideal-lbl{font-size:9.5px;color:var(--good-deep);position:absolute;top:11px;letter-spacing:.02em}
+  .marker{position:absolute;top:50%;width:14px;height:14px;border-radius:50%;border:3px solid #fff;transform:translate(-50%,-50%);
+    box-shadow:0 1px 4px rgba(0,0,0,.2)}
+  .marker.good{background:var(--good)} .marker.warn{background:var(--caution)} .marker.bad{background:var(--flag)}
+  .metric-meta{font-size:11.5px;color:var(--indie);margin-top:14px}
+
+  /* carbs vs wild */
+  .carb{margin-top:22px;background:var(--cream);border:1px solid var(--cream-deep);border-radius:12px;padding:15px 16px}
+  .carb-l{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--indie);font-weight:700;margin-bottom:13px}
+  .carb-row{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+  .carb-row:last-child{margin-bottom:0}
+  .carb-cap{width:74px;flex-shrink:0;font-size:11.5px;color:var(--charcoal)}
+  .carb-bar{flex:1;height:14px;background:var(--cream-deep);border-radius:7px;overflow:hidden}
+  .carb-fill{height:100%;border-radius:7px}
+  .carb-fill.this{background:var(--caution)}
+  .carb-fill.wild{background:var(--good)}
+  .carb-num{width:42px;text-align:right;font-weight:800;font-variant-numeric:tabular-nums;font-size:13px}
+
+  /* gone missing */
+  .gm-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  .gm{position:relative;border:1.5px dashed var(--missing);border-radius:10px;padding:11px 30px 11px 12px;
+    background:rgba(160,154,144,.05);cursor:help;outline:none}
+  .gm-k{font-size:13px;color:var(--charcoal);font-weight:600;margin-bottom:2px}
+  .gm-v{font-size:11px;color:var(--missing);font-style:italic}
+  .gm-q{position:absolute;top:9px;right:9px;width:14px;height:20px;color:var(--missing);opacity:.65}
+  .gm-q svg{width:100%;height:100%;display:block}
+  .gm-tip{position:absolute;left:50%;bottom:calc(100% + 9px);transform:translateX(-50%) translateY(4px);
+    width:min(230px,78vw);background:var(--charcoal);color:var(--cream);font-size:11.5px;line-height:1.5;
+    padding:11px 13px;border-radius:11px;box-shadow:0 10px 30px rgba(0,0,0,.28);text-align:left;font-style:normal;
+    opacity:0;visibility:hidden;transition:opacity .16s ease,transform .16s ease;z-index:30}
+  .gm-tip::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);
+    border:6px solid transparent;border-top-color:var(--charcoal)}
+  .gm:hover .gm-tip,.gm:focus .gm-tip,.gm:focus-within .gm-tip,.gm.open .gm-tip{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
+  .gm:hover .gm-q,.gm.open .gm-q{opacity:1;color:var(--ginger)}
+
+  /* ════ IS THIS A FULL MEAL? ════ */
+  .meal-flag{display:inline-flex;align-items:center;gap:7px;padding:6px 13px 6px 9px;border-radius:999px;
+    font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;margin-bottom:16px}
+  .meal-flag.full{background:rgba(74,143,92,.13);color:var(--good-deep)}
+  .meal-flag.topper{background:var(--ginger-soft);color:var(--ginger-deep)}
+  .meal-flag svg{width:18px;height:18px;flex-shrink:0}
+  .meal-amt{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;margin-bottom:13px}
+  .meal-amt .big{font-family:var(--sans);font-weight:800;font-size:23px;font-variant-numeric:tabular-nums;color:var(--charcoal);letter-spacing:-.01em}
+  .meal-amt .sub{font-size:12.5px;color:var(--indie)}
+  .meal-how{font-size:13.5px;line-height:1.6;color:var(--charcoal)}
+  .meal-how b{font-weight:700}
+  .gm-allclear{display:flex;gap:10px;align-items:center;background:var(--good-bg);border-radius:11px;padding:13px 15px}
+  .gm-allclear .t{font-size:13px;color:var(--good-deep);line-height:1.45}
+
+  /* reasons */
+  .reason{display:flex;gap:11px;padding:12px 0;border-bottom:1px solid var(--cream-deep);align-items:flex-start}
+  .reason:last-child{border-bottom:none;padding-bottom:0}
+  .reason:first-child{padding-top:0}
+  .r-ic{flex-shrink:0;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-size:12px;font-weight:800;color:#fff;margin-top:1px}
+  .r-good .r-ic{background:var(--good)} .r-caution .r-ic{background:var(--caution)} .r-bad .r-ic{background:var(--flag)}
+  .r-q{font-family:var(--serif);font-size:15px;color:var(--charcoal);line-height:1.3;margin-bottom:2px}
+  .r-a{font-size:12.5px;color:var(--indie);line-height:1.5}
+
+  /* ════ MOVEMENT 4 · FIT ════ */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .fit-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;margin-bottom:11px}
+  .fit.col-fits .fit-h,.fit-col.fits .fit-h{color:var(--good)}
+  .fit-col.no .fit-h{color:var(--flag)}
+  .fit-item{display:flex;gap:8px;align-items:flex-start;margin-bottom:9px;font-size:12.5px;line-height:1.4;color:var(--charcoal)}
+  .fit-item:last-child{margin-bottom:0}
+  .fit-ic{flex-shrink:0;width:16px;height:16px;border-radius:50%;color:#fff;font-size:9px;font-weight:800;
+    display:flex;align-items:center;justify-content:center;margin-top:2px}
+  .fit-col.fits .fit-ic{background:var(--good)} .fit-col.no .fit-ic{background:var(--flag)}
+
+  /* ════ MOVEMENT 5 · LINEUP ════ */
+  .tier{border:1px solid var(--cream-deep);border-radius:14px;padding:15px;margin-bottom:13px;background:#fff;position:relative;
+    display:grid;grid-template-columns:48px 1fr;gap:13px;cursor:pointer;transition:.18s}
+  .tier:hover{border-color:var(--ginger);box-shadow:0 4px 16px rgba(224,138,58,.12)}
+  .tier:last-child{margin-bottom:0}
+  .tier-badge{grid-column:1/-1;display:inline-flex;align-self:start;align-items:center;gap:6px;font-size:9.5px;font-weight:800;
+    letter-spacing:.1em;text-transform:uppercase;padding:4px 9px;border-radius:999px;margin-bottom:2px;width:max-content}
+  .tb-value{background:var(--good-bg);color:var(--good-deep)}
+  .tb-upgrade{background:var(--ginger-soft);color:var(--ginger-deep)}
+  .tb-best{background:var(--charcoal);color:var(--ginger)}
+  .tier-thumb{width:48px;height:48px;border-radius:10px;background:var(--tabby);color:var(--cream);font-family:var(--serif);
+    display:flex;align-items:center;justify-content:center;font-size:14px}
+  .tier-brand{font-size:10.5px;color:var(--indie);margin-bottom:1px}
+  .tier-title{font-family:var(--serif);font-size:15px;color:var(--charcoal);line-height:1.2;margin-bottom:7px}
+  .tier-why{display:flex;flex-direction:column;gap:4px;margin-bottom:8px}
+  .tier-why div{font-size:11.5px;color:var(--charcoal);display:flex;gap:6px;align-items:baseline;line-height:1.35}
+  .tier-why div::before{content:'↑';color:var(--good);font-weight:800;flex-shrink:0}
+  .tier-price{font-size:11.5px;font-weight:700;color:var(--charcoal)}
+  .tier-price span{color:var(--indie);font-weight:400}
+  .lineup-none{display:flex;gap:11px;align-items:center;background:var(--good-bg);border-radius:12px;padding:15px}
+  .lineup-none .t{font-size:13px;color:var(--good-deep);line-height:1.45}
+
+  /* ════ MOVEMENT 6 · RECEIPTS ════ */
+  .receipts-toggle{width:100%;background:#fff;border:none;border-top:1px solid var(--cream-deep);padding:15px 22px;
+    font-family:var(--sans);font-size:11.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--indie);
+    cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+  .receipts-body{display:none;padding:4px 22px 22px;background:var(--cream)}
+  .receipts-body.open{display:block}
+  .rec{padding:12px 0;border-bottom:1px solid var(--tabby-soft);display:flex;justify-content:space-between;gap:14px;align-items:baseline}
+  .rec:last-child{border-bottom:none}
+  .rec-n{font-family:var(--serif);font-size:14px;color:var(--charcoal)}
+  .rec-sub{font-size:11px;color:var(--indie)}
+  .rec-v{font-family:var(--sans);font-weight:800;font-size:16px;font-variant-numeric:tabular-nums;text-align:right}
+  .rec-v.good{color:var(--good)} .rec-v.warn{color:var(--caution)} .rec-v.bad{color:var(--flag)} .rec-v.miss{color:var(--missing);font-style:italic;font-weight:500;font-size:13px}
+
+  .trust{padding:16px 22px 26px;text-align:center;font-size:11px;color:var(--indie-soft);line-height:1.5}
+
+  /* tail-? explainer chip */
+  .qmark{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;
+    border:1.4px solid var(--indie-soft);color:var(--indie);font-size:9px;font-weight:800;cursor:help;font-family:var(--sans)}
+
+  /* ════ EDGE STATES ════ */
+  .edge{padding:60px 30px;text-align:center}
+  .edge svg{height:118px;width:auto;max-width:92%;margin:0 auto 24px;display:block}
+  .edge-tag{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ginger);font-weight:700;margin-bottom:10px}
+  .edge-h{font-family:var(--serif);font-size:23px;color:var(--charcoal);margin-bottom:10px;line-height:1.2}
+  .edge-p{font-size:13.5px;color:var(--indie);line-height:1.6;max-width:300px;margin:0 auto}
+  .wisp{animation:rise 2s ease-in-out infinite}
+  .wisp:nth-child(2){animation-delay:.4s}.wisp:nth-child(3){animation-delay:.8s}
+  @keyframes rise{0%{opacity:0;transform:translateY(6px)}30%{opacity:.9}100%{opacity:0;transform:translateY(-10px)}}
+  .nose-twitch{animation:twitch 2s ease-in-out infinite}
+  @keyframes twitch{0%,70%,100%{transform:translateY(0)}80%{transform:translateY(-1.5px)}}
+  .bat{animation:bat 2.4s ease-in-out infinite;transform-origin:112px 52px}
+  @keyframes bat{0%,55%,100%{transform:rotate(0)}65%{transform:rotate(10deg)}}
+  .kibble-fall{animation:fall 2.4s ease-in infinite}
+  @keyframes fall{0%,60%{opacity:0;transform:translateY(-14px)}72%{opacity:1}100%{opacity:0;transform:translateY(20px)}}
+
+  @media(prefers-reduced-motion:reduce){*{animation:none!important}}
+  @media(max-width:480px){.stage{padding:16px 0 60px}.phone{border-radius:0}}
+</style>
+</head>
+<body>
+
+<div class="proto-bar">
+  <span class="proto-mark">sn<span class="d">●</span>ff</span>
+  <div class="grp"><span class="lbl">Report</span>
+    <button class="proto-btn" data-state="strong">Strong choice</button>
+    <button class="proto-btn" data-state="okay">Okay for now</button>
+    <button class="proto-btn" data-state="weak">Not transparent</button>
+    <button class="proto-btn" data-state="topper">Topper / wet</button>
+  </div>
+  <div class="grp"><span class="lbl">States</span>
+    <button class="proto-btn" data-state="loading">Loading</button>
+    <button class="proto-btn" data-state="notfound">Not found</button>
+    <button class="proto-btn" data-state="error">Error</button>
+  </div>
+  <span class="proto-note">prototype · dummy data · illustrations are placeholders</span>
+</div>
+
+<div class="stage">
+  <div class="phone">
+    <div class="sheet-head">
+      <span class="sheet-mark">sn<span class="d"></span>ff</span>
+      <div class="sheet-actions" id="sheetActions">
+        <button class="sheet-act"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Compare</button>
+        <button class="sheet-act"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Share</button>
+        <button class="sheet-close">&times;</button>
+      </div>
+    </div>
+    <div class="scroll" id="scroll"></div>
+  </div>
+</div>
+
+<script>
+/* ───────────────── illustration kit (placeholder line-art) ───────────────── */
+const G='var(--ginger)';
+// "The cat reacts" — real kit asset: a side-profile cat whose ears + tail posture mirror the verdict.
+function catFace(mood,colorVar){
+  const col = colorVar || G;
+  const body = (mood==='content')
+    ? '<path d="M26 40 C20 34 14 33 11 38 C6 45 6 55 12 61 C18 67 28 65 36 59" stroke-width="3" stroke-linecap="round"/>'
+      +'<path d="M16 31 L12 13 L24 28" stroke-width="2.5" stroke-linejoin="round"/><path d="M28 33 L34 13 L35 30" stroke-width="2.5" stroke-linejoin="round"/>'
+      +'<path d="M9 47 Q13 51 17 47" stroke-width="2" stroke-linecap="round"/>'
+      +'<path d="M64 18 C61 40 52 56 40 64" stroke-width="3" stroke-linecap="round"/>'
+    : '<path d="M26 42 C20 36 14 35 11 40 C6 47 6 57 12 63 C18 69 28 67 36 61" stroke-width="3" stroke-linecap="round"/>'
+      +'<path d="M18 33 L8 24 L22 30" stroke-width="2.5" stroke-linejoin="round"/><path d="M30 33 L42 25 L34 31" stroke-width="2.5" stroke-linejoin="round"/>'
+      +'<path d="M9 49 Q13 46 17 49" stroke-width="2" stroke-linecap="round"/>'
+      +'<path d="M62 30 C66 44 60 58 70 64" stroke-width="3" stroke-linecap="round"/>';
+  return '<svg class="cat-face" viewBox="0 0 80 74" fill="none" stroke="currentColor" style="color:'+col+'">'+body+'</svg>';
+}
+function paw(filled){
+  return '<svg viewBox="0 0 24 24" fill="currentColor" class="'+(filled?'':'paw-empty')+'">'
+    +'<ellipse cx="12" cy="16" rx="6" ry="5"/><circle cx="5.5" cy="9.5" r="2.3"/><circle cx="10" cy="6" r="2.4"/><circle cx="14.5" cy="6" r="2.4"/><circle cx="18.5" cy="9.5" r="2.3"/></svg>';
+}
+function whisker(){return '<svg viewBox="0 0 260 20" preserveAspectRatio="xMidYMid meet" fill="none" stroke="var(--tabby)" style="width:100%;height:10px">'
+  +'<circle cx="130" cy="10" r="2.6" fill="var(--ginger)" stroke="none"/>'
+  +'<line x1="122" y1="10" x2="60" y2="5" stroke-width="1.5" stroke-linecap="round"/><line x1="122" y1="10" x2="54" y2="10" stroke-width="1.5" stroke-linecap="round"/><line x1="122" y1="10" x2="60" y2="15" stroke-width="1.5" stroke-linecap="round"/>'
+  +'<line x1="138" y1="10" x2="200" y2="5" stroke-width="1.5" stroke-linecap="round"/><line x1="138" y1="10" x2="206" y2="10" stroke-width="1.5" stroke-linecap="round"/><line x1="138" y1="10" x2="200" y2="15" stroke-width="1.5" stroke-linecap="round"/></svg>';}
+// Tail curled into a "?" — the explainer affordance (real kit asset).
+function tailQ(){return '<svg viewBox="0 0 70 110" fill="none" stroke="currentColor"><path d="M18 32 C16 14 50 10 52 30 C53 44 36 46 35 60 L35 70" stroke-width="3.2" stroke-linecap="round"/><g fill="currentColor" stroke="none" transform="translate(27,82)"><ellipse cx="8" cy="11" rx="5" ry="4"/><circle cx="3" cy="6" r="1.8"/><circle cx="7" cy="3.5" r="1.9"/><circle cx="11" cy="3.5" r="1.9"/><circle cx="14" cy="6" r="1.8"/></g></svg>';}
+// "Sniff-approved" — real circular seal, applied like an authority stamp (strong foods only).
+function sealStamp(){return '<div class="seal-stamp"><svg viewBox="0 0 130 130" fill="none" stroke="currentColor">'
+  +'<circle cx="65" cy="65" r="58" stroke-width="2"/><circle cx="65" cy="65" r="38" stroke-width="1.2" opacity="0.4"/>'
+  +'<defs><path id="sealTop" d="M 23 65 A 42 42 0 0 1 107 65" fill="none"/></defs>'
+  +'<text font-family="Sora,sans-serif" font-size="11" font-weight="800" letter-spacing="2" fill="currentColor" stroke="none"><textPath href="#sealTop" startOffset="50%" text-anchor="middle">SNIFF · APPROVED</textPath></text>'
+  +'<circle cx="56" cy="103" r="1.7" fill="currentColor" stroke="none"/><circle cx="65" cy="105" r="2.1" fill="currentColor" stroke="none"/><circle cx="74" cy="103" r="1.7" fill="currentColor" stroke="none"/>'
+  +'<g fill="currentColor" stroke="none" transform="translate(52,50)"><ellipse cx="13" cy="17" rx="7.5" ry="6"/><circle cx="5" cy="9" r="2.9"/><circle cx="10.5" cy="5" r="3"/><circle cx="16.5" cy="5" r="3"/><circle cx="22" cy="9" r="2.9"/></g></svg></div>';}
+const EXPLAIN={
+  'Taurine':'An amino acid cats can’t make on their own. Too little, over time, can hurt the heart and eyes — so a good brand tells you how much is in there.',
+  'Ca : P ratio':'The balance of calcium to phosphorus. Off-balance for months strains the kidneys — and kidney trouble is common in cats.',
+  'Ash':'What’s left after the food is burned down — basically the mineral load. High ash can point to cheaper, bone-heavy filler.',
+  'Named meat':'Is it “chicken”, or just “meat & animal derivatives”? A named meat means they know — and will say — what’s actually inside.',
+  'Moisture':'Cats barely drink, so most of their water comes from food. The moisture level tells you how hydrated your cat really is.',
+  'Fat':'Fat drives energy and a healthy coat. A vague range means you can’t tell how rich — or how fattening — it really is.',
+  'Complete?':'A “complete” food can be the whole meal. “Complementary” means it’s a topper or treat — not built to be fed on its own.'
+};
+
+/* ───────────────── dummy data (3 verdict tiers) ───────────────── */
+const FOODS={
+strong:{
+  brand:'Farmina N&D · Dry food', title:'Chicken & Pomegranate, Adult', initials:'N&D',
+  price:{p100:'₹150/100g', day:'≈ ₹82/day for a 4kg cat'},
+  verdict:{key:'good',label:'Strong choice',tag:'Named meat, fully disclosed',
+    summary:'Chicken first, taurine on the label, low carbs. This is close to what a cat is built to eat.'},
+  mood:'content', worry:{filled:1,label:'All clear',cls:'wl-1'},
+  nose:'Honestly? I’d feed this without a second thought. Named meat up top, they tell you the taurine, and the carbs are sensible. It costs more — but you can see where the money goes.',
+  action:'Great pick for a healthy adult. Transition over a week if you’re switching from a cheaper kibble so the tummy keeps up.',
+  switchNote:null,
+  meal:{complete:true, kind:'Complete & balanced', amount:'~50 g', split:'a day, 2 meals', cost:'≈ ₹82/day',
+    how:'A complete daily food on its own. For more moisture, swap one meal for a wet pouch and drop the dry to ~30 g.'},
+  metrics:[
+    {name:'Protein (dry matter)',val:'44%',status:'good',pct:78,idealFrom:62,idealTo:100,meta:'Well above the 40% that signals a meat-rich food.',ex:'Protein measured without water, so wet and dry foods compare fairly.'},
+    {name:'Carbs (calculated)',val:'18%',status:'good',pct:24,idealFrom:0,idealTo:33,meta:'Low. Close to what cats handle naturally.',ex:'Cats have no real need for carbs; lower is closer to their natural diet.'}
+  ],
+  carb:{food:18,wild:5},
+  gone:[], // all clear
+  reasons:[
+    {status:'good',q:'Real meat, named',a:'Chicken is the first ingredient — not “cereals” or “by-products”.'},
+    {status:'good',q:'Taurine is disclosed',a:'They publish the level. Essential for a cat’s heart and eyes.'},
+    {status:'good',q:'Carbs kept low',a:'~18% — no grain padding to bulk it out cheaply.'}
+  ],
+  fits:['Your cat is a healthy adult','You want a meat-first daily food','You’re okay paying for quality'],
+  noFit:['You’re on a tight monthly budget','Your vet has you on a prescription diet'],
+  lineup:null, // nothing meaningfully better — don't manufacture a switch
+  receipts:[
+    {n:'Protein (DM)',sub:'Good range: 40%+',v:'44%',cls:'good'},
+    {n:'Carbs (calc)',sub:'Lower is better',v:'18%',cls:'good'},
+    {n:'Fat (DM)',sub:'Healthy: 18–25%',v:'22%',cls:'good'},
+    {n:'Taurine',sub:'Must be disclosed',v:'0.18%',cls:'good'},
+    {n:'First ingredient',sub:'Named meat ideal',v:'Chicken',cls:'good'}
+  ]
+},
+okay:{
+  brand:'Whiskas · Dry food', title:'Ocean Fish, Adult 1+', initials:'WHI',
+  price:{p100:'₹60/100g', day:'≈ ₹33/day for a 4kg cat'},
+  verdict:{key:'okay',label:'Okay for now',tag:'Low transparency',
+    summary:'Safe enough for a healthy adult, but the label hides the things that tell you if it’s actually good.'},
+  mood:'wary', worry:{filled:2,label:'Some worry',cls:'wl-2'},
+  nose:'I wouldn’t toss the bag you’ve got. But I wouldn’t make it the only food forever either. Finish it, then move to something that names its meat and tells you the taurine.',
+  action:'Finish the current pack if your cat is healthy — don’t bulk-buy. Before the next refill, compare options with named meat and disclosed taurine.',
+  switchNote:'When you switch, go slow: mix a little new food into the old over ~7 days. Cats reject sudden changes and can get an upset tummy.',
+  meal:{complete:true, kind:'Complete & balanced', amount:'~55 g', split:'a day, 2 meals', cost:'≈ ₹33/day',
+    how:'Fine as a daily base. Cats need moisture they won’t drink — so it’s better with one wet pouch alongside, then drop the dry to ~35 g.'},
+  metrics:[
+    {name:'Protein (dry matter)',val:'33%',status:'warn',pct:34,idealFrom:62,idealTo:100,meta:'Above the legal minimum, but below the 40% of a meat-rich food.',ex:'Protein measured without water, so wet and dry foods compare fairly.'},
+    {name:'Carbs (calculated)',val:'39%',status:'warn',pct:62,idealFrom:0,idealTo:33,meta:'High — this is grain doing the bulking.',ex:'Cats have no real need for carbs; lower is closer to their natural diet.'}
+  ],
+  carb:{food:39,wild:5},
+  gone:[['Taurine','Not disclosed'],['Ca : P ratio','Not disclosed'],['Ash','Not disclosed'],['Named meat','Withheld']],
+  reasons:[
+    {status:'good',q:'Enough protein? Likely yes',a:'33% dry matter — above the 26% minimum for adult cats.'},
+    {status:'caution',q:'More carbs than a cat needs',a:'~39%. A wild cat eats around 5%. This is grain padding.'},
+    {status:'bad',q:'Heart & eye nutrient unlisted',a:'Taurine is essential for cats. This brand doesn’t say how much is in it.'}
+  ],
+  fits:['Your cat is a healthy adult','You need an affordable everyday option','It’s a backup, not the only food'],
+  noFit:['Your cat has kidney or urinary issues','You want full ingredient transparency','It’s the sole food, long-term'],
+  lineup:{
+    value:{brand:'Me-O · Dry food',title:'Tuna, Adult',initials:'ME',why:['Names the meat (tuna)','A little more protein'],price:'Same price',sub:'₹62/100g'},
+    upgrade:{brand:'Drools · Dry food',title:'Ocean Fish, Adult',initials:'DR',why:['Lower carbs','Discloses taurine'],price:'+₹240/month',sub:'₹78/100g'},
+    best:{brand:'Farmina N&D · Dry food',title:'Chicken & Pomegranate',initials:'N&D',why:['Chicken first','Full disclosure','Carbs ~18%'],price:'Premium',sub:'₹150/100g'}
+  },
+  receipts:[
+    {n:'Protein (DM)',sub:'Good range: 40%+',v:'33%',cls:'warn'},
+    {n:'Carbs (calc)',sub:'Lower is better',v:'≈39%',cls:'warn'},
+    {n:'Taurine',sub:'Must be disclosed',v:'not disclosed',cls:'miss'},
+    {n:'Ca : P ratio',sub:'Kidney marker',v:'not disclosed',cls:'miss'},
+    {n:'First ingredient',sub:'Named meat ideal',v:'Cereals',cls:'bad'}
+  ]
+},
+weak:{
+  brand:'Value Brand · Dry food', title:'Economy Chicken Flavour', initials:'VB',
+  price:{p100:'₹28/100g', day:'≈ ₹15/day for a 4kg cat'},
+  verdict:{key:'weak',label:'Not transparent enough',tag:'Too many gaps to judge',
+    summary:'The label hides so much you can’t actually tell what your cat is eating. That’s the problem.'},
+  mood:'unhappy', worry:{filled:4,label:'Real concern',cls:'wl-4'},
+  nose:'I’d move off this one. It’s cheap, but “chicken flavour” isn’t chicken, the carbs are high, and they won’t tell you the basics. Your cat deserves a food you can actually read.',
+  action:'Use up what’s open if your cat is fine, but plan a switch now. Even a modest step up will name its meat and disclose taurine.',
+  switchNote:'Switch gradually over ~7 days — a spoon of the new food mixed in, growing daily. Sudden swaps upset a cat’s stomach.',
+  meal:{complete:true, kind:'Complete — but a weak one', amount:'~60 g', split:'a day, 2 meals', cost:'≈ ₹15/day',
+    how:'It’s labeled complete, but it’s a poor one. If you must feed it, add a wet pouch for moisture and plan to switch soon.'},
+  metrics:[
+    {name:'Protein (dry matter)',val:'28%',status:'bad',pct:14,idealFrom:62,idealTo:100,meta:'Barely scraping the minimum.',ex:'Protein measured without water, so wet and dry foods compare fairly.'},
+    {name:'Carbs (calculated)',val:'48%',status:'bad',pct:82,idealFrom:0,idealTo:33,meta:'Very high — nearly half the food is filler.',ex:'Cats have no real need for carbs; lower is closer to their natural diet.'}
+  ],
+  carb:{food:48,wild:5},
+  gone:[['Taurine','Not disclosed'],['Ca : P ratio','Not disclosed'],['Ash','Not disclosed'],['Named meat','Withheld'],['Moisture','Not disclosed'],['Fat','Vague range']],
+  reasons:[
+    {status:'bad',q:'“Flavour”, not real meat',a:'“Chicken flavour” means there may be little actual chicken. The first ingredient is cereals.'},
+    {status:'bad',q:'Half of it is carbs',a:'~48% estimated — far past what a cat should eat. Cheap filler.'},
+    {status:'bad',q:'The basics are hidden',a:'No taurine, no mineral balance, no named protein. You’re feeding blind.'}
+  ],
+  fits:['You truly have no other option today'],
+  noFit:['You can stretch even ₹15 more a day','Your cat is a kitten, senior, or unwell','You want to know what you’re feeding'],
+  lineup:{
+    value:{brand:'Whiskas · Dry food',title:'Ocean Fish, Adult',initials:'WHI',why:['Names more ingredients','More protein, fewer fillers'],price:'+₹130/month',sub:'₹60/100g'},
+    upgrade:{brand:'Me-O · Dry food',title:'Tuna, Adult',initials:'ME',why:['Tuna named first','Better protein'],price:'+₹160/month',sub:'₹62/100g'},
+    best:{brand:'Farmina N&D · Dry food',title:'Chicken & Pomegranate',initials:'N&D',why:['Chicken first','Full disclosure','Carbs ~18%'],price:'Premium',sub:'₹150/100g'}
+  },
+  receipts:[
+    {n:'Protein (DM)',sub:'Good range: 40%+',v:'28%',cls:'bad'},
+    {n:'Carbs (calc)',sub:'Lower is better',v:'≈48%',cls:'bad'},
+    {n:'Taurine',sub:'Must be disclosed',v:'not disclosed',cls:'miss'},
+    {n:'First ingredient',sub:'Named meat ideal',v:'Cereals',cls:'bad'},
+    {n:'Meat source',sub:'Should be named',v:'withheld',cls:'miss'}
+  ]
+},
+topper:{
+  brand:'Sheba · Wet food', title:'Tuna in Jelly', initials:'SHE',
+  price:{p100:'₹95/100g', day:'≈ ₹70/day if fed alone'},
+  verdict:{key:'okay',label:'Fine as a treat',tag:'A topper, not a meal',
+    summary:'Tasty and full of moisture — but it’s jelly-based and not built to be your cat’s only food.'},
+  mood:'wary', worry:{filled:2,label:'Use it right',cls:'wl-2'},
+  nose:'Cats go nuts for this, and the moisture is genuinely good for them. Just don’t treat it as the whole dinner — it’s a topper to make a complete food wetter and more exciting.',
+  action:'Spoon it over a complete food, or give it as an occasional treat. Keep it a small part of the day so the balanced food still does the real work.',
+  switchNote:null,
+  meal:{complete:false, kind:'Topper · not a full meal', amount:'½–1 pouch', split:'as a topper', cost:'over a complete base',
+    how:'Cats love it and the moisture helps — but it’s <b>complementary</b>, so keep it under ~10% of the day and serve it over a complete food. On its own it doesn’t cover everything your cat needs.'},
+  metrics:[
+    {name:'Protein (dry matter)',val:'52%',status:'good',pct:88,idealFrom:62,idealTo:100,meta:'High once you take the water out — typical of good wet food.',ex:'Protein measured without water, so wet and dry foods compare fairly.'},
+    {name:'Moisture',val:'82%',status:'good',pct:82,idealFrom:60,idealTo:100,meta:'Lots of water — exactly what cats struggle to drink on their own.',ex:'Cats have a low thirst drive; moisture in food keeps them hydrated.'}
+  ],
+  carb:{food:6,wild:5},
+  gone:[['Taurine','Not disclosed'],['Complete?','Complementary only']],
+  reasons:[
+    {status:'good',q:'Great moisture',a:'82% water — the hydration cats rarely get from drinking.'},
+    {status:'good',q:'Low carbs',a:'Jelly aside, there’s very little grain filler here.'},
+    {status:'caution',q:'Not a complete meal',a:'Labeled complementary — it isn’t built to be the only food.'}
+  ],
+  fits:['You want to add moisture','Your cat is a fussy eater','As a topper over kibble'],
+  noFit:['You need one complete food','You’d feed only this, every day'],
+  lineup:null,
+  receipts:[
+    {n:'Protein (DM)',sub:'Good range: 40%+',v:'52%',cls:'good'},
+    {n:'Moisture',sub:'Wet food: 75%+',v:'82%',cls:'good'},
+    {n:'Carbs (calc)',sub:'Lower is better',v:'≈6%',cls:'good'},
+    {n:'Taurine',sub:'Should be disclosed',v:'not disclosed',cls:'miss'},
+    {n:'Feeding type',sub:'Meal vs topper',v:'complementary',cls:'warn'}
+  ]
+}
+};
+
+/* ───────────────── render ───────────────── */
+function pawMeter(filled,cls){
+  let s='<div class="paws">';
+  for(let i=1;i<=4;i++) s+=paw(i<=filled);
+  s+='</div>';
+  return '<div class="worry '+cls+'">'+s+'<span class="worry-lbl '+cls+'">'+'</span></div>';
+}
+function metricBar(m){
+  const ideal='<div class="ideal" style="left:'+m.idealFrom+'%;width:'+(m.idealTo-m.idealFrom)+'%"></div>';
+  return '<div class="metric">'
+   +'<div class="metric-top"><span class="metric-name">'+m.name+' <span class="qmark" title="'+m.ex+'">?</span></span>'
+   +'<span class="metric-val '+m.status+'">'+m.val+'</span></div>'
+   +'<div class="track">'+ideal+'<span class="marker '+m.status+'" style="left:'+m.pct+'%"></span></div>'
+   +'<div class="metric-meta">'+m.meta+'</div></div>';
+}
+function tierCard(t,badgeCls,badgeTxt){
+  if(!t) return '';
+  return '<div class="tier"><span class="tier-badge '+badgeCls+'">'+badgeTxt+'</span>'
+   +'<div class="tier-thumb">'+t.initials+'</div>'
+   +'<div><div class="tier-brand">'+t.brand+'</div><div class="tier-title">'+t.title+'</div>'
+   +'<div class="tier-why">'+t.why.map(w=>'<div>'+w+'</div>').join('')+'</div>'
+   +'<div class="tier-price">'+t.price+' <span>· '+t.sub+'</span></div></div></div>';
+}
+function ricon(s){return s==='good'?'✓':s==='caution'?'!':'✕';}
+
+function renderReport(f){
+  const v=f.verdict;
+  let h='';
+  // M1 — identity
+  h+='<div class="m-id"><div class="id-thumb">'+f.initials+'</div><div>'
+    +'<div class="id-brand">'+f.brand+'</div><div class="id-title">'+f.title+'</div>'
+    +'<div class="id-price"><b>'+f.price.p100+'</b> · '+f.price.day+'</div></div></div>';
+  // M1 — hero (decluttered: just the verdict; tools live in the sheet header)
+  h+='<div class="hero v-'+v.key+'">';
+  if(v.key==='good') h+=sealStamp();
+  h+=catFace(f.mood, v.key==='weak'?G:(v.key==='good'?'var(--good-deep)':'var(--caution-deep)'));
+  h+='<div class="v-tag">Sniff verdict</div><div class="v-label">'+v.label+'</div>'
+    +'<div class="v-summary">'+v.summary+'</div>';
+  h+='</div>';
+  // worry — its own quiet strip
+  h+='<div class="worry-strip"><div class="paws">'+[1,2,3,4].map(i=>paw(i<=f.worry.filled)).join('')+'</div>'
+    +'<span class="worry-lbl '+f.worry.cls+'">'+f.worry.label+'</span></div>';
+  // M1 — nose knows
+  h+='<div class="nose"><div class="nose-q">“</div><div><div class="nose-l">If this were my cat</div>'
+    +'<div class="nose-t">'+f.nose+'</div></div></div>';
+
+  // M2 — what to do
+  h+='<div class="sec"><div class="todo"><div class="todo-l">🐾 What to do</div><div class="todo-t">'+f.action+'</div>';
+  if(f.switchNote) h+='<div class="switch-note"><span style="width:16px;height:16px;color:var(--ginger);flex-shrink:0;display:inline-block">'+paw(true)+'</span><span><b>Switching?</b> '+f.switchNote+'</span></div>';
+  h+='</div></div>';
+
+  // Is this a full meal? (feeding clarity — should be data-driven in the real build)
+  const m=f.meal;
+  const mealIcon = m.complete
+    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>'
+    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 8v5M12 16.5v.01"/><circle cx="12" cy="12" r="9"/></svg>';
+  h+='<div class="sec"><div class="sec-head"><span class="sec-h">Is this a full meal?</span><span class="whisker">'+whisker()+'</span></div>'
+   +'<div class="meal-flag '+(m.complete?'full':'topper')+'">'+mealIcon+m.kind+'</div>'
+   +'<div class="meal-amt"><span class="big">'+m.amount+'</span><span class="sub">'+m.split+' · '+m.cost+'</span></div>'
+   +'<div class="meal-how">'+m.how+'</div></div>';
+
+  // M3 — the math
+  h+='<div class="sec"><div class="sec-head"><span class="sec-h">The math, shown</span><span class="whisker">'+whisker()+'</span></div>';
+  h+=f.metrics.map(metricBar).join('');
+  // carbs vs wild
+  h+='<div class="carb"><div class="carb-l">Carbs vs. a wild cat</div>'
+    +'<div class="carb-row"><span class="carb-cap">This food</span><div class="carb-bar"><div class="carb-fill this" style="width:'+Math.min(f.carb.food,100)+'%"></div></div><span class="carb-num" style="color:var(--caution)">'+f.carb.food+'%</span></div>'
+    +'<div class="carb-row"><span class="carb-cap">Wild cat</span><div class="carb-bar"><div class="carb-fill wild" style="width:'+f.carb.wild+'%"></div></div><span class="carb-num" style="color:var(--good)">'+f.carb.wild+'%</span></div></div>';
+  h+='</div>';
+
+  // M3b — gone missing
+  h+='<div class="sec"><div class="sec-head"><span class="sec-h">What they won’t tell you</span><span class="whisker">'+whisker()+'</span></div>';
+  if(f.gone.length){
+    h+='<div class="gm-grid">'+f.gone.map(g=>'<div class="gm" tabindex="0" onclick="this.classList.toggle(\'open\')">'
+      +'<span class="gm-q">'+tailQ()+'</span>'
+      +'<div class="gm-k">'+g[0]+'</div><div class="gm-v">'+g[1]+'</div>'
+      +'<div class="gm-tip">'+(EXPLAIN[g[0]]||'Sniff couldn’t find this on the label.')+'</div></div>').join('')+'</div>';
+  } else {
+    h+='<div class="gm-allclear"><span style="font-size:22px">✓</span><div class="t"><b>Nothing hidden.</b> This brand discloses the meat source, taurine and mineral balance — rare, and worth rewarding.</div></div>';
+  }
+  h+='</div>';
+
+  // M3c — reasons
+  h+='<div class="sec"><div class="sec-head"><span class="sec-h">Why Sniff says this</span><span class="whisker">'+whisker()+'</span></div>';
+  h+=f.reasons.map(r=>'<div class="reason r-'+r.status+'"><div class="r-ic">'+ricon(r.status)+'</div>'
+    +'<div><div class="r-q">'+r.q+'</div><div class="r-a">'+r.a+'</div></div></div>').join('');
+  h+='</div>';
+
+  // M4 — fit
+  h+='<div class="sec"><div class="sec-head"><span class="sec-h">Is this for your cat?</span><span class="whisker">'+whisker()+'</span></div>'
+    +'<div class="fit"><div class="fit-col fits"><div class="fit-h">Fits if</div>'
+    +f.fits.map(t=>'<div class="fit-item"><span class="fit-ic">✓</span><span>'+t+'</span></div>').join('')+'</div>'
+    +'<div class="fit-col no"><div class="fit-h">Doesn’t fit if</div>'
+    +f.noFit.map(t=>'<div class="fit-item"><span class="fit-ic">✕</span><span>'+t+'</span></div>').join('')+'</div></div></div>';
+
+  // M5 — lineup (only for foods meant to BE the meal; a topper isn't "switched")
+  if(f.meal.complete){
+    h+='<div class="sec"><div class="sec-head"><span class="sec-h">If you switch</span><span class="whisker">'+whisker()+'</span></div>';
+    if(f.lineup){
+      h+=tierCard(f.lineup.value,'tb-value','Most valued · better for the same money');
+      h+=tierCard(f.lineup.upgrade,'tb-upgrade','Upgrade · a little more, clearly better');
+      h+=tierCard(f.lineup.best,'tb-best','Best of best · if budget’s no object');
+    } else {
+      h+='<div class="lineup-none"><span style="font-size:22px">😺</span><div class="t"><b>No need to switch.</b> Nothing at this price meaningfully beats it. If money were truly no object you could go fresh/raw — but you don’t need to.</div></div>';
+    }
+    h+='</div>';
+  }
+
+  // M6 — receipts
+  h+='<button class="receipts-toggle" onclick="this.nextElementSibling.classList.toggle(\'open\')"><span>The receipts · every number</span><span>⌄</span></button>';
+  h+='<div class="receipts-body">'+f.receipts.map(r=>'<div class="rec"><div><div class="rec-n">'+r.n+'</div><div class="rec-sub">'+r.sub+'</div></div><div class="rec-v '+r.cls+'">'+r.v+'</div></div>').join('')+'</div>';
+
+  h+='<div class="trust">Based on the published label · cat-only · no scores, no sponsors · made in Bangalore</div>';
+  return h;
+}
+
+/* edge states */
+function sniffingLoader(){
+  return '<div class="edge"><svg viewBox="0 0 120 130" fill="none" stroke="currentColor" style="color:var(--ginger)">'
+   +'<path class="wisp" d="M52 70 Q44 56 52 42 Q58 32 52 22" stroke-width="2.5" stroke-linecap="round" opacity="0.8"/>'
+   +'<path class="wisp" d="M60 72 Q68 56 60 40 Q55 30 60 20" stroke-width="2.5" stroke-linecap="round" opacity="0.8"/>'
+   +'<path class="wisp" d="M68 70 Q76 58 70 46" stroke-width="2.5" stroke-linecap="round" opacity="0.8"/>'
+   +'<g class="nose-twitch"><path d="M40 92 Q60 80 80 92" stroke-width="3" stroke-linecap="round"/>'
+   +'<path d="M54 86 L66 86 L60 95 Z" fill="currentColor" stroke="none"/>'
+   +'<line x1="48" y1="90" x2="26" y2="86" stroke-width="1.4" opacity="0.4"/><line x1="48" y1="93" x2="26" y2="95" stroke-width="1.4" opacity="0.4"/>'
+   +'<line x1="72" y1="90" x2="94" y2="86" stroke-width="1.4" opacity="0.4"/><line x1="72" y1="93" x2="94" y2="95" stroke-width="1.4" opacity="0.4"/></g></svg>'
+   +'<div class="edge-tag">Sniffing…</div><div class="edge-h">Reading the label</div>'
+   +'<div class="edge-p">Breaking down protein, carbs and what’s missing. One sniff…</div></div>';
+}
+function catnap(){
+  return '<div class="edge"><svg viewBox="0 0 180 120" fill="none" stroke="currentColor" style="color:var(--ginger)">'
+   +'<path d="M70 44 C44 44 28 64 32 88 C35 106 56 112 84 110 C116 108 138 96 138 76 C138 60 124 50 108 52" stroke-width="3" stroke-linecap="round"/>'
+   +'<path d="M84 110 C108 112 128 104 132 88 C134 80 128 74 121 76" stroke-width="3" stroke-linecap="round"/>'
+   +'<path d="M70 44 C60 46 54 56 58 67 C61 75 72 77 80 72" stroke-width="3" stroke-linecap="round"/>'
+   +'<path d="M64 47 L60 35 L72 44" stroke-width="2.5" stroke-linejoin="round"/><path d="M75 43 L82 33 L82 47" stroke-width="2.5" stroke-linejoin="round"/>'
+   +'<path d="M62 58 Q66 62 70 58" stroke-width="2" stroke-linecap="round"/>'
+   +'<path d="M120 40 L130 40 L120 50 L130 50" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/>'
+   +'<path d="M134 28 L142 28 L134 36 L142 36" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" opacity="0.35"/></svg>'
+   +'<div class="edge-tag">Couldn’t find it</div><div class="edge-h">We don’t have this one yet</div>'
+   +'<div class="edge-p">Try the exact name on the packaging, or pick another brand — we add foods as parents ask for them.</div></div>';
+}
+function oops(){
+  return '<div class="edge"><svg viewBox="0 0 190 130" fill="none" stroke="currentColor" style="color:var(--ginger)">'
+   +'<line x1="14" y1="54" x2="176" y2="54" stroke-width="3" stroke-linecap="round"/>'
+   +'<path d="M48 54 C45 32 60 22 80 22 C100 22 115 32 112 54" stroke-width="3" stroke-linecap="round"/>'
+   +'<path d="M58 30 L53 14 L70 28" stroke-width="2.6" stroke-linejoin="round"/><path d="M102 30 L107 14 L90 28" stroke-width="2.6" stroke-linejoin="round"/>'
+   +'<circle cx="70" cy="44" r="3" fill="currentColor" stroke="none"/><circle cx="92" cy="44" r="3" fill="currentColor" stroke="none"/>'
+   +'<g class="bat"><path d="M112 52 C122 56 130 64 128 76 C127 83 120 84 117 78" stroke-width="3" stroke-linecap="round"/></g>'
+   +'<g class="kibble-fall"><ellipse cx="138" cy="92" rx="4.5" ry="4" fill="currentColor" opacity="0.55" stroke="none"/></g></svg>'
+   +'<div class="edge-tag">Something broke</div><div class="edge-h">The cat knocked something off</div>'
+   +'<div class="edge-p">We couldn’t finish the analysis just now. Give it a moment and try again.</div></div>';
+}
+
+const STATES={loading:sniffingLoader,notfound:catnap,error:oops};
+function show(state){
+  document.querySelectorAll('.proto-btn').forEach(b=>b.classList.toggle('on',b.dataset.state===state));
+  const isReport = !!FOODS[state];
+  document.querySelectorAll('.sheet-act').forEach(b=>b.style.display = isReport ? '' : 'none');
+  const el=document.getElementById('scroll');
+  el.innerHTML = isReport ? renderReport(FOODS[state]) : STATES[state]();
+  el.scrollTop=0;
+}
+document.querySelectorAll('.proto-btn').forEach(b=>b.addEventListener('click',()=>show(b.dataset.state)));
+show('okay');
+</script>
+</body>
+</html>

@@ -2420,6 +2420,224 @@
 
     .search-field { position: relative; }
   </style>
+  <!-- ═══════════ V3 REPORT (redesign) — fully namespaced to avoid collisions ═══════════ -->
+  <style>
+  /* header tools */
+  .v3-sheet-actions{display:flex;align-items:center;gap:2px}
+  .v3-sheet-act{display:inline-flex;align-items:center;gap:5px;font-family:var(--sans);font-size:12px;font-weight:600;
+    color:var(--indie);background:transparent;border:none;cursor:pointer;padding:7px 9px;border-radius:8px}
+  .v3-sheet-act:hover{color:var(--ginger);background:var(--cream-deep)}
+  .v3-sheet-act svg{width:15px;height:15px}
+  .v3-sheet-act.is-copied{color:var(--good)}
+
+  /* M1 · identity */
+  .v3-id{display:flex;gap:14px;align-items:center;padding:18px 22px 14px}
+  .v3-id-thumb{width:62px;height:62px;border-radius:13px;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+    font-family:var(--serif);font-size:18px;color:var(--cream);background:var(--tabby);overflow:hidden}
+  .v3-id-thumb img{width:100%;height:100%;object-fit:cover}
+  .v3-id-brand{font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--indie);font-weight:700;margin-bottom:3px}
+  .v3-id-title{font-family:var(--serif);font-size:20px;color:var(--charcoal);line-height:1.15;margin-bottom:6px}
+  .v3-id-price{display:flex;flex-wrap:wrap;gap:4px 8px;font-size:11.5px;color:var(--indie);margin-bottom:6px}
+  .v3-id-price b{font-family:var(--sans);font-weight:800;color:var(--charcoal);font-variant-numeric:tabular-nums}
+  .v3-id-link{display:inline-block;font-size:12px;color:var(--ginger);text-decoration:none;font-weight:600}
+  .v3-id-link:hover{color:var(--ginger-deep)}
+
+  /* M1 · verdict hero */
+  .v3-hero{position:relative;padding:34px 26px 30px;text-align:center}
+  .v3-hero.v3-vg{background:var(--good-bg,#E6EFE8)}
+  .v3-hero.v3-vo{background:var(--caution-bg,#FBF1DD)}
+  .v3-hero.v3-vw{background:var(--charcoal);color:var(--cream)}
+  .v3-cat-face{height:58px;width:auto;margin:0 auto 22px;display:block}
+  .v3-vtag{font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;opacity:.7;margin-bottom:13px}
+  .v3-hero.v3-vg .v3-vtag{color:var(--good-deep,#356642);opacity:1}
+  .v3-hero.v3-vo .v3-vtag{color:var(--caution-deep,#9F6D1F);opacity:1}
+  .v3-hero.v3-vw .v3-vtag{color:var(--ginger);opacity:1}
+  .v3-vlabel{font-family:var(--serif);font-size:clamp(30px,7vw,40px);line-height:1.04;letter-spacing:-.02em;margin-bottom:15px}
+  .v3-hero.v3-vg .v3-vlabel{color:var(--good-deep,#356642)}
+  .v3-hero.v3-vo .v3-vlabel{color:var(--caution-deep,#9F6D1F)}
+  .v3-hero.v3-vw .v3-vlabel{color:var(--ginger)}
+  .v3-vsummary{font-family:var(--serif);font-size:15.5px;line-height:1.55;max-width:320px;margin:0 auto;opacity:.92}
+  .v3-seal-stamp{position:absolute;top:14px;right:12px;width:84px;height:84px;color:var(--good-deep,#356642);
+    transform:rotate(-9deg);opacity:.9;pointer-events:none}
+  .v3-seal-stamp svg{width:100%;height:100%;display:block}
+  @media(max-width:480px){.v3-seal-stamp{width:74px;height:74px;top:12px;right:10px}}
+
+  /* M1 · worry strip */
+  .v3-worry-strip{display:flex;align-items:center;justify-content:center;gap:11px;padding:15px 22px;background:var(--cream);border-bottom:1px solid var(--cream-deep)}
+  .v3-paws{display:flex;gap:6px}
+  .v3-paws svg{width:16px;height:16px}
+  .v3-paw-empty{opacity:.2}
+  .v3-worry-lbl{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+  .v3-wl-1{color:var(--good)} .v3-wl-2{color:var(--caution)} .v3-wl-3,.v3-wl-4{color:var(--flag)}
+
+  /* M1 · The Nose Knows */
+  .v3-nose{display:flex;gap:12px;padding:20px 22px;background:var(--cream);border-top:1px solid var(--cream-deep);border-bottom:1px solid var(--cream-deep)}
+  .v3-nose-q{font-family:var(--serif);font-size:40px;line-height:.8;color:var(--ginger);flex-shrink:0}
+  .v3-nose-l{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ginger);font-weight:700;margin-bottom:6px}
+  .v3-nose-t{font-family:var(--serif);font-size:15.5px;line-height:1.5;color:var(--charcoal)}
+
+  /* section shell */
+  .v3-sec{padding:22px}
+  .v3-sec + .v3-sec{border-top:1px solid var(--cream-deep)}
+  .v3-sec-head{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+  .v3-sec-h{font-family:var(--serif);font-size:19px;color:var(--charcoal)}
+  .v3-whisker{flex:1;height:10px;min-width:40px}
+  .v3-whisker svg{width:100%;height:10px;opacity:.6}
+
+  /* M2 · what to do */
+  .v3-todo{background:var(--ginger-soft);border-radius:14px;padding:18px 19px}
+  .v3-todo-l{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ginger);font-weight:700;margin-bottom:8px}
+  .v3-todo-t{font-size:14.5px;line-height:1.55;color:var(--charcoal);font-weight:500}
+  .v3-switch-note{display:flex;gap:9px;margin-top:14px;padding-top:13px;border-top:1px solid rgba(42,39,37,.1);
+    font-size:12.5px;line-height:1.5;color:var(--indie)}
+  .v3-switch-note b{color:var(--charcoal);font-weight:700}
+
+  /* M2b · is this a full meal */
+  .v3-meal-flag{display:inline-flex;align-items:center;gap:7px;padding:6px 13px 6px 9px;border-radius:999px;
+    font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;margin-bottom:16px}
+  .v3-meal-flag.v3-mf-full{background:rgba(74,143,92,.13);color:var(--good-deep,#356642)}
+  .v3-meal-flag.v3-mf-topper{background:var(--ginger-soft);color:var(--ginger-deep)}
+  .v3-meal-flag svg{width:18px;height:18px;flex-shrink:0}
+  .v3-meal-amt{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;margin-bottom:13px}
+  .v3-meal-amt .v3-big{font-family:var(--sans);font-weight:800;font-size:23px;font-variant-numeric:tabular-nums;color:var(--charcoal);letter-spacing:-.01em}
+  .v3-meal-amt .v3-sub{font-size:12.5px;color:var(--indie)}
+  .v3-meal-how{font-size:13.5px;line-height:1.6;color:var(--charcoal)}
+  .v3-meal-how b{font-weight:700}
+
+  /* M3 · the math */
+  .v3-metric{margin-bottom:18px}
+  .v3-metric:last-child{margin-bottom:0}
+  .v3-metric-top{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:7px}
+  .v3-metric-name{font-size:13px;color:var(--charcoal);font-weight:600;display:flex;align-items:center;gap:6px}
+  .v3-metric-val{font-family:var(--sans);font-weight:800;font-size:21px;font-variant-numeric:tabular-nums;letter-spacing:-.01em;color:var(--charcoal)}
+  .v3-metric-val.v3-good{color:var(--good)} .v3-metric-val.v3-warn{color:var(--caution)} .v3-metric-val.v3-bad{color:var(--flag)}
+  .v3-track{position:relative;height:8px;border-radius:6px;background:var(--cream-deep);overflow:visible}
+  .v3-ideal{position:absolute;top:0;bottom:0;background:rgba(74,143,92,.22);border-radius:6px}
+  .v3-marker{position:absolute;top:50%;width:14px;height:14px;border-radius:50%;border:3px solid #fff;transform:translate(-50%,-50%);
+    box-shadow:0 1px 4px rgba(0,0,0,.2);background:var(--indie)}
+  .v3-marker.v3-good{background:var(--good)} .v3-marker.v3-warn{background:var(--caution)} .v3-marker.v3-bad{background:var(--flag)}
+  .v3-metric-meta{font-size:11.5px;color:var(--indie);margin-top:10px}
+
+  /* M3 · carbs vs wild */
+  .v3-carb{margin-top:22px;background:var(--cream);border:1px solid var(--cream-deep);border-radius:12px;padding:15px 16px}
+  .v3-carb-l{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--indie);font-weight:700;margin-bottom:13px}
+  .v3-carb-row{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+  .v3-carb-row:last-child{margin-bottom:0}
+  .v3-carb-cap{width:74px;flex-shrink:0;font-size:11.5px;color:var(--charcoal)}
+  .v3-carb-bar{flex:1;height:14px;background:var(--cream-deep);border-radius:7px;overflow:hidden}
+  .v3-carb-fill{height:100%;border-radius:7px}
+  .v3-carb-fill.v3-cf-this{background:var(--caution)}
+  .v3-carb-fill.v3-cf-wild{background:var(--good)}
+  .v3-carb-num{width:42px;text-align:right;font-weight:800;font-variant-numeric:tabular-nums;font-size:13px}
+
+  /* M3 · gone missing */
+  .v3-gm-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  .v3-gm:only-child{grid-column:1 / -1}
+  .v3-gm{position:relative;border:1.5px dashed var(--missing);border-radius:10px;padding:11px 30px 11px 12px;
+    background:rgba(160,154,144,.05);cursor:help;outline:none}
+  .v3-gm-k{font-size:13px;color:var(--charcoal);font-weight:600;margin-bottom:2px}
+  .v3-gm-v{font-size:11px;color:var(--missing);font-style:italic}
+  .v3-gm-q{position:absolute;top:9px;right:9px;width:14px;height:20px;color:var(--missing);opacity:.65}
+  .v3-gm-q svg{width:100%;height:100%;display:block}
+  /* inline reveal — grows the card on hover/tap, never clips or overflows */
+  .v3-gm-tip{display:none;margin-top:10px;padding-top:10px;border-top:1px solid rgba(160,154,144,.4);
+    font-size:11.5px;line-height:1.55;color:var(--charcoal);font-style:normal}
+  .v3-gm:hover .v3-gm-tip,.v3-gm:focus .v3-gm-tip,.v3-gm:focus-within .v3-gm-tip,.v3-gm.v3-open .v3-gm-tip{display:block}
+  .v3-gm:hover,.v3-gm.v3-open{background:rgba(160,154,144,.09);border-color:var(--indie-soft)}
+  .v3-gm:hover .v3-gm-q,.v3-gm.v3-open .v3-gm-q{opacity:1;color:var(--ginger)}
+  .v3-gm-allclear{display:flex;gap:10px;align-items:center;background:var(--good-bg,#E6EFE8);border-radius:11px;padding:13px 15px}
+  .v3-gm-allclear .v3-t{font-size:13px;color:var(--good-deep,#356642);line-height:1.45}
+
+  /* M3 · reasons */
+  .v3-reason{display:flex;gap:11px;padding:12px 0;border-bottom:1px solid var(--cream-deep);align-items:flex-start}
+  .v3-reason:last-child{border-bottom:none;padding-bottom:0}
+  .v3-reason:first-child{padding-top:0}
+  .v3-r-ic{flex-shrink:0;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-size:12px;font-weight:800;color:#fff;margin-top:1px}
+  .v3-reason.v3-r-good .v3-r-ic{background:var(--good)} .v3-reason.v3-r-caution .v3-r-ic{background:var(--caution)} .v3-reason.v3-r-bad .v3-r-ic{background:var(--flag)}
+  .v3-r-q{font-family:var(--serif);font-size:15px;color:var(--charcoal);line-height:1.3;margin-bottom:2px}
+  .v3-r-a{font-size:12.5px;color:var(--indie);line-height:1.5}
+
+  /* M4 · fit */
+  .v3-fit{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .v3-fit-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;margin-bottom:11px}
+  .v3-fit-col.v3-fc-fits .v3-fit-h{color:var(--good)}
+  .v3-fit-col.v3-fc-no .v3-fit-h{color:var(--flag)}
+  .v3-fit-item{display:flex;gap:8px;align-items:flex-start;margin-bottom:9px;font-size:12.5px;line-height:1.4;color:var(--charcoal)}
+  .v3-fit-item:last-child{margin-bottom:0}
+  .v3-fit-ic{flex-shrink:0;width:16px;height:16px;border-radius:50%;color:#fff;font-size:9px;font-weight:800;
+    display:flex;align-items:center;justify-content:center;margin-top:2px}
+  .v3-fit-col.v3-fc-fits .v3-fit-ic{background:var(--good)} .v3-fit-col.v3-fc-no .v3-fit-ic{background:var(--flag)}
+
+  /* M5 · lineup */
+  .v3-tier{border:1px solid var(--cream-deep);border-radius:14px;padding:15px;margin-bottom:13px;background:#fff;position:relative;
+    display:grid;grid-template-columns:48px 1fr;gap:13px;cursor:pointer;transition:.18s}
+  .v3-tier:hover{border-color:var(--ginger);box-shadow:0 4px 16px rgba(224,138,58,.12)}
+  .v3-tier:last-child{margin-bottom:0}
+  .v3-tier-badge{grid-column:1/-1;display:inline-flex;align-self:start;align-items:center;gap:6px;font-size:9.5px;font-weight:800;
+    letter-spacing:.1em;text-transform:uppercase;padding:4px 9px;border-radius:999px;margin-bottom:2px;width:max-content;max-width:100%}
+  .v3-tb-value{background:var(--good-bg,#E6EFE8);color:var(--good-deep,#356642)}
+  .v3-tb-upgrade{background:var(--ginger-soft);color:var(--ginger-deep)}
+  .v3-tb-best{background:var(--charcoal);color:var(--ginger)}
+  .v3-tier-thumb{width:48px;height:48px;border-radius:10px;background:var(--tabby);color:var(--cream);font-family:var(--serif);
+    display:flex;align-items:center;justify-content:center;font-size:13px;overflow:hidden}
+  .v3-tier-thumb img{width:100%;height:100%;object-fit:cover}
+  .v3-tier-brand{font-size:10.5px;color:var(--indie);margin-bottom:1px}
+  .v3-tier-title{font-family:var(--serif);font-size:15px;color:var(--charcoal);line-height:1.2;margin-bottom:7px}
+  .v3-tier-why{display:flex;flex-direction:column;gap:4px;margin-bottom:8px}
+  .v3-tier-why div{font-size:11.5px;color:var(--charcoal);display:flex;gap:6px;align-items:baseline;line-height:1.35}
+  .v3-tier-why div::before{content:'↑';color:var(--good);font-weight:800;flex-shrink:0}
+  .v3-tier-price{font-size:11.5px;font-weight:700;color:var(--charcoal)}
+  .v3-tier-price span{color:var(--indie);font-weight:400}
+  .v3-lineup-sub{font-size:13px;color:var(--indie);line-height:1.5;margin-bottom:16px;margin-top:-4px}
+  .v3-lineup-none{display:flex;gap:11px;align-items:center;background:var(--good-bg,#E6EFE8);border-radius:12px;padding:15px}
+  .v3-lineup-none .v3-t{font-size:13px;color:var(--good-deep,#356642);line-height:1.45}
+  .v3-alt-verdict{display:inline-block;font-size:10px;font-weight:800;padding:3px 10px;border-radius:999px;margin-bottom:8px;letter-spacing:.03em}
+  .v3-alt-verdict.av-good{background:var(--good-bg,#E6EFE8);color:var(--good-deep,#356642)}
+  .v3-alt-verdict.av-okay{background:var(--ginger-soft);color:var(--ginger-deep)}
+  .v3-alt-compare{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;color:var(--indie);cursor:pointer;margin-top:8px;padding-top:10px;border-top:1px solid rgba(42,39,37,.1);width:100%}
+  .v3-alt-compare:hover{color:var(--ginger)}
+  .v3-alt-compare svg{width:13px;height:13px;flex-shrink:0}
+
+  /* M6 · receipts */
+  .v3-receipts-toggle{width:100%;background:#fff;border:none;border-top:1px solid var(--cream-deep);padding:15px 22px;
+    font-family:var(--sans);font-size:11.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--indie);
+    cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+  .v3-receipts-toggle:hover{background:var(--cream)}
+  .v3-receipts-body{display:none;padding:4px 22px 22px;background:var(--cream)}
+  .v3-receipts-body.v3-open{display:block}
+  .v3-rec{padding:12px 0;border-bottom:1px solid var(--tabby-soft);display:flex;justify-content:space-between;gap:14px;align-items:baseline}
+  .v3-rec:last-child{border-bottom:none}
+  .v3-rec-n{font-family:var(--serif);font-size:14px;color:var(--charcoal)}
+  .v3-rec-sub{font-size:11px;color:var(--indie)}
+  .v3-rec-v{font-family:var(--sans);font-weight:800;font-size:16px;font-variant-numeric:tabular-nums;text-align:right;color:var(--charcoal)}
+  .v3-rec-v.v3-good{color:var(--good)} .v3-rec-v.v3-warn{color:var(--caution)} .v3-rec-v.v3-bad{color:var(--flag)} .v3-rec-v.v3-miss{color:var(--missing);font-style:italic;font-weight:500;font-size:13px}
+
+  .v3-trust{padding:16px 22px 26px;text-align:center;font-size:11px;color:var(--indie-soft);line-height:1.5}
+
+  /* tail-? jargon chip */
+  .v3-qmark{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;
+    border:1.4px solid var(--indie-soft);color:var(--indie);font-size:9px;font-weight:800;cursor:help;font-family:var(--sans)}
+
+  /* edge-state illustration animations (brand cat kit) */
+  .v3-wisp{animation:v3rise 2s ease-in-out infinite}
+  .v3-wisp:nth-child(2){animation-delay:.4s}.v3-wisp:nth-child(3){animation-delay:.8s}
+  @keyframes v3rise{0%{opacity:0;transform:translateY(6px)}30%{opacity:.9}100%{opacity:0;transform:translateY(-10px)}}
+  .v3-nose-twitch{animation:v3twitch 2s ease-in-out infinite}
+  @keyframes v3twitch{0%,70%,100%{transform:translateY(0)}80%{transform:translateY(-1.5px)}}
+  .v3-bat{animation:v3bat 2.4s ease-in-out infinite;transform-origin:112px 52px}
+  @keyframes v3bat{0%,55%,100%{transform:rotate(0)}65%{transform:rotate(10deg)}}
+  .v3-kibble-fall{animation:v3fall 2.4s ease-in infinite}
+  @keyframes v3fall{0%,60%{opacity:0;transform:translateY(-14px)}72%{opacity:1}100%{opacity:0;transform:translateY(20px)}}
+
+  @media(max-width:380px){
+    .v3-gm-grid{grid-template-columns:1fr}
+    .v3-fit{grid-template-columns:1fr;gap:16px}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .v3-wisp,.v3-nose-twitch,.v3-bat,.v3-kibble-fall{animation:none}
+  }
+  </style>
 </head>
 <body>
 
@@ -2650,20 +2868,33 @@
     <div class="overlay-panel" onclick="event.stopPropagation()">
       <div class="overlay-header">
         <span class="overlay-mark">sn<span class="dot">●</span>ff</span>
-        <button class="overlay-close" onclick="closeOverlay()" aria-label="Close">&times;</button>
+        <div class="v3-sheet-actions">
+          <button class="v3-sheet-act" id="oCompareBtn" type="button" onclick="openCompareFromReport()" aria-label="Compare with another food" style="display:none">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            <span>Compare</span>
+          </button>
+          <button class="v3-sheet-act" id="oShareBtn" type="button" onclick="shareCurrentReport()" aria-label="Share this report" style="display:none">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            <span id="oShareBtnText">Share</span>
+          </button>
+          <button class="overlay-close" onclick="closeOverlay()" aria-label="Close">&times;</button>
+        </div>
       </div>
       <div class="overlay-scroll">
         <div class="overlay-body">
           <div class="overlay-card">
             <div class="overlay-loading" id="overlayLoader">
               <div class="sniff-loader">
-                <svg viewBox="0 0 80 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path class="sniff-w" d="M32 28 Q26 18 29 8" stroke="var(--ginger)" stroke-width="2.5" stroke-linecap="round"/>
-                  <path class="sniff-w" d="M40 26 Q38 16 40 6" stroke="var(--ginger)" stroke-width="2.5" stroke-linecap="round"/>
-                  <path class="sniff-w" d="M48 28 Q54 18 51 8" stroke="var(--ginger)" stroke-width="2.5" stroke-linecap="round"/>
-                  <path d="M40 36 L30 48 Q40 54 50 48 Z" fill="var(--ginger)"/>
-                  <circle cx="37" cy="43" r="1.5" fill="var(--charcoal)" opacity="0.25"/>
-                  <circle cx="43" cy="43" r="1.5" fill="var(--charcoal)" opacity="0.25"/>
+                <svg viewBox="0 0 120 130" fill="none" stroke="currentColor" style="color:var(--ginger);height:96px;width:auto">
+                  <path class="v3-wisp" d="M52 70 Q44 56 52 42 Q58 32 52 22" stroke-width="2.5" stroke-linecap="round" opacity="0.8"/>
+                  <path class="v3-wisp" d="M60 72 Q68 56 60 40 Q55 30 60 20" stroke-width="2.5" stroke-linecap="round" opacity="0.8"/>
+                  <path class="v3-wisp" d="M68 70 Q76 58 70 46" stroke-width="2.5" stroke-linecap="round" opacity="0.8"/>
+                  <g class="v3-nose-twitch">
+                    <path d="M40 92 Q60 80 80 92" stroke-width="3" stroke-linecap="round"/>
+                    <path d="M54 86 L66 86 L60 95 Z" fill="currentColor" stroke="none"/>
+                    <line x1="48" y1="90" x2="26" y2="86" stroke-width="1.4" opacity="0.4"/><line x1="48" y1="93" x2="26" y2="95" stroke-width="1.4" opacity="0.4"/>
+                    <line x1="72" y1="90" x2="94" y2="86" stroke-width="1.4" opacity="0.4"/><line x1="72" y1="93" x2="94" y2="95" stroke-width="1.4" opacity="0.4"/>
+                  </g>
                 </svg>
               </div>
               <div class="loading-text" id="loadingText">Sniffing…</div>
@@ -2682,13 +2913,13 @@
               <div class="overlay-edge-p">Sniff analyzes packaged cat food — brands like Whiskas, Royal Canin, Me-O, Sheba, and more. Try searching for a cat food brand or product.</div>
             </div>
             <div class="overlay-edge-state" id="overlayNotFound">
-              <div class="overlay-edge-ill">🔍</div>
+              <div class="overlay-edge-ill"><svg viewBox="0 0 180 120" fill="none" stroke="currentColor" style="color:var(--ginger);height:104px;width:auto"><path d="M70 44 C44 44 28 64 32 88 C35 106 56 112 84 110 C116 108 138 96 138 76 C138 60 124 50 108 52" stroke-width="3" stroke-linecap="round"/><path d="M84 110 C108 112 128 104 132 88 C134 80 128 74 121 76" stroke-width="3" stroke-linecap="round"/><path d="M70 44 C60 46 54 56 58 67 C61 75 72 77 80 72" stroke-width="3" stroke-linecap="round"/><path d="M64 47 L60 35 L72 44" stroke-width="2.5" stroke-linejoin="round"/><path d="M75 43 L82 33 L82 47" stroke-width="2.5" stroke-linejoin="round"/><path d="M62 58 Q66 62 70 58" stroke-width="2" stroke-linecap="round"/><path d="M120 40 L130 40 L120 50 L130 50" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/><path d="M134 28 L142 28 L134 36 L142 36" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" opacity="0.35"/></svg></div>
               <div class="overlay-edge-tag">Couldn't find it</div>
               <div class="overlay-edge-h">We couldn't find enough data.</div>
               <div class="overlay-edge-p" id="overlayNotFoundMsg">Try the exact product name from the packaging, or search for a different brand.</div>
             </div>
             <div class="overlay-edge-state" id="overlayError">
-              <div class="overlay-edge-ill">😿</div>
+              <div class="overlay-edge-ill"><svg viewBox="0 0 190 130" fill="none" stroke="currentColor" style="color:var(--ginger);height:104px;width:auto"><line x1="14" y1="54" x2="176" y2="54" stroke-width="3" stroke-linecap="round"/><path d="M48 54 C45 32 60 22 80 22 C100 22 115 32 112 54" stroke-width="3" stroke-linecap="round"/><path d="M58 30 L53 14 L70 28" stroke-width="2.6" stroke-linejoin="round"/><path d="M102 30 L107 14 L90 28" stroke-width="2.6" stroke-linejoin="round"/><circle cx="70" cy="44" r="3" fill="currentColor" stroke="none"/><circle cx="92" cy="44" r="3" fill="currentColor" stroke="none"/><g class="v3-bat"><path d="M112 52 C122 56 130 64 128 76 C127 83 120 84 117 78" stroke-width="3" stroke-linecap="round"/></g><g class="v3-kibble-fall"><ellipse cx="138" cy="92" rx="4.5" ry="4" fill="currentColor" opacity="0.55" stroke="none"/></g></svg></div>
               <div class="overlay-edge-tag">Something went wrong</div>
               <div class="overlay-edge-h">Sniff hit a wall.</div>
               <div class="overlay-edge-p">We couldn't complete the analysis right now. Try again in a moment, or pick one of the foods below.</div>
@@ -2704,24 +2935,6 @@
               </div>
 
               <div class="v2-verdict-hero" id="oVerdictHero">
-                <button class="v2-compare-btn" id="oCompareBtn" type="button" onclick="openCompareFromReport()" aria-label="Compare with another food">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <line x1="18" y1="20" x2="18" y2="10"></line>
-                    <line x1="12" y1="20" x2="12" y2="4"></line>
-                    <line x1="6" y1="20" x2="6" y2="14"></line>
-                  </svg>
-                  <span>Compare with another</span>
-                </button>
-                <button class="v2-share-btn" id="oShareBtn" type="button" onclick="shareCurrentReport()" aria-label="Share this report">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <circle cx="18" cy="5" r="3"></circle>
-                    <circle cx="6" cy="12" r="3"></circle>
-                    <circle cx="18" cy="19" r="3"></circle>
-                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
-                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
-                  </svg>
-                  <span id="oShareBtnText">Share</span>
-                </button>
                 <div class="v2-verdict-tag">Sniff verdict</div>
                 <div class="v2-verdict-label" id="oVerdictLabel"></div>
                 <div class="v2-verdict-sub" id="oVerdictSub"></div>
@@ -3029,6 +3242,12 @@
       });
       var cmpView = document.getElementById('compareView');
       if (cmpView && !compareMode) cmpView.classList.remove('show');
+      // header tools (Compare/Share) belong to a rendered report only
+      var showTools = (state === 'content');
+      ['oCompareBtn','oShareBtn'].forEach(function(id){
+        var b = document.getElementById(id);
+        if (b) b.style.display = showTools ? 'inline-flex' : 'none';
+      });
     }
 
     async function openOverlaySlug(slug) {
@@ -3174,107 +3393,316 @@
       }
     });
 
+    /* ═══════════ V3 REPORT — assets, copy + derivation helpers ═══════════ */
+    var V3G = 'var(--ginger)';
+    var v3ReportObs = null;  // re-used IntersectionObserver for report-section analytics
+    function v3TrackSections(slug){
+      try {
+        if (v3ReportObs) v3ReportObs.disconnect();
+        var seen = {};
+        v3ReportObs = new IntersectionObserver(function(entries){
+          entries.forEach(function(e){
+            var n = e.target.getAttribute('data-ph-report');
+            if (e.isIntersecting && n && !seen[n]) {
+              seen[n] = true;
+              if (window.posthog) posthog.capture('report_section_viewed', { section: n, product_slug: slug || null });
+            }
+          });
+        }, { threshold: 0.4, root: document.querySelector('.overlay-scroll') });
+        document.querySelectorAll('#overlayContent [data-ph-report]').forEach(function(el){ v3ReportObs.observe(el); });
+      } catch (e) { /* analytics is best-effort */ }
+    }
+    // "The cat reacts" — real kit asset: side-profile cat, posture mirrors the verdict.
+    function v3CatFace(mood, colorVar){
+      var col = colorVar || V3G;
+      var body = (mood === 'content')
+        ? '<path d="M26 40 C20 34 14 33 11 38 C6 45 6 55 12 61 C18 67 28 65 36 59" stroke-width="3" stroke-linecap="round"/>'
+          +'<path d="M16 31 L12 13 L24 28" stroke-width="2.5" stroke-linejoin="round"/><path d="M28 33 L34 13 L35 30" stroke-width="2.5" stroke-linejoin="round"/>'
+          +'<path d="M9 47 Q13 51 17 47" stroke-width="2" stroke-linecap="round"/>'
+          +'<path d="M64 18 C61 40 52 56 40 64" stroke-width="3" stroke-linecap="round"/>'
+        : '<path d="M26 42 C20 36 14 35 11 40 C6 47 6 57 12 63 C18 69 28 67 36 61" stroke-width="3" stroke-linecap="round"/>'
+          +'<path d="M18 33 L8 24 L22 30" stroke-width="2.5" stroke-linejoin="round"/><path d="M30 33 L42 25 L34 31" stroke-width="2.5" stroke-linejoin="round"/>'
+          +'<path d="M9 49 Q13 46 17 49" stroke-width="2" stroke-linecap="round"/>'
+          +'<path d="M62 30 C66 44 60 58 70 64" stroke-width="3" stroke-linecap="round"/>';
+      return '<svg class="v3-cat-face" viewBox="0 0 80 74" fill="none" stroke="currentColor" style="color:'+col+'">'+body+'</svg>';
+    }
+    function v3Paw(filled){
+      return '<svg viewBox="0 0 24 24" fill="currentColor" class="'+(filled?'':'v3-paw-empty')+'">'
+        +'<ellipse cx="12" cy="16" rx="6" ry="5"/><circle cx="5.5" cy="9.5" r="2.3"/><circle cx="10" cy="6" r="2.4"/><circle cx="14.5" cy="6" r="2.4"/><circle cx="18.5" cy="9.5" r="2.3"/></svg>';
+    }
+    function v3Whisker(){
+      return '<svg viewBox="0 0 260 20" preserveAspectRatio="xMidYMid meet" fill="none" stroke="var(--tabby)" style="width:100%;height:10px">'
+        +'<circle cx="130" cy="10" r="2.6" fill="var(--ginger)" stroke="none"/>'
+        +'<line x1="122" y1="10" x2="60" y2="5" stroke-width="1.5" stroke-linecap="round"/><line x1="122" y1="10" x2="54" y2="10" stroke-width="1.5" stroke-linecap="round"/><line x1="122" y1="10" x2="60" y2="15" stroke-width="1.5" stroke-linecap="round"/>'
+        +'<line x1="138" y1="10" x2="200" y2="5" stroke-width="1.5" stroke-linecap="round"/><line x1="138" y1="10" x2="206" y2="10" stroke-width="1.5" stroke-linecap="round"/><line x1="138" y1="10" x2="200" y2="15" stroke-width="1.5" stroke-linecap="round"/></svg>';
+    }
+    function v3TailQ(){
+      return '<svg viewBox="0 0 70 110" fill="none" stroke="currentColor"><path d="M18 32 C16 14 50 10 52 30 C53 44 36 46 35 60 L35 70" stroke-width="3.2" stroke-linecap="round"/><g fill="currentColor" stroke="none" transform="translate(27,82)"><ellipse cx="8" cy="11" rx="5" ry="4"/><circle cx="3" cy="6" r="1.8"/><circle cx="7" cy="3.5" r="1.9"/><circle cx="11" cy="3.5" r="1.9"/><circle cx="14" cy="6" r="1.8"/></g></svg>';
+    }
+    function v3Seal(){
+      return '<div class="v3-seal-stamp"><svg viewBox="0 0 130 130" fill="none" stroke="currentColor">'
+        +'<circle cx="65" cy="65" r="58" stroke-width="2"/><circle cx="65" cy="65" r="38" stroke-width="1.2" opacity="0.4"/>'
+        +'<defs><path id="v3SealTop" d="M 23 65 A 42 42 0 0 1 107 65" fill="none"/></defs>'
+        +'<text font-family="Sora,sans-serif" font-size="11" font-weight="800" letter-spacing="2" fill="currentColor" stroke="none"><textPath href="#v3SealTop" startOffset="50%" text-anchor="middle">SNIFF · APPROVED</textPath></text>'
+        +'<circle cx="56" cy="103" r="1.7" fill="currentColor" stroke="none"/><circle cx="65" cy="105" r="2.1" fill="currentColor" stroke="none"/><circle cx="74" cy="103" r="1.7" fill="currentColor" stroke="none"/>'
+        +'<g fill="currentColor" stroke="none" transform="translate(52,50)"><ellipse cx="13" cy="17" rx="7.5" ry="6"/><circle cx="5" cy="9" r="2.9"/><circle cx="10.5" cy="5" r="3"/><circle cx="16.5" cy="5" r="3"/><circle cx="22" cy="9" r="2.9"/></g></svg></div>';
+    }
+    // Edge-state illustrations (inner SVG only — dropped into the existing edge containers)
+    function v3SniffLoaderSvg(){
+      return '<svg viewBox="0 0 120 130" fill="none" stroke="currentColor" style="color:var(--ginger);height:104px;width:auto">'
+        +'<path class="v3-wisp" d="M52 70 Q44 56 52 42 Q58 32 52 22" stroke-width="2.5" stroke-linecap="round" opacity="0.8"/>'
+        +'<path class="v3-wisp" d="M60 72 Q68 56 60 40 Q55 30 60 20" stroke-width="2.5" stroke-linecap="round" opacity="0.8"/>'
+        +'<path class="v3-wisp" d="M68 70 Q76 58 70 46" stroke-width="2.5" stroke-linecap="round" opacity="0.8"/>'
+        +'<g class="v3-nose-twitch"><path d="M40 92 Q60 80 80 92" stroke-width="3" stroke-linecap="round"/>'
+        +'<path d="M54 86 L66 86 L60 95 Z" fill="currentColor" stroke="none"/>'
+        +'<line x1="48" y1="90" x2="26" y2="86" stroke-width="1.4" opacity="0.4"/><line x1="48" y1="93" x2="26" y2="95" stroke-width="1.4" opacity="0.4"/>'
+        +'<line x1="72" y1="90" x2="94" y2="86" stroke-width="1.4" opacity="0.4"/><line x1="72" y1="93" x2="94" y2="95" stroke-width="1.4" opacity="0.4"/></g></svg>';
+    }
+    function v3CatnapSvg(){
+      return '<svg viewBox="0 0 180 120" fill="none" stroke="currentColor" style="color:var(--ginger);height:104px;width:auto">'
+        +'<path d="M70 44 C44 44 28 64 32 88 C35 106 56 112 84 110 C116 108 138 96 138 76 C138 60 124 50 108 52" stroke-width="3" stroke-linecap="round"/>'
+        +'<path d="M84 110 C108 112 128 104 132 88 C134 80 128 74 121 76" stroke-width="3" stroke-linecap="round"/>'
+        +'<path d="M70 44 C60 46 54 56 58 67 C61 75 72 77 80 72" stroke-width="3" stroke-linecap="round"/>'
+        +'<path d="M64 47 L60 35 L72 44" stroke-width="2.5" stroke-linejoin="round"/><path d="M75 43 L82 33 L82 47" stroke-width="2.5" stroke-linejoin="round"/>'
+        +'<path d="M62 58 Q66 62 70 58" stroke-width="2" stroke-linecap="round"/>'
+        +'<path d="M120 40 L130 40 L120 50 L130 50" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/>'
+        +'<path d="M134 28 L142 28 L134 36 L142 36" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" opacity="0.35"/></svg>';
+    }
+    function v3OopsSvg(){
+      return '<svg viewBox="0 0 190 130" fill="none" stroke="currentColor" style="color:var(--ginger);height:104px;width:auto">'
+        +'<line x1="14" y1="54" x2="176" y2="54" stroke-width="3" stroke-linecap="round"/>'
+        +'<path d="M48 54 C45 32 60 22 80 22 C100 22 115 32 112 54" stroke-width="3" stroke-linecap="round"/>'
+        +'<path d="M58 30 L53 14 L70 28" stroke-width="2.6" stroke-linejoin="round"/><path d="M102 30 L107 14 L90 28" stroke-width="2.6" stroke-linejoin="round"/>'
+        +'<circle cx="70" cy="44" r="3" fill="currentColor" stroke="none"/><circle cx="92" cy="44" r="3" fill="currentColor" stroke="none"/>'
+        +'<g class="v3-bat"><path d="M112 52 C122 56 130 64 128 76 C127 83 120 84 117 78" stroke-width="3" stroke-linecap="round"/></g>'
+        +'<g class="v3-kibble-fall"><ellipse cx="138" cy="92" rx="4.5" ry="4" fill="currentColor" opacity="0.55" stroke="none"/></g></svg>';
+    }
+
+    // Plain-language "why it matters" copy for Gone Missing + jargon (friend voice).
+    var V3_EXPLAIN = {
+      'taurine':'An amino acid cats can’t make on their own. Too little, over time, can hurt the heart and eyes — so a good brand tells you how much is in there.',
+      'ca:p':'The balance of calcium to phosphorus. Off-balance for months strains the kidneys — and kidney trouble is common in cats.',
+      'ash':'What’s left after the food is burned down — basically the mineral load. High ash can point to cheaper, bone-heavy filler.',
+      'named meat':'Is it “chicken”, or just “meat & animal derivatives”? A named meat means they know — and will say — what’s actually inside.',
+      'meat':'Is it “chicken”, or just “meat & animal derivatives”? A named meat means they know — and will say — what’s actually inside.',
+      'moisture':'Cats barely drink, so most of their water comes from food. The moisture level tells you how hydrated your cat really is.',
+      'fat':'Fat drives energy and a healthy coat. A vague range means you can’t tell how rich — or how fattening — it really is.',
+      'protein':'Protein measured without the water, so wet and dry foods compare fairly. Cats are built to run on it.',
+      'carb':'Cats have almost no need for carbs; the closer to a wild cat’s ~5%, the better.'
+    };
+    function v3Explain(label){
+      var k = (label || '').toLowerCase();
+      if (V3_EXPLAIN[k]) return V3_EXPLAIN[k];
+      for (var key in V3_EXPLAIN){ if (k.indexOf(key) !== -1) return V3_EXPLAIN[key]; }
+      return 'Sniff couldn’t find this on the label — and that gap is the point.';
+    }
+
+    // Per-metric display scale + ideal band (for the position bars). Keyed by name keyword.
+    var V3_METRIC_RANGE = {
+      'protein': { max:60, idealFrom:40, idealTo:60 },
+      'carb':    { max:60, idealFrom:0,  idealTo:12 },
+      'moisture':{ max:100, idealFrom:70, idealTo:100 },
+      'fat':     { max:50, idealFrom:18, idealTo:25 },
+      'ash':     { max:16, idealFrom:0,  idealTo:8 }
+    };
+    function v3RangeFor(name){
+      var k = (name || '').toLowerCase();
+      for (var key in V3_METRIC_RANGE){ if (k.indexOf(key) !== -1) return V3_METRIC_RANGE[key]; }
+      return null;
+    }
+    function v3MetricBar(m){
+      var num = parseMetricNum(m);
+      var rng = v3RangeFor(m.name);
+      if (num === null || !rng) return ''; // only numeric metrics with a known scale get a bar
+      var status = m.status || '';
+      var statusCls = status === 'good' ? 'v3-good' : status === 'warn' ? 'v3-warn' : status === 'bad' ? 'v3-bad' : '';
+      var pct = Math.max(2, Math.min(98, num / rng.max * 100));
+      var idealLeft = rng.idealFrom / rng.max * 100;
+      var idealW = (rng.idealTo - rng.idealFrom) / rng.max * 100;
+      return '<div class="v3-metric">'
+        + '<div class="v3-metric-top"><span class="v3-metric-name">'+esc(m.name||'')+' <span class="v3-qmark" title="'+esc(v3Explain(m.name))+'">?</span></span>'
+        + '<span class="v3-metric-val '+statusCls+'">'+esc(m.value||'')+'</span></div>'
+        + '<div class="v3-track"><div class="v3-ideal" style="left:'+idealLeft+'%;width:'+idealW+'%"></div>'
+        + '<span class="v3-marker '+statusCls+'" style="left:'+pct+'%"></span></div>'
+        + (m.target ? '<div class="v3-metric-meta">'+esc(m.target)+'</div>' : '')
+        + '</div>';
+    }
+    // small HTML escaper for text we inject (titles/values from data)
+    function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+    // A metric counts as "gone missing" only when its ENTIRE value is a disclosure-gap token
+    // (anchored so real values like "Tuna" or "Cereals" never false-match a substring).
+    function v3IsMissingVal(v){
+      var s = String(v == null ? '' : v).trim();
+      return /^(not disclosed|undisclosed|not listed|not specified|not stated|not given|withheld|unknown|none listed|n\/?a|—|–|-|\?+)$/i.test(s);
+    }
+
     // Render a v2 product from Supabase (analysis is JSONB stored inside `product.analysis`)
+    // V3 report — builds the whole report from live `analysis`, with graceful fallbacks.
     function renderProduct(p) {
-      const a = p.analysis || {};
-      // Header
-      const imgEl = document.getElementById('oImage');
-      const brandShort = ((p.brand||'').split(' · ')[0] || '').slice(0, 16);
-      if (p.image_url) {
-        imgEl.innerHTML = `<img src="${p.image_url}" alt="${p.title||''}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=&quot;img-fallback&quot;>${brandShort}</div>'">`;
-      } else {
-        imgEl.innerHTML = `<div class="img-fallback">${brandShort}</div>`;
+      var a = p.analysis || {};
+      var v = a.verdict || {};
+      var lc = v.labelClass || 'vp-okay';
+      var vk = (lc === 'vp-good') ? 'vg' : (lc === 'vp-weak' || lc === 'vp-flag') ? 'vw' : 'vo';
+      var catCol = vk === 'vg' ? 'var(--good-deep,#356642)' : vk === 'vw' ? V3G : 'var(--caution-deep,#9F6D1F)';
+      var mood = vk === 'vg' ? 'content' : 'wary';
+      var label = (v.label || '').replace(/\.\s*$/, '');            // brand labels carry no full stop
+      var worry = a.worry || { filled: 1, label: '' };
+      var wf = Math.max(1, Math.min(4, worry.filled || 1));
+      var wl = wf <= 1 ? 'v3-wl-1' : wf === 2 ? 'v3-wl-2' : 'v3-wl-3';
+      var metrics = a.metrics || [];
+
+      var brandShort = ((p.brand || '').split(' · ')[0] || '').slice(0, 16);
+      var safeShort = brandShort.replace(/[^A-Za-z0-9 &]/g, '');
+      var thumb = p.image_url
+        ? '<img src="' + esc(p.image_url) + '" alt="' + esc(p.title || '') + '" loading="lazy" onerror="this.replaceWith(document.createTextNode(\'' + safeShort + '\'))">'
+        : esc(brandShort);
+      var link = p.product_link
+        ? '<a class="v3-id-link" href="' + esc(p.product_link) + '" target="_blank" rel="noopener">See on ' + esc(p.link_source || 'store') + ' →</a>'
+        : '';
+
+      var h = '';
+
+      // ── M1 · identity (+ real ₹/100g and ≈₹/day when we have a price)
+      var ppg = v3Price(p);
+      var priceChip = '';
+      if (ppg) {
+        var approx = (p.price_src && p.price_src !== 'real') ? '≈ ' : '';
+        var perDay = (p.category !== 'treat') ? ' · ≈ ₹' + Math.round(ppg * v3DailyGrams(p.category) / 100) + '/day' : '';
+        priceChip = '<div class="v3-id-price"><b>' + approx + '₹' + ppg + '/100g</b>' + perDay + '</div>';
       }
-      document.getElementById('oBrand').textContent = p.brand || '';
-      document.getElementById('oTitle').textContent = p.title || '';
-      const linkEl = document.getElementById('oLink');
-      if (p.product_link) {
-        linkEl.href = p.product_link;
-        linkEl.textContent = `See on ${p.link_source || 'store'} `;
-        linkEl.style.display = '';
-      } else {
-        linkEl.style.display = 'none';
+      h += '<div class="v3-id"><div class="v3-id-thumb">' + thumb + '</div><div style="min-width:0">'
+         + '<div class="v3-id-brand">' + esc(p.brand || '') + '</div>'
+         + '<div class="v3-id-title">' + esc(p.title || '') + '</div>'
+         + priceChip + link + '</div></div>';
+
+      // ── M1 · verdict hero (cat-face IS the verdict; seal only on a strong choice)
+      h += '<div class="v3-hero v3-' + vk + '">'
+         + (vk === 'vg' ? v3Seal() : '')
+         + v3CatFace(mood, catCol)
+         + '<div class="v3-vtag">Sniff verdict</div>'
+         + '<div class="v3-vlabel">' + esc(label) + '</div>'
+         + (v.tag ? '<div style="font-family:var(--sans);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;opacity:.7;margin-bottom:14px">' + esc(v.tag) + '</div>' : '')
+         + (v.summary ? '<div class="v3-vsummary">' + esc(v.summary) + '</div>' : '')
+         + '</div>';
+
+      // ── M1 · worry meter (its own quiet strip)
+      h += '<div class="v3-worry-strip"><div class="v3-paws">'
+         + [1, 2, 3, 4].map(function (i) { return v3Paw(i <= wf); }).join('')
+         + '</div><span class="v3-worry-lbl ' + wl + '">' + esc(worry.label || '') + '</span></div>';
+
+      // ── M1 · The Nose Knows (the friend's take, in ginger)
+      if (a.parentTake) {
+        h += '<div class="v3-nose" data-ph-report="parent_take"><div class="v3-nose-q">“</div><div><div class="v3-nose-l">If this were my cat</div>'
+           + '<div class="v3-nose-t">' + esc(a.parentTake) + '</div></div></div>';
       }
 
-      // Verdict hero
-      const v = a.verdict || {};
-      const heroClass = (v.labelClass || 'vp-okay').replace('vp-', 'v-');
-      const hero = document.getElementById('oVerdictHero');
-      hero.className = 'v2-verdict-hero ' + heroClass;
-      document.getElementById('oVerdictLabel').textContent = v.label || '';
-      document.getElementById('oVerdictSub').textContent = v.tag || '';
-      document.getElementById('oVerdictSummary').textContent = v.summary || '';
+      // ── M2 · what to do
+      if (a.action) {
+        h += '<div class="v3-sec"><div class="v3-todo"><div class="v3-todo-l">🐾 What to do</div>'
+           + '<div class="v3-todo-t">' + esc(a.action) + '</div>';
+        if (wf >= 2) {
+          h += '<div class="v3-switch-note"><span style="width:16px;height:16px;color:var(--ginger);flex-shrink:0;display:inline-block">' + v3Paw(true) + '</span>'
+             + '<span><b>Switching foods?</b> Go slow — mix a little of the new food into the old over about a week. Cats reject sudden changes and can get an upset tummy.</span></div>';
+        }
+        h += '</div></div>';
+      }
 
-      // Quickfacts: Analyzed-for + Daily portion
-      const ls = p.life_stage;
-      const analyzedFor = ls === 'kitten' ? 'Growing kitten (1–12mo)'
-                       : ls === 'senior' ? 'Senior cat (10yr+)'
-                       : p.category === 'prescription' ? 'Cats with this condition'
-                       : 'Healthy adult cat';
-      const profileNote = ls === 'kitten' ? '~2kg, baseline'
-                       : ls === 'senior' ? '4kg, baseline'
-                       : p.category === 'prescription' ? 'follow vet guidance'
-                       : '4kg indoor, default';
-      document.getElementById('oAnalyzedFor').textContent = analyzedFor;
-      document.querySelector('#oAnalyzedFor + .v2-qf-note').textContent = profileNote;
-      const serving = getServingInfo(p);
-      document.getElementById('oServingLabel').textContent = serving.label;
-      document.getElementById('oServingValue').textContent = serving.value;
-      document.getElementById('oServingNote').textContent = serving.note;
+      // ── M2b · is this a full meal? (heuristic now; real feeding logic = future data move)
+      var serving = getServingInfo(p);
+      var isTreat = p.category === 'treat';
+      var mealKind = isTreat ? 'Treat · not a full meal' : 'Daily food';
+      var mealCls = isTreat ? 'v3-mf-topper' : 'v3-mf-full';
+      var analyzedFor = (p.life_stage === 'kitten' || p.category === 'kitten') ? 'a growing kitten'
+                      : p.life_stage === 'senior' ? 'a senior cat'
+                      : p.category === 'prescription' ? 'this condition'
+                      : 'a healthy adult cat';
+      var mealHow = isTreat ? 'Treats aren’t meals — keep them to the odd reward, well under a tenth of the day’s food. Lovely for bonding, not for nutrition.'
+        : p.category === 'wet' ? 'High-moisture and close to what cats are built to eat. If the pack says “complementary”, pair it with a complete food rather than feeding it alone.'
+        : (p.life_stage === 'kitten' || p.category === 'kitten') ? 'A growing-kitten formula — feed to appetite across several small meals a day. Kittens need more, more often.'
+        : p.category === 'prescription' ? 'A therapeutic diet — feed exactly as your vet directs, and don’t add other foods unless they say so.'
+        : 'Works as a daily food. Cats get most of their water from what they eat, so it’s even better paired with a wet pouch alongside.';
+      var mealIcon = isTreat
+        ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>'
+        : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>';
+      h += '<div class="v3-sec"><div class="v3-sec-head"><span class="v3-sec-h">Is this a full meal?</span></div>'
+         + '<div class="v3-meal-flag ' + mealCls + '">' + mealIcon + esc(mealKind) + '</div>'
+         + '<div class="v3-meal-amt"><span class="v3-big">' + esc(serving.value) + '</span><span class="v3-sub">' + esc(serving.note) + ' · for ' + analyzedFor + '</span></div>'
+         + '<div class="v3-meal-how">' + mealHow + '</div></div>';
 
-      // Worry + Action
-      const worry = a.worry || { level: 'low', filled: 1, label: '', note: '' };
-      const waEl = document.getElementById('oWorryAction');
-      waEl.className = 'v2-worry-action wl-' + (worry.level || 'low');
-      document.getElementById('oWorryDots').innerHTML =
-        [1,2,3,4].map(i => `<span class="wd${i <= (worry.filled||0) ? ' filled' : ''}"></span>`).join('');
-      document.getElementById('oWorryLabel').textContent = worry.label || '';
-      document.getElementById('oActionText').textContent = a.action || '';
+      // ── M3 · the math, shown (bars only for numeric metrics with a known scale)
+      var barsHtml = metrics.map(v3MetricBar).join('');
+      var carbN = parseMetricNum(getMetric(a, 'carb'));
+      var carbHtml = '';
+      if (carbN !== null) {
+        carbHtml = '<div class="v3-carb"><div class="v3-carb-l">Carbs vs. a wild cat</div>'
+          + '<div class="v3-carb-row"><span class="v3-carb-cap">This food</span><div class="v3-carb-bar"><div class="v3-carb-fill v3-cf-this" style="width:' + Math.min(carbN, 100) + '%"></div></div><span class="v3-carb-num" style="color:var(--caution)">' + carbN + '%</span></div>'
+          + '<div class="v3-carb-row"><span class="v3-carb-cap">Wild cat</span><div class="v3-carb-bar"><div class="v3-carb-fill v3-cf-wild" style="width:5%"></div></div><span class="v3-carb-num" style="color:var(--good)">5%</span></div></div>';
+      }
+      if (barsHtml || carbHtml) {
+        h += '<div class="v3-sec"><div class="v3-sec-head"><span class="v3-sec-h">The math, shown</span></div>'
+           + barsHtml + carbHtml + '</div>';
+      }
 
-      // Reasons (variable length, status-driven icons)
-      const reasons = a.reasons || [];
-      document.getElementById('oReasons').innerHTML = reasons.map(r =>
-        `<div class="v2-reason r-${r.status === 'bad' ? 'bad' : r.status}">` +
-          `<div class="v2-reason-icon"></div>` +
-          `<div><div class="v2-reason-q">${r.q || ''}</div><div class="v2-reason-a">${r.a || ''}</div></div>` +
-        `</div>`
-      ).join('');
+      // ── M3 · what they won't tell you (derived from undisclosed metrics)
+      var gone = metrics.filter(function (m) { return v3IsMissingVal(m.value); });
+      h += '<div class="v3-sec"><div class="v3-sec-head"><span class="v3-sec-h">What they won’t tell you</span></div>';
+      if (gone.length) {
+        h += '<div class="v3-gm-grid">' + gone.map(function (m) {
+          return '<div class="v3-gm" tabindex="0" onclick="this.classList.toggle(\'v3-open\')">'
+            + '<span class="v3-gm-q">' + v3TailQ() + '</span>'
+            + '<div class="v3-gm-k">' + esc((m.name || '').replace(/\s*\(.*\)\s*/, '')) + '</div>'
+            + '<div class="v3-gm-v">' + esc(m.value || 'Not disclosed') + '</div>'
+            + '<div class="v3-gm-tip">' + esc(v3Explain(m.name)) + '</div></div>';
+        }).join('') + '</div>';
+      } else {
+        h += '<div class="v3-gm-allclear"><span style="font-size:22px;color:var(--good)">✓</span><div class="v3-t"><b>Nothing hidden.</b> This brand discloses the things that matter — rarer than it should be, and worth rewarding.</div></div>';
+      }
+      h += '</div>';
 
-      // Fits / Doesn't fit
-      const fits = a.fitsIf || [];
-      const noFit = a.doesntFitIf || [];
-      document.getElementById('oFitsIf').innerHTML = fits.map(t =>
-        `<div class="v2-fit-item"><span class="v2-fit-item-icon"></span><span>${t}</span></div>`
-      ).join('');
-      document.getElementById('oDoesntFitIf').innerHTML = noFit.map(t =>
-        `<div class="v2-fit-item"><span class="v2-fit-item-icon"></span><span>${t}</span></div>`
-      ).join('');
+      // ── M3 · why Sniff says this
+      var reasons = a.reasons || [];
+      if (reasons.length) {
+        h += '<div class="v3-sec" data-ph-report="reasons"><div class="v3-sec-head"><span class="v3-sec-h">Why Sniff says this</span></div>';
+        h += reasons.map(function (r) {
+          var st = r.status === 'good' ? 'v3-r-good' : r.status === 'caution' ? 'v3-r-caution' : 'v3-r-bad';
+          var ic = r.status === 'good' ? '✓' : r.status === 'caution' ? '!' : '✕';
+          return '<div class="v3-reason ' + st + '"><div class="v3-r-ic">' + ic + '</div>'
+            + '<div><div class="v3-r-q">' + esc(r.q || '') + '</div><div class="v3-r-a">' + esc(r.a || '') + '</div></div></div>';
+        }).join('');
+        h += '</div>';
+      }
 
-      // Parent take
-      document.getElementById('oParentTakeText').textContent = a.parentTake || '';
+      // ── M4 · is this for your cat?
+      var fits = a.fitsIf || [], noFit = a.doesntFitIf || [];
+      if (fits.length || noFit.length) {
+        h += '<div class="v3-sec"><div class="v3-sec-head"><span class="v3-sec-h">Is this for your cat?</span></div>'
+          + '<div class="v3-fit"><div class="v3-fit-col v3-fc-fits"><div class="v3-fit-h">Fits if</div>'
+          + fits.map(function (t) { return '<div class="v3-fit-item"><span class="v3-fit-ic">✓</span><span>' + esc(t) + '</span></div>'; }).join('') + '</div>'
+          + '<div class="v3-fit-col v3-fc-no"><div class="v3-fit-h">Doesn’t fit if</div>'
+          + noFit.map(function (t) { return '<div class="v3-fit-item"><span class="v3-fit-ic">✕</span><span>' + esc(t) + '</span></div>'; }).join('') + '</div></div></div>';
+      }
 
-      // Metrics
-      const metrics = a.metrics || [];
-      document.getElementById('oMetrics').innerHTML = metrics.map(m =>
-        `<div class="v2-metric">` +
-          `<div class="v2-metric-header">` +
-            `<div class="v2-metric-name">${m.name || ''}</div>` +
-            `<div class="v2-metric-value ${m.status || ''}">${m.value || ''}</div>` +
-          `</div>` +
-          `<div class="v2-metric-meta">` +
-            `<span>${m.target || ''}</span>` +
-            (m.statusLabel ? `<span class="v2-metric-status ${m.status || ''}">${m.statusLabel}</span>` : '') +
-          `</div>` +
-        `</div>`
-      ).join('');
+      // ── M5 · alternatives / the lineup (async fill; hidden until populated)
+      h += '<div class="v3-sec" id="oAlternatives" data-ph-report="lineup" style="display:none">'
+         + '<div class="v3-sec-head"><span class="v3-sec-h">If you switch</span></div>'
+         + '<div class="v3-lineup-sub" id="oAltsSub"></div><div id="oAltsList"></div></div>';
 
-      // Reset tech state collapsed
-      document.getElementById('oTechDetails').classList.remove('open');
-      document.getElementById('oTechToggle').classList.remove('open');
+      // ── M6 · the receipts (every number, collapsible)
+      if (metrics.length) {
+        h += '<button class="v3-receipts-toggle" type="button" data-ph-report="receipts" onclick="var b=this.nextElementSibling;var o=b.classList.toggle(\'v3-open\');if(o&&window.posthog)posthog.capture(\'report_tech_details_expanded\',{product_slug:(currentProduct&&currentProduct.slug)||null})"><span>The receipts · every number</span><span>⌄</span></button>';
+        h += '<div class="v3-receipts-body">' + metrics.map(function (m) {
+          var miss = v3IsMissingVal(m.value);
+          var cls = miss ? 'v3-miss' : m.status === 'good' ? 'v3-good' : m.status === 'warn' ? 'v3-warn' : m.status === 'bad' ? 'v3-bad' : '';
+          return '<div class="v3-rec"><div><div class="v3-rec-n">' + esc((m.name || '').replace(/\s*\(.*\)\s*/, '')) + '</div>'
+            + (m.target ? '<div class="v3-rec-sub">' + esc(m.target) + '</div>' : '') + '</div>'
+            + '<div class="v3-rec-v ' + cls + '">' + esc(m.value || '') + '</div></div>';
+        }).join('') + '</div>';
+      }
 
-      // Reset alternatives (will be populated async)
-      document.getElementById('oAlternatives').classList.remove('show');
-      document.getElementById('oAltsList').innerHTML = '';
+      h += '<div class="v3-trust">Based on the published label · cat-only · no scores, no sponsors · made in Bangalore</div>';
+
+      document.getElementById('overlayContent').innerHTML = h;
+      v3TrackSections(p.slug);
     }
 
     function toggleOverlayTech() {
@@ -3885,90 +4313,157 @@
       return m ? parseInt(m[1], 10) : null;
     }
 
+    // ── price helpers (price_inr_100g lives on the row once the DB is updated; window map is a transition fallback) ──
+    function v3Price(p){ var n = p && Number(p.price_inr_100g); if (n) return n; var w = window.__SNIFF_PRICES__; return (w && p && w[p.slug]) || null; }
+    function v3DailyGrams(cat){ return cat === 'wet' ? 200 : cat === 'treat' ? 15 : cat === 'kitten' ? 60 : 55; }
+    function v3MonthDelta(cat, pCur, pAlt){ if (pCur == null || pAlt == null) return null; var d = (pAlt - pCur) * v3DailyGrams(cat) / 100 * 30; return Math.round(d / 10) * 10; }
+    // the current food's single biggest weakness — so recommendations can target the real problem, not just "scores higher"
+    function v3Weakness(a){
+      var carb = parseMetricNum(getMetric(a, 'carb')); if (carb != null && carb > 30) return 'carbs';
+      var ing = getMetric(a, 'first ingredient'); if (ing && /cereal|grain|corn|wheat/i.test(ing.value || '')) return 'ingredient';
+      var tau = getMetric(a, 'taurine'); if (tau && v3IsMissingVal(tau.value)) return 'taurine';
+      var prot = parseMetricNum(getMetric(a, 'protein')); if (prot != null && prot < 35) return 'protein';
+      return null;
+    }
+    function v3Fixes(w, altA){
+      if (!w) return 0;
+      if (w === 'carbs'){ var c = parseMetricNum(getMetric(altA, 'carb')); return (c != null && c <= 25) ? 1 : 0; }
+      if (w === 'ingredient'){ var i = getMetric(altA, 'first ingredient'); return (i && !/cereal|grain|corn|wheat/i.test(i.value || '')) ? 1 : 0; }
+      if (w === 'taurine'){ var t = getMetric(altA, 'taurine'); return (t && !v3IsMissingVal(t.value)) ? 1 : 0; }
+      if (w === 'protein'){ var p = parseMetricNum(getMetric(altA, 'protein')); return (p != null && p >= 40) ? 1 : 0; }
+      return 0;
+    }
+
+    // Recommendation engine: better-quality, same category+life-stage, organised into a price ladder
+    // (Most valued / Upgrade / Best in class) AND targeted at the current food's actual weakness.
+    // Falls back to a plain score-ranked list when prices aren't available yet.
     async function fetchAlternatives(product) {
       const a = product.analysis || {};
-      const v = a.verdict || {};
-      const vLabel = (v.label || '').replace(/\.$/, '');
-      if (vLabel === 'Strong choice' || product.category === 'prescription') return [];
+      const vLabel = ((a.verdict || {}).label || '').replace(/\.$/, '');
+      if (vLabel === 'Strong choice' || product.category === 'prescription') return []; // already great / medical — don't push a switch
       const cat = product.category || 'dry';
       const stage = product.life_stage || 'adult';
-      const url = `${SUPABASE_URL}/rest/v1/products?category=eq.${encodeURIComponent(cat)}&life_stage=eq.${encodeURIComponent(stage)}&slug=neq.${encodeURIComponent(product.slug)}&select=slug,brand,title,image_url,analysis&limit=80`;
+      const url = `${SUPABASE_URL}/rest/v1/products?category=eq.${encodeURIComponent(cat)}&life_stage=eq.${encodeURIComponent(stage)}&slug=neq.${encodeURIComponent(product.slug)}&select=*&limit=150`;
       try {
         const r = await fetch(url, { headers: SUPABASE_HEADERS });
         const candidates = await r.json();
         if (!Array.isArray(candidates)) return [];
-        const currentScore = scoreProduct(a);
-        const scored = candidates
-          .filter(c => c.analysis && scoreProduct(c.analysis) > currentScore)
-          .map(c => ({ ...c, _score: scoreProduct(c.analysis) }))
-          .sort((a, b) => b._score - a._score);
-        return scored.slice(0, 3);
+        const Sc = scoreProduct(a);
+        const Pc = v3Price(product);
+        const weakness = v3Weakness(a);
+        const better = candidates
+          .filter(c => c.analysis && scoreProduct(c.analysis) > Sc)
+          .map(c => ({ ...c, _score: scoreProduct(c.analysis), _price: v3Price(c) }))
+          .sort((x, y) => y._score - x._score);
+        if (!better.length) return [];
+
+        const priced = better.filter(c => c._price != null);
+        // Not enough price signal → honest fallback: top-3 by quality, no tiers.
+        if (Pc == null || priced.length < 2) return better.slice(0, 3).map(c => ({ ...c, _tier: null }));
+
+        const used = {};
+        function pick(pool){
+          if (!pool.length) return null;
+          const ranked = pool.slice().sort((x, y) =>
+            (v3Fixes(weakness, y.analysis) - v3Fixes(weakness, x.analysis)) || (y._score - x._score));
+          for (const c of ranked) { if (!used[c.slug]) { used[c.slug] = 1; return c; } }
+          return null;
+        }
+        const sameBand = priced.filter(c => c._price <= Pc * 1.10);
+        const upBand   = priced.filter(c => c._price > Pc * 1.10 && c._price <= Pc * 2.2);
+        const premBand = priced.filter(c => c._price > Pc * 2.2);
+
+        const picks = [];
+        const mostValued = pick(sameBand); if (mostValued) picks.push({ ...mostValued, _tier: 'value' });
+        const upgrade    = pick(upBand);   if (upgrade)    picks.push({ ...upgrade, _tier: 'upgrade' });
+        let best = pick(premBand) || pick(priced);
+        // only show "best in class" if it genuinely tops what's already shown
+        const shownTop = Math.max(mostValued ? mostValued._score : 0, upgrade ? upgrade._score : 0);
+        if (best && best._score > shownTop) picks.push({ ...best, _tier: 'best' });
+
+        if (!picks.length) return better.slice(0, 3).map(c => ({ ...c, _tier: null }));
+        picks.forEach(p => { p._monthDelta = v3MonthDelta(cat, Pc, p._price); p._curPrice = Pc; });
+        return picks;
       } catch (e) {
         console.error('fetchAlternatives', e);
         return [];
       }
     }
 
+    var V3_TIER = {
+      value:   { cls: 'v3-tb-value',   label: 'Most valued · better for the same money' },
+      upgrade: { cls: 'v3-tb-upgrade', label: 'Upgrade · a little more, clearly better' },
+      best:    { cls: 'v3-tb-best',    label: 'Best in class · if budget’s open' }
+    };
     function renderAlternatives(product, alts) {
-      const container = document.getElementById('oAlternatives');
-      const list = document.getElementById('oAltsList');
-      const sub = document.getElementById('oAltsSub');
-      if (!alts || alts.length === 0) {
-        container.classList.remove('show');
-        return;
-      }
-      const currentA = product.analysis || {};
-      const weakPoints = [];
-      if (currentA.f2?.val > 30) weakPoints.push('high carbs');
-      if (currentA.ing && currentA.ing.toLowerCase().includes('cereal')) weakPoints.push('cereal-first ingredients');
-      if (currentA.f3?.text) weakPoints.push('missing nutrient data');
-      if (currentA.worry?.filled >= 2) weakPoints.push('transparency gaps');
-      sub.textContent = weakPoints.length
-        ? `This food has ${weakPoints.slice(0, 2).join(' and ')}. These alternatives score higher on what matters.`
-        : 'These alternatives score higher overall for your cat.';
+      var container = document.getElementById('oAlternatives');
+      var list = document.getElementById('oAltsList');
+      var sub = document.getElementById('oAltsSub');
+      if (!container || !list || !sub) return;
+      if (!alts || alts.length === 0) { container.style.display = 'none'; return; }
+      var currentA = product.analysis || {};
+      var cat = product.category || 'dry';
+      var tiered = alts.some(function (a) { return a._tier; });
 
-      list.innerHTML = alts.map(alt => {
-        const aa = alt.analysis || {};
-        const imps = getImprovements(currentA, aa);
-        const brandShort = (alt.brand || '').split(' · ')[0].slice(0, 20);
-        const vLabel = aa.verdict?.label || '';
-        const vClass = (aa.verdict?.labelClass === 'vp-good') ? 'av-good' : 'av-okay';
-        const imgHtml = alt.image_url
-          ? `<img src="${alt.image_url}" alt="${alt.title||''}" loading="lazy" onerror="this.parentElement.innerHTML='${brandShort}'">`
-          : brandShort;
-        const currentPrice = parsePrice100g(currentA.price);
-        const altPrice = parsePrice100g(aa.price);
-        let priceHtml = '';
-        if (altPrice) {
-          if (currentPrice && altPrice !== currentPrice) {
-            const diff = altPrice - currentPrice;
-            const sign = diff > 0 ? '+' : '';
-            priceHtml = `<div class="v2-alt-price">₹${altPrice}/100g (${sign}₹${diff})</div>`;
-          } else {
-            priceHtml = `<div class="v2-alt-price">₹${altPrice}/100g</div>`;
-          }
+      if (tiered) {
+        sub.textContent = 'Foods that fix what this one misses — laid out by what they cost.';
+      } else {
+        var weak = [];
+        var cCarb = parseMetricNum(getMetric(currentA, 'carb'));
+        if (cCarb !== null && cCarb > 30) weak.push('more carbs than a cat needs');
+        var cIng = getMetric(currentA, 'first ingredient');
+        if (cIng && /cereal|grain|corn|wheat/i.test(cIng.value || '')) weak.push('cereal-first ingredients');
+        if ((currentA.metrics || []).some(function (m) { return v3IsMissingVal(m.value); })) weak.push('undisclosed nutrients');
+        if (((currentA.worry || {}).filled || 0) >= 2 && weak.length < 2) weak.push('transparency gaps');
+        sub.textContent = weak.length
+          ? 'This one has ' + weak.slice(0, 2).join(' and ') + '. These score higher on what matters.'
+          : 'These score higher overall for your cat.';
+      }
+
+      list.innerHTML = alts.map(function (alt) {
+        var aa = alt.analysis || {};
+        var imps = getImprovements(currentA, aa);
+        var brandShort = ((alt.brand || '').split(' · ')[0] || '').slice(0, 18).replace(/[^A-Za-z0-9 &]/g, '');
+        var vLabel = ((aa.verdict && aa.verdict.label) || '').replace(/\.\s*$/, '');
+        var vClass = (aa.verdict && aa.verdict.labelClass === 'vp-good') ? 'av-good' : 'av-okay';
+        var thumb = alt.image_url
+          ? '<img src="' + esc(alt.image_url) + '" alt="' + esc(alt.title || '') + '" loading="lazy" onerror="this.replaceWith(document.createTextNode(\'' + brandShort + '\'))">'
+          : esc(brandShort);
+        var go = "posthog.capture('alternative_clicked',{from_slug:'" + product.slug + "',to_slug:'" + alt.slug + "',tier:'" + (alt._tier || 'score') + "'});openOverlaySlug('" + alt.slug + "')";
+
+        var badge = (alt._tier && V3_TIER[alt._tier])
+          ? '<span class="v3-tier-badge ' + V3_TIER[alt._tier].cls + '">' + V3_TIER[alt._tier].label + '</span>' : '';
+
+        var priceLine = '';
+        if (alt._tier && alt._price != null) {
+          var q = alt._tier === 'value' ? ((alt._curPrice != null && alt._price < alt._curPrice * 0.95) ? 'Cheaper' : 'About the same money')
+                : alt._tier === 'upgrade' ? ((alt._monthDelta && alt._monthDelta > 0 && cat !== 'treat') ? '+₹' + alt._monthDelta + '/month' : 'A bit more')
+                : 'Premium';
+          priceLine = q + ' <span>· ₹' + alt._price + '/100g</span>';
+        } else if (alt._price != null) {
+          priceLine = '₹' + alt._price + '/100g';
         }
-        return `<div class="v2-alt-card" onclick="posthog.capture('alternative_clicked',{from_slug:'${product.slug}',to_slug:'${alt.slug}'});openOverlaySlug('${alt.slug}')" tabindex="0" onkeydown="if(event.key==='Enter'){posthog.capture('alternative_clicked',{from_slug:'${product.slug}',to_slug:'${alt.slug}'});openOverlaySlug('${alt.slug}')}">
-          <div class="v2-alt-img">${imgHtml}</div>
-          <div class="v2-alt-body">
-            <div class="v2-alt-brand">${alt.brand || ''}</div>
-            <div class="v2-alt-title">${alt.title || ''}</div>
-            <div class="v2-alt-verdict ${vClass}">${vLabel}</div>
-            <div class="v2-alt-improvements">${imps.map(i => `<div class="v2-alt-imp">${i}</div>`).join('')}</div>
-            ${priceHtml}
-          </div>
-          <div class="v2-alt-footer" onclick="event.stopPropagation();openCompareWithAlt('${alt.slug}',event)" onkeydown="event.stopPropagation()" role="button" tabindex="0">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-            <span>Compare with yours</span>
-          </div>
-        </div>`;
+
+        return '<div class="v3-tier" onclick="' + go + '" tabindex="0" onkeydown="if(event.key===\'Enter\'){' + go + '}">'
+          + badge
+          + '<div class="v3-tier-thumb">' + thumb + '</div>'
+          + '<div style="min-width:0">'
+          +   '<div class="v3-tier-brand">' + esc(alt.brand || '') + '</div>'
+          +   '<div class="v3-tier-title">' + esc(alt.title || '') + '</div>'
+          +   (!alt._tier && vLabel ? '<div class="v3-alt-verdict ' + vClass + '">' + esc(vLabel) + '</div>' : '')
+          +   '<div class="v3-tier-why">' + imps.map(function (i) { return '<div>' + esc(i) + '</div>'; }).join('') + '</div>'
+          +   (priceLine ? '<div class="v3-tier-price">' + priceLine + '</div>' : '')
+          +   '<div class="v3-alt-compare" onclick="event.stopPropagation();openCompareWithAlt(\'' + alt.slug + '\',event)" role="button" tabindex="0" onkeydown="event.stopPropagation()">'
+          +     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span>Compare with yours</span></div>'
+          + '</div></div>';
       }).join('');
 
-      container.classList.add('show');
+      container.style.display = 'block';
       posthog.capture('alternatives_shown', {
         product_slug: product.slug,
         alternatives_count: alts.length,
-        alternative_slugs: alts.map(a => a.slug)
+        tiered: tiered,
+        alternative_slugs: alts.map(function (a) { return a.slug; })
       });
     }
 
