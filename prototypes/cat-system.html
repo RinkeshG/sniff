@@ -17,15 +17,17 @@
   *{box-sizing:border-box;margin:0;padding:0}
   body{background:var(--charcoal);color:var(--cream);font-family:var(--sans);padding:0 0 90px;}
 
-  /* ───── the wordmark: sniff, with a blinking cat-eye 'i' ───── */
-  /* real Young Serif dotless-i (ı) as the stem; the cat eye is its tittle */
+  /* ───── the wordmark: sniff, with a ginger-dot 'i' ───── */
+  /* real Young Serif dotless-i (ı) as the stem; a ginger dot is its tittle */
   .mark{ font-family:var(--serif); color:var(--cream); display:inline-block; line-height:1; }
   .mark .mi{ position:relative; line-height:1; }
-  .mark .eye{ position:absolute; left:50%; bottom:0.7em; width:0.3em; margin-left:-0.15em;
-    color:var(--ginger); transform-origin:50% 50%; animation:catBlink 5.5s ease-in-out infinite; }
-  .mark .eye svg{ display:block; width:100%; height:auto; }
-  /* eyelid blink — closes to a line in place (centre origin), never drops into the word */
-  @keyframes catBlink{ 0%,74%,100%{transform:scaleY(1)} 82%{transform:scaleY(0.1)} 90%{transform:scaleY(1)} }
+  /* the dot of the i — a ginger tittle matched to Young Serif's own tittle:
+     0.16em dot (real tittle ≈0.155×0.15em), sitting 0.595em above the baseline.
+     bottom is measured from the .mi box bottom, which is 0.16em below the baseline
+     at line-height:1 → 0.595 + 0.16 = 0.755em. A gentle slow blink (cat nod). */
+  .mark .dot{ position:absolute; left:50%; bottom:0.755em; width:0.16em; height:0.16em; margin-left:-0.08em;
+    background:var(--ginger); border-radius:50%; transform-origin:50% 50%; animation:dotBlink 5.5s ease-in-out infinite; }
+  @keyframes dotBlink{ 0%,80%,100%{transform:scaleY(1)} 88%{transform:scaleY(0.14)} 94%{transform:scaleY(1)} }
 
   header.hd{ padding:64px 40px 40px; max-width:1100px; margin:0 auto; }
   header.hd .mark{ font-size:64px; }
@@ -94,7 +96,7 @@
 <body>
 
 <header class="hd">
-  <span class="mark">sn<span class="mi">&#305;<span class="eye"><svg viewBox="0 0 22 16" fill="none"><path d="M2 8 Q11 1.5 20 8 Q11 14.5 2 8 Z" fill="currentColor" stroke="none"/><ellipse cx="11" cy="8" rx="1.3" ry="3.5" fill="#2A2725" stroke="none"/></svg></span></span>ff</span>
+  <span class="mark">sn<span class="mi">&#305;<span class="dot"></span></span>ff</span>
   <p>The design system — brand foundations and the cat asset kit. One mascot, broken into marks that each do a job: a cat sniffing out the truth about food.</p>
 </header>
 
@@ -104,11 +106,11 @@
   <div class="found">
     <div class="card">
       <div class="logo-show">
-        <div class="logo-tile" style="background:var(--charcoal)"><span class="mark" style="font-size:40px;color:var(--cream)">sn<span class="mi">&#305;<span class="eye"><svg viewBox="0 0 22 16" fill="none"><path d="M2 8 Q11 1.5 20 8 Q11 14.5 2 8 Z" fill="currentColor" stroke="none"/><ellipse cx="11" cy="8" rx="1.3" ry="3.5" fill="#2A2725" stroke="none"/></svg></span></span>ff</span></div>
-        <div class="logo-tile" style="background:var(--cream)"><span class="mark" style="font-size:40px;color:var(--charcoal)">sn<span class="mi">&#305;<span class="eye"><svg viewBox="0 0 22 16" fill="none"><path d="M2 8 Q11 1.5 20 8 Q11 14.5 2 8 Z" fill="currentColor" stroke="none"/><ellipse cx="11" cy="8" rx="1.3" ry="3.5" fill="#2A2725" stroke="none"/></svg></span></span>ff</span></div>
+        <div class="logo-tile" style="background:var(--charcoal)"><span class="mark" style="font-size:40px;color:var(--cream)">sn<span class="mi">&#305;<span class="dot"></span></span>ff</span></div>
+        <div class="logo-tile" style="background:var(--cream)"><span class="mark" style="font-size:40px;color:var(--charcoal)">sn<span class="mi">&#305;<span class="dot"></span></span>ff</span></div>
       </div>
       <div class="name">Wordmark</div>
-      <div class="use">The dot of the "i" is a cat's eye — almond with a slit pupil — that slow-blinks. Eye stays ginger on any background.</div>
+      <div class="use">A single ginger dot tops the "i" — sized to Young Serif's own tittle so it reads as type, not decoration — with a gentle slow blink (a cat's nod). Stays ginger on any background.</div>
     </div>
     <div class="card">
       <div class="swatches" style="flex:1;align-content:center">
