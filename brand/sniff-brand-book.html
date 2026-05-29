@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sniff — Brand System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* ─── THE COAT — every colour named after a cat ─── */
+      --ginger: #E08A3A;
+      --ginger-deep: #C06E22;
+      --ginger-soft: #F8E4C8;
+      --ginger-bg: #FCEBD4;
+
+      --indie: #8B7355;
+      --indie-soft: #EDE5D8;
+
+      --charcoal: #2A2725;
+      --charcoal-soft: #3D3835;
+
+      --cream: #F5F0E5;
+      --cream-deep: #EAE3D2;
+
+      --tabby: #C4A67D;
+      --tabby-soft: #E8DCC8;
+
+      /* ─── SEMANTIC ─── */
+      --checks-out: #4A8F5C;
+      --checks-soft: rgba(74,143,92,0.1);
+      --worth-sniff: #C68A2C;
+      --worth-soft: rgba(198,138,44,0.1);
+      --gone-missing: #A09A90;
+      --gone-soft: rgba(160,154,144,0.06);
+      --red-flag: #B33A2A;
+
+      /* ─── TYPE ─── */
+      --serif: 'Young Serif', Georgia, serif;
+      --sans: 'Sora', system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--charcoal);
+      font-family: var(--sans);
+      font-weight: 400;
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ─── SECTIONS — full-bleed colour blocks ─── */
+    .block { padding: 100px 48px; position: relative; }
+    .block.cream { background: var(--cream); color: var(--charcoal); }
+    .block.charcoal { background: var(--charcoal); color: var(--cream); }
+    .block.ginger { background: var(--ginger); color: var(--charcoal); }
+    .block.ginger-soft { background: var(--ginger-bg); color: var(--charcoal); }
+    .block.indie { background: var(--indie); color: var(--cream); }
+
+    .inner { max-width: 1100px; margin: 0 auto; }
+    .narrow { max-width: 720px; }
+
+    /* ─── TYPOGRAPHY ─── */
+    .tag {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .tag.ginger-text { color: var(--ginger); }
+    .tag.cream-text { color: var(--cream); opacity: 0.6; }
+    .tag.charcoal-text { color: var(--charcoal); opacity: 0.5; }
+
+    h2 {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(44px, 7vw, 72px);
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+      margin-bottom: 20px;
+    }
+
+    h3 {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: 28px;
+      letter-spacing: -0.01em;
+      margin-top: 56px;
+      margin-bottom: 16px;
+    }
+
+    h4 {
+      font-family: var(--sans);
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ginger);
+      margin-top: 40px;
+      margin-bottom: 12px;
+    }
+
+    p { margin-bottom: 16px; max-width: 640px; line-height: 1.65; }
+
+    p.lead {
+      font-family: var(--serif);
+      font-size: 24px;
+      line-height: 1.35;
+      margin-bottom: 28px;
+      max-width: 600px;
+    }
+
+    p.aside {
+      padding: 16px 0 16px 24px;
+      border-left: 3px solid var(--ginger);
+      font-family: var(--serif);
+      font-size: 20px;
+      line-height: 1.4;
+      max-width: 560px;
+      margin: 24px 0;
+    }
+
+    strong { font-weight: 700; }
+    em.s { font-family: var(--serif); font-style: normal; }
+
+    ul.list {
+      list-style: none;
+      margin: 16px 0 24px;
+      max-width: 640px;
+    }
+
+    ul.list li {
+      padding: 10px 0;
+      padding-left: 28px;
+      position: relative;
+      line-height: 1.55;
+      border-bottom: 1px solid rgba(42,39,37,0.1);
+    }
+
+    .charcoal ul.list li { border-color: rgba(245,240,229,0.12); }
+    .ginger ul.list li { border-color: rgba(42,39,37,0.15); }
+
+    ul.list li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--ginger);
+      font-weight: 700;
+    }
+
+    .charcoal ul.list li::before { color: var(--ginger); }
+    .ginger ul.list li::before { color: var(--charcoal); }
+
+    /* ─── COVER ─── */
+    .cover {
+      min-height: 100vh;
+      padding: 40px 48px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background: var(--charcoal);
+      color: var(--cream);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .cover-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(245,240,229,0.25);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(245,240,229,0.5);
+    }
+
+    .cover-top .acc { color: var(--ginger); }
+
+    .cover-stage {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 40px;
+      padding: 40px 0;
+    }
+
+    .cover-text {
+      flex: 1;
+    }
+
+    .cover-text .mark {
+      font-family: var(--serif);
+      font-size: clamp(100px, 20vw, 260px);
+      line-height: 0.85;
+      letter-spacing: -0.03em;
+      color: var(--cream);
+      display: block;
+      margin-bottom: 32px;
+    }
+
+    /* ─── THE WORDMARK — "sniff" with a ginger-dot 'i' that slow-blinks ─── */
+    /* the i is the dotless Young Serif glyph (ı); its tittle is a ginger circle
+       matched to the typeface's own dot and anchored to the baseline so it reads
+       as type. em-based, so it holds at any size — cover, section, or footer. */
+    .wm-stem { position: relative; line-height: 1; }
+    .wm-dot {
+      position: absolute; left: 50%; bottom: 0.985em;
+      width: 0.16em; height: 0.16em; margin-left: -0.08em;
+      background: var(--ginger); border-radius: 50%;
+      transform-origin: 50% 50%;
+      animation: sniffBlink 5.5s ease-in-out infinite;
+    }
+    @keyframes sniffBlink { 0%, 82%, 100% { transform: scaleY(1); } 90% { transform: scaleY(0.16); } 96% { transform: scaleY(1); } }
+
+    .cover-tagline {
+      font-family: var(--sans);
+      font-size: 16px;
+      color: var(--ginger);
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      max-width: 360px;
+      line-height: 1.45;
+    }
+
+    .cover-ill {
+      flex: 0 0 auto;
+      width: clamp(280px, 35vw, 450px);
+    }
+
+    .cover-ill svg {
+      width: 100%;
+      height: auto;
+      color: var(--ginger);
+    }
+
+    .cover-bottom {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(245,240,229,0.25);
+      font-size: 12px;
+      color: rgba(245,240,229,0.4);
+      font-weight: 500;
+    }
+
+    .cover-bottom strong { color: var(--cream); display: block; margin-bottom: 4px; }
+
+    /* ─── COAT PALETTE ─── */
+    .coat-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0;
+      margin: 40px 0;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .coat {
+      min-height: 260px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .coat-name {
+      font-family: var(--serif);
+      font-size: 28px;
+      margin-bottom: 4px;
+    }
+
+    .coat-cat {
+      font-size: 12px;
+      opacity: 0.6;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .coat-hex {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      font-feature-settings: 'tnum';
+      opacity: 0.5;
+    }
+
+    .coat-use {
+      font-size: 13px;
+      line-height: 1.4;
+      opacity: 0.8;
+      max-width: 200px;
+    }
+
+    /* semantic colours — smaller row */
+    .semantic-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin: 40px 0;
+    }
+
+    .sem {
+      padding: 20px;
+      border-radius: 8px;
+      min-height: 140px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .sem-name {
+      font-family: var(--serif);
+      font-size: 20px;
+      margin-bottom: 4px;
+    }
+
+    .sem-cat-name {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      opacity: 0.7;
+    }
+
+    .sem-hex {
+      font-size: 11px;
+      font-weight: 600;
+      opacity: 0.5;
+      font-feature-settings: 'tnum';
+    }
+
+    .sem-use {
+      font-size: 12px;
+      line-height: 1.4;
+      opacity: 0.75;
+    }
+
+    /* ─── NAMING SYSTEM ─── */
+    .name-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 32px 0;
+    }
+
+    .name-card {
+      background: var(--cream);
+      border-radius: 10px;
+      padding: 28px;
+      border: 1px solid var(--tabby-soft);
+    }
+
+    .charcoal .name-card { background: var(--charcoal-soft); border-color: rgba(245,240,229,0.1); }
+    .ginger .name-card { background: rgba(42,39,37,0.06); border-color: rgba(42,39,37,0.1); }
+
+    .nm-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ginger);
+      margin-bottom: 8px;
+    }
+
+    .nm-name {
+      font-family: var(--serif);
+      font-size: 24px;
+      margin-bottom: 6px;
+    }
+
+    .nm-desc {
+      font-size: 13px;
+      line-height: 1.45;
+      opacity: 0.7;
+    }
+
+    .nm-ref {
+      margin-top: 8px;
+      font-size: 11px;
+      font-weight: 500;
+      font-style: italic;
+      opacity: 0.5;
+    }
+
+    /* ─── ANALYSIS CARD MOCKUP ─── */
+    .phone-frame {
+      max-width: 420px;
+      margin: 40px auto;
+      background: white;
+      border-radius: 24px;
+      border: 8px solid var(--charcoal);
+      overflow: hidden;
+      box-shadow: 0 32px 80px rgba(42,39,37,0.25);
+    }
+
+    .phone-status {
+      background: var(--charcoal);
+      color: var(--cream);
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .phone-body { padding: 20px; color: var(--charcoal); }
+
+    .ph-head {
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--tabby-soft);
+      margin-bottom: 20px;
+    }
+
+    .ph-brand {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--indie);
+      margin-bottom: 4px;
+    }
+
+    .ph-title {
+      font-family: var(--serif);
+      font-size: 22px;
+    }
+
+    .ph-price {
+      font-size: 13px;
+      color: var(--indie);
+      margin-top: 4px;
+      font-feature-settings: 'tnum';
+    }
+
+    .ph-findings {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .ph-find {
+      padding: 14px 12px;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .ph-find.co { background: var(--checks-soft); }
+    .ph-find.ws { background: var(--worth-soft); }
+    .ph-find.gm { background: var(--gone-soft); border: 1.5px dashed var(--gone-missing); }
+
+    .ph-find-label {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .ph-find.co .ph-find-label { color: var(--checks-out); }
+    .ph-find.ws .ph-find-label { color: var(--worth-sniff); }
+    .ph-find.gm .ph-find-label { color: var(--gone-missing); }
+
+    .ph-find-val {
+      font-family: var(--sans);
+      font-weight: 800;
+      font-size: 24px;
+      letter-spacing: -0.02em;
+      color: var(--charcoal);
+      font-feature-settings: 'tnum';
+    }
+
+    .ph-find.gm .ph-find-val {
+      font-family: var(--serif);
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--gone-missing);
+    }
+
+    .ph-find-note {
+      font-size: 10px;
+      color: var(--indie);
+      margin-top: 4px;
+      line-height: 1.3;
+    }
+
+    /* position bar in phone */
+    .ph-bar { margin: 16px 0; }
+
+    .ph-bar-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--indie);
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .ph-bar-track {
+      height: 10px;
+      background: var(--cream-deep);
+      border-radius: 5px;
+      position: relative;
+      overflow: visible;
+    }
+
+    .ph-bar-ideal {
+      position: absolute;
+      right: 0;
+      top: 0;
+      height: 100%;
+      width: 40%;
+      background: var(--checks-soft);
+      border-radius: 0 5px 5px 0;
+    }
+
+    .ph-bar-dot {
+      position: absolute;
+      top: -5px;
+      left: 41%;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--ginger);
+      border: 3px solid white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    .ph-bar-labels {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 6px;
+      font-size: 10px;
+      color: var(--indie);
+      font-weight: 500;
+      font-feature-settings: 'tnum';
+    }
+
+    .ph-bar-labels .ideal { color: var(--checks-out); font-weight: 700; }
+
+    /* ingredient in phone */
+    .ph-ing { margin: 20px 0; }
+
+    .ph-ing-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--indie);
+      margin-bottom: 8px;
+    }
+
+    .ph-ing-first {
+      font-family: var(--serif);
+      font-size: 28px;
+      color: var(--worth-sniff);
+      margin-bottom: 6px;
+    }
+
+    .ph-ing-rest {
+      font-size: 13px;
+      color: var(--indie);
+      line-height: 1.45;
+    }
+
+    /* missing in phone */
+    .ph-missing {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin: 16px 0;
+    }
+
+    .ph-miss {
+      padding: 10px 12px;
+      border: 1.5px dashed var(--gone-missing);
+      border-radius: 6px;
+      background: var(--gone-soft);
+    }
+
+    .ph-miss-name { font-size: 12px; font-weight: 600; }
+    .ph-miss-status { font-size: 10px; color: var(--gone-missing); }
+
+    /* the nose knows — verdict */
+    .ph-nose {
+      margin-top: 20px;
+      padding: 16px;
+      background: var(--ginger-soft);
+      border-radius: 10px;
+      border-left: 4px solid var(--ginger);
+    }
+
+    .ph-nose-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ginger-deep);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .ph-nose-text {
+      font-family: var(--serif);
+      font-size: 15px;
+      line-height: 1.45;
+      color: var(--charcoal);
+    }
+
+    /* ─── DO/DONT ─── */
+    .dodont {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 24px 0;
+    }
+
+    .dd {
+      padding: 24px;
+      border-radius: 10px;
+    }
+
+    .dd.no { background: rgba(179,58,42,0.08); border: 1px solid rgba(179,58,42,0.2); }
+    .dd.yes { background: rgba(74,143,92,0.08); border: 1px solid rgba(74,143,92,0.2); }
+    .charcoal .dd.no { background: rgba(179,58,42,0.15); }
+    .charcoal .dd.yes { background: rgba(74,143,92,0.15); }
+
+    .dd-flag {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .dd.no .dd-flag { color: var(--red-flag); }
+    .dd.yes .dd-flag { color: var(--checks-out); }
+
+    .dd-text { font-family: var(--serif); font-size: 17px; line-height: 1.4; }
+
+    .dd-note { margin-top: 10px; font-size: 12px; opacity: 0.6; }
+
+    /* anti-pattern */
+    .anti li {
+      padding: 12px 0 12px 44px;
+      position: relative;
+      border-bottom: 1px solid rgba(245,240,229,0.1);
+      line-height: 1.55;
+    }
+
+    .anti li::before {
+      content: '✕';
+      position: absolute;
+      left: 0;
+      top: 14px;
+      color: var(--red-flag);
+      font-weight: 800;
+      font-size: 11px;
+      background: rgba(179,58,42,0.12);
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* footer */
+    .foot {
+      padding: 40px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: var(--indie);
+    }
+
+    .foot-mark { font-family: var(--serif); font-size: 28px; color: var(--charcoal); }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      .block { padding: 60px 24px; }
+      .cover { padding: 24px; }
+      .cover-stage { flex-direction: column; }
+      .cover-ill { width: 100%; max-width: 300px; }
+      .coat-grid { grid-template-columns: 1fr 1fr; }
+      .coat:nth-child(5) { grid-column: 1 / -1; }
+      .semantic-row { grid-template-columns: 1fr 1fr; }
+      .name-grid, .dodont { grid-template-columns: 1fr; }
+      .ph-findings { grid-template-columns: 1fr 1fr; }
+      .ph-missing { grid-template-columns: 1fr; }
+      .cover-bottom { grid-template-columns: 1fr; gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════ COVER ═══════ -->
+  <section class="cover">
+    <div class="cover-top">
+      <span>Brand System · v 0.2</span>
+      <span class="acc">● The Coat Collection</span>
+    </div>
+
+    <div class="cover-stage">
+      <div class="cover-text">
+        <span class="mark">sn<span class="wm-stem">&#305;<span class="wm-dot"></span></span>ff</span>
+        <p class="cover-tagline">The friend who read every label. A brand system derived from cats — their coats, their behaviour, their skepticism.</p>
+      </div>
+      <div class="cover-ill">
+        <svg viewBox="0 0 480 320" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor">
+          <!-- bowl -->
+          <path d="M50 258 Q55 225 95 215 L165 215 Q205 225 210 258" stroke-width="3" stroke-linecap="round"/>
+          <ellipse cx="130" cy="258" rx="82" ry="16" stroke-width="3"/>
+          <circle cx="108" cy="242" r="4" fill="currentColor" opacity="0.25" stroke="none"/>
+          <circle cx="125" cy="239" r="5" fill="currentColor" opacity="0.25" stroke="none"/>
+          <circle cx="145" cy="241" r="4" fill="currentColor" opacity="0.25" stroke="none"/>
+
+          <!-- cat: back + tail — one confident curve -->
+          <path d="M420 50 C415 80, 398 125, 368 155 C338 178, 298 182, 268 176 C248 172, 235 164, 225 152"
+                stroke-width="3.5" stroke-linecap="round"/>
+
+          <!-- head/face -->
+          <path d="M225 152 C218 145, 212 142, 208 146 C200 154, 196 164, 198 172 C200 180, 212 186, 228 180 C242 175, 254 168, 262 164"
+                stroke-width="3.5" stroke-linecap="round"/>
+
+          <!-- ears — alert, one forward one back -->
+          <path d="M215 142 L208 112 L226 136" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+          <path d="M232 144 L240 110 L240 138" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+
+          <!-- belly -->
+          <path d="M262 164 C272 172, 294 190, 318 198 C345 208, 372 202, 395 182"
+                stroke-width="3.5" stroke-linecap="round"/>
+
+          <!-- front legs -->
+          <line x1="282" y1="190" x2="278" y2="255" stroke-width="3" stroke-linecap="round"/>
+          <line x1="302" y1="196" x2="300" y2="255" stroke-width="3" stroke-linecap="round"/>
+
+          <!-- back leg hint -->
+          <line x1="370" y1="195" x2="372" y2="255" stroke-width="3" stroke-linecap="round"/>
+
+          <!-- nose -->
+          <circle cx="198" cy="168" r="3.5" fill="currentColor" stroke="none"/>
+
+          <!-- eye — the cat's slit pupil -->
+          <ellipse cx="218" cy="154" rx="1.8" ry="6" fill="currentColor" stroke="none"/>
+
+          <!-- whiskers -->
+          <line x1="196" y1="163" x2="165" y2="155" stroke-width="1.5" opacity="0.45"/>
+          <line x1="196" y1="168" x2="162" y2="167" stroke-width="1.5" opacity="0.45"/>
+          <line x1="196" y1="173" x2="165" y2="180" stroke-width="1.5" opacity="0.45"/>
+
+          <!-- sniff wisps — the signature detail -->
+          <path d="M188 158 Q180 150 184 142" stroke-width="2" opacity="0.4" stroke-linecap="round"/>
+          <path d="M182 166 Q173 159 176 150" stroke-width="2" opacity="0.4" stroke-linecap="round"/>
+          <path d="M185 175 Q176 170 178 162" stroke-width="2" opacity="0.4" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="cover-bottom">
+      <div><strong>Product</strong>Cat food analysis for India</div>
+      <div><strong>Owner</strong>Rinkesh Gorasia · Bangalore</div>
+      <div><strong>Status</strong>Living doc — edit, don't append</div>
+    </div>
+  </section>
+
+  <!-- ═══════ 01 — THE IDEA ═══════ -->
+  <section class="block cream">
+    <div class="inner narrow">
+      <div class="tag ginger-text">01 · The Idea</div>
+      <h2>The friend who read every label.</h2>
+      <p class="lead">Sniff takes a confusing cat food label and makes it clear — what's actually in it, what's missing, and what to do about it.</p>
+
+      <p>Not a magazine (too distant). Not a lab (too cold). Not a SaaS (too transactional). Sniff is a knowledgeable friend with no commercial stake who tells you what's what. Warm, observant, slightly dry, never anxious, never preachy.</p>
+
+      <p>The core moment: <strong>confusion → clarity.</strong> "Crude protein 30% min" means nothing to a cat parent. "33% on dry matter, adequate but below what a mouse provides" means everything. The visual system exists to make that transition feel fast, trustworthy, and complete.</p>
+
+      <p class="aside">Your cat is probably fine. The food is probably fine. Here is what's actually going on. Decide.</p>
+    </div>
+  </section>
+
+  <!-- ═══════ 02 — THE MARK ═══════ -->
+  <section class="block charcoal">
+    <div class="inner">
+      <div class="tag cream-text">02 · The Mark</div>
+      <h2>Just the word, dotted in ginger.</h2>
+      <p style="color: rgba(245,240,229,0.7); max-width:600px; margin-bottom: 40px;">No icon, no mascot lock-up. The logotype is <em class="s">sniff</em> — lowercase, set in Young Serif — with the i dotted by a single ginger dot. That dot is the one spot of colour, and it does all the work.</p>
+
+      <div style="display:flex; flex-wrap:wrap; gap:20px; align-items:stretch; margin-bottom: 14px;">
+        <div style="flex:2; min-width:280px; background:var(--charcoal-soft); border-radius:14px; display:flex; align-items:center; justify-content:center; padding:52px 24px;">
+          <span style="font-family:var(--serif); font-size:96px; line-height:1; color:var(--cream);">sn<span class="wm-stem">&#305;<span class="wm-dot"></span></span>ff</span>
+        </div>
+        <div style="flex:1; min-width:200px; background:var(--cream); border-radius:14px; display:flex; align-items:center; justify-content:center; padding:52px 24px;">
+          <span style="font-family:var(--serif); font-size:58px; line-height:1; color:var(--charcoal);">sn<span class="wm-stem">&#305;<span class="wm-dot"></span></span>ff</span>
+        </div>
+      </div>
+      <p style="color: rgba(245,240,229,0.45); font-size:12px; max-width:none; margin-bottom:8px;">Cream on dark · Charcoal on light · the dot stays ginger on both. (It blinks — watch the i.)</p>
+
+      <h4 style="color: var(--ginger);">The dot</h4>
+      <p style="color: rgba(245,240,229,0.7);">Sized to Young Serif's own tittle (about 0.16em) and set where the typeface's dot would sit — so it reads as type, not a sticker stuck on top. Ginger, <em class="s">#E08A3A</em>, always.</p>
+
+      <h4 style="color: var(--ginger);">The blink</h4>
+      <p style="color: rgba(245,240,229,0.7);">Every five or six seconds the dot closes to a line and opens again, in place. A slow cat blink — the wordmark's one moving part. It's affection, not a notification: it never speeds up and never repeats in a burst. Below ~64px, or anywhere static (print, favicons), drop it and keep the dot solid.</p>
+
+      <h4 style="color: var(--ginger);">Clear space &amp; colour</h4>
+      <p style="color: rgba(245,240,229,0.7);">Keep clear space of one <em class="s">n</em> on every side. The wordmark is Charcoal on light and Cream on dark; the dot is Ginger on both. Never fill the letters with ginger, and never recolour the dot.</p>
+
+      <div class="dodont" style="margin-top:32px;">
+        <div class="dd no">
+          <div class="dd-flag">Not Sniff</div>
+          <div class="dd-text">Ginger letters. A drawn cat-face icon bolted on. The dot dropped, recoloured, or squeezed into the stem.</div>
+          <div class="dd-note">The dot is the only colour — and it stays a round dot, above the i.</div>
+        </div>
+        <div class="dd yes">
+          <div class="dd-flag">Sniff</div>
+          <div class="dd-text">Lowercase, Young Serif, one ginger dot — given room, blinking slowly.</div>
+          <div class="dd-note">Let the one moving part be the whole personality.</div>
+        </div>
+      </div>
+
+      <p class="aside" style="border-color: var(--ginger); color: var(--cream);">Beyond the wordmark, a kit of cat marks — loaders, empty states, reactions, badges — extends the brand across the product. Those live in the design-system reference, not here.</p>
+    </div>
+  </section>
+
+  <!-- ═══════ 03 — THE COAT ═══════ -->
+  <section class="block ginger-soft" style="padding-bottom: 60px;">
+    <div class="inner">
+      <div class="tag" style="color: var(--ginger-deep);">03 · The Coat</div>
+      <h2>Every colour is a cat.</h2>
+      <p class="s-sub" style="max-width:560px;">The palette is derived from real cat coats. Every colour is named after the cat it came from. This isn't decoration — it's the brand's anchor to what it's actually about.</p>
+
+      <div class="coat-grid">
+        <div class="coat" style="background: var(--ginger); color: var(--charcoal);">
+          <div><div class="coat-name">Ginger</div><div class="coat-cat">The marmalade cat</div><div class="coat-hex">#E08A3A</div></div>
+          <div class="coat-use">The brand's primary. Used for accents, The Nose Knows verdict, the wordmark's dot, CTAs.</div>
+        </div>
+        <div class="coat" style="background: var(--indie); color: var(--cream);">
+          <div><div class="coat-name">Indie</div><div class="coat-cat">The Indian street cat</div><div class="coat-hex">#8B7355</div></div>
+          <div class="coat-use">Supporting tone. Labels, secondary text, meta info. The workhorse colour.</div>
+        </div>
+        <div class="coat" style="background: var(--charcoal); color: var(--cream);">
+          <div><div class="coat-name">Charcoal</div><div class="coat-cat">The black cat</div><div class="coat-hex">#2A2725</div></div>
+          <div class="coat-use">Text, surfaces, cards. Deep and warm, never cold black.</div>
+        </div>
+        <div class="coat" style="background: var(--cream); color: var(--charcoal); border: 1px solid var(--tabby-soft);">
+          <div><div class="coat-name">Cream</div><div class="coat-cat">The Siamese body</div><div class="coat-hex">#F5F0E5</div></div>
+          <div class="coat-use">Background. Page base. Card surfaces. Warm without being AI-default beige.</div>
+        </div>
+        <div class="coat" style="background: var(--tabby); color: var(--charcoal);">
+          <div><div class="coat-name">Tabby</div><div class="coat-cat">The tabby stripe</div><div class="coat-hex">#C4A67D</div></div>
+          <div class="coat-use">Borders, dividers, subtle UI elements. The connective tissue.</div>
+        </div>
+      </div>
+
+      <h3>Semantic layer — what the data says</h3>
+      <p>On top of the coat palette, four semantic colours are used <strong>only</strong> to convey meaning in analysis data. They don't appear in branding, marketing, or decoration.</p>
+
+      <div class="semantic-row">
+        <div class="sem" style="background: var(--checks-soft); border: 1px solid rgba(74,143,92,0.2); color: var(--charcoal);">
+          <div><div class="sem-cat-name">Checks out</div><div class="sem-name" style="color:var(--checks-out);">Green</div><div class="sem-hex">#4A8F5C</div></div>
+          <div class="sem-use">Adequate. Meets what the cat needs.</div>
+        </div>
+        <div class="sem" style="background: var(--worth-soft); border: 1px solid rgba(198,138,44,0.2); color: var(--charcoal);">
+          <div><div class="sem-cat-name">Worth a sniff</div><div class="sem-name" style="color:var(--worth-sniff);">Amber</div><div class="sem-hex">#C68A2C</div></div>
+          <div class="sem-use">Attention. Not alarming, but worth knowing.</div>
+        </div>
+        <div class="sem" style="background: var(--gone-soft); border: 1.5px dashed var(--gone-missing); color: var(--charcoal);">
+          <div><div class="sem-cat-name">Gone missing</div><div class="sem-name" style="color:var(--gone-missing);">Stone</div><div class="sem-hex">#A09A90</div></div>
+          <div class="sem-use">Not disclosed. Brand chose to hide this. Dashed borders always.</div>
+        </div>
+        <div class="sem" style="background: rgba(179,58,42,0.08); border: 1px solid rgba(179,58,42,0.2); color: var(--charcoal);">
+          <div><div class="sem-cat-name">Red flag</div><div class="sem-name" style="color:var(--red-flag);">Red</div><div class="sem-hex">#B33A2A</div></div>
+          <div class="sem-use">Genuine warning. Recall, allergen. Max one per screen.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════ 04 — THE LANGUAGE ═══════ -->
+  <section class="block charcoal">
+    <div class="inner">
+      <div class="tag cream-text">04 · The Language</div>
+      <h2>Named after what cats do.</h2>
+      <p style="color: rgba(245,240,229,0.7); max-width:560px; margin-bottom: 40px;">Every system name references a real cat behaviour. Not cringe puns — actual things cats do, mapped to product actions.</p>
+
+      <div class="name-grid">
+        <div class="name-card">
+          <div class="nm-label">The analysis</div>
+          <div class="nm-name">The Sniff</div>
+          <div class="nm-desc">A complete analysis of one cat food product. "Run a Sniff on Royal Canin Indoor."</div>
+          <div class="nm-ref">Cats sniff food before deciding to eat it.</div>
+        </div>
+        <div class="name-card">
+          <div class="nm-label">The verdict</div>
+          <div class="nm-name">The Nose Knows</div>
+          <div class="nm-desc">The one-paragraph conclusion. The friend's take. Always in Ginger.</div>
+          <div class="nm-ref">A cat's nose has 200 million scent receptors.</div>
+        </div>
+        <div class="name-card">
+          <div class="nm-label">Browsing foods</div>
+          <div class="nm-name">Prowl</div>
+          <div class="nm-desc">The index of all analysed foods. "Prowl the pantry."</div>
+          <div class="nm-ref">Cats prowl before they commit.</div>
+        </div>
+        <div class="name-card">
+          <div class="nm-label">Comparison</div>
+          <div class="nm-name">The Lineup</div>
+          <div class="nm-desc">Side-by-side comparison of foods at the same price tier.</div>
+          <div class="nm-ref">A lineup of suspects. Which one's actually good?</div>
+        </div>
+        <div class="name-card">
+          <div class="nm-label">Missing data</div>
+          <div class="nm-name">Gone Missing</div>
+          <div class="nm-desc">Fields the brand didn't disclose. Always shown as dashed Stone boxes.</div>
+          <div class="nm-ref">The cat brought home everything except the answer.</div>
+        </div>
+        <div class="name-card">
+          <div class="nm-label">Sources</div>
+          <div class="nm-name">The Receipts</div>
+          <div class="nm-desc">Every number links to its source. "Show me the receipts."</div>
+          <div class="nm-ref">Trust, but verify. Like a cat checking the back door.</div>
+        </div>
+        <div class="name-card">
+          <div class="nm-label">Adequate finding</div>
+          <div class="nm-name">Checks Out ✓</div>
+          <div class="nm-desc">This value meets what the cat needs. Green background, calm.</div>
+          <div class="nm-ref">The cat sniffed it and walked away satisfied.</div>
+        </div>
+        <div class="name-card">
+          <div class="nm-label">Concerning finding</div>
+          <div class="nm-name">Worth a Sniff</div>
+          <div class="nm-desc">Not alarming, but pay attention. Amber background.</div>
+          <div class="nm-ref">The cat paused. Head tilt. Something's off.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════ 05 — THE CARD ═══════ -->
+  <section class="block cream">
+    <div class="inner">
+      <div class="tag ginger-text">05 · The Product, Rendered</div>
+      <h2>What a Sniff looks like.</h2>
+      <p class="s-sub" style="max-width:560px;">The analysis card is the product. Everything else — landing page, social, marketing — exists to bring someone to this card. Get this right, everything else follows.</p>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start;">
+        <div>
+          <h3 style="margin-top:0;">Fixed anatomy</h3>
+          <p>Every Sniff card uses the same layout, same order, same colour meanings. After three uses, a user scans instead of reads.</p>
+
+          <h4>01 · Header</h4>
+          <p>Brand, product name, price per 100g, daily cost for a 4kg cat.</p>
+
+          <h4>02 · Three headline findings</h4>
+          <p>The most important number (<strong>Checks Out</strong> or <strong>Worth a Sniff</strong>), the most concerning number, and the most notable gap (<strong>Gone Missing</strong>).</p>
+
+          <h4>03 · Position bar</h4>
+          <p>Where the key metric sits between AAFCO minimum and prey-matched ideal. The dot IS the number in context.</p>
+
+          <h4>04 · First ingredient</h4>
+          <p>Named, set large in serif. What your cat eats most of, given visual weight.</p>
+
+          <h4>05 · Gone Missing</h4>
+          <p>Every non-disclosed field, rendered as dashed Stone boxes. The absence is visible.</p>
+
+          <h4>06 · The Nose Knows</h4>
+          <p>One paragraph in Ginger. The friend's verdict. No score. A sentence.</p>
+        </div>
+
+        <div class="phone-frame">
+          <div class="phone-status"><span>sniff</span><span>9:41 AM</span></div>
+          <div class="phone-body">
+            <div class="ph-head">
+              <div class="ph-brand">Whiskas · Dry</div>
+              <div class="ph-title">Ocean Fish, Adult 1+</div>
+              <div class="ph-price">₹60/100g · ≈ ₹33/day for 4kg cat</div>
+            </div>
+
+            <div class="ph-findings">
+              <div class="ph-find co">
+                <div class="ph-find-label">Checks out</div>
+                <div class="ph-find-val">33%</div>
+                <div class="ph-find-note">Protein (DM)</div>
+              </div>
+              <div class="ph-find ws">
+                <div class="ph-find-label">Worth a sniff</div>
+                <div class="ph-find-val">≈39%</div>
+                <div class="ph-find-note">Carbs (calc)</div>
+              </div>
+              <div class="ph-find gm">
+                <div class="ph-find-label">Gone missing</div>
+                <div class="ph-find-val">not disclosed</div>
+                <div class="ph-find-note">Taurine</div>
+              </div>
+            </div>
+
+            <div class="ph-bar">
+              <div class="ph-bar-label"><span>Protein — where this sits</span></div>
+              <div class="ph-bar-track">
+                <div class="ph-bar-ideal"></div>
+                <div class="ph-bar-dot"></div>
+              </div>
+              <div class="ph-bar-labels">
+                <span>26% min</span>
+                <span>← 33% here</span>
+                <span class="ideal">50%+ ideal →</span>
+              </div>
+            </div>
+
+            <div class="ph-ing">
+              <div class="ph-ing-label">First ingredient by weight</div>
+              <div class="ph-ing-first">Cereals</div>
+              <div class="ph-ing-rest">then: meat & by-products · oils · minerals · vitamins. <strong>Meat source not named.</strong></div>
+            </div>
+
+            <div class="ph-ing-label">Gone missing</div>
+            <div class="ph-missing">
+              <div class="ph-miss"><div class="ph-miss-name">Taurine</div><div class="ph-miss-status">Not disclosed</div></div>
+              <div class="ph-miss"><div class="ph-miss-name">Ash</div><div class="ph-miss-status">Not disclosed</div></div>
+              <div class="ph-miss"><div class="ph-miss-name">Ca:P</div><div class="ph-miss-status">Not disclosed</div></div>
+              <div class="ph-miss"><div class="ph-miss-name">Named meat</div><div class="ph-miss-status">Withheld</div></div>
+            </div>
+
+            <div class="ph-nose">
+              <div class="ph-nose-label">🐾 The Nose Knows</div>
+              <div class="ph-nose-text">Meets minimums. Cereal-first, won't name the meat. Adequate as a base — but at this price, options exist with named protein and full disclosure.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════ 06 — VOICE ═══════ -->
+  <section class="block ginger">
+    <div class="inner narrow">
+      <div class="tag charcoal-text">06 · Voice</div>
+      <h2>How the friend talks.</h2>
+      <p style="max-width:560px; margin-bottom: 40px; opacity: 0.8;">Lead with the fact. Hedge after, not before. The voice is in the verbs, not the adjectives.</p>
+
+      <div class="dodont">
+        <div class="dd no">
+          <div class="dd-flag">Not Sniff</div>
+          <div class="dd-text">"Give your feline the nutrition they truly deserve."</div>
+          <div class="dd-note">Performative care. Nobody talks like this.</div>
+        </div>
+        <div class="dd yes">
+          <div class="dd-flag">Sniff</div>
+          <div class="dd-text">"Hits the protein target. Fibre is high — your cat might poop more."</div>
+          <div class="dd-note">Specific. Useful. Quietly funny.</div>
+        </div>
+      </div>
+
+      <h3>Surface copy</h3>
+      <p class="aside" style="border-color: var(--charcoal);">Hero: "Read the back of the bag. We did."</p>
+      <p class="aside" style="border-color: var(--charcoal);">Empty state: "Pick a food. We'll show you the math."</p>
+      <p class="aside" style="border-color: var(--charcoal);">404: "Page went somewhere we can't find. Like a sock."</p>
+      <p class="aside" style="border-color: var(--charcoal);">Footer: "Made by one person in Bangalore who got tired of guessing."</p>
+    </div>
+  </section>
+
+  <!-- ═══════ 07 — NEVER ═══════ -->
+  <section class="block charcoal">
+    <div class="inner narrow">
+      <div class="tag cream-text">07 · Never</div>
+      <h2>What Sniff doesn't do.</h2>
+      <p style="color: rgba(245,240,229,0.6); margin-bottom: 40px;">If you catch yourself doing any of these, stop. This list keeps the brand the brand.</p>
+
+      <h4 style="color: var(--ginger);">Voice</h4>
+      <ul class="list anti">
+        <li>Issue a score. No 8/10. No A+. "Good" depends on the cat.</li>
+        <li>Use: <em>premium, best, trusted, leading, AI-powered.</em></li>
+        <li>Use cat puns: <em>purr-fect, fur baby, pawsome, meow-velous.</em></li>
+        <li>Manufacture urgency. No countdowns.</li>
+        <li>Lecture. No "Did you know…"</li>
+      </ul>
+
+      <h4 style="color: var(--ginger);">Visual</h4>
+      <ul class="list anti">
+        <li>Use colour decoratively. Every colour has a semantic reason.</li>
+        <li>Use Fraunces, Playfair, Cormorant, DM Serif, Instrument Serif for display.</li>
+        <li>Use Inter, Geist, Manrope, Space Grotesk for body.</li>
+        <li>Use stock cat photography or AI-generated illustration.</li>
+        <li>Use gradients, glassmorphism, glow, or dot-grid backgrounds.</li>
+        <li>Reorder the analysis card anatomy.</li>
+      </ul>
+
+      <h4 style="color: var(--ginger);">Product</h4>
+      <ul class="list anti">
+        <li>Sell. No "shop now." Referral links plainly labelled.</li>
+        <li>Gate analysis behind sign-up.</li>
+        <li>Auto-play anything.</li>
+        <li>Add a feature without removing one.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ═══════ 08 — TYPE ═══════ -->
+  <section class="block cream">
+    <div class="inner narrow">
+      <div class="tag ginger-text">08 · Typography</div>
+      <h2>Young Serif + Sora.</h2>
+      <p>Young Serif is warm, slightly imperfect, like hand-set type. Sora is geometric but has character — clean without being clinical. This pair feels like "a smart friend made this."</p>
+
+      <h4>Display — Young Serif</h4>
+      <p style="font-family:var(--serif); font-size: 48px; line-height: 1.0; letter-spacing: -0.02em; margin: 16px 0 24px;">Cereals are the first ingredient.</p>
+      <p>Used for: page titles, The Nose Knows verdict, ingredient #1 callout, section heads, asides. The friend's voice in type.</p>
+
+      <h4>Body — Sora</h4>
+      <p style="font-size: 17px; margin: 16px 0 24px; line-height: 1.6; max-width: 580px;">For an adult indoor cat at four kilos: about 55g a day, split into two meals. Costs ₹33 a day, roughly a thousand a month. Adequate baseline nutrition but the brand declines to name the meat or disclose taurine.</p>
+      <p>Used for: body text, data, UI labels, buttons, meta information.</p>
+
+      <h4>Numbers — Sora 800</h4>
+      <p style="font-family: var(--sans); font-weight: 800; font-size: 64px; letter-spacing: -0.03em; font-feature-settings: 'tnum'; margin: 16px 0 24px; color: var(--ginger);">39<span style="font-size: 0.5em; color: var(--indie); font-weight: 500; vertical-align: 0.2em;">%</span></p>
+      <p>Numbers in Sora Extra Bold, tabular figures. The number does the persuading; the context comes after.</p>
+    </div>
+  </section>
+
+  <!-- ═══════ FOOTER ═══════ -->
+  <div class="block cream" style="padding: 0;">
+    <div class="inner">
+      <div class="foot">
+        <span class="foot-mark">sn<span class="wm-stem">&#305;<span class="wm-dot"></span></span>ff</span>
+        <span>Brand System · v 0.2 · May 2026 · Bangalore</span>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
