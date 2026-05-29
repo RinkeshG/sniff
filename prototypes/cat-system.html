@@ -21,10 +21,11 @@
   /* real Young Serif dotless-i (ı) as the stem; the cat eye is its tittle */
   .mark{ font-family:var(--serif); color:var(--cream); display:inline-block; line-height:1; }
   .mark .mi{ position:relative; line-height:1; }
-  .mark .eye{ position:absolute; left:50%; bottom:0.8em; width:0.32em; margin-left:-0.16em;
-    color:var(--ginger); transform-origin:50% 100%; animation:catBlink 5.5s ease-in-out infinite; }
+  .mark .eye{ position:absolute; left:50%; bottom:0.7em; width:0.3em; margin-left:-0.15em;
+    color:var(--ginger); transform-origin:50% 50%; animation:catBlink 5.5s ease-in-out infinite; }
   .mark .eye svg{ display:block; width:100%; height:auto; }
-  @keyframes catBlink{ 0%,72%,100%{transform:scaleY(1)} 81%{transform:scaleY(0.12)} 90%{transform:scaleY(1)} }
+  /* eyelid blink — closes to a line in place (centre origin), never drops into the word */
+  @keyframes catBlink{ 0%,74%,100%{transform:scaleY(1)} 82%{transform:scaleY(0.1)} 90%{transform:scaleY(1)} }
 
   header.hd{ padding:64px 40px 40px; max-width:1100px; margin:0 auto; }
   header.hd .mark{ font-size:64px; }
@@ -93,7 +94,7 @@
 <body>
 
 <header class="hd">
-  <span class="mark">sn<span class="mi">&#305;<span class="eye"><svg viewBox="0 0 22 16" fill="none" stroke="currentColor"><path d="M2 8 Q11 1.5 20 8 Q11 14.5 2 8 Z" stroke-width="2"/><ellipse cx="11" cy="8" rx="2" ry="4.4" fill="currentColor" stroke="none"/></svg></span></span>ff</span>
+  <span class="mark">sn<span class="mi">&#305;<span class="eye"><svg viewBox="0 0 22 16" fill="none"><path d="M2 8 Q11 1.5 20 8 Q11 14.5 2 8 Z" fill="currentColor" stroke="none"/><ellipse cx="11" cy="8" rx="1.3" ry="3.5" fill="#2A2725" stroke="none"/></svg></span></span>ff</span>
   <p>The design system — brand foundations and the cat asset kit. One mascot, broken into marks that each do a job: a cat sniffing out the truth about food.</p>
 </header>
 
@@ -103,8 +104,8 @@
   <div class="found">
     <div class="card">
       <div class="logo-show">
-        <div class="logo-tile" style="background:var(--charcoal)"><span class="mark" style="font-size:40px;color:var(--cream)">sn<span class="mi">&#305;<span class="eye"><svg viewBox="0 0 22 16" fill="none" stroke="currentColor"><path d="M2 8 Q11 1.5 20 8 Q11 14.5 2 8 Z" stroke-width="2"/><ellipse cx="11" cy="8" rx="2" ry="4.4" fill="currentColor" stroke="none"/></svg></span></span>ff</span></div>
-        <div class="logo-tile" style="background:var(--cream)"><span class="mark" style="font-size:40px;color:var(--charcoal)">sn<span class="mi">&#305;<span class="eye"><svg viewBox="0 0 22 16" fill="none" stroke="currentColor"><path d="M2 8 Q11 1.5 20 8 Q11 14.5 2 8 Z" stroke-width="2"/><ellipse cx="11" cy="8" rx="2" ry="4.4" fill="currentColor" stroke="none"/></svg></span></span>ff</span></div>
+        <div class="logo-tile" style="background:var(--charcoal)"><span class="mark" style="font-size:40px;color:var(--cream)">sn<span class="mi">&#305;<span class="eye"><svg viewBox="0 0 22 16" fill="none"><path d="M2 8 Q11 1.5 20 8 Q11 14.5 2 8 Z" fill="currentColor" stroke="none"/><ellipse cx="11" cy="8" rx="1.3" ry="3.5" fill="#2A2725" stroke="none"/></svg></span></span>ff</span></div>
+        <div class="logo-tile" style="background:var(--cream)"><span class="mark" style="font-size:40px;color:var(--charcoal)">sn<span class="mi">&#305;<span class="eye"><svg viewBox="0 0 22 16" fill="none"><path d="M2 8 Q11 1.5 20 8 Q11 14.5 2 8 Z" fill="currentColor" stroke="none"/><ellipse cx="11" cy="8" rx="1.3" ry="3.5" fill="#2A2725" stroke="none"/></svg></span></span>ff</span></div>
       </div>
       <div class="name">Wordmark</div>
       <div class="use">The dot of the "i" is a cat's eye — almond with a slit pupil — that slow-blinks. Eye stays ginger on any background.</div>
