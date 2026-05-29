@@ -20,8 +20,8 @@
   /* ───── the wordmark: sniff, with a blinking cat-eye 'i' ───── */
   /* real Young Serif dotless-i (ı) as the stem; the cat eye is its tittle */
   .mark{ font-family:var(--serif); color:var(--cream); display:inline-block; line-height:1; }
-  .mark .mi{ position:relative; }
-  .mark .eye{ position:absolute; left:50%; bottom:0.56em; width:0.34em; margin-left:-0.17em;
+  .mark .mi{ position:relative; line-height:1; }
+  .mark .eye{ position:absolute; left:50%; bottom:0.8em; width:0.32em; margin-left:-0.16em;
     color:var(--ginger); transform-origin:50% 100%; animation:catBlink 5.5s ease-in-out infinite; }
   .mark .eye svg{ display:block; width:100%; height:auto; }
   @keyframes catBlink{ 0%,72%,100%{transform:scaleY(1)} 81%{transform:scaleY(0.12)} 90%{transform:scaleY(1)} }
