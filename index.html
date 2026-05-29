@@ -1909,12 +1909,15 @@
     }
     .cmp-search-slot { flex: 1; min-width: 0; }
     .cmp-search-field {
-      display: flex; border-radius: 10px; overflow: hidden;
-      border: 1.5px solid var(--cream-deep); background: white;
+      display: flex; align-items: center; gap: 8px; border-radius: 12px;
+      border: 1.5px solid var(--tabby); background: #fff; padding-left: 13px;
+      transition: border-color .2s, box-shadow .2s;
     }
+    .cmp-search-field:focus-within { border-color: var(--ginger); box-shadow: 0 0 0 3px rgba(224,138,58,.12); }
+    .cmp-search-field svg { flex-shrink: 0; width: 16px; height: 16px; color: var(--indie-soft); }
     .cmp-search-field input {
-      flex: 1; border: none; background: none; padding: 10px 14px;
-      font-family: var(--sans); font-size: 13px; color: var(--charcoal); min-width: 0;
+      flex: 1; border: none; background: none; padding: 12px 14px 12px 0;
+      font-family: var(--sans); font-size: 14px; color: var(--charcoal); min-width: 0;
     }
     .cmp-search-field input::placeholder { color: var(--indie-soft); }
     .cmp-search-field input:focus { outline: none; }
@@ -2615,9 +2618,19 @@
 
   .v3-trust{padding:16px 22px 26px;text-align:center;font-size:11px;color:var(--indie-soft);line-height:1.5}
 
-  /* tail-? jargon chip */
-  .v3-qmark{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;
-    border:1.4px solid var(--indie-soft);color:var(--indie);font-size:9px;font-weight:800;cursor:help;font-family:var(--sans)}
+  /* metric (i) info chip + inline reveal */
+  .v3-info{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;
+    border:1.4px solid var(--indie-soft);color:var(--indie);font-size:10px;font-weight:700;font-style:italic;
+    font-family:Georgia,serif;line-height:1;cursor:help;vertical-align:1px;transition:.15s}
+  .v3-metric{cursor:help}
+  .v3-metric-tip{display:none;margin-top:9px;font-size:11.5px;line-height:1.55;color:var(--charcoal);
+    background:rgba(160,154,144,.1);border-radius:9px;padding:9px 11px}
+  .v3-metric:hover .v3-metric-tip,.v3-metric:focus .v3-metric-tip,.v3-metric.v3-open .v3-metric-tip{display:block}
+  .v3-metric:hover .v3-info,.v3-metric.v3-open .v3-info{color:var(--ginger);border-color:var(--ginger)}
+  /* "what this could mean" — measured health-risk note for poorer foods */
+  .v3-risk-item{display:flex;gap:10px;align-items:flex-start;font-size:13px;line-height:1.5;color:var(--charcoal);margin-bottom:10px}
+  .v3-risk-item:last-child{margin-bottom:0}
+  .v3-risk-dot{flex-shrink:0;width:7px;height:7px;border-radius:50%;background:var(--caution);margin-top:6px}
 
   /* edge-state illustration animations (brand cat kit) */
   .v3-wisp{animation:v3rise 2s ease-in-out infinite}
@@ -3519,12 +3532,13 @@
       var pct = Math.max(2, Math.min(98, num / rng.max * 100));
       var idealLeft = rng.idealFrom / rng.max * 100;
       var idealW = (rng.idealTo - rng.idealFrom) / rng.max * 100;
-      return '<div class="v3-metric">'
-        + '<div class="v3-metric-top"><span class="v3-metric-name">'+esc(m.name||'')+' <span class="v3-qmark" title="'+esc(v3Explain(m.name))+'">?</span></span>'
+      return '<div class="v3-metric" tabindex="0" onclick="this.classList.toggle(\'v3-open\')">'
+        + '<div class="v3-metric-top"><span class="v3-metric-name">'+esc(m.name||'')+' <span class="v3-info">i</span></span>'
         + '<span class="v3-metric-val '+statusCls+'">'+esc(m.value||'')+'</span></div>'
         + '<div class="v3-track"><div class="v3-ideal" style="left:'+idealLeft+'%;width:'+idealW+'%"></div>'
         + '<span class="v3-marker '+statusCls+'" style="left:'+pct+'%"></span></div>'
         + (m.target ? '<div class="v3-metric-meta">'+esc(m.target)+'</div>' : '')
+        + '<div class="v3-metric-tip">'+esc(v3Explain(m.name))+'</div>'
         + '</div>';
     }
     // small HTML escaper for text we inject (titles/values from data)
@@ -3537,6 +3551,70 @@
     }
 
     // Render a v2 product from Supabase (analysis is JSONB stored inside `product.analysis`)
+    function v3GetMetricRe(a, re){ return (a.metrics || []).find(function(m){ return m.name && re.test(m.name); }); }
+    function v3PriceTier(cat, ppg){
+      if (ppg == null) return null;
+      var t = ({dry:[35,110], wet:[75,170], treat:[120,300], kitten:[40,120], prescription:[120,300]})[cat] || [60,160];
+      return ppg <= t[0] ? 'budget' : ppg >= t[1] ? 'premium' : 'mid';
+    }
+    // Principled "fits / doesn't fit" — derived from the food's real attributes, not free text.
+    function v3FitReasons(p, a){
+      var cat = p.category, ls = p.life_stage;
+      var protein = parseMetricNum(getMetric(a, 'protein'));
+      var carb = parseMetricNum(getMetric(a, 'carb'));
+      var moisture = parseMetricNum(getMetric(a, 'moisture'));
+      var tauM = getMetric(a, 'taurine'); var tauMissing = tauM && v3IsMissingVal(tauM.value);
+      var ingM = getMetric(a, 'first ingredient');
+      var cereal = ingM && /cereal|grain|corn|wheat/i.test(ingM.value || '');
+      var namedMeat = ingM && ingM.status === 'good';
+      var capM = v3GetMetricRe(a, /ca\s*:\s*p|calcium/i); var ashM = getMetric(a, 'ash');
+      var tier = v3PriceTier(cat, v3Price(p));
+      var vrank = VERDICT_RANK[((a.verdict || {}).label || '').replace(/\.$/, '')] || 0;
+      var isTreat = cat === 'treat', isKitten = ls === 'kitten' || cat === 'kitten', isWet = cat === 'wet';
+
+      var fits = [];
+      if (isTreat) fits.push('You want a treat or topper to mix in, not a meal');
+      if (isKitten) fits.push('You’ve got a growing kitten');
+      if (!isTreat && vrank >= 5) fits.push('You want a dependable everyday food');
+      if (tier === 'budget' && !isTreat) fits.push('You’re feeding on a tight budget');
+      if (protein != null && protein >= 40) fits.push('You want a high-protein, meat-rich food');
+      if (isWet || (moisture != null && moisture >= 70)) fits.push('You want more moisture in the diet');
+      if (namedMeat) fits.push('You want to know exactly which meat it is');
+      if (carb != null && carb <= 20) fits.push('Your cat does better on low carbs');
+      if (!isTreat && (vrank === 3 || vrank === 4)) fits.push('It’s a backup or rotation food, not the only one');
+      if (!isKitten && (ls === 'adult' || ls === 'all' || !ls)) fits.push('Your cat is a healthy adult');
+      if (!fits.length) fits.push('You just need a simple everyday option');
+
+      var noFit = [];
+      if (!isKitten && protein != null && protein < 35) noFit.push('You’re feeding a kitten (this needs more protein)');
+      if (carb != null && carb > 30) noFit.push('Your cat is overweight or prone to diabetes (carbs run high)');
+      if (tauMissing) noFit.push('You want guaranteed taurine for heart & eye health');
+      if (cereal) noFit.push('You want a named, meat-first recipe (this leads with cereal)');
+      if (cat === 'dry') noFit.push('Your cat has urinary trouble (dry food keeps water intake low)');
+      if (isTreat) noFit.push('You need one complete-and-balanced daily food');
+      if (tier === 'premium') noFit.push('You’re on a tight monthly budget');
+      if (!noFit.length) noFit.push('Your vet manages a condition with a specific prescription diet');
+
+      return { fits: fits.slice(0, 3), noFit: noFit.slice(0, 3) };
+    }
+    // What the gaps could actually mean — measured, derived from the specific gaps (shown only for poorer foods).
+    function v3HealthRisks(p, a){
+      var risks = [];
+      var protein = parseMetricNum(getMetric(a, 'protein'));
+      var carb = parseMetricNum(getMetric(a, 'carb'));
+      var tauM = getMetric(a, 'taurine'); var tauMissing = tauM && v3IsMissingVal(tauM.value);
+      var ingM = getMetric(a, 'first ingredient');
+      var cereal = ingM && /cereal|grain|corn|wheat/i.test(ingM.value || '');
+      var capM = v3GetMetricRe(a, /ca\s*:\s*p|calcium/i); var ashM = getMetric(a, 'ash');
+      if (tauMissing) risks.push('Taurine isn’t disclosed. Cats can’t make their own, and a long-term shortfall is linked to heart disease (DCM) and vision loss.');
+      if (carb != null && carb > 40) risks.push('Carbs are high. Fed as the daily food, that pattern raises the risk of weight gain and diabetes.');
+      else if (carb != null && carb > 30) risks.push('Carbs run a bit high — worth watching your cat’s weight if this is the only food.');
+      if (cereal) risks.push('Cereal leads the recipe, so most of the bowl isn’t meat — less of what an obligate carnivore is built to run on.');
+      if (protein != null && protein < 30) risks.push('Protein is low for a cat; over time, too little can mean lost muscle condition.');
+      if ((capM && v3IsMissingVal(capM.value)) || (ashM && v3IsMissingVal(ashM.value))) risks.push('Mineral balance (calcium-to-phosphorus / ash) isn’t shared, so kidney and urinary load is impossible to judge.');
+      return risks.slice(0, 3);
+    }
+
     // V3 report — builds the whole report from live `analysis`, with graceful fallbacks.
     function renderProduct(p) {
       var a = p.analysis || {};
@@ -3629,18 +3707,11 @@
          + '<div class="v3-meal-amt"><span class="v3-big">' + esc(serving.value) + '</span><span class="v3-sub">' + esc(serving.note) + ' · for ' + analyzedFor + '</span></div>'
          + '<div class="v3-meal-how">' + mealHow + '</div></div>';
 
-      // ── M3 · the math, shown (bars only for numeric metrics with a known scale)
+      // ── M3 · the math, shown (bars only for numeric metrics with a known scale; tap a row for the why)
       var barsHtml = metrics.map(v3MetricBar).join('');
-      var carbN = parseMetricNum(getMetric(a, 'carb'));
-      var carbHtml = '';
-      if (carbN !== null) {
-        carbHtml = '<div class="v3-carb"><div class="v3-carb-l">Carbs vs. a wild cat</div>'
-          + '<div class="v3-carb-row"><span class="v3-carb-cap">This food</span><div class="v3-carb-bar"><div class="v3-carb-fill v3-cf-this" style="width:' + Math.min(carbN, 100) + '%"></div></div><span class="v3-carb-num" style="color:var(--caution)">' + carbN + '%</span></div>'
-          + '<div class="v3-carb-row"><span class="v3-carb-cap">Wild cat</span><div class="v3-carb-bar"><div class="v3-carb-fill v3-cf-wild" style="width:5%"></div></div><span class="v3-carb-num" style="color:var(--good)">5%</span></div></div>';
-      }
-      if (barsHtml || carbHtml) {
+      if (barsHtml) {
         h += '<div class="v3-sec"><div class="v3-sec-head"><span class="v3-sec-h">The math, shown</span></div>'
-           + barsHtml + carbHtml + '</div>';
+           + barsHtml + '</div>';
       }
 
       // ── M3 · what they won't tell you (derived from undisclosed metrics)
@@ -3672,15 +3743,22 @@
         h += '</div>';
       }
 
-      // ── M4 · is this for your cat?
-      var fits = a.fitsIf || [], noFit = a.doesntFitIf || [];
-      if (fits.length || noFit.length) {
-        h += '<div class="v3-sec"><div class="v3-sec-head"><span class="v3-sec-h">Is this for your cat?</span></div>'
-          + '<div class="v3-fit"><div class="v3-fit-col v3-fc-fits"><div class="v3-fit-h">Fits if</div>'
-          + fits.map(function (t) { return '<div class="v3-fit-item"><span class="v3-fit-ic">✓</span><span>' + esc(t) + '</span></div>'; }).join('') + '</div>'
-          + '<div class="v3-fit-col v3-fc-no"><div class="v3-fit-h">Doesn’t fit if</div>'
-          + noFit.map(function (t) { return '<div class="v3-fit-item"><span class="v3-fit-ic">✕</span><span>' + esc(t) + '</span></div>'; }).join('') + '</div></div></div>';
+      // ── What the gaps could mean (only for poorer verdicts, derived from the actual gaps)
+      var vrankCur = VERDICT_RANK[label] || 0;
+      var risks = (vrankCur < 5) ? v3HealthRisks(p, a) : [];
+      if (risks.length) {
+        h += '<div class="v3-sec"><div class="v3-sec-head"><span class="v3-sec-h">What the gaps could mean</span></div>'
+          + risks.map(function (r) { return '<div class="v3-risk-item"><span class="v3-risk-dot"></span><span>' + esc(r) + '</span></div>'; }).join('')
+          + '</div>';
       }
+
+      // ── M4 · is this for your cat? (rule-derived from real attributes — see v3FitReasons)
+      var fr = v3FitReasons(p, a);
+      h += '<div class="v3-sec"><div class="v3-sec-head"><span class="v3-sec-h">Is this for your cat?</span></div>'
+        + '<div class="v3-fit"><div class="v3-fit-col v3-fc-fits"><div class="v3-fit-h">Fits if</div>'
+        + fr.fits.map(function (t) { return '<div class="v3-fit-item"><span class="v3-fit-ic">✓</span><span>' + esc(t) + '</span></div>'; }).join('') + '</div>'
+        + '<div class="v3-fit-col v3-fc-no"><div class="v3-fit-h">Doesn’t fit if</div>'
+        + fr.noFit.map(function (t) { return '<div class="v3-fit-item"><span class="v3-fit-ic">✕</span><span>' + esc(t) + '</span></div>'; }).join('') + '</div></div></div>';
 
       // ── M5 · alternatives / the lineup (async fill; hidden until populated)
       h += '<div class="v3-sec" id="oAlternatives" data-ph-report="lineup" style="display:none">'
@@ -4527,7 +4605,7 @@
       var slotB = document.getElementById('cmpSlotB');
       if (!compareProductB) {
         slotB.className = 'cmp-search-slot';
-        slotB.innerHTML = '<div class="cmp-search-field"><input type="text" placeholder="Search a food to compare…" id="cmpSearchInput" autocomplete="off"></div>';
+        slotB.innerHTML = '<div class="cmp-search-field"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg><input type="text" placeholder="Search a food to compare…" id="cmpSearchInput" autocomplete="off"></div>';
         slotB.onclick = null;
         setupAutocomplete('cmpSearchInput');
         document.getElementById('cmpSearchInput').focus();
