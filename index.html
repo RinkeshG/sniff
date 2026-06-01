@@ -3,23 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sniff — Is your cat eating the right thing?</title>
+  <title>Sniff: Is your cat eating the right thing?</title>
   <meta name="description" content="You've wondered. Late at night, after a vet visit, after someone asked. Now you can actually find out. Free. No sign-up.">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Sniff — Is your cat eating the right thing?">
+  <meta property="og:title" content="Sniff: Is your cat eating the right thing?">
   <meta property="og:description" content="You've wondered. Now you can actually find out. Free. No sign-up. No scores. Just what's in it.">
   <meta property="og:image" content="https://sniff-olive.vercel.app/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Sniff — Is your cat eating the right thing? Free cat food analysis for India.">
+  <meta property="og:image:alt" content="Sniff: Is your cat eating the right thing? Free cat food analysis for India.">
   <meta property="og:url" content="https://sniff-olive.vercel.app">
   <meta property="og:site_name" content="Sniff">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Sniff — Is your cat eating the right thing?">
+  <meta name="twitter:title" content="Sniff: Is your cat eating the right thing?">
   <meta name="twitter:description" content="You've wondered. Now you can actually find out. Free. No sign-up. No scores. Just what's in it.">
   <meta name="twitter:image" content="https://sniff-olive.vercel.app/og-image.png">
 
@@ -35,7 +35,7 @@
     "@context": "https://schema.org",
     "@type": "WebApplication",
     "name": "Sniff",
-    "description": "Is your cat eating the right thing? Find out what's actually in the food — free, no sign-up.",
+    "description": "Is your cat eating the right thing? Find out what's actually in the food. Free, no sign-up.",
     "applicationCategory": "HealthApplication",
     "url": "https://sniff-olive.vercel.app",
     "operatingSystem": "Web",
@@ -1877,219 +1877,88 @@
       .v2-alt-title { font-size: 14px; }
     }
 
-    /* ═══ COMPARISON VIEW ═══ */
+    /* ═══ COMPARISON VIEW (v3 — flat, consistent skeleton) ═══ */
     .v2-compare { display: none; }
     .v2-compare.show { display: block; }
+    .v3cmp { padding: 8px 24px 26px; }
+    .v3cmp-hr { height: 1px; background: var(--cream-deep); margin: 20px 0; }
 
-    /* --- Header: two products with vs --- */
-    .cmp-header {
-      display: flex; align-items: center; gap: 8px;
-      padding: 24px 28px 20px; border-bottom: 1px solid var(--cream-deep);
-    }
-    .cmp-product {
-      flex: 1; min-width: 0; display: flex; gap: 10px; align-items: center;
-      cursor: pointer; border-radius: 10px; padding: 6px;
-      transition: background 0.15s;
-    }
-    .cmp-product:hover { background: var(--cream-deep); }
-    .cmp-product-img {
-      width: 44px; height: 44px; border-radius: 8px; background: var(--cream-deep);
-      overflow: hidden; display: flex; align-items: center; justify-content: center;
-      font-size: 9px; font-weight: 700; color: var(--indie); text-align: center;
-      line-height: 1.2; flex-shrink: 0;
-    }
-    .cmp-product-img img { width: 100%; height: 100%; object-fit: cover; }
-    .cmp-product-info { min-width: 0; }
-    .cmp-product-brand { font-size: 10px; color: var(--indie); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .cmp-product-title { font-family: var(--serif); font-size: 13px; color: var(--charcoal); line-height: 1.25; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-    .cmp-vs {
-      flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%;
-      background: var(--cream-deep); display: flex; align-items: center; justify-content: center;
-      font-family: var(--serif); font-size: 11px; font-weight: 700; color: var(--indie);
-    }
-    .cmp-search-slot { flex: 1; min-width: 0; }
-    .cmp-search-field {
-      display: flex; align-items: center; gap: 8px; border-radius: 12px;
-      border: 1.5px solid var(--tabby); background: #fff; padding-left: 13px;
-      transition: border-color .2s, box-shadow .2s;
-    }
-    .cmp-search-field:focus-within { border-color: var(--ginger); box-shadow: 0 0 0 3px rgba(224,138,58,.12); }
-    .cmp-search-field svg { flex-shrink: 0; width: 16px; height: 16px; color: var(--indie-soft); }
-    .cmp-search-field input {
-      flex: 1; border: none; background: none; padding: 12px 14px 12px 0;
-      font-family: var(--sans); font-size: 14px; color: var(--charcoal); min-width: 0;
-    }
-    .cmp-search-field input::placeholder { color: var(--indie-soft); }
-    .cmp-search-field input:focus { outline: none; }
-    .cmp-search-prompt {
-      font-size: 13px; color: var(--indie); text-align: center; padding: 40px 28px;
-      line-height: 1.6; font-family: var(--serif);
-    }
+    /* matchup — both foods identical; the pick just wears a label */
+    .v3cmp-mu { display: grid; grid-template-columns: 1fr 28px 1fr; align-items: start; gap: 8px; padding: 8px 0 2px; }
+    .v3cmp-col { text-align: center; cursor: pointer; }
+    .v3cmp-tag { height: 13px; margin-bottom: 10px; display: flex; justify-content: center; }
+    .v3cmp-tag span { font-size: 8.5px; font-weight: 800; letter-spacing: 0.13em; text-transform: uppercase; color: #356642; display: inline-flex; align-items: center; gap: 4px; }
+    .v3cmp-tag svg { width: 11px; height: 11px; }
+    .v3cmp-img { width: 58px; height: 58px; border-radius: 14px; background: #fff; border: 1px solid var(--cream-deep); padding: 7px; object-fit: contain; display: block; margin: 0 auto; }
+    .v3cmp-fallback { width: 58px; height: 58px; border-radius: 14px; margin: 0 auto; background: var(--tabby); color: var(--cream); font-family: var(--serif); font-size: 18px; display: none; align-items: center; justify-content: center; }
+    .v3cmp-brand { font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--indie); font-weight: 700; margin-top: 12px; }
+    .v3cmp-title { font-family: var(--serif); font-size: 14px; line-height: 1.2; color: var(--charcoal); margin-top: 4px; min-height: 34px; display: flex; align-items: center; justify-content: center; }
+    .v3cmp-pill { display: inline-flex; font-size: 9px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; margin-top: 8px; }
+    .v3cmp-pill.good { background: rgba(74,143,92,0.16); color: #356642; }
+    .v3cmp-pill.okay { background: #FBF1DD; color: #9F6D1F; }
+    .v3cmp-pill.weak { background: rgba(179,58,42,0.12); color: var(--flag); }
+    .v3cmp-price { font-family: var(--sans); font-weight: 800; font-size: 14px; font-variant-numeric: tabular-nums; color: var(--charcoal); margin-top: 9px; }
+    .v3cmp-price small { font-weight: 400; font-size: 10px; color: var(--indie); }
+    .v3cmp-vs { align-self: center; justify-self: center; font-family: var(--serif); font-size: 12px; color: var(--indie-soft); margin-top: 38px; }
 
-    /* --- Verdict card: the headline answer --- */
-    .cmp-verdict-banner {
-      margin: 20px 20px 0; padding: 28px 24px 24px;
-      border-radius: 16px; text-align: center;
-    }
-    .cmp-verdict-banner.tone-clear {
-      background: linear-gradient(170deg, #EEF5EF 0%, #F7F5F0 100%);
-      border: 1px solid rgba(74,143,92,0.12);
-    }
-    .cmp-verdict-banner.tone-same {
-      background: #F7F5F0; border: 1px solid var(--cream-deep);
-    }
-    .cmp-verdict-insight {
-      font-family: var(--serif); font-size: clamp(18px, 4vw, 22px); line-height: 1.35;
-      color: var(--charcoal); max-width: 440px; margin: 0 auto 16px;
-    }
-    .cmp-verdict-summary {
-      font-family: var(--sans); font-size: 13px; line-height: 1.5;
-      color: var(--indie); max-width: 440px; margin: 0 auto 18px;
-    }
-    .cmp-verdict-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 400px; margin: 0 auto; }
-    .cmp-verdict-card {
-      padding: 12px 14px; border-radius: 10px;
-      background: rgba(255,255,255,0.6); text-align: left;
-    }
-    .cmp-verdict-card.better { background: rgba(74,143,92,0.08); }
-    .cmp-verdict-card-label { font-family: var(--serif); font-size: 16px; color: var(--charcoal); margin-bottom: 4px; }
-    .cmp-verdict-card-tag {
-      display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px;
-      border-radius: 12px; width: fit-content;
-    }
-    .cmp-verdict-card-tag.t-good { background: var(--good-soft); color: var(--good); }
-    .cmp-verdict-card-tag.t-okay { background: var(--caution-soft); color: var(--caution); }
-    .cmp-verdict-card-tag.t-weak { background: rgba(193,77,60,0.1); color: var(--flag); }
-    .cmp-verdict-card-name { font-size: 10px; color: var(--indie); margin-bottom: 6px; font-weight: 600; letter-spacing: 0.04em; }
-    .cmp-worry-mini { display: flex; align-items: center; gap: 6px; margin-top: 8px; }
-    .cmp-worry-mini-dots { display: flex; gap: 3px; }
-    .cmp-worry-mini-dots .wd { width: 7px; height: 7px; border-radius: 50%; border: 1.5px solid var(--cream-deep); background: transparent; }
-    .cmp-worry-mini-dots .wd.filled { border-color: currentColor; background: currentColor; }
-    .cmp-worry-mini.wl-low .wd.filled { color: var(--good); }
-    .cmp-worry-mini.wl-medium .wd.filled { color: var(--caution); }
-    .cmp-worry-mini.wl-high .wd.filled { color: var(--flag); }
-    .cmp-worry-mini-label { font-size: 10px; color: var(--indie); }
-    .cmp-category-note {
-      font-size: 11px; color: var(--indie); text-align: center;
-      padding: 0 28px 8px; font-style: italic; margin-top: -8px;
-    }
+    /* the call — same block every state, only the words change */
+    .v3cmp-call-ey { display: flex; align-items: center; gap: 7px; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 700; color: #356642; margin-bottom: 9px; }
+    .v3cmp-call.flat .v3cmp-call-ey { color: var(--indie); }
+    .v3cmp-call-ey svg { width: 17px; height: 17px; color: #356642; }
+    .v3cmp-call-h { font-family: var(--serif); font-size: 25px; line-height: 1.12; letter-spacing: -0.01em; color: var(--charcoal); }
+    .v3cmp-call-p { font-size: 14px; line-height: 1.6; color: var(--indie); margin-top: 10px; }
+    .v3cmp-call-p .g { color: var(--ginger-deep); font-weight: 600; }
+    .v3cmp-call-p b { color: var(--charcoal); font-weight: 700; font-variant-numeric: tabular-nums; }
 
-    /* --- Scorecard: metric comparison grid --- */
-    .cmp-scorecard { padding: 24px 20px 16px; }
-    .cmp-scorecard-label {
-      font-size: 10px; font-weight: 700; letter-spacing: 0.14em;
-      text-transform: uppercase; color: var(--indie); margin-bottom: 14px;
-      text-align: center;
-    }
-    .cmp-scorecard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .cmp-metric-card {
-      background: white; border-radius: 12px; border: 1px solid var(--cream-deep);
-      padding: 14px 16px; position: relative; overflow: hidden;
-    }
-    .cmp-metric-card.win-a { border-left: 3px solid rgba(74,143,92,0.3); }
-    .cmp-metric-card.win-b { border-right: 3px solid rgba(74,143,92,0.3); }
-    .cmp-metric-card.card-wide { grid-column: 1 / -1; }
-    .cmp-metric-name {
-      font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
-      text-transform: uppercase; color: var(--indie); margin-bottom: 2px;
-    }
-    .cmp-metric-ref {
-      font-size: 9px; color: rgba(139,115,85,0.5); margin-bottom: 12px; line-height: 1.3;
-    }
-    .cmp-metric-vals { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
-    .cmp-metric-col { flex: 1; min-width: 0; }
-    .cmp-metric-col:last-child { text-align: right; }
-    .cmp-metric-val {
-      font-family: var(--serif); font-size: 15px; color: var(--charcoal);
-      line-height: 1.3; word-break: break-word;
-    }
-    .cmp-metric-val.winner { color: var(--good); font-weight: 600; }
-    .cmp-metric-who {
-      font-size: 9px; color: rgba(139,115,85,0.5); margin-top: 2px;
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    }
+    /* side by side — flat table; winner value goes green, that's the only change */
+    .v3cmp-sbs-h { font-family: var(--serif); font-size: 17px; color: var(--charcoal); }
+    .v3cmp-sbs-sub { font-size: 12px; color: var(--indie); margin-top: 3px; margin-bottom: 2px; }
+    .v3cmp-tr { display: grid; grid-template-columns: 40% 30% 30%; align-items: center; }
+    .v3cmp-tr.head { padding: 16px 0 12px; }
+    .v3cmp-th { text-align: center; padding: 0 6px; }
+    .v3cmp-th-pick { font-size: 8px; font-weight: 800; letter-spacing: 0.13em; text-transform: uppercase; color: #356642; height: 11px; margin-bottom: 3px; }
+    .v3cmp-th-name { font-size: 12.5px; font-weight: 700; color: var(--charcoal); line-height: 1.2; }
+    .v3cmp-grp { font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--indie-soft); font-weight: 700; padding: 15px 0 2px; }
+    .v3cmp-row { display: grid; grid-template-columns: 40% 30% 30%; align-items: center; padding: 11px 0; }
+    .v3cmp-row + .v3cmp-row { border-top: 1px solid var(--cream-deep); }
+    .v3cmp-row .lab { font-size: 11.5px; color: var(--indie); }
+    .v3cmp-row .c { text-align: center; padding: 0 6px; }
+    .v3cmp-v { font-family: var(--sans); font-weight: 700; font-size: 14px; font-variant-numeric: tabular-nums; color: var(--charcoal); display: inline-flex; align-items: center; gap: 3px; line-height: 1.1; }
+    .v3cmp-v.win { color: #356642; }
+    .v3cmp-v svg { width: 11px; height: 11px; color: var(--good); }
+    .v3cmp-miss { display: inline-flex; align-items: center; font-size: 11px; font-style: italic; font-weight: 400; color: var(--missing); border: 1px dashed var(--missing); border-radius: 7px; padding: 2px 9px; }
 
-    /* --- Nutrition section --- */
-    .cmp-section {
-      padding: 20px 28px; border-bottom: 1px solid var(--cream-deep);
-    }
-    .cmp-section-label {
-      font-size: 10px; font-weight: 700; letter-spacing: 0.14em;
-      text-transform: uppercase; color: var(--indie); margin-bottom: 14px;
-    }
-    .cmp-table { width: 100%; border-collapse: separate; border-spacing: 0; }
-    .cmp-table th {
-      font-size: 10px; font-weight: 600; color: var(--indie); text-align: left;
-      padding: 6px 0; border-bottom: 1px solid var(--cream-deep);
-    }
-    .cmp-table th:not(:first-child) { text-align: center; }
-    .cmp-table td {
-      padding: 10px 0; border-bottom: 1px solid rgba(222,213,198,0.4);
-      font-size: 13px; color: var(--charcoal); vertical-align: middle;
-    }
-    .cmp-table td:not(:first-child) { text-align: center; font-family: var(--serif); font-size: 15px; }
-    .cmp-table tr:last-child td { border-bottom: none; }
-    .cmp-table .metric-name { font-weight: 600; font-size: 12px; }
-    .cmp-table .metric-ref { font-size: 10px; color: var(--indie); display: block; font-weight: 400; }
-    .cmp-table .s-good { color: var(--good); }
-    .cmp-table .s-caution { color: var(--caution); }
-    .cmp-table .s-missing { color: var(--flag); }
+    /* actions */
+    .v3cmp-act { display: flex; gap: 8px; margin-top: 24px; }
+    .v3cmp-act button { flex: 1; text-align: center; background: #fff; border: 1px solid var(--cream-deep); border-radius: 11px; padding: 12px 8px; font-family: var(--sans); font-size: 12px; font-weight: 600; color: var(--charcoal); line-height: 1.3; cursor: pointer; }
+    .v3cmp-act button:hover { border-color: var(--ginger); }
+    .v3cmp-share { margin-top: 8px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; background: var(--charcoal); color: var(--cream); border: none; border-radius: 11px; padding: 13px; font-family: var(--sans); font-size: 12.5px; font-weight: 600; cursor: pointer; }
+    .v3cmp-share svg { width: 14px; height: 14px; }
+    .v3cmp-foot { margin-top: 15px; text-align: center; font-size: 10.5px; color: var(--indie-soft); line-height: 1.5; }
 
-    /* --- Actions --- */
-    .cmp-actions {
-      padding: 20px; display: flex; flex-direction: column; gap: 10px;
-    }
-    .cmp-action-row { display: flex; gap: 10px; }
-    .cmp-action-btn {
-      flex: 1; padding: 12px 16px; border-radius: 10px; border: 1.5px solid var(--cream-deep);
-      background: white; font-family: var(--sans); font-size: 12px; font-weight: 600;
-      color: var(--charcoal); cursor: pointer; text-align: center; transition: all 0.15s;
-    }
-    .cmp-action-btn:hover { border-color: var(--ginger); background: rgba(224,138,58,0.04); }
-    .cmp-share-btn {
-      width: 100%; padding: 10px 16px; border-radius: 10px; border: 1.5px solid var(--cream-deep);
-      background: white; font-family: var(--sans); font-size: 11px; font-weight: 600;
-      color: var(--indie); cursor: pointer; text-align: center; transition: all 0.15s;
-      display: flex; align-items: center; justify-content: center; gap: 6px;
-    }
-    .cmp-share-btn:hover { border-color: var(--ginger); color: var(--charcoal); }
-
-    .cmp-same-warning {
-      text-align: center; padding: 40px 28px; color: var(--indie);
-      font-family: var(--serif); font-size: 16px; line-height: 1.5;
-    }
-
-    .cmp-expand-toggle {
-      width: 100%; padding: 14px 28px; border: none; border-bottom: 1px solid var(--cream-deep);
-      background: none; font-family: var(--sans); font-size: 10px; font-weight: 700;
-      letter-spacing: 0.14em; text-transform: uppercase; color: var(--indie);
-      cursor: pointer; display: flex; align-items: center; justify-content: space-between;
-      transition: background 0.15s;
-    }
-    .cmp-expand-toggle:hover { background: rgba(222,213,198,0.12); }
-    .cmp-expand-toggle .cmp-arrow { transition: transform 0.2s; font-size: 12px; }
-    .cmp-expand-toggle.open .cmp-arrow { transform: rotate(180deg); }
-    .cmp-expand-body { display: none; }
-    .cmp-expand-body.open { display: block; }
+    /* empty / pick-a-rival state */
+    .v3cmp-q { width: 58px; height: 58px; border-radius: 14px; margin: 0 auto; border: 1px dashed var(--tabby); display: flex; align-items: center; justify-content: center; color: var(--indie-soft); font-family: var(--serif); font-size: 22px; }
+    .v3cmp-empty { text-align: center; padding: 4px 4px 0; }
+    .v3cmp-empty-h { font-family: var(--serif); font-size: 20px; color: var(--charcoal); margin-bottom: 6px; }
+    .v3cmp-empty-p { font-size: 13px; color: var(--indie); line-height: 1.5; max-width: 300px; margin: 0 auto 16px; }
+    .v3cmp-search { display: flex; align-items: center; gap: 10px; background: #fff; border: 1px solid var(--cream-deep); border-radius: 12px; padding: 12px 14px; max-width: 340px; margin: 0 auto; }
+    .v3cmp-search:focus-within { border-color: var(--ginger); box-shadow: 0 0 0 3px rgba(224,138,58,0.12); }
+    .v3cmp-search svg { width: 16px; height: 16px; color: var(--indie-soft); flex-shrink: 0; }
+    .v3cmp-search input { flex: 1; border: none; background: none; font-family: var(--sans); font-size: 14px; color: var(--charcoal); outline: none; }
+    .v3cmp-quick { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 16px; }
+    .v3cmp-quick-chip { display: inline-flex; align-items: center; gap: 7px; background: #fff; border: 1px solid var(--cream-deep); border-radius: 999px; padding: 6px 12px 6px 7px; cursor: pointer; }
+    .v3cmp-quick-chip:hover { border-color: var(--ginger); }
+    .v3cmp-quick-chip img { width: 22px; height: 22px; border-radius: 6px; object-fit: contain; background: var(--cream); }
+    .v3cmp-quick-chip span { font-size: 11.5px; font-weight: 600; color: var(--charcoal); }
+    .v3cmp-same { text-align: center; padding: 22px 6px 4px; font-size: 13.5px; color: var(--indie); line-height: 1.5; }
 
     @media (max-width: 600px) {
-      .cmp-header { padding: 20px 20px 16px; gap: 6px; }
-      .cmp-product-img { width: 38px; height: 38px; }
-      .cmp-product-title { font-size: 12px; }
-      .cmp-vs { width: 24px; height: 24px; font-size: 10px; }
-      .cmp-verdict-banner { margin: 16px 16px 0; padding: 22px 18px 20px; }
-      .cmp-verdict-insight { font-size: 17px; }
-      .cmp-scorecard { padding: 20px 16px 12px; }
-      .cmp-section { padding: 16px 20px; }
-      .cmp-actions { padding: 16px; }
+      .v3cmp { padding: 6px 18px 22px; }
+      .v3cmp-call-h { font-size: 23px; }
     }
     @media (max-width: 380px) {
-      .cmp-product-title { font-size: 11px; -webkit-line-clamp: 1; }
-      .cmp-product-brand { font-size: 9px; }
-      .cmp-verdict-grid { gap: 8px; }
-      .cmp-verdict-card { padding: 10px 12px; }
-      .cmp-scorecard-grid { grid-template-columns: 1fr; }
-      .cmp-metric-card { padding: 12px 14px; }
+      .v3cmp-mu { grid-template-columns: 1fr 22px 1fr; gap: 4px; }
+      .v3cmp-tr, .v3cmp-row { grid-template-columns: 38% 31% 31%; }
     }
 
     /* Compare button in verdict hero */
@@ -2211,12 +2080,16 @@
     .teaser-mini-info { flex: 1; min-width: 0; }
     .teaser-mini-brand { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--indie); font-weight: 700; }
     .teaser-mini-title { font-family: var(--serif); font-size: 18px; color: var(--charcoal); margin-top: 3px; }
-    .teaser-mini-verdict { padding: 24px 24px; }
-    .teaser-mini-verdict.v-good { background: linear-gradient(180deg, #EEF5EF 0%, #E6EFE8 100%); }
+    /* flat verdict tints to match the redesigned report hero (no gradients) */
+    .teaser-mini-verdict { position: relative; padding: 28px 24px 26px; text-align: center; }
+    .teaser-mini-verdict.v-good { background: var(--good-bg, #E6EFE8); }
     .teaser-mini-verdict.v-okay,
-    .teaser-mini-verdict.v-caution { background: linear-gradient(180deg, #FBF1DD 0%, #F6E6C5 100%); }
+    .teaser-mini-verdict.v-caution { background: var(--caution-bg, #FBF1DD); }
     .teaser-mini-verdict.v-weak,
-    .teaser-mini-verdict.v-flag { background: linear-gradient(180deg, var(--charcoal) 0%, var(--charcoal-soft) 100%); color: var(--cream); }
+    .teaser-mini-verdict.v-flag { background: var(--charcoal); color: var(--cream); }
+    .teaser-mini-face { height: 52px; margin-bottom: 16px; }
+    .teaser-mini-face svg.cat-face { height: 52px; width: auto; display: block; margin: 0 auto; }
+    .teaser-mini-face .v3-seal-stamp { top: 12px; right: 12px; width: 64px; height: 64px; }
     .teaser-mini-vtag { font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 8px; opacity: 0.7; }
     .teaser-mini-verdict.v-good .teaser-mini-vtag { color: #356642; }
     .teaser-mini-verdict.v-okay .teaser-mini-vtag,
@@ -2230,7 +2103,7 @@
     .teaser-mini-verdict.v-weak .teaser-mini-vlabel,
     .teaser-mini-verdict.v-flag .teaser-mini-vlabel { color: var(--ginger); }
     .teaser-mini-vsub { font-size: 12px; font-weight: 600; opacity: 0.75; }
-    .teaser-mini-vsummary { font-family: var(--serif); font-size: 15px; line-height: 1.5; margin-top: 12px; max-width: 420px; }
+    .teaser-mini-vsummary { font-family: var(--serif); font-size: 15px; line-height: 1.5; margin: 12px auto 0; max-width: 360px; }
     .teaser-mini-verdict.v-weak .teaser-mini-vsummary,
     .teaser-mini-verdict.v-flag .teaser-mini-vsummary { color: var(--cream); }
     /* Teaser preview sections (between verdict and CTA) */
@@ -2240,11 +2113,12 @@
       background: white;
     }
     .teaser-mini-worry-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
-    .teaser-mini-dots { display: flex; gap: 5px; }
-    .teaser-mini-dots .wd { width: 8px; height: 8px; border-radius: 50%; background: transparent; border: 1.5px solid var(--indie-soft); }
-    .teaser-mini-worry.wl-low .wd.filled { background: var(--good); border-color: var(--good); }
-    .teaser-mini-worry.wl-medium .wd.filled { background: var(--caution); border-color: var(--caution); }
-    .teaser-mini-worry.wl-high .wd.filled { background: var(--flag); border-color: var(--flag); }
+    .teaser-mini-dots { display: flex; gap: 6px; }
+    .teaser-mini-dots svg { width: 16px; height: 16px; }
+    .teaser-mini-dots .v3-paw-empty { opacity: 0.2; }
+    .teaser-mini-worry.wl-low .teaser-mini-dots { color: var(--good); }
+    .teaser-mini-worry.wl-medium .teaser-mini-dots { color: var(--caution); }
+    .teaser-mini-worry.wl-high .teaser-mini-dots { color: var(--flag); }
     .teaser-mini-worry-label { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
     .teaser-mini-worry.wl-low .teaser-mini-worry-label { color: var(--good); }
     .teaser-mini-worry.wl-medium .teaser-mini-worry-label { color: var(--caution); }
@@ -2460,10 +2334,19 @@
   .v3-hero.v3-vo .v3-vlabel{color:var(--caution-deep,#9F6D1F)}
   .v3-hero.v3-vw .v3-vlabel{color:var(--ginger)}
   .v3-vsummary{font-family:var(--serif);font-size:15.5px;line-height:1.55;max-width:320px;margin:0 auto;opacity:.92}
-  .v3-seal-stamp{position:absolute;top:14px;right:12px;width:84px;height:84px;color:var(--good-deep,#356642);
-    transform:rotate(-9deg);opacity:.9;pointer-events:none}
+  .v3-seal-stamp{position:absolute;top:14px;right:14px;width:96px;height:96px;color:var(--good-deep,#356642);
+    transform:rotate(-9deg);opacity:1;pointer-events:none;transform-origin:center;
+    animation:v3-stamp .55s ease-out .5s backwards}
   .v3-seal-stamp svg{width:100%;height:100%;display:block}
-  @media(max-width:480px){.v3-seal-stamp{width:74px;height:74px;top:12px;right:10px}}
+  /* lands like a real stamp: held high & rotated → over-press on contact → rebound → settle */
+  @keyframes v3-stamp{
+    0%{opacity:0;transform:rotate(-26deg) scale(1.85)}
+    45%{opacity:1;transform:rotate(-6deg) scale(.9)}
+    68%{transform:rotate(-11deg) scale(1.05)}
+    100%{opacity:1;transform:rotate(-9deg) scale(1)}
+  }
+  @media(max-width:480px){.v3-seal-stamp{width:84px;height:84px;top:12px;right:10px}}
+  @media(prefers-reduced-motion:reduce){.v3-seal-stamp{animation:none}}
 
   /* M1 · worry strip */
   .v3-worry-strip{display:flex;align-items:center;justify-content:center;gap:11px;padding:15px 22px;background:var(--cream);border-bottom:1px solid var(--cream-deep)}
@@ -2514,12 +2397,14 @@
   .v3-metric-name{font-size:13px;color:var(--charcoal);font-weight:600;display:flex;align-items:center;gap:6px}
   .v3-metric-val{font-family:var(--sans);font-weight:800;font-size:21px;font-variant-numeric:tabular-nums;letter-spacing:-.01em;color:var(--charcoal)}
   .v3-metric-val.v3-good{color:var(--good)} .v3-metric-val.v3-warn{color:var(--caution)} .v3-metric-val.v3-bad{color:var(--flag)}
-  .v3-track{position:relative;height:8px;border-radius:6px;background:var(--cream-deep);overflow:visible}
-  .v3-ideal{position:absolute;top:0;bottom:0;background:rgba(74,143,92,.22);border-radius:6px}
-  .v3-marker{position:absolute;top:50%;width:14px;height:14px;border-radius:50%;border:3px solid #fff;transform:translate(-50%,-50%);
-    box-shadow:0 1px 4px rgba(0,0,0,.2);background:var(--indie)}
-  .v3-marker.v3-good{background:var(--good)} .v3-marker.v3-warn{background:var(--caution)} .v3-marker.v3-bad{background:var(--flag)}
-  .v3-metric-meta{font-size:11.5px;color:var(--indie);margin-top:10px}
+  /* a simple status-coloured meter: the fill IS the value, the colour IS the verdict */
+  .v3-track{position:relative;height:10px;border-radius:6px;background:var(--cream-deep);overflow:hidden}
+  .v3-fill{position:absolute;left:0;top:0;bottom:0;border-radius:6px;background:var(--tabby);transition:width .5s ease}
+  .v3-fill.v3-good{background:var(--good)} .v3-fill.v3-warn{background:var(--caution)} .v3-fill.v3-bad{background:var(--flag)}
+  .v3-metric-meta{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--indie);margin-top:9px}
+  .v3-metric-meta .v3-judge{font-weight:700;letter-spacing:.02em}
+  .v3-metric-meta .v3-judge.v3-good{color:var(--good)} .v3-metric-meta .v3-judge.v3-warn{color:var(--caution)} .v3-metric-meta .v3-judge.v3-bad{color:var(--flag)}
+  .v3-metric-meta .v3-judge-sep{color:var(--tabby)}
 
   /* M3 · carbs vs wild */
   .v3-carb{margin-top:22px;background:var(--cream);border:1px solid var(--cream-deep);border-radius:12px;padding:15px 16px}
@@ -2581,7 +2466,14 @@
     letter-spacing:.1em;text-transform:uppercase;padding:4px 9px;border-radius:999px;margin-bottom:2px;width:max-content;max-width:100%}
   .v3-tb-value{background:var(--good-bg,#E6EFE8);color:var(--good-deep,#356642)}
   .v3-tb-upgrade{background:var(--ginger-soft);color:var(--ginger-deep)}
-  .v3-tb-best{background:var(--charcoal);color:var(--ginger)}
+  .v3-tb-best{background:var(--charcoal);color:var(--cream)}
+  /* Sniff's practical pick — a "recommended" ribbon + a shadow lift (no bg tint, so the tier badge never blends) */
+  .v3-badge-row{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px}
+  .v3-badge-row .v3-tier-badge{grid-column:auto;margin-bottom:0}
+  .v3-tb-rec{background:var(--ginger);color:var(--charcoal)}
+  .v3-tb-rec svg{width:11px;height:11px}
+  .v3-tier-rec{border-color:var(--tabby-soft);box-shadow:0 10px 30px rgba(42,39,37,.14)}
+  .v3-rec-why{font-size:11.5px;line-height:1.45;color:var(--ginger-deep);font-weight:500;margin-top:7px}
   .v3-tier-thumb{width:48px;height:48px;border-radius:10px;background:var(--tabby);color:var(--cream);font-family:var(--serif);
     display:flex;align-items:center;justify-content:center;font-size:13px;overflow:hidden}
   .v3-tier-thumb img{width:100%;height:100%;object-fit:cover}
@@ -2781,6 +2673,7 @@
         </div>
       </div>
       <div class="teaser-mini-verdict" id="tmVerdict">
+        <div class="teaser-mini-face" id="tmFace"></div>
         <div class="teaser-mini-vtag">Sniff verdict</div>
         <div class="teaser-mini-vlabel" id="tmVLabel"></div>
         <div class="teaser-mini-vsub" id="tmVSub"></div>
@@ -2867,7 +2760,7 @@
       </div>
       <div class="dog-modal-tag">Coming soon</div>
       <div class="dog-modal-title">Dog parent?</div>
-      <p class="dog-modal-sub">We're building the same thing for dog food. Drop your email — we'll let you know when it's ready.</p>
+      <p class="dog-modal-sub">We're building the same thing for dog food. Drop your email and we'll let you know when it's ready.</p>
       <form class="dog-modal-form" id="dogForm" onsubmit="return handleDogWaitlist(event)">
         <input type="email" placeholder="your@email.com" id="dogEmail" required autocomplete="email">
         <button type="submit">Notify me</button>
@@ -2916,14 +2809,14 @@
               <div class="overlay-edge-ill">🐕</div>
               <div class="overlay-edge-tag">Dog food detected</div>
               <div class="overlay-edge-h">That's a dog food!</div>
-              <div class="overlay-edge-p">We sniffed it and it's definitely for dogs. We're building dog food analysis too — drop your email and we'll let you know when it's ready.</div>
+              <div class="overlay-edge-p">We sniffed it and it's definitely for dogs. We're building dog food analysis too. Drop your email and we'll let you know when it's ready.</div>
               <button class="overlay-edge-btn" onclick="closeOverlay(); toggleDogModal();">Join dog waitlist</button>
             </div>
             <div class="overlay-edge-state" id="overlayNotFood">
               <div class="overlay-edge-ill">🤔</div>
               <div class="overlay-edge-tag">Not a pet food</div>
               <div class="overlay-edge-h">That doesn't look like cat food.</div>
-              <div class="overlay-edge-p">Sniff analyzes packaged cat food — brands like Whiskas, Royal Canin, Me-O, Sheba, and more. Try searching for a cat food brand or product.</div>
+              <div class="overlay-edge-p">Sniff analyzes packaged cat food: brands like Whiskas, Royal Canin, Me-O, Sheba, and more. Try searching for a cat food brand or product.</div>
             </div>
             <div class="overlay-edge-state" id="overlayNotFound">
               <div class="overlay-edge-ill"><svg viewBox="0 0 180 120" fill="none" stroke="currentColor" style="color:var(--ginger);height:104px;width:auto"><path d="M70 44 C44 44 28 64 32 88 C35 106 56 112 84 110 C116 108 138 96 138 76 C138 60 124 50 108 52" stroke-width="3" stroke-linecap="round"/><path d="M84 110 C108 112 128 104 132 88 C134 80 128 74 121 76" stroke-width="3" stroke-linecap="round"/><path d="M70 44 C60 46 54 56 58 67 C61 75 72 77 80 72" stroke-width="3" stroke-linecap="round"/><path d="M64 47 L60 35 L72 44" stroke-width="2.5" stroke-linejoin="round"/><path d="M75 43 L82 33 L82 47" stroke-width="2.5" stroke-linejoin="round"/><path d="M62 58 Q66 62 70 58" stroke-width="2" stroke-linecap="round"/><path d="M120 40 L130 40 L120 50 L130 50" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/><path d="M134 28 L142 28 L134 36 L142 36" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" opacity="0.35"/></svg></div>
@@ -3017,16 +2910,8 @@
                 <div id="oMetrics"></div>
               </div>
             </div>
-          </div>
-
-          <!-- ═══ COMPARISON VIEW ═══ -->
-          <div class="v2-compare" id="compareView">
-            <div class="cmp-header" id="cmpHeader">
-              <div class="cmp-product" id="cmpProductA" onclick="exitCompareToReport('a')"></div>
-              <div class="cmp-vs">vs</div>
-              <div id="cmpSlotB"></div>
-            </div>
-            <div id="cmpBody"></div>
+            <!-- ═══ COMPARISON VIEW — lives inside the card, like the report ═══ -->
+            <div class="v2-compare" id="compareView"></div>
           </div>
 
           <div class="overlay-sniff-another">
@@ -3214,27 +3099,32 @@
       document.getElementById('tmBrand').textContent = p.brand || '';
       document.getElementById('tmTitle').textContent = p.title || '';
       const v = a.verdict || {};
-      const heroClass = (v.labelClass || 'vp-okay').replace('vp-', 'v-');
+      const lc = v.labelClass || 'vp-okay';
+      const heroClass = lc.replace('vp-', 'v-');
       document.getElementById('tmVerdict').className = 'teaser-mini-verdict ' + heroClass;
-      document.getElementById('tmVLabel').textContent = v.label || '';
-      document.getElementById('tmVSub').textContent = v.tag || '';
-      document.getElementById('tmVSummary').textContent = v.summary || '';
+      // cat-face IS the verdict (matches the report hero); seal only on a strong choice
+      const vk = (lc === 'vp-good') ? 'vg' : (lc === 'vp-weak' || lc === 'vp-flag') ? 'vw' : 'vo';
+      const catCol = vk === 'vg' ? 'var(--good-deep,#356642)' : vk === 'vw' ? V3G : 'var(--caution-deep,#9F6D1F)';
+      document.getElementById('tmFace').innerHTML = (vk === 'vg' ? v3Seal() : '') + v3CatFace(vk === 'vg' ? 'content' : 'wary', catCol);
+      document.getElementById('tmVLabel').textContent = clean((v.label || '').replace(/\.\s*$/, ''));
+      document.getElementById('tmVSub').textContent = clean(v.tag || '');
+      document.getElementById('tmVSummary').textContent = clean(v.summary || '');
 
-      // Worry + action preview
+      // Worry + action preview — paw meter to match the report
       const worry = a.worry || { level: 'low', filled: 1, label: '' };
       const tmWorryEl = document.getElementById('tmWorry');
       tmWorryEl.className = 'teaser-mini-worry wl-' + (worry.level || 'low');
       document.getElementById('tmDots').innerHTML =
-        [1,2,3,4].map(i => `<span class="wd${i <= (worry.filled||0) ? ' filled' : ''}"></span>`).join('');
-      document.getElementById('tmWorryLabel').textContent = worry.label || '';
-      document.getElementById('tmAction').textContent = a.action || '';
+        [1,2,3,4].map(i => v3Paw(i <= (worry.filled||0))).join('');
+      document.getElementById('tmWorryLabel').textContent = v3WorryWord(worry.filled);
+      document.getElementById('tmAction').textContent = clean(a.action || '');
 
       // Top 2 reasons (just the q text, compact)
       const reasons = (a.reasons || []).slice(0, 2);
       document.getElementById('tmReasons').innerHTML = reasons.map(r =>
         `<div class="teaser-mini-reason r-${r.status === 'bad' ? 'bad' : r.status}">` +
           `<div class="teaser-mini-reason-icon"></div>` +
-          `<div class="teaser-mini-reason-text">${r.q || ''}</div>` +
+          `<div class="teaser-mini-reason-text">${clean(r.q || '')}</div>` +
         `</div>`
       ).join('');
 
@@ -3529,20 +3419,27 @@
       if (num === null || !rng) return ''; // only numeric metrics with a known scale get a bar
       var status = m.status || '';
       var statusCls = status === 'good' ? 'v3-good' : status === 'warn' ? 'v3-warn' : status === 'bad' ? 'v3-bad' : '';
-      var pct = Math.max(2, Math.min(98, num / rng.max * 100));
-      var idealLeft = rng.idealFrom / rng.max * 100;
-      var idealW = (rng.idealTo - rng.idealFrom) / rng.max * 100;
+      var pct = Math.max(4, Math.min(100, num / rng.max * 100));
+      var judge = m.statusLabel ? '<span class="v3-judge '+statusCls+'">'+esc(m.statusLabel)+'</span>' : '';
+      var sep = (m.statusLabel && m.target) ? '<span class="v3-judge-sep">·</span>' : '';
+      var meta = (m.statusLabel || m.target)
+        ? '<div class="v3-metric-meta">'+judge+sep+(m.target ? '<span>'+esc(m.target)+'</span>' : '')+'</div>'
+        : '';
       return '<div class="v3-metric" tabindex="0" onclick="this.classList.toggle(\'v3-open\')">'
         + '<div class="v3-metric-top"><span class="v3-metric-name">'+esc(m.name||'')+' <span class="v3-info">i</span></span>'
         + '<span class="v3-metric-val '+statusCls+'">'+esc(m.value||'')+'</span></div>'
-        + '<div class="v3-track"><div class="v3-ideal" style="left:'+idealLeft+'%;width:'+idealW+'%"></div>'
-        + '<span class="v3-marker '+statusCls+'" style="left:'+pct+'%"></span></div>'
-        + (m.target ? '<div class="v3-metric-meta">'+esc(m.target)+'</div>' : '')
+        + '<div class="v3-track"><div class="v3-fill '+statusCls+'" style="width:'+pct+'%"></div></div>'
+        + meta
         + '<div class="v3-metric-tip">'+esc(v3Explain(m.name))+'</div>'
         + '</div>';
     }
     // small HTML escaper for text we inject (titles/values from data)
-    function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+    // HARD RULE: no em-dashes anywhere in output. Strip them at the source for ALL rendered text
+    // (our own copy AND anything AI-generated in the DB). Em-dash → comma; en-dash → hyphen.
+    function clean(s){ return String(s==null?'':s).replace(/\s*—\s*/g, ', ').replace(/\s*–\s*/g, '-'); }
+    function esc(s){ return clean(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+    // Plain, escalating worry scale — clearer than vague DB labels like "Medium concern".
+    function v3WorryWord(filled){ var f = Math.max(1, Math.min(4, filled || 1)); return f <= 1 ? 'All clear' : f === 2 ? 'A few concerns' : f === 3 ? 'Real concerns' : 'Serious concerns'; }
     // A metric counts as "gone missing" only when its ENTIRE value is a disclosure-gap token
     // (anchored so real values like "Tuna" or "Cereals" never false-match a substring).
     function v3IsMissingVal(v){
@@ -3664,9 +3561,9 @@
          + '</div>';
 
       // ── M1 · worry meter (its own quiet strip)
-      h += '<div class="v3-worry-strip"><div class="v3-paws">'
+      h += '<div class="v3-worry-strip"><div class="v3-paws ' + wl + '">'
          + [1, 2, 3, 4].map(function (i) { return v3Paw(i <= wf); }).join('')
-         + '</div><span class="v3-worry-lbl ' + wl + '">' + esc(worry.label || '') + '</span></div>';
+         + '</div><span class="v3-worry-lbl ' + wl + '">' + v3WorryWord(wf) + '</span></div>';
 
       // ── M1 · The Nose Knows (the friend's take, in ginger)
       if (a.parentTake) {
@@ -3779,7 +3676,7 @@
 
       h += '<div class="v3-trust">Based on the published label · cat-only · no scores, no sponsors · made in Bangalore</div>';
 
-      document.getElementById('overlayContent').innerHTML = h;
+      document.getElementById('overlayContent').innerHTML = clean(h);
       v3TrackSections(p.slug);
     }
 
@@ -4079,7 +3976,7 @@
       const brand = brandRaw.split(/\s*[·•]\s*/)[0].trim() || 'a cat food';
       const title = (product?.title || '').trim();
       const item = title ? `${brand} ${title}` : brand;
-      return `Just looked up ${item} on Sniff — it tells you if your cat's food is any good in 5 seconds. Try yours:`;
+      return `Just looked up ${item} on Sniff. It tells you if your cat's food is any good in 5 seconds. Try yours:`;
     }
 
     function showShareToast(msg) {
@@ -4184,7 +4081,7 @@
       }
 
       // Last-ditch — surface the URL so the click is never a dead end.
-      showShareToast('Couldn’t auto-copy — link shown');
+      showShareToast('Couldn’t auto-copy. Link shown below.');
       try { window.prompt('Copy this Sniff link:', url); } catch {}
     }
 
@@ -4411,6 +4308,37 @@
       if (w === 'protein'){ var p = parseMetricNum(getMetric(altA, 'protein')); return (p != null && p >= 40) ? 1 : 0; }
       return 0;
     }
+    // The one we'd actually switch to: fixes the real problem, a clear jump, at a cost a parent would accept.
+    // Deliberately NOT price-led — fixing the weakness dominates; cost only breaks ties / penalises big jumps.
+    function v3PickRecommended(picks, weakness, curScore){
+      if (!picks.length) return;
+      var recIdx = 0, best = -1e9;
+      picks.forEach(function(p, i){
+        var fixes = v3Fixes(weakness, p.analysis || {});
+        var jump = Math.min(40, (p._score || 0) - (curScore || 0));   // meaningful, with diminishing returns
+        var delta = p._monthDelta || 0;
+        var costPen = delta <= 0 ? 0 : Math.min(45, delta / 8);        // a parent won't 3× their spend
+        p._practical = (fixes ? 50 : 0) + jump - costPen;
+        if (p._practical > best) { best = p._practical; recIdx = i; }
+      });
+      picks[recIdx]._recommended = true;
+      picks[recIdx]._recReason = v3RecReason(weakness, picks[recIdx]);
+    }
+    function v3RecReason(weakness, p){
+      var delta = p._monthDelta || 0;
+      var cost = (p._tier === 'value' || delta <= 0) ? 'and you’d pay about the same'
+               : (delta > 0 ? 'for about ₹' + delta + '/month more' : 'for a little more');
+      var fixMap = {
+        carbs: 'it cuts the carbs your cat doesn’t need',
+        ingredient: 'real named meat leads it, not cereal',
+        taurine: 'it actually discloses taurine',
+        protein: 'the protein’s finally where a cat needs it'
+      };
+      if (weakness && v3Fixes(weakness, p.analysis || {}) && fixMap[weakness]) {
+        return 'Fixes the main thing wrong here — ' + fixMap[weakness] + ', ' + cost + '.';
+      }
+      return 'The most sensible step up — clearly better food, ' + cost + '.';
+    }
 
     // Recommendation engine: better-quality, same category+life-stage, organised into a price ladder
     // (Most valued / Upgrade / Best in class) AND targeted at the current food's actual weakness.
@@ -4461,6 +4389,7 @@
 
         if (!picks.length) return better.slice(0, 3).map(c => ({ ...c, _tier: null }));
         picks.forEach(p => { p._monthDelta = v3MonthDelta(cat, Pc, p._price); p._curPrice = Pc; });
+        v3PickRecommended(picks, weakness, Sc);   // mark the one practical switch we'd actually make
         return picks;
       } catch (e) {
         console.error('fetchAlternatives', e);
@@ -4469,9 +4398,9 @@
     }
 
     var V3_TIER = {
-      value:   { cls: 'v3-tb-value',   label: 'Most valued · better for the same money' },
-      upgrade: { cls: 'v3-tb-upgrade', label: 'Upgrade · a little more, clearly better' },
-      best:    { cls: 'v3-tb-best',    label: 'Best in class · if budget’s open' }
+      value:   { cls: 'v3-tb-value',   label: 'Best value' },
+      upgrade: { cls: 'v3-tb-upgrade', label: 'Upgrade' },
+      best:    { cls: 'v3-tb-best',    label: 'The best' }
     };
     function renderAlternatives(product, alts) {
       var container = document.getElementById('oAlternatives');
@@ -4484,7 +4413,7 @@
       var tiered = alts.some(function (a) { return a._tier; });
 
       if (tiered) {
-        sub.textContent = 'Foods that fix what this one misses — laid out by what they cost.';
+        sub.textContent = 'Three better options across budgets. We’ve marked the one switch we’d actually make.';
       } else {
         var weak = [];
         var cCarb = parseMetricNum(getMetric(currentA, 'carb'));
@@ -4498,7 +4427,7 @@
           : 'These score higher overall for your cat.';
       }
 
-      list.innerHTML = alts.map(function (alt) {
+      list.innerHTML = clean(alts.map(function (alt) {
         var aa = alt.analysis || {};
         var imps = getImprovements(currentA, aa);
         var brandShort = ((alt.brand || '').split(' · ')[0] || '').slice(0, 18).replace(/[^A-Za-z0-9 &]/g, '');
@@ -4509,8 +4438,10 @@
           : esc(brandShort);
         var go = "posthog.capture('alternative_clicked',{from_slug:'" + product.slug + "',to_slug:'" + alt.slug + "',tier:'" + (alt._tier || 'score') + "'});openOverlaySlug('" + alt.slug + "')";
 
-        var badge = (alt._tier && V3_TIER[alt._tier])
-          ? '<span class="v3-tier-badge ' + V3_TIER[alt._tier].cls + '">' + V3_TIER[alt._tier].label + '</span>' : '';
+        var badges = '';
+        if (alt._recommended) badges += '<span class="v3-tier-badge v3-tb-rec">' + v3Paw(true) + 'Sniff recommends</span>';
+        if (alt._tier && V3_TIER[alt._tier]) badges += '<span class="v3-tier-badge ' + V3_TIER[alt._tier].cls + '">' + V3_TIER[alt._tier].label + '</span>';
+        var badge = badges ? '<div class="v3-badge-row">' + badges + '</div>' : '';
 
         var priceLine = '';
         if (alt._tier && alt._price != null) {
@@ -4522,7 +4453,7 @@
           priceLine = '₹' + alt._price + '/100g';
         }
 
-        return '<div class="v3-tier" onclick="' + go + '" tabindex="0" onkeydown="if(event.key===\'Enter\'){' + go + '}">'
+        return '<div class="v3-tier' + (alt._recommended ? ' v3-tier-rec' : '') + '" onclick="' + go + '" tabindex="0" onkeydown="if(event.key===\'Enter\'){' + go + '}">'
           + badge
           + '<div class="v3-tier-thumb">' + thumb + '</div>'
           + '<div style="min-width:0">'
@@ -4531,10 +4462,11 @@
           +   (!alt._tier && vLabel ? '<div class="v3-alt-verdict ' + vClass + '">' + esc(vLabel) + '</div>' : '')
           +   '<div class="v3-tier-why">' + imps.map(function (i) { return '<div>' + esc(i) + '</div>'; }).join('') + '</div>'
           +   (priceLine ? '<div class="v3-tier-price">' + priceLine + '</div>' : '')
+          +   (alt._recommended && alt._recReason ? '<div class="v3-rec-why">' + esc(alt._recReason) + '</div>' : '')
           +   '<div class="v3-alt-compare" onclick="event.stopPropagation();openCompareWithAlt(\'' + alt.slug + '\',event)" role="button" tabindex="0" onkeydown="event.stopPropagation()">'
           +     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span>Compare with yours</span></div>'
           + '</div></div>';
-      }).join('');
+      }).join(''));
 
       container.style.display = 'block';
       posthog.capture('alternatives_shown', {
@@ -4591,488 +4523,259 @@
     function renderCompareView() {
       var view = document.getElementById('compareView');
       var content = document.getElementById('overlayContent');
-      var card = content.closest('.overlay-card');
-      // Hide normal report + loader states, show compare
       content.classList.add('hide');
       document.querySelectorAll('.overlay-loading, .overlay-edge-state').forEach(function(el) { el.classList.remove('show'); });
       view.classList.add('show');
       document.querySelector('.overlay-scroll').scrollTop = 0;
+      // compare owns the screen — hide the report's "Sniff another food" block so there's one search, one job
+      var saBlock = document.querySelector('.overlay-sniff-another');
+      if (saBlock) saBlock.style.display = 'none';
 
-      // Product A header
-      renderCmpProductSlot('cmpProductA', compareProductA);
+      var A = compareProductA, B = compareProductB;
+      if (!A) { view.innerHTML = ''; return; }
 
-      // Product B — either show search or render product
-      var slotB = document.getElementById('cmpSlotB');
-      if (!compareProductB) {
-        slotB.className = 'cmp-search-slot';
-        slotB.innerHTML = '<div class="cmp-search-field"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg><input type="text" placeholder="Search a food to compare…" id="cmpSearchInput" autocomplete="off"></div>';
-        slotB.onclick = null;
+      // ── empty / pick-a-rival ──
+      if (!B) {
+        view.innerHTML = clean('<div class="v3cmp">' + cmpMatchupEmpty(A) + '</div>');
         setupAutocomplete('cmpSearchInput');
-        document.getElementById('cmpSearchInput').focus();
-        document.getElementById('cmpBody').innerHTML = '<div class="cmp-search-prompt">Search for any cat food to see how it stacks up.</div>';
+        var inp = document.getElementById('cmpSearchInput'); if (inp) inp.focus();
+        cmpFillRecent(A.slug);
         updateCompareHash();
         return;
       }
 
-      slotB.className = 'cmp-product';
-      slotB.onclick = function() { exitCompareToReport('b'); };
-      renderCmpProductSlot('cmpSlotB', compareProductB);
-
-      // Same product?
-      if (compareProductA && compareProductB && compareProductA.slug === compareProductB.slug) {
-        document.getElementById('cmpBody').innerHTML = '<div class="cmp-same-warning">That\'s the same food! Pick a different one to compare.</div>';
+      // ── same food ──
+      if (A.slug === B.slug) {
+        view.innerHTML = clean('<div class="v3cmp">' + cmpMatchup(A, B, null) +
+          '<div class="v3cmp-same">That’s the same food. Pick a different one to put it head-to-head.</div></div>');
         updateCompareHash();
         return;
       }
 
-      // Build comparison body
-      var html = '';
-      var aA = compareProductA.analysis || {};
-      var aB = compareProductB.analysis || {};
+      var aA = A.analysis || {}, aB = B.analysis || {};
+      var cross = (A.category || '') !== (B.category || '');
+      // decide the winner from the SAME differences the table shows, so the verdict can never contradict it
+      var aAdv = cross ? [] : cmpDiffBits(aA, aB);
+      var bAdv = cross ? [] : cmpDiffBits(aB, aA);
+      var tooClose = !cross && aAdv.length === 0 && bAdv.length === 0;
+      var winA = (aAdv.length !== bAdv.length) ? (aAdv.length > bAdv.length) : (scoreProduct(aA) >= scoreProduct(aB));
+      var w = winA ? A : B, l = winA ? B : A, wa = winA ? aA : aB, la = winA ? aB : aA;
+      var winnerBits = winA ? aAdv : bAdv;
+      var pick = (tooClose || cross) ? null : (winA ? 'a' : 'b');
 
-      // Category mismatch note
-      if (compareProductA.category !== compareProductB.category) {
-        html += '<div class="cmp-category-note">Different food types — portions and nutrition targets differ.</div>';
-      }
-
-      // Verdict banner
-      html += buildVerdictBanner(compareProductA, compareProductB);
-
-      // Scorecard: metric comparison grid
-      html += buildScorecard(compareProductA, compareProductB);
-
-      // Expandable all-metrics
-      html += buildMetricsToggle(compareProductA, compareProductB);
-
-      // Actions
-      var nameA = shortTitle(compareProductA);
-      var nameB = shortTitle(compareProductB);
-      html += '<div class="cmp-actions">';
-      html += '<div class="cmp-action-row">';
-      html += '<button class="cmp-action-btn" onclick="exitCompareToReport(\'a\')">' + nameA + '\'s full report</button>';
-      html += '<button class="cmp-action-btn" onclick="exitCompareToReport(\'b\')">' + nameB + '\'s full report</button>';
+      var html = '<div class="v3cmp">';
+      html += cmpMatchup(A, B, pick);
+      html += '<div class="v3cmp-hr"></div>';
+      html += cmpCall(A, B, cross, tooClose, w, l, wa, la, winnerBits);
+      html += '<div class="v3cmp-hr"></div>';
+      html += cmpTable(A, B, aA, aB, cross, pick);
+      html += '<div class="v3cmp-hr"></div>';
+      html += cmpActions(A, B);
       html += '</div>';
-      if (compareProductA.slug !== '__api__' && compareProductB.slug !== '__api__') {
-        html += '<button class="cmp-share-btn" onclick="shareComparison()">';
-        html += '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>';
-        html += '<span>Share this comparison</span></button>';
-      }
-      html += '</div>';
+      view.innerHTML = clean(html);
 
-      document.getElementById('cmpBody').innerHTML = html;
       updateCompareHash();
-
-      posthog.capture('comparison_viewed', {
-        product_a_slug: compareProductA.slug,
-        product_b_slug: compareProductB.slug
-      });
+      posthog.capture('comparison_viewed', { product_a_slug: A.slug, product_b_slug: B.slug });
     }
 
-    function renderCmpProductSlot(containerId, product) {
-      var el = document.getElementById(containerId);
-      if (!product) { el.innerHTML = ''; return; }
-      var brandShort = ((product.brand || '').split(' · ')[0] || '').slice(0, 16);
-      var imgHtml = product.image_url
-        ? '<img src="' + product.image_url + '" alt="' + (product.title || '') + '" loading="lazy" onerror="this.parentElement.innerHTML=\'' + brandShort + '\'">'
-        : brandShort;
-      el.innerHTML =
-        '<div class="cmp-product-img">' + imgHtml + '</div>' +
-        '<div class="cmp-product-info">' +
-          '<div class="cmp-product-brand">' + (product.brand || '') + '</div>' +
-          '<div class="cmp-product-title">' + (product.title || '') + '</div>' +
-        '</div>';
-    }
+    // ── small marks ──
+    function cmpPaw() { return '<svg viewBox="0 0 24 24" fill="currentColor"><ellipse cx="12" cy="16" rx="6" ry="5"/><circle cx="5.5" cy="9.5" r="2.3"/><circle cx="10" cy="6" r="2.4"/><circle cx="14.5" cy="6" r="2.4"/><circle cx="18.5" cy="9.5" r="2.3"/></svg>'; }
+    function cmpChk() { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>'; }
+    function cmpSeal() { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M8 12l2.6 2.6L16 9" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>'; }
 
     function shortTitle(product) {
       var t = product.title || product.brand || '';
-      return t.length > 20 ? t.slice(0, 18) + '…' : t;
+      return t.length > 22 ? t.slice(0, 20).replace(/[,\s]+$/, '') + '…' : t;
+    }
+    function cmpBrand(p) { return ((p.brand || '').split(' · ')[0] || '').trim() || (p.title || 'this food'); }
+    function cmpVClass(a) { var lc = (a.verdict && a.verdict.labelClass) || ''; if (lc === 'vp-good') return 'good'; if (lc === 'vp-weak') return 'weak'; return 'okay'; }
+    function cmpVLabel(a) { return ((a.verdict && a.verdict.label) || '').replace(/\.$/, ''); }
+    function cmpNum(m) { if (!m || m.value == null) return null; var mt = String(m.value).match(/(\d+(?:\.\d+)?)/); return mt ? parseFloat(mt[1]) : null; }
+    function cmpFmt(v) { return esc(String(v == null ? '' : v).replace(/\s*DM\b/i, '').trim()); }
+    function cmpMonthly(p) { var n = v3Price(p); if (n == null) return null; return Math.round(n * v3DailyGrams(p.category) * 30 / 100 / 10) * 10; }
+    function cmpINR(n) { return '₹' + Number(n).toLocaleString('en-IN'); }
+    function cmpPriceStr(p) { var n = v3Price(p); return n ? '₹' + n + '<small> /100g</small>' : '<small>price n/a</small>'; }
+
+    function cmpImg(p) {
+      var init = (cmpBrand(p) || '?').charAt(0).toUpperCase();
+      if (p.image_url) {
+        return '<img class="v3cmp-img" src="' + esc(p.image_url) + '" alt="" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">' +
+               '<div class="v3cmp-fallback">' + esc(init) + '</div>';
+      }
+      return '<div class="v3cmp-fallback" style="display:flex">' + esc(init) + '</div>';
     }
 
-    function buildComparisonInsight(pA, pB) {
-      var aA = pA.analysis || {};
-      var aB = pB.analysis || {};
-      var vLabelA = (aA.verdict?.label || '').replace(/\.$/, '');
-      var vLabelB = (aB.verdict?.label || '').replace(/\.$/, '');
-      var vRankA = VERDICT_RANK[vLabelA] || 0;
-      var vRankB = VERDICT_RANK[vLabelB] || 0;
-      var gap = Math.abs(vRankA - vRankB);
-      var priceA = parsePrice100g(aA.price);
-      var priceB = parsePrice100g(aB.price);
-      var proteinA = parseMetricNum(getMetric(aA, 'protein'));
-      var proteinB = parseMetricNum(getMetric(aB, 'protein'));
-      var nameA = shortTitle(pA);
-      var nameB = shortTitle(pB);
-      var better = vRankA >= vRankB ? nameA : nameB;
-      var worse = vRankA >= vRankB ? nameB : nameA;
-      var betterPrice = vRankA >= vRankB ? priceA : priceB;
-      var worsePrice = vRankA >= vRankB ? priceB : priceA;
+    function cmpCol(p, isPick, which) {
+      return '<div class="v3cmp-col" role="button" tabindex="0" onclick="exitCompareToReport(\'' + which + '\')">' +
+        '<div class="v3cmp-tag">' + (isPick ? '<span>' + cmpPaw() + 'Sniff’s pick</span>' : '') + '</div>' +
+        cmpImg(p) +
+        '<div class="v3cmp-brand">' + esc(cmpBrand(p)) + '</div>' +
+        '<div class="v3cmp-title">' + esc(p.title || '') + '</div>' +
+        '<div class="v3cmp-pill ' + cmpVClass(p.analysis || {}) + '">' + (esc(cmpVLabel(p.analysis || {})) || '?') + '</div>' +
+        '<div class="v3cmp-price">' + cmpPriceStr(p) + '</div></div>';
+    }
 
-      if (gap >= 3) {
-        return better + ' is a clear upgrade over ' + worse + '.';
+    function cmpMatchup(A, B, pick) {
+      return '<div class="v3cmp-mu">' + cmpCol(A, pick === 'a', 'a') + '<div class="v3cmp-vs">vs</div>' + cmpCol(B, pick === 'b', 'b') + '</div>';
+    }
+
+    function cmpMatchupEmpty(A) {
+      var h = '<div class="v3cmp-mu">' + cmpCol(A, false, 'a') +
+        '<div class="v3cmp-vs">vs</div>' +
+        '<div class="v3cmp-col"><div class="v3cmp-tag"></div><div class="v3cmp-q">?</div><div class="v3cmp-title" style="color:var(--indie-soft)">Pick one</div></div></div>';
+      h += '<div class="v3cmp-hr"></div>';
+      h += '<div class="v3cmp-empty"><div class="v3cmp-empty-h">Put it head-to-head</div>' +
+        '<div class="v3cmp-empty-p">Pick another cat food and we’ll tell you which one to actually buy — and why.</div>' +
+        '<div class="v3cmp-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>' +
+        '<input type="text" id="cmpSearchInput" placeholder="Search a food to compare…" autocomplete="off"></div>' +
+        '<div class="v3cmp-quick" id="cmpQuick"></div></div>';
+      return h;
+    }
+
+    function cmpFillRecent(excludeSlug) {
+      var slugs = getRecent().filter(function(s) { return s !== excludeSlug; }).slice(0, 4);
+      if (!slugs.length) return;
+      Promise.all(slugs.map(function(s) { return sbFetchOne(s); })).then(function(arr) {
+        var el = document.getElementById('cmpQuick'); if (!el) return;
+        var items = arr.filter(Boolean);
+        if (!items.length) return;
+        el.innerHTML = '<div style="width:100%;font-size:9.5px;letter-spacing:0.14em;text-transform:uppercase;color:var(--indie-soft);font-weight:700;margin-bottom:2px">Recently viewed</div>' +
+          items.map(function(p) {
+            var img = p.image_url ? '<img src="' + esc(p.image_url) + '" alt="" onerror="this.remove()">' : '';
+            var t = (p.title || cmpBrand(p) || '').trim();
+            var label = t.length > 18 ? t.slice(0, 17).replace(/[,\s]+$/, '') + '…' : t;
+            return '<div class="v3cmp-quick-chip" onclick="selectCompareProduct(\'' + esc(p.slug) + '\')">' + img + '<span>' + esc(label) + '</span></div>';
+          }).join('');
+      });
+    }
+
+    // the real, plain-language advantages X has over Y — the same signals the table shows
+    function cmpDiffBits(xa, ya) {
+      var bits = [];
+      var xIng = getMetric(xa, 'first ingredient'), yIng = getMetric(ya, 'first ingredient');
+      if (xIng && xIng.status === 'good' && (!yIng || yIng.status !== 'good')) {
+        var iv = (xIng.value || '').toLowerCase();
+        bits.push((iv && iv !== 'this' && !v3IsMissingVal(iv)) ? 'real ' + iv + ' up front' : 'a named meat up front');
       }
-      if (gap === 2) {
-        var extra = (betterPrice && worsePrice && betterPrice > worsePrice)
-          ? ' Costs more, but you get what you pay for.' : '';
-        return better + ' is the better pick.' + extra;
-      }
-      if (gap === 1) {
-        var priceBit = '';
-        if (betterPrice && worsePrice && betterPrice > worsePrice) {
-          priceBit = ' It costs more — but the quality is there.';
-        } else if (betterPrice && worsePrice && betterPrice < worsePrice) {
-          priceBit = ' And it costs less.';
+      var xP = cmpNum(getMetric(xa, 'protein')), yP = cmpNum(getMetric(ya, 'protein'));
+      if (xP != null && yP != null && xP - yP >= 2) bits.push('more protein (' + Math.round(xP) + '% vs ' + Math.round(yP) + '%)');
+      var xC = cmpNum(getMetric(xa, 'carb')), yC = cmpNum(getMetric(ya, 'carb'));
+      if (xC != null && yC != null && yC - xC >= 3) bits.push('fewer carbs');
+      var xT = getMetric(xa, 'taurine'), yT = getMetric(ya, 'taurine');
+      if (xT && xT.status === 'good' && (!yT || yT.status !== 'good')) bits.push('taurine listed');
+      return bits;
+    }
+
+    function cmpCall(A, B, cross, tooClose, w, l, wa, la, bits) {
+      // cross-category: not a contest
+      if (cross) {
+        var wet = A.category === 'wet' ? A : (B.category === 'wet' ? B : null);
+        var dry = A.category === 'dry' ? A : (B.category === 'dry' ? B : null);
+        var head, body;
+        if (wet && dry) {
+          head = 'Use both — they do different jobs';
+          body = esc(cmpBrand(wet)) + ' is wet food: the water cats won’t drink on their own. ' + esc(cmpBrand(dry)) + ' is dry: the easy everyday base. They’re not rivals — feed both.';
+        } else {
+          head = 'Two different things';
+          body = 'These aren’t the same kind of food, so there’s no winner to pick. Look at each on its own below.';
         }
-        return better + ' is the stronger pick here.' + priceBit;
+        return '<div class="v3cmp-call flat"><div class="v3cmp-call-ey">The verdict</div><div class="v3cmp-call-h">' + head + '</div><div class="v3cmp-call-p">' + body + '</div></div>';
       }
-      // Same verdict — compare on specifics
-      var advantages = [];
-      if (proteinA && proteinB && proteinA - proteinB >= 3) advantages.push(nameA + ' has more protein');
-      if (proteinB && proteinA && proteinB - proteinA >= 3) advantages.push(nameB + ' has more protein');
-      if (priceA && priceB && priceB - priceA >= 10) advantages.push(nameA + ' costs less');
-      if (priceA && priceB && priceA - priceB >= 10) advantages.push(nameB + ' costs less');
-      if (advantages.length >= 2) return 'Same verdict — but ' + advantages[0] + ', while ' + advantages[1] + '.';
-      if (advantages.length === 1) return 'Same verdict, but ' + advantages[0] + '.';
-      return 'Nearly identical. Go with whichever your cat eats better.';
+
+      // genuinely no meaningful difference on anything we can read
+      if (tooClose) {
+        var pA = v3Price(A), pB = v3Price(B);
+        var cheaper = (pA != null && pB != null && pA !== pB) ? (pA < pB ? A : B) : null;
+        var mA = cmpMonthly(A), mB = cmpMonthly(B);
+        var save = (mA != null && mB != null) ? Math.abs(mA - mB) : null;
+        var tail = cheaper
+          ? 'Buy <b>' + esc(cmpBrand(cheaper)) + '</b> — it’s the cheaper one' + (save ? ', about <b>' + cmpINR(save) + '/month</b> less' : '') + ' — or just whichever your cat eats more happily.'
+          : 'Go with whichever your cat eats more happily.';
+        return '<div class="v3cmp-call flat"><div class="v3cmp-call-ey">The verdict</div><div class="v3cmp-call-h">They’re about the same</div>' +
+          '<div class="v3cmp-call-p">Protein, carbs and everything on the label match. Nothing real separates these two. ' + tail + '</div></div>';
+      }
+
+      // a clear pick — say which, and exactly why
+      var why = (bits && bits.length) ? bits.slice(0, 2).join(' and ') : 'better food overall';
+      var pw = v3Price(w), pl = v3Price(l), mw = cmpMonthly(w), ml = cmpMonthly(l), cost = '';
+      if (pw != null && pl != null && mw != null && ml != null) {
+        var md = Math.abs(mw - ml);
+        if (pw > pl) cost = ' It costs about <b>' + cmpINR(md) + '/month</b> more than ' + esc(cmpBrand(l)) + ' to feed.';
+        else if (pw < pl) cost = ' And it’s about <b>' + cmpINR(md) + '/month</b> cheaper than ' + esc(cmpBrand(l)) + '.';
+      }
+      var bothGood = cmpVClass(wa) === 'good' && cmpVClass(la) === 'good';
+      var brand = '<span class="g">' + esc(cmpBrand(w)) + '</span>';
+      var lead = bothGood
+        ? 'Both are good foods, but ' + brand + ' is the better pick: ' + why + '.'
+        : brand + ' is the better bowl here: ' + why + '.';
+      var seal = cmpVClass(wa) === 'good' ? cmpSeal() : '';
+      return '<div class="v3cmp-call"><div class="v3cmp-call-ey">' + seal + 'The verdict</div>' +
+        '<div class="v3cmp-call-h">Go with ' + esc(cmpBrand(w)) + '</div>' +
+        '<div class="v3cmp-call-p">' + lead + cost + '</div></div>';
     }
 
-    function buildComparisonSummary(pA, pB) {
-      var aA = pA.analysis || {};
-      var aB = pB.analysis || {};
-      var vRankA = VERDICT_RANK[(aA.verdict?.label || '').replace(/\.$/, '')] || 0;
-      var vRankB = VERDICT_RANK[(aB.verdict?.label || '').replace(/\.$/, '')] || 0;
-      if (vRankA === vRankB) return '';
-      var winA = vRankA > vRankB;
-      var wA = winA ? aA : aB;
-      var lA = winA ? aB : aA;
-      var wName = shortTitle(winA ? pA : pB);
-      var reasons = [];
-      var wProt = parseMetricNum(getMetric(wA, 'protein'));
-      var lProt = parseMetricNum(getMetric(lA, 'protein'));
-      if (wProt && lProt && wProt > lProt) reasons.push('more protein');
-      var wCarbs = parseMetricNum(getMetric(wA, 'carb'));
-      var lCarbs = parseMetricNum(getMetric(lA, 'carb'));
-      if (wCarbs && lCarbs && wCarbs < lCarbs) reasons.push('fewer empty carbs');
-      var wIng = getMetric(wA, 'first ingredient');
-      var lIng = getMetric(lA, 'first ingredient');
-      if (wIng?.status === 'good' && lIng?.status !== 'good') reasons.push('real meat over fillers');
-      var wTaur = getMetric(wA, 'taurine');
-      var lTaur = getMetric(lA, 'taurine');
-      if (wTaur?.status === 'good' && lTaur?.status !== 'good') reasons.push('taurine on the label');
-      if (!reasons.length) return '';
-      var r = reasons.slice(0, 3);
-      if (r.length === 1) return r[0].charAt(0).toUpperCase() + r[0].slice(1) + ' — ' + wName + ' feeds your cat better.';
-      var last = r.pop();
-      var sentence = r.length === 1 ? r[0] + ' and ' + last : r.join(', ') + ', and ' + last;
-      return sentence.charAt(0).toUpperCase() + sentence.slice(1) + ' — ' + wName + ' is better nutrition for your cat.';
+    function cmpCell(m, win) {
+      if (!m || m.value == null || v3IsMissingVal(m.value)) return '<span class="v3cmp-miss">Not listed</span>';
+      return '<span class="v3cmp-v' + (win ? ' win' : '') + '">' + cmpFmt(m.value) + (win ? cmpChk() : '') + '</span>';
+    }
+    function cmpNumRow(label, aA, aB, prefix, dir, th, cross) {
+      var mA = getMetric(aA, prefix), mB = getMetric(aB, prefix);
+      var nA = cmpNum(mA), nB = cmpNum(mB), winA = false, winB = false;
+      if (!cross && nA != null && nB != null && Math.abs(nA - nB) >= th) {
+        if (dir === 'hi') { winA = nA > nB; winB = nB > nA; } else { winA = nA < nB; winB = nB < nA; }
+      }
+      return '<div class="v3cmp-row"><div class="lab">' + label + '</div><div class="c">' + cmpCell(mA, winA) + '</div><div class="c">' + cmpCell(mB, winB) + '</div></div>';
+    }
+    function cmpStatusRow(label, aA, aB, prefix, cross) {
+      var mA = getMetric(aA, prefix), mB = getMetric(aB, prefix);
+      function cell(m, other) {
+        var v = m && m.value;
+        if (!v || v3IsMissingVal(v) || String(v).toLowerCase() === 'this') return '<span class="v3cmp-miss">Not listed</span>';
+        var win = !cross && m.status === 'good' && (!other || other.status !== 'good' || v3IsMissingVal(other.value));
+        return '<span class="v3cmp-v' + (win ? ' win' : '') + '">' + cmpFmt(v) + (win ? cmpChk() : '') + '</span>';
+      }
+      return '<div class="v3cmp-row"><div class="lab">' + label + '</div><div class="c">' + cell(mA, mB) + '</div><div class="c">' + cell(mB, mA) + '</div></div>';
+    }
+    function cmpPriceRow(label, vA, vB, rawA, rawB, cross) {
+      var winA = false, winB = false;
+      if (!cross && rawA != null && rawB != null && rawA !== rawB) { winA = rawA < rawB; winB = rawB < rawA; }
+      function c(v, win) { if (v == null) return '<span class="v3cmp-miss">Not listed</span>'; return '<span class="v3cmp-v' + (win ? ' win' : '') + '">' + v + (win ? cmpChk() : '') + '</span>'; }
+      return '<div class="v3cmp-row"><div class="lab">' + label + '</div><div class="c">' + c(vA, winA) + '</div><div class="c">' + c(vB, winB) + '</div></div>';
     }
 
-    function buildComparisonChips(pA, pB) {
-      var chips = [];
-      var aA = pA.analysis || {};
-      var aB = pB.analysis || {};
-      var protA = parseMetricNum(getMetric(aA, 'protein'));
-      var protB = parseMetricNum(getMetric(aB, 'protein'));
-      if (protA && protB && Math.abs(protA - protB) >= 2) {
-        if (protA > protB) chips.push({ text: '+' + (protA - protB) + '% protein', cls: 'favor-a' });
-        else chips.push({ text: '+' + (protB - protA) + '% protein', cls: 'favor-b' });
-      }
-      var carbA = parseMetricNum(getMetric(aA, 'carb'));
-      var carbB = parseMetricNum(getMetric(aB, 'carb'));
-      if (carbA && carbB && Math.abs(carbA - carbB) >= 3) {
-        if (carbA < carbB) chips.push({ text: (carbB - carbA) + '% fewer carbs', cls: 'favor-a' });
-        else chips.push({ text: (carbA - carbB) + '% fewer carbs', cls: 'favor-b' });
-      }
-      var priceA = parsePrice100g(aA.price);
-      var priceB = parsePrice100g(aB.price);
-      if (priceA && priceB && Math.abs(priceA - priceB) >= 5) {
-        if (priceA < priceB) chips.push({ text: '₹' + (priceB - priceA) + ' cheaper', cls: 'favor-a' });
-        else chips.push({ text: '₹' + (priceA - priceB) + ' cheaper', cls: 'favor-b' });
-      }
-      var ingA = getMetric(aA, 'first ingredient');
-      var ingB = getMetric(aB, 'first ingredient');
-      if (ingA && ingB && ingA.status !== ingB.status) {
-        if (ingA.status === 'good') chips.push({ text: 'Named meat first', cls: 'favor-a' });
-        else if (ingB.status === 'good') chips.push({ text: 'Named meat first', cls: 'favor-b' });
-      }
-      var taurA = getMetric(aA, 'taurine');
-      var taurB = getMetric(aB, 'taurine');
-      if (taurA && taurB && (taurA.status === 'good') !== (taurB.status === 'good')) {
-        if (taurA.status === 'good') chips.push({ text: 'Taurine disclosed', cls: 'favor-a' });
-        else chips.push({ text: 'Taurine disclosed', cls: 'favor-b' });
-      }
-      return chips.slice(0, 5);
-    }
+    function cmpTable(A, B, aA, aB, cross, pick) {
+      var hasWet = A.category === 'wet' || B.category === 'wet';
+      var html = '<div class="v3cmp-sbs-h">Side by side</div>' +
+        '<div class="v3cmp-sbs-sub">The same lines on both labels — and where one stays quiet.</div>';
+      html += '<div class="v3cmp-tr head"><div></div>' +
+        '<div class="v3cmp-th"><div class="v3cmp-th-pick">' + (pick === 'a' ? 'Pick' : '') + '</div><div class="v3cmp-th-name">' + esc(cmpBrand(A)) + '</div></div>' +
+        '<div class="v3cmp-th"><div class="v3cmp-th-pick">' + (pick === 'b' ? 'Pick' : '') + '</div><div class="v3cmp-th-name">' + esc(cmpBrand(B)) + '</div></div></div>';
 
-    function verdictTagClass(verdict) {
-      var lc = (verdict?.labelClass || 'vp-okay');
-      if (lc === 'vp-good') return 't-good';
-      if (lc === 'vp-weak') return 't-weak';
-      return 't-okay';
-    }
+      html += '<div class="v3cmp-grp">The numbers</div>';
+      html += cmpNumRow('Protein', aA, aB, 'protein', 'hi', 2, cross);
+      html += cmpNumRow('Carbs', aA, aB, 'carb', 'lo', 3, cross);
+      if (hasWet) html += cmpNumRow('Moisture', aA, aB, 'moisture', 'hi', 5, cross);
 
-    function worryMiniHtml(worry) {
-      var w = worry || { filled: 1, level: 'low', label: '' };
-      var html = '<div class="cmp-worry-mini wl-' + (w.level || 'low') + '">';
-      html += '<div class="cmp-worry-mini-dots">';
-      for (var i = 1; i <= 4; i++) html += '<span class="wd' + (i <= (w.filled || 0) ? ' filled' : '') + '"></span>';
-      html += '</div>';
-      html += '<div class="cmp-worry-mini-label">' + (w.label || '') + '</div>';
-      html += '</div>';
+      html += '<div class="v3cmp-grp">On the label</div>';
+      html += cmpStatusRow('First ingredient', aA, aB, 'first ingredient', cross);
+      html += cmpStatusRow('Taurine', aA, aB, 'taurine', cross);
+
+      html += '<div class="v3cmp-grp">What it costs</div>';
+      var pA = v3Price(A), pB = v3Price(B), mA = cmpMonthly(A), mB = cmpMonthly(B);
+      html += cmpPriceRow('Per 100g', pA != null ? '₹' + pA : null, pB != null ? '₹' + pB : null, pA, pB, cross);
+      html += cmpPriceRow('Per month*', mA != null ? cmpINR(mA) : null, mB != null ? cmpINR(mB) : null, mA, mB, cross);
       return html;
     }
 
-    function buildVerdictBanner(pA, pB) {
-      var aA = pA.analysis || {};
-      var aB = pB.analysis || {};
-      var vA = aA.verdict || {};
-      var vB = aB.verdict || {};
-      var vRankA = VERDICT_RANK[(vA.label || '').replace(/\.$/, '')] || 0;
-      var vRankB = VERDICT_RANK[(vB.label || '').replace(/\.$/, '')] || 0;
-      var gap = Math.abs(vRankA - vRankB);
-      var tone = gap >= 1 ? 'tone-clear' : 'tone-same';
-      var betterA = vRankA > vRankB;
-      var betterB = vRankB > vRankA;
-
-      var html = '<div class="cmp-verdict-banner ' + tone + '">';
-      html += '<div class="cmp-verdict-insight">' + buildComparisonInsight(pA, pB) + '</div>';
-      var summary = buildComparisonSummary(pA, pB);
-      if (summary) html += '<div class="cmp-verdict-summary">' + summary + '</div>';
-      html += '<div class="cmp-verdict-grid">';
-
-      // Card A
-      html += '<div class="cmp-verdict-card' + (betterA ? ' better' : '') + '">';
-      html += '<div class="cmp-verdict-card-name">' + shortTitle(pA).toUpperCase() + '</div>';
-      html += '<div class="cmp-verdict-card-label">' + (vA.label || '—') + '</div>';
-      if (vA.tag) html += '<div class="cmp-verdict-card-tag ' + verdictTagClass(vA) + '">' + vA.tag + '</div>';
-      html += worryMiniHtml(aA.worry);
-      html += '</div>';
-
-      // Card B
-      html += '<div class="cmp-verdict-card' + (betterB ? ' better' : '') + '">';
-      html += '<div class="cmp-verdict-card-name">' + shortTitle(pB).toUpperCase() + '</div>';
-      html += '<div class="cmp-verdict-card-label">' + (vB.label || '—') + '</div>';
-      if (vB.tag) html += '<div class="cmp-verdict-card-tag ' + verdictTagClass(vB) + '">' + vB.tag + '</div>';
-      html += worryMiniHtml(aB.worry);
-      html += '</div>';
-
-      html += '</div></div>';
-      return html;
-    }
-
-    function buildScorecard(pA, pB) {
-      var aA = pA.analysis || {};
-      var aB = pB.analysis || {};
-      var nameA = shortTitle(pA);
-      var nameB = shortTitle(pB);
-      var cards = [];
-
-      var protA = getMetric(aA, 'protein');
-      var protB = getMetric(aB, 'protein');
-      var protNA = parseMetricNum(protA);
-      var protNB = parseMetricNum(protB);
-      cards.push({
-        name: 'Protein', ref: 'Min 26% for adults',
-        valA: protA ? protA.value : '—', valB: protB ? protB.value : '—',
-        winA: protNA && protNB && protNA > protNB,
-        winB: protNA && protNB && protNB > protNA
-      });
-
-      var carbA = getMetric(aA, 'carb');
-      var carbB = getMetric(aB, 'carb');
-      var carbNA = parseMetricNum(carbA);
-      var carbNB = parseMetricNum(carbB);
-      cards.push({
-        name: 'Carbs', ref: 'Wild prey ≈ 5%',
-        valA: carbA ? carbA.value : '—', valB: carbB ? carbB.value : '—',
-        winA: carbNA && carbNB && carbNA < carbNB,
-        winB: carbNA && carbNB && carbNB < carbNA
-      });
-
-      var ingA = getMetric(aA, 'first ingredient');
-      var ingB = getMetric(aB, 'first ingredient');
-      cards.push({
-        name: '1st ingredient', ref: 'Named meat = better',
-        valA: (ingA ? ingA.value : null) || aA.ing || '—',
-        valB: (ingB ? ingB.value : null) || aB.ing || '—',
-        winA: ingA && ingB && ingA.status === 'good' && ingB.status !== 'good',
-        winB: ingA && ingB && ingB.status === 'good' && ingA.status !== 'good',
-        wide: true
-      });
-
-      var priceA = parsePrice100g(aA.price);
-      var priceB = parsePrice100g(aB.price);
-      if (priceA || priceB) {
-        cards.push({
-          name: 'Price', ref: 'per 100g',
-          valA: priceA ? '₹' + priceA : '—', valB: priceB ? '₹' + priceB : '—',
-          winA: priceA && priceB && priceA < priceB,
-          winB: priceA && priceB && priceB < priceA
-        });
+    function cmpActions(A, B) {
+      var h = '<div class="v3cmp-act">' +
+        '<button onclick="exitCompareToReport(\'a\')">' + esc(cmpBrand(A)) + '’s report</button>' +
+        '<button onclick="exitCompareToReport(\'b\')">' + esc(cmpBrand(B)) + '’s report</button></div>';
+      if (A.slug !== '__api__' && B.slug !== '__api__') {
+        h += '<button class="v3cmp-share" onclick="shareComparison()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg><span>Share comparison</span></button>';
       }
-
-      var taurA = getMetric(aA, 'taurine');
-      var taurB = getMetric(aB, 'taurine');
-      if (taurA || taurB) {
-        cards.push({
-          name: 'Taurine', ref: 'Min 0.10% AAFCO',
-          valA: taurA ? taurA.value : 'Not disclosed',
-          valB: taurB ? taurB.value : 'Not disclosed',
-          winA: taurA && taurA.status === 'good' && (!taurB || taurB.status !== 'good'),
-          winB: taurB && taurB.status === 'good' && (!taurA || taurA.status !== 'good')
-        });
-      }
-
-      var html = '<div class="cmp-scorecard">';
-      html += '<div class="cmp-scorecard-label">Head-to-head</div>';
-      html += '<div class="cmp-scorecard-grid">';
-      cards.forEach(function(c) {
-        var cls = c.winA ? ' win-a' : c.winB ? ' win-b' : '';
-        if (c.wide) cls += ' card-wide';
-        html += '<div class="cmp-metric-card' + cls + '">';
-        html += '<div class="cmp-metric-name">' + c.name + '</div>';
-        html += '<div class="cmp-metric-ref">' + c.ref + '</div>';
-        html += '<div class="cmp-metric-vals">';
-        html += '<div class="cmp-metric-col"><div class="cmp-metric-val' + (c.winA ? ' winner' : '') + '">' + c.valA + '</div><div class="cmp-metric-who">' + nameA + '</div></div>';
-        html += '<div class="cmp-metric-col"><div class="cmp-metric-val' + (c.winB ? ' winner' : '') + '">' + c.valB + '</div><div class="cmp-metric-who">' + nameB + '</div></div>';
-        html += '</div></div>';
-      });
-      html += '</div></div>';
-      return html;
-    }
-
-    function buildKeyDiffItems(pA, pB) {
-      var items = [];
-      var aA = pA.analysis || {};
-      var aB = pB.analysis || {};
-      var protA = parseMetricNum(getMetric(aA, 'protein'));
-      var protB = parseMetricNum(getMetric(aB, 'protein'));
-      if (protA && protB && Math.abs(protA - protB) >= 2) {
-        items.push({ metric: 'Protein', valA: protA + '%', valB: protB + '%', winA: protA > protB, winB: protB > protA });
-      }
-      var carbA = parseMetricNum(getMetric(aA, 'carb'));
-      var carbB = parseMetricNum(getMetric(aB, 'carb'));
-      if (carbA && carbB && Math.abs(carbA - carbB) >= 3) {
-        items.push({ metric: 'Carbs', valA: '~' + carbA + '%', valB: '~' + carbB + '%', winA: carbA < carbB, winB: carbB < carbA });
-      }
-      var priceA = parsePrice100g(aA.price);
-      var priceB = parsePrice100g(aB.price);
-      if (priceA && priceB && Math.abs(priceA - priceB) >= 5) {
-        items.push({ metric: 'Price', valA: '₹' + priceA, valB: '₹' + priceB, winA: priceA < priceB, winB: priceB < priceA });
-      }
-      var ingA = getMetric(aA, 'first ingredient');
-      var ingB = getMetric(aB, 'first ingredient');
-      if (ingA && ingB && ingA.status !== ingB.status) {
-        items.push({ metric: '1st ingredient', valA: ingA.value || '—', valB: ingB.value || '—', winA: ingA.status === 'good', winB: ingB.status === 'good' });
-      }
-      var taurA = getMetric(aA, 'taurine');
-      var taurB = getMetric(aB, 'taurine');
-      if (taurA && taurB && (taurA.status === 'good') !== (taurB.status === 'good')) {
-        items.push({ metric: 'Taurine', valA: taurA.value || 'Not disclosed', valB: taurB.value || 'Not disclosed', winA: taurA.status === 'good', winB: taurB.status === 'good' });
-      }
-      return items.slice(0, 5);
-    }
-
-    function buildKeyDiffsSection(pA, pB) {
-      var items = buildKeyDiffItems(pA, pB);
-      if (!items.length) return '';
-      var html = '<div class="cmp-diffs">';
-      html += '<div class="cmp-diffs-label">Key differences</div>';
-      html += '<div class="cmp-diff-list">';
-      items.forEach(function(d) {
-        html += '<div class="cmp-diff-item">';
-        html += '<div class="cmp-diff-val' + (d.winA ? ' winner' : '') + '">' + d.valA + '</div>';
-        html += '<div class="cmp-diff-metric">' + d.metric + '</div>';
-        html += '<div class="cmp-diff-val' + (d.winB ? ' winner' : '') + '">' + d.valB + '</div>';
-        html += '</div>';
-      });
-      html += '</div></div>';
-      return html;
-    }
-
-    function buildNutritionTable(pA, pB) {
-      var aA = pA.analysis || {};
-      var aB = pB.analysis || {};
-      var nameA = shortTitle(pA);
-      var nameB = shortTitle(pB);
-
-      var rows = [];
-      var protA = getMetric(aA, 'protein');
-      var protB = getMetric(aB, 'protein');
-      rows.push({ name: 'Protein', ref: 'Min 26% for adults', valA: protA?.value || '—', valB: protB?.value || '—', sA: protA?.status, sB: protB?.status });
-
-      var carbA = getMetric(aA, 'carb');
-      var carbB = getMetric(aB, 'carb');
-      rows.push({ name: 'Carbs', ref: 'Wild prey ≈ 5%', valA: carbA?.value || '—', valB: carbB?.value || '—', sA: carbA?.status, sB: carbB?.status });
-
-      var priceA = parsePrice100g(aA.price);
-      var priceB = parsePrice100g(aB.price);
-      if (priceA || priceB) {
-        var pBetter = (priceA && priceB) ? (priceA <= priceB ? 'good' : 'caution') : null;
-        var pBetterB = (priceA && priceB) ? (priceB <= priceA ? 'good' : 'caution') : null;
-        rows.push({ name: 'Price', ref: 'per 100g', valA: priceA ? '₹' + priceA : '—', valB: priceB ? '₹' + priceB : '—', sA: pBetter, sB: pBetterB });
-      }
-
-      var ingA = getMetric(aA, 'first ingredient');
-      var ingB = getMetric(aB, 'first ingredient');
-      rows.push({ name: '1st ingredient', ref: 'Named meat = better', valA: ingA?.value || aA.ing || '—', valB: ingB?.value || aB.ing || '—', sA: ingA?.status, sB: ingB?.status });
-
-      var taurA = getMetric(aA, 'taurine');
-      var taurB = getMetric(aB, 'taurine');
-      if (taurA || taurB) {
-        rows.push({ name: 'Taurine', ref: 'Min 0.10% AAFCO', valA: taurA?.value || 'Not disclosed', valB: taurB?.value || 'Not disclosed', sA: taurA?.status || 'missing', sB: taurB?.status || 'missing' });
-      }
-
-      var html = '<div class="cmp-section">';
-      html += '<div class="cmp-section-label">Nutrition breakdown</div>';
-      html += '<table class="cmp-table"><thead><tr><th></th><th>' + nameA + '</th><th>' + nameB + '</th></tr></thead><tbody>';
-      rows.forEach(function(r) {
-        var clsA = r.sA ? ' class="s-' + r.sA + '"' : '';
-        var clsB = r.sB ? ' class="s-' + r.sB + '"' : '';
-        html += '<tr>';
-        html += '<td><span class="metric-name">' + r.name + '</span><span class="metric-ref">' + r.ref + '</span></td>';
-        html += '<td' + clsA + '>' + r.valA + '</td>';
-        html += '<td' + clsB + '>' + r.valB + '</td>';
-        html += '</tr>';
-      });
-      html += '</tbody></table></div>';
-      return html;
-    }
-
-    function buildMetricsToggle(pA, pB) {
-      var aA = pA.analysis || {};
-      var aB = pB.analysis || {};
-      var metricsA = aA.metrics || [];
-      var metricsB = aB.metrics || [];
-      if (!metricsA.length && !metricsB.length) return '';
-      var allNames = [];
-      var nameSet = {};
-      metricsA.concat(metricsB).forEach(function(m) {
-        var n = (m.name || '').toLowerCase();
-        if (n && !nameSet[n]) { nameSet[n] = true; allNames.push(m.name); }
-      });
-
-      var tableHtml = '<table class="cmp-table"><thead><tr><th></th><th>' + shortTitle(pA) + '</th><th>' + shortTitle(pB) + '</th></tr></thead><tbody>';
-      allNames.forEach(function(name) {
-        var mA = metricsA.find(function(m) { return (m.name || '').toLowerCase() === name.toLowerCase(); });
-        var mB = metricsB.find(function(m) { return (m.name || '').toLowerCase() === name.toLowerCase(); });
-        var clsA = mA?.status ? ' class="s-' + mA.status + '"' : '';
-        var clsB = mB?.status ? ' class="s-' + mB.status + '"' : '';
-        tableHtml += '<tr><td><span class="metric-name">' + name + '</span></td>';
-        tableHtml += '<td' + clsA + '>' + (mA?.value || '—') + '</td>';
-        tableHtml += '<td' + clsB + '>' + (mB?.value || '—') + '</td></tr>';
-      });
-      tableHtml += '</tbody></table>';
-
-      return '<button class="cmp-expand-toggle" id="cmpMetricsToggle" onclick="toggleCmpMetrics()">' +
-        '<span>All metrics</span><span class="cmp-arrow">&#9662;</span></button>' +
-        '<div class="cmp-expand-body cmp-section" id="cmpMetricsBody">' + tableHtml + '</div>';
-    }
-
-    function toggleCmpMetrics() {
-      var btn = document.getElementById('cmpMetricsToggle');
-      var body = document.getElementById('cmpMetricsBody');
-      if (btn) btn.classList.toggle('open');
-      if (body) body.classList.toggle('open');
+      h += '<div class="v3cmp-foot">* Per-month for a typical 4kg adult · based on the published labels · no scores, no sponsors</div>';
+      return h;
     }
 
     function exitCompare() {
@@ -5081,6 +4784,8 @@
       compareProductB = null;
       document.getElementById('compareView').classList.remove('show');
       document.getElementById('overlayContent').classList.remove('hide');
+      var saBlock = document.querySelector('.overlay-sniff-another');
+      if (saBlock) saBlock.style.display = '';
     }
 
     function exitCompareToReport(which) {
@@ -5105,12 +4810,12 @@
     function shareComparison() {
       if (!compareProductA || !compareProductB) return;
       var url = window.location.origin + '/#compare/' + compareProductA.slug + '/' + compareProductB.slug;
-      var text = 'Compare: ' + (compareProductA.title || '') + ' vs ' + (compareProductB.title || '') + ' — ' + url;
+      var text = 'Compare: ' + (compareProductA.title || '') + ' vs ' + (compareProductB.title || '') + '. ' + url;
       if (navigator.share) {
         navigator.share({ title: 'Sniff comparison', text: text, url: url }).catch(function() {});
       } else {
         copyToClipboard(url).then(function(ok) {
-          showShareToast(ok ? 'Comparison link copied' : 'Couldn\'t copy — link shown');
+          showShareToast(ok ? 'Comparison link copied' : 'Couldn\'t copy. Link shown.');
         });
       }
       posthog.capture('comparison_shared', {
