@@ -1685,6 +1685,8 @@
     .v2-verdict-hero.v-caution { background: linear-gradient(180deg, #FBF1DD 0%, #F6E6C5 100%); }
     .v2-verdict-hero.v-weak,
     .v2-verdict-hero.v-flag { background: linear-gradient(180deg, var(--charcoal) 0%, var(--charcoal-soft) 100%); color: var(--cream); }
+    /* "Not verified yet" is neutral, not a negative verdict: soft, calm, charcoal text. */
+    .v2-verdict-hero.v-unknown { background: linear-gradient(180deg, #F4F0E8 0%, #EAE3D2 100%); color: var(--charcoal); }
     .v2-verdict-tag { font-size: 10px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; margin-bottom: 16px; opacity: 0.7; }
     .v2-verdict-hero.v-good .v2-verdict-tag { color: var(--good-deep, #356642); }
     .v2-verdict-hero.v-okay .v2-verdict-tag,
@@ -3214,9 +3216,9 @@
         linkEl.style.display = 'none';
       }
 
-      // Verdict hero
+      // Verdict hero. "Not verified yet" is neutral, never the dark concern styling.
       const v = a.verdict || {};
-      const heroClass = (v.labelClass || 'vp-okay').replace('vp-', 'v-');
+      const heroClass = a.unverified ? 'v-unknown' : (v.labelClass || 'vp-okay').replace('vp-', 'v-');
       const hero = document.getElementById('oVerdictHero');
       hero.className = 'v2-verdict-hero ' + heroClass;
       document.getElementById('oVerdictLabel').textContent = v.label || '';
@@ -3240,12 +3242,14 @@
       document.getElementById('oServingValue').textContent = serving.value;
       document.getElementById('oServingNote').textContent = serving.note;
 
-      // Worry + Action
+      // Worry + Action. Unverified shows no worry paws (we have no concern, we just don't know yet).
       const worry = a.worry || { level: 'low', filled: 1, label: '', note: '' };
+      const wFilled = a.unverified ? 0 : (worry.filled || 0);
+      const wLevel = a.unverified ? 'low' : (worry.level || 'low');
       const waEl = document.getElementById('oWorryAction');
-      waEl.className = 'v2-worry-action wl-' + (worry.level || 'low');
+      waEl.className = 'v2-worry-action wl-' + wLevel;
       document.getElementById('oWorryDots').innerHTML =
-        [1,2,3,4].map(i => `<span class="wd${i <= (worry.filled||0) ? ' filled' : ''}"></span>`).join('');
+        [1,2,3,4].map(i => `<span class="wd${i <= wFilled ? ' filled' : ''}"></span>`).join('');
       document.getElementById('oWorryLabel').textContent = worry.label || '';
       document.getElementById('oActionText').textContent = a.action || '';
 
@@ -3948,7 +3952,8 @@
       if (vLabel === 'Strong choice' || product.category === 'prescription') return [];
       const cat = product.category || 'dry';
       const stage = product.life_stage || 'adult';
-      const url = `${SUPABASE_URL}/rest/v1/products?category=eq.${encodeURIComponent(cat)}&life_stage=eq.${encodeURIComponent(stage)}&slug=neq.${encodeURIComponent(product.slug)}&select=slug,brand,title,image_url,analysis&limit=80`;
+      // Only recommend products we have actually verified (never suggest a "Not verified yet" food).
+      const url = `${SUPABASE_URL}/rest/v1/products?category=eq.${encodeURIComponent(cat)}&life_stage=eq.${encodeURIComponent(stage)}&slug=neq.${encodeURIComponent(product.slug)}&data_completeness=neq.none&select=slug,brand,title,image_url,analysis,data_completeness&limit=80`;
       try {
         const r = await fetch(url, { headers: SUPABASE_HEADERS });
         const candidates = await r.json();
