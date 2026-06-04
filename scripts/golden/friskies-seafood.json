@@ -1,0 +1,19 @@
+{
+  "name": "Friskies Seafood (semicolon-delimited, cereals-first junk)",
+  "meta": { "title": "Friskies Seafood Adult Cat Dry Food", "brand": "Friskies · Dry food", "productType": "dry", "slug": "friskies-seafood-dry-cat-food" },
+  "source": {
+    "ingredientsText": "Wholegrain cereals (corn, wheat); poultry by product meal; wheat gluten; soybean dried; dietary fibre (including inulin); minerals; vitamins.",
+    "gaText": ""
+  },
+  "extracted": {
+    "ingredients": [
+      { "name": "Wholegrain cereals (corn, wheat)", "pct": null },
+      { "name": "poultry by product meal", "pct": null },
+      { "name": "wheat gluten", "pct": null },
+      { "name": "soybean dried", "pct": null },
+      { "name": "minerals", "pct": null }
+    ],
+    "ga": { "protein": null, "fat": null, "fibre": null, "moisture": null, "ash": null, "calcium": null, "phosphorus": null, "taurine": null, "taurineListed": false }
+  },
+  "expect": { "verdict": "Not ideal daily", "firstIngredient": "cereals", "proteinDM": null, "grainFree": false, "completeness": "partial" }
+}

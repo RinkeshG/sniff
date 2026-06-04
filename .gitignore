@@ -2,3 +2,7 @@ node_modules/
 .vercel/
 .DS_Store
 *.log
+
+scripts/data/
+scripts/bin/
+eng.traineddata

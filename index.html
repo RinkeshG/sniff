@@ -1772,6 +1772,16 @@
     .v2-metric-status.good { background: rgba(74,143,92,0.12); color: #356642; }
     .v2-metric-status.warn { background: rgba(198,138,44,0.12); color: #9F6D1F; }
     .v2-metric-status.bad { background: rgba(179,58,42,0.12); color: #7A2419; }
+    /* Semantic statuses from the label-backed rubric: caution = amber, missing = neutral grey (never green). */
+    .v2-metric-value.caution { color: var(--caution); }
+    .v2-metric-value.missing { color: var(--missing); }
+    .v2-metric-status.caution { background: rgba(198,138,44,0.12); color: #9F6D1F; }
+    .v2-metric-status.missing { background: rgba(160,154,144,0.14); color: var(--indie); }
+    /* Provenance + correction link under "the numbers" */
+    .v2-provenance { margin-top: 14px; font-size: 12px; color: var(--indie); line-height: 1.5; }
+    .v2-provenance a { color: var(--indie); text-decoration: underline; }
+    .v2-report-wrong { margin-top: 10px; background: none; border: none; padding: 0; font: inherit; font-size: 12px; color: var(--indie); text-decoration: underline; cursor: pointer; }
+    .v2-report-wrong:disabled { color: var(--good); text-decoration: none; cursor: default; }
 
     /* Quick-facts strip: analyzed-for + daily portion */
     .v2-quickfacts {
@@ -2789,6 +2799,8 @@
               </button>
               <div class="v2-tech-details" id="oTechDetails">
                 <div id="oMetrics"></div>
+                <div id="oProvenance" class="v2-provenance"></div>
+                <button class="v2-report-wrong" id="oReportWrong" onclick="reportWrong()">Looks wrong? Tell us</button>
               </div>
             </div>
           </div>
@@ -3131,13 +3143,19 @@
           showOverlayState('notfound');
         } else if (result.type === 'cat') {
           lastApiFood = result;
-          updateOverlayCard(result);
+          // The API returns a flat object that is both the product identity and
+          // the analysis. Wrap it so renderProduct can read p.analysis + p.brand.
+          var brandStr = (result.brand || '').toLowerCase();
+          var pseudoCat = result.category || (brandStr.includes('wet') ? 'wet' : brandStr.includes('treat') ? 'treat' : 'dry');
+          var pseudoProduct = {
+            slug: result.slug || '__api__', brand: result.brand, title: result.title,
+            image_url: result.image_url, product_link: result.product_link,
+            category: pseudoCat, life_stage: result.life_stage || 'adult', analysis: result,
+          };
+          currentProduct = pseudoProduct;
+          renderProduct(pseudoProduct);
           showOverlayState('content');
           animateOverlayCard();
-          // Build pseudo-product for recommendations
-          var brandStr = (result.brand || '').toLowerCase();
-          var pseudoCat = brandStr.includes('wet') ? 'wet' : brandStr.includes('treat') ? 'treat' : 'dry';
-          var pseudoProduct = { slug: '__api__', category: pseudoCat, life_stage: 'adult', analysis: result };
           fetchAlternatives(pseudoProduct).then(function(alts) { renderAlternatives(pseudoProduct, alts); });
         } else {
           showOverlayState('error');
@@ -3268,6 +3286,23 @@
         `</div>`
       ).join('');
 
+      // Provenance: where this analysis came from, and how to flag it
+      const prov = a.provenance || {};
+      const provEl = document.getElementById('oProvenance');
+      if (a.unverified) {
+        provEl.innerHTML = 'We could not verify a full label for this product yet, so we are not scoring it.' +
+          (prov.sourceUrl ? ` <a href="${prov.sourceUrl}" target="_blank" rel="noopener">Listing we checked</a>` : '');
+      } else if (prov.sourceUrl || prov.checkedAt) {
+        const srcName = prov.source === 'brand' ? 'the brand label' : 'the Supertails label';
+        const date = (prov.checkedAt || '').slice(0, 10);
+        provEl.innerHTML = `Based on ${srcName}${date ? `, checked ${date}` : ''}.` +
+          (prov.sourceUrl ? ` <a href="${prov.sourceUrl}" target="_blank" rel="noopener">Source</a>` : '');
+      } else {
+        provEl.innerHTML = '';
+      }
+      const rwBtn = document.getElementById('oReportWrong');
+      rwBtn.disabled = false; rwBtn.textContent = 'Looks wrong? Tell us';
+
       // Reset tech state collapsed
       document.getElementById('oTechDetails').classList.remove('open');
       document.getElementById('oTechToggle').classList.remove('open');
@@ -3286,6 +3321,27 @@
           product_slug: currentProduct?.slug || null
         });
       }
+    }
+
+    async function reportWrong() {
+      const btn = document.getElementById('oReportWrong');
+      const slug = (typeof currentProduct !== 'undefined' && currentProduct) ? currentProduct.slug : null;
+      if (!slug || btn.disabled) return;
+      btn.disabled = true;
+      btn.textContent = 'Thanks, we will take a look';
+      try {
+        await fetch(`${SUPABASE_URL}/rest/v1/corrections`, {
+          method: 'POST',
+          headers: { ...SUPABASE_HEADERS, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+          body: JSON.stringify({
+            product_slug: slug,
+            kind: 'user_flag',
+            user_agent: (navigator.userAgent || '').slice(0, 500),
+            referrer: (document.referrer || '').slice(0, 1000),
+          }),
+        });
+        if (window.posthog) posthog.capture('analysis_reported_wrong', { product_slug: slug });
+      } catch (e) { /* non-blocking */ }
     }
 
     function animateOverlayCard() { /* no animation in v2 */ }

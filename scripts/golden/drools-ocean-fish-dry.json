@@ -1,0 +1,21 @@
+{
+  "name": "Drools Ocean Fish Adult Dry (meat-first but grain-heavy, no GA)",
+  "meta": { "title": "Drools Ocean Fish Adult Cat Dry Food", "brand": "Drools · Dry food", "productType": "dry" },
+  "source": {
+    "ingredientsText": "Ocean Fish (Minimum 30%), Chicken Meal, Corn Gluten Meal, Rice, Wheat Flour, Poultry Oil, Fish Oil, Beet Pulp, Brewer's Yeast, Salt, Minerals (Calcium, Phosphorus, Potassium, Sodium), Vitamins (Vitamin A, Vitamin D, Vitamin E, Vitamin B Complex), Antioxidants, Taurine.",
+    "gaText": ""
+  },
+  "extracted": {
+    "ingredients": [
+      { "name": "Ocean Fish", "pct": 30 },
+      { "name": "Chicken Meal", "pct": null },
+      { "name": "Corn Gluten Meal", "pct": null },
+      { "name": "Rice", "pct": null },
+      { "name": "Wheat Flour", "pct": null },
+      { "name": "Beet Pulp", "pct": null },
+      { "name": "Taurine", "pct": null }
+    ],
+    "ga": { "protein": null, "fat": null, "fibre": null, "moisture": null, "ash": null, "calcium": null, "phosphorus": null, "taurine": null, "taurineListed": true }
+  },
+  "expect": { "verdict": "Okay for now", "firstIngredient": "ocean fish", "proteinDM": null, "grainFree": false, "completeness": "partial" }
+}
