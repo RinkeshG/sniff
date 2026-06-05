@@ -13,6 +13,7 @@ import { readFileSync, writeFileSync } from 'fs';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { extractLabelFromHtml } from './lib/source.js';
+import { productIdentity, classifyForm, classifySpecies, classifyLifeStage, brandKey, lifeStageConflict } from './lib/identity.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const labelsPath = resolve(__dirname, 'data', 'labels.json');
@@ -45,15 +46,45 @@ async function catalog(base) {
   return out;
 }
 
+// Identity of a retailer catalog entry, from ITS OWN strings (vendor/title/handle).
+function candidateIdentity(c) {
+  const text = `${c.vendor || ''} ${c.title || ''} ${c.handle || ''}`;
+  return {
+    brandKey: brandKey(`${c.vendor || ''} ${c.handle || ''} ${c.title || ''}`),
+    species: classifySpecies(text),
+    form: classifyForm(text, null),
+    lifeStage: classifyLifeStage(text),
+  };
+}
+
+// A candidate may only be matched to our product if their identities AGREE:
+//  - a POSITIVE known-brand match on both sides (the old token check silently
+//    disabled itself for short names like "Me-O" -> that is how a Me-O product
+//    grabbed a Whiskas label),
+//  - same species (never a dog label on a cat product),
+//  - same form (never a wet pouch's label on a dry SKU; treats never match meals),
+//  - compatible life-stage (never an adult label on a kitten SKU).
+// Unknown-vs-known is permissive only for species/form/life-stage; brand must be
+// a real, equal match. Anything not clearly the same product is skipped.
+function facetsCompatible(p, c) {
+  if (!p.brandKey || !c.brandKey || p.brandKey !== c.brandKey) return false;
+  if (p.species !== 'unknown' && c.species !== 'unknown' && p.species !== c.species) return false;
+  if (p.form !== 'unknown' && c.form !== 'unknown' && p.form !== c.form) return false;
+  if (lifeStageConflict(p.lifeStage, c.lifeStage)) return false;
+  return true;
+}
+
 function bestMatch(product, cat) {
-  const brand = (product.brand || '').split(' · ')[0].toLowerCase();
-  const brandTok = toks(brand)[0];
-  const A = new Set(toks(brand + ' ' + product.slug.replace(/-/g, ' ')));
+  const pid = productIdentity({
+    brand: product.brand, title: product.title || product.slug.replace(/-/g, ' '),
+    category: product.category, type: product.type || 'cat', life_stage: product.life_stage, slug: product.slug,
+  });
+  const A = new Set(toks((product.brand || '') + ' ' + product.slug.replace(/-/g, ' ')));
   const ourFlavors = FLAVORS.filter((fl) => A.has(fl));
   let best = null;
   for (const c of cat) {
+    if (!facetsCompatible(pid, candidateIdentity(c))) continue; // hard identity gate
     const B = new Set(toks((c.vendor || '') + ' ' + c.title));
-    if (brandTok && !B.has(brandTok)) continue;             // brand must match
     let inter = 0; for (const t of A) if (B.has(t)) inter++;
     const jac = inter / new Set([...A, ...B]).size;
     if (jac < 0.5) continue;

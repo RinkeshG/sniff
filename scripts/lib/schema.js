@@ -49,6 +49,12 @@ export function assemble(skeleton, voice, provenance) {
     parentTake: clean(a.parentTake),
     metrics: a.metrics.map(metricOut),
   };
+  // The displayed verdict tag must reflect the PRODUCT's own form, never the
+  // label's moisture alone, so a card can never say "wet food" on a dry SKU.
+  if (provenance && (provenance.productForm === 'wet' || provenance.productForm === 'dry')
+      && /\bfood$/.test(out.verdict.tag || '')) {
+    out.verdict.tag = `${provenance.productForm} food`;
+  }
   if (provenance) out.provenance = provenance;
   return out;
 }

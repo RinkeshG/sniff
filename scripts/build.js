@@ -17,6 +17,7 @@ import { validateFacts } from './lib/validate.js';
 import { compute } from './lib/compute.js';
 import { score, RUBRIC_VERSION } from './lib/rubric.js';
 import { assemble, abstainAnalysis } from './lib/schema.js';
+import { productIdentity, labelIdentity, identityConflict, consistencyFlags } from './lib/identity.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DATA = resolve(__dirname, 'data');
@@ -42,14 +43,35 @@ function buildOne(l) {
     dataCompleteness = 'none'; confidence = 0; needsReview = true;
   } else {
     computed = compute(val.facts, meta);
-    const sk = score(computed);
-    analysis = assemble(sk, null, provenance); // plain voice; warmed later by the voice pass
-    const label = sk.verdict.label;
-    const full = l.completeness === 'full';
-    const confident = val.firstIngredientValid && label !== 'Not transparent enough' && l.identityOk && !l.multiProduct && (!STRONG.has(label) || full);
-    dataCompleteness = full ? 'full' : 'partial';
-    confidence = confident ? (full ? 1 : 0.65) : 0.3;
-    needsReview = l.multiProduct || val.errors.length > 0;
+
+    // ── Identity & consistency gate ───────────────────────────────────────
+    // Prove the label belongs to THIS product (right brand/form/species/life-
+    // stage/flavour) and that the numbers are internally plausible. A hard
+    // conflict means the label cannot be this product's -> abstain, never guess.
+    const idMeta = { brand: l.brand, title: l.title, category: l.category, type: l.type || l.species || 'cat', life_stage: l.life_stage, slug: l.slug };
+    const prodId = productIdentity(idMeta);
+    const labId = labelIdentity({ facts: val.facts, sourceUrl: l.sourceUrl, title: l.title, firstIngredient: computed.firstIngredient });
+    const conflict = identityConflict(prodId, labId, val.facts.ingredientsText || '');
+
+    const cf = consistencyFlags({ facts: val.facts, prodForm: prodId.form, harvesterCompleteness: l.completeness });
+    const varietyTitle = /\b(variety|assorted|combo|multi[-\s]?pack|pack of|trio|mixed)\b/i.test(l.title || '');
+
+    if (conflict.hard.length || cf.gaImplausible) {
+      const reason = conflict.hard.length ? conflict.hard : [`guaranteed analysis sums to ${Math.round(cf.gaSum)}% (implausible)`];
+      analysis = abstainAnalysis(meta, { ...provenance, conflict: reason });
+      analysis.reviewReason = reason.join('; ');
+      dataCompleteness = 'none'; confidence = 0; needsReview = true;
+    } else {
+      const sk = score(computed);
+      analysis = assemble(sk, null, { ...provenance, productForm: prodId.form }); // plain voice; warmed later by the voice pass
+      const label = sk.verdict.label;
+      const full = cf.completeness === 'full';
+      const confident = val.firstIngredientValid && label !== 'Not transparent enough' && l.identityOk && !l.multiProduct && (!STRONG.has(label) || full);
+      dataCompleteness = cf.completeness;
+      confidence = confident ? (full ? 1 : 0.65) : 0.3;
+      needsReview = l.multiProduct || val.errors.length > 0 || conflict.soft.length > 0 || varietyTitle;
+      if (conflict.soft.length) analysis.reviewReason = conflict.soft.join('; ');
+    }
   }
 
   return {

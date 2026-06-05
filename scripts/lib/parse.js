@@ -56,9 +56,20 @@ function num(text, nutrientRe) {
   return m ? parseFloat(m[1]) : null;
 }
 
-function parseGA(text) {
+// Some labels write percentages European-style and percent-first: "%30,00",
+// "% 9,00", or "30,00%". Normalize them all to "30.00%" so the GA regexes match.
+// (validate.js already reads comma decimals when checking values are verbatim.)
+function normalizeGAText(s) {
+  return String(s || '')
+    .replace(/%\s*(\d{1,3})[.,](\d{1,2})/g, '$1.$2%')   // "%30,00" / "% 30.00" -> "30.00%"
+    .replace(/%\s*(\d{1,3})(?![\d.,%])/g, '$1%')         // "%9"               -> "9%"
+    .replace(/(\d{1,3}),(\d{1,2})\s*%/g, '$1.$2%');      // "30,00%"           -> "30.00%"
+}
+
+function parseGA(rawText) {
   const ga = { protein: null, fat: null, fibre: null, moisture: null, ash: null, calcium: null, phosphorus: null, taurine: null, taurineListed: false };
-  if (!text) return ga;
+  if (!rawText) return ga;
+  const text = normalizeGAText(rawText);
   ga.protein = num(text, /(?:crude\s+|raw\s+)?protein[^0-9%]{0,15}(\d{1,2}(?:\.\d+)?)\s*%/i);
   ga.fat = num(text, /(?:crude\s+|raw\s+)?(?:fat|fats|oils?)[^0-9%]{0,20}(\d{1,2}(?:\.\d+)?)\s*%/i);
   ga.fibre = num(text, /(?:crude\s+|raw\s+)?fib(?:re|er)[^0-9%]{0,15}(\d{1,2}(?:\.\d+)?)\s*%/i);

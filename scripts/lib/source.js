@@ -8,10 +8,17 @@
 
 import { listLooksComplete } from './compute.js';
 
+// Inline tags can sit MID-WORD (e.g. "L<span>amb"), so they must be removed with
+// no space or the word splits ("L amb"). Block tags become whitespace boundaries.
+const INLINE_TAGS = /<\/?(?:span|b|strong|em|i|u|a|font|mark|small|sub|sup|wbr|abbr|cite|q|label|time|bdi|bdo)\b[^>]*>/gi;
 function htmlToText(html) {
   return String(html || '')
+    .replace(INLINE_TAGS, '')                // drop inline tags first (rejoin split words)
     // Flatten each <li>...</li> (often <li><p><span>text</span></p></li>) to one bullet line.
     .replace(/<li[^>]*>([\s\S]*?)<\/li>/gi, (_m, inner) => '\n• ' + inner.replace(/<[^>]+>/g, ' ').replace(/&nbsp;/gi, ' ').replace(/\s+/g, ' ').trim())
+    // Flatten each table ROW to one line so a "Nutrient | value" GA table reads as
+    // "Crude Protein 30%" instead of the name and value landing on separate lines.
+    .replace(/<tr[^>]*>([\s\S]*?)<\/tr>/gi, (_m, inner) => '\n' + inner.replace(/<[^>]+>/g, ' ').replace(/&nbsp;/gi, ' ').replace(/\s+/g, ' ').trim())
     .replace(/<\/(ul|ol)>/gi, '\n\n')        // the list block ends with a hard break
     .replace(/<\s*(br|\/p|\/div|\/h\d|\/tr)\s*>/gi, '\n')
     .replace(/<[^>]+>/g, ' ')
@@ -29,14 +36,19 @@ function htmlToText(html) {
 // A header is a LABEL: either "Label:" (optionally with content after) or the
 // bare word alone on its own line. NOT the word buried in a marketing sentence.
 function headerMatch(line, words) {
-  const m = line.match(new RegExp(`^(${words})\\b\\s*(:?)\\s*(.*)$`, 'i'));
+  const m = line.match(new RegExp(`^(${words})\\b\\s*(.*)$`, 'i'));
   if (!m) return null;
-  if (m[2] === ':') return { content: m[3].trim() };      // "Composition: ..."
-  if (m[3].trim() === '') return { content: '' };          // bare "Ingredients"
-  return null;                                             // "Ingredients like chicken..." -> not a header
+  const rest = m[2].trim();
+  if (rest === '') return { content: '' };                       // bare "Ingredients"
+  if (rest[0] === ':') return { content: rest.slice(1).trim() }; // "Composition: ..."
+  // A short keyword-led phrase ending in a colon is still a header
+  // ("Nutritional info of each pack:", "Each pack contains:"), but a sentence
+  // ("Ingredients like chicken make this great.") is not.
+  if (/:$/.test(rest) && rest.length <= 32 && !/[.!?]/.test(rest)) return { content: '' };
+  return null;                                                   // keyword buried in prose
 }
-const ING_WORDS = 'composition|ingredients?';
-const GA_WORDS = 'analytical (?:constituents?|compounds?|composition)|guaranteed analysis|nutritional (?:information|analysis|composition)|composition analysis';
+const ING_WORDS = 'composition|ingredients?|each pack contains|pack contains';
+const GA_WORDS = 'analytical (?:constituents?|compounds?|composition)|guaranteed analysis|nutritional (?:info|information|analysis|composition)|nutrition (?:info|information|analysis|facts)|composition analysis';
 const isIngHeader = (l) => !!headerMatch(l, ING_WORDS);
 // A real GA mention: a nutrient immediately followed by a percentage.
 const GA_PROTEIN = /\bprotein\b\s*[:=]?\s*\d{1,2}(?:\.\d+)?\s*%/i;
@@ -81,17 +93,24 @@ function findIngredients(lines) {
 
 // Real guaranteed analysis only: a labeled GA block, or a line that lists a
 // protein percentage plus another nutrient percentage. Never the ingredient line.
+const HAS_VALUE = /\d/;
+const HAS_UNIT = /(%|mg\/kg|g\/kg)/i;
 function findGA(lines, ingredientsText) {
   const i = lines.findIndex((l) => headerMatch(l, GA_WORDS));
   if (i >= 0) {
     const h = headerMatch(lines[i], GA_WORDS);
-    if (/\d/.test(h.content) && /(%|mg\/kg|g\/kg)/i.test(h.content)) return h.content;
-    for (let j = i + 1; j < Math.min(lines.length, i + 4); j++) {
+    if (HAS_VALUE.test(h.content) && HAS_UNIT.test(h.content)) return h.content; // full GA on the header line
+    // Otherwise collect the run of value lines below the header. A GA table flattens
+    // to one "Nutrient value" line per row ("Crude Protein 30%", "Crude Fat 9%", ...),
+    // so gather consecutive lines carrying a percentage / mg-kg and join them.
+    const collected = [];
+    for (let j = i + 1; j < Math.min(lines.length, i + 25); j++) {
       const l = lines[j].trim();
-      if (!l) continue;
-      if (/\d/.test(l) && /(%|mg\/kg|g\/kg)/i.test(l)) return l;
-      break;
+      if (!l) { if (collected.length) break; else continue; }
+      if (HAS_VALUE.test(l) && HAS_UNIT.test(l)) { collected.push(l); continue; }
+      break; // first non-value line ends the GA block
     }
+    if (collected.length) return collected.join('; ');
   }
   const inline = lines.find((l) => l !== ingredientsText && GA_PROTEIN.test(l) && GA_SUPPORT.test(l));
   return inline ? inline.trim() : null;

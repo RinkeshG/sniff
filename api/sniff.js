@@ -12,6 +12,7 @@ import { compute } from '../scripts/lib/compute.js';
 import { score, RUBRIC_VERSION } from '../scripts/lib/rubric.js';
 import { voiceOver } from '../scripts/lib/voice.js';
 import { assemble, abstainAnalysis } from '../scripts/lib/schema.js';
+import { productIdentity, labelIdentity, identityConflict, consistencyFlags } from '../scripts/lib/identity.js';
 
 export const config = { maxDuration: 30 };
 
@@ -108,10 +109,26 @@ export default async function handler(req, res) {
     }
 
     const computed = compute(val.facts, meta);
+
+    // Identity & consistency gate (same guarantee as the offline build): never
+    // attach a label that contradicts the product, never score impossible numbers.
+    const prodId = productIdentity({ brand: identity.brand, title: identity.title, category: identity.category, type: 'cat', life_stage: identity.life_stage, slug: identity.slug });
+    const labId = labelIdentity({ facts: val.facts, sourceUrl: source.sourceUrl, firstIngredient: computed.firstIngredient });
+    const conflict = identityConflict(prodId, labId, val.facts.ingredientsText || '');
+    const cf = consistencyFlags({ facts: val.facts, prodForm: prodId.form, harvesterCompleteness: source.completeness });
+    if (conflict.hard.length || cf.gaImplausible) {
+      const reason = conflict.hard.length ? conflict.hard : [`guaranteed analysis sums to ${Math.round(cf.gaSum)}% (implausible)`];
+      const a = abstainAnalysis(meta, { ...provenance, conflict: reason });
+      a.reviewReason = reason.join('; ');
+      await queue(identity, a, 'none', 0, val.facts, source);
+      return res.status(200).json(catResponse(identity, a));
+    }
+
     const skeleton = score(computed);
     const v = await voiceOver(meta, computed, skeleton);
-    const analysis = assemble(skeleton, v, provenance);
-    const completeness = source.completeness;
+    const analysis = assemble(skeleton, v, { ...provenance, productForm: prodId.form });
+    if (conflict.soft.length) analysis.reviewReason = conflict.soft.join('; ');
+    const completeness = cf.completeness;
     await queue(identity, analysis, completeness, completeness === 'full' ? 0.65 : 0.5, val.facts, source);
     return res.status(200).json(catResponse(identity, analysis));
   } catch (err) {

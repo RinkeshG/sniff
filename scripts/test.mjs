@@ -12,6 +12,7 @@ import { assemble, clean } from './lib/schema.js';
 import { lintVoice } from './lib/voice.js';
 import { fetchSupertailsLabel } from './lib/source.js';
 import { parseLabel } from './lib/parse.js';
+import { productIdentity, labelIdentity, identityConflict, consistencyFlags, brandKey, leadMeat } from './lib/identity.js';
 import { readdirSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
@@ -236,6 +237,117 @@ test('a treat is judged as a treat, not a daily meal, and junk is flagged', () =
   const sk = score(c);
   assert.equal(sk.verdict.label, 'Treat, not a meal');
   assert.ok(sk.reasons.some((r) => /colou?r|sugar/i.test(r.a)));
+});
+
+// ── Identity & consistency gate (the wrong-but-real-label guard) ────────────
+// Each fixture mirrors a real contamination case found in the live DB.
+
+test('identity: dry product + wet pouch label (moisture 84) -> HARD form conflict', () => {
+  const prod = productIdentity({ brand: 'Whiskas · Dry food', title: 'Ocean Fish, Adult 1+', category: 'dry', type: 'cat', life_stage: 'adult', slug: 'whiskas-ocean-fish-adult' });
+  const label = labelIdentity({
+    facts: { ga: { moisture: 84 }, ingredientsText: 'wholegrain cereals (corn, rice, wheat), ...' },
+    sourceUrl: 'https://headsupfortails.com/products/whiskas-ocean-fish-adult-wet-cat-food-80-g',
+    firstIngredient: 'Wholegrain cereals (corn, rice, wheat)',
+  });
+  const c = identityConflict(prod, label, 'wholegrain cereals');
+  assert.equal(c.ok, false);
+  assert.ok(c.hard.some((h) => /form/.test(h)), c.hard.join(','));
+});
+
+test('identity: cat product + dog-food label -> HARD species conflict', () => {
+  const prod = productIdentity({ brand: 'Farmina N&D · Dry food', title: 'Quinoa and Lamb Adult Cat Dry Food', category: 'dry', type: 'cat', life_stage: 'adult' });
+  const label = labelIdentity({
+    facts: { ga: { moisture: 9 }, ingredientsText: 'lamb, quinoa, ...' },
+    sourceUrl: 'https://headsupfortails.com/products/farmina-n-d-lamb-quinoa-grain-free-adult-dry-dog-food',
+    firstIngredient: 'lamb',
+  });
+  const c = identityConflict(prod, label, 'lamb, quinoa');
+  assert.equal(c.ok, false);
+  assert.ok(c.hard.some((h) => /species/.test(h)), c.hard.join(','));
+});
+
+test('identity: life-stage mismatch is SOFT (review), not abstain (metadata is messy)', () => {
+  const prod = productIdentity({ brand: 'Whiskas · Dry food', title: 'Mackerel Kitten', category: 'dry', type: 'cat', life_stage: 'kitten' });
+  const label = labelIdentity({ sourceUrl: 'https://x.com/products/whiskas-mackerel-adult-dry-cat-food', firstIngredient: 'cereals' });
+  const c = identityConflict(prod, label, 'cereals');
+  assert.equal(c.ok, true);               // no hard conflict -> not abstained
+  assert.ok(c.soft.some((s) => /life-stage/.test(s)), c.soft.join(','));
+});
+
+test('identity: Me-O dry product + Whiskas WET label -> HARD form (abstain), SOFT brand', () => {
+  // The real contamination: a Me-O dry SKU wearing the Whiskas mackerel-in-jelly
+  // (wet, moisture 87) label. Form catches it hard; brand is flagged soft.
+  const prod = productIdentity({ brand: 'Me-O · Dry food', title: 'Mackerel, Adult', category: 'dry', type: 'cat', life_stage: 'adult' });
+  const label = labelIdentity({
+    facts: { ga: { moisture: 87 }, ingredientsText: 'fish and fish derivatives, ...' },
+    sourceUrl: 'https://headsupfortails.com/products/whiskas-mackerel-in-jelly-adult-cat-wet-food-80-gm-pack',
+    firstIngredient: 'fish and fish derivatives',
+  });
+  const c = identityConflict(prod, label, 'fish and fish derivatives');
+  assert.equal(c.ok, false);
+  assert.ok(c.hard.some((h) => /form/.test(h)), c.hard.join(','));
+  assert.ok(c.soft.some((s) => /brand/.test(s)), c.soft.join(','));
+});
+
+test('identity: salmon product + tuna-led label -> SOFT flavour (review), not abstain', () => {
+  const prod = productIdentity({ brand: 'Signature · Wet food', title: 'Grain Zero Salmon Mousse', category: 'wet', type: 'cat', life_stage: 'adult' });
+  const label = labelIdentity({
+    facts: { ga: { moisture: 78 }, ingredientsText: 'tuna, fish broth, sunflower oil' },
+    sourceUrl: 'https://supertails.com/products/signature-grain-zero-salmon-mousse-adult-cat-wet-food.json',
+    firstIngredient: 'tuna',
+  });
+  const c = identityConflict(prod, label, 'tuna, fish broth, sunflower oil');
+  assert.equal(c.ok, true);                 // no hard conflict
+  assert.ok(c.soft.some((s) => /flavour/.test(s)), c.soft.join(','));
+});
+
+test('identity: honest flavoured food (Whiskas Tuna = cereals) -> NO conflict', () => {
+  const prod = productIdentity({ brand: 'Whiskas · Dry food', title: 'Tuna, Adult 1+', category: 'dry', type: 'cat', life_stage: 'adult' });
+  const label = labelIdentity({
+    facts: { ga: { moisture: null }, ingredientsText: 'cereals (corn and/or wheat and/or rice), meat and animal derivatives' },
+    sourceUrl: 'https://supertails.com/products/whiskas-tuna-flavour-adult-dry-cat-food.json',
+    firstIngredient: 'cereals (corn and/or wheat and/or rice)',
+  });
+  const c = identityConflict(prod, label, 'cereals (corn and/or wheat and/or rice), meat and animal derivatives');
+  assert.equal(c.ok, true);
+  assert.equal(c.soft.length, 0);
+});
+
+test('identity: manufacturer aliases never false-conflict', () => {
+  // Advance is made by Affinity; Friskies by Purina; Matisse is Farmina N&D; Lara is Versele-Laga.
+  const cases = [
+    [{ brand: 'Affinity Petcare · Dry food', title: 'Advance Veterinary Diets Urinary Cat', category: 'dry', type: 'cat', life_stage: 'adult' }, 'advance-veterinary-diets-urinary-cat'],
+    [{ brand: 'Purina Felix · Dry food', title: 'Friskies Kitten', category: 'dry', type: 'cat', life_stage: 'kitten' }, 'friskies-kitten-dry-cat-food'],
+    [{ brand: 'Farmina · Dry food', title: 'Matisse Salmon and Tuna Adult', category: 'dry', type: 'cat', life_stage: 'adult' }, 'matisse-salmon-tuna-adult'],
+    [{ brand: 'Versele Laga · Dry food', title: 'Lara Lamb Adult', category: 'dry', type: 'cat', life_stage: 'adult' }, 'lara-lamb-adult-cat-dry-food'],
+  ];
+  for (const [meta, handle] of cases) {
+    const c = identityConflict(productIdentity(meta), labelIdentity({ sourceUrl: `https://supertails.com/products/${handle}.json` }), '');
+    assert.equal(c.hard.length, 0, `${meta.title}: ${c.hard.join(',')}`);
+  }
+});
+
+test('consistency: wet food with no moisture cannot be "full"', () => {
+  const wet = consistencyFlags({ facts: { ga: { protein: 10, fat: 5, moisture: null } }, prodForm: 'wet', harvesterCompleteness: 'full' });
+  assert.equal(wet.completeness, 'partial');
+  const dry = consistencyFlags({ facts: { ga: { protein: 32, fat: 12, moisture: 10 } }, prodForm: 'dry', harvesterCompleteness: 'full' });
+  assert.equal(dry.completeness, 'full');
+});
+
+test('consistency: a guaranteed analysis summing over 100% is implausible', () => {
+  const bad = consistencyFlags({ facts: { ga: { protein: 80, fat: 30, fibre: 5, moisture: 10, ash: 8 } }, prodForm: 'dry', harvesterCompleteness: 'full' });
+  assert.equal(bad.gaImplausible, true);
+  const okFacts = consistencyFlags({ facts: { ga: { protein: 36, fat: 14, fibre: 0.9, moisture: 10, ash: 7.3 } }, prodForm: 'dry', harvesterCompleteness: 'full' });
+  assert.equal(okFacts.gaImplausible, false);
+});
+
+test('identity helpers: brandKey + leadMeat behave', () => {
+  assert.equal(brandKey('Me-O · Dry food'), 'me');
+  assert.equal(brandKey('whiskas-mackerel-in-jelly-adult'), 'whiskas');
+  assert.equal(brandKey('advance-veterinary-diets-urinary-cat'), 'affinity');
+  assert.equal(brandKey('a generic handle with no brand'), '');
+  assert.equal(leadMeat('Dehydrated chicken meat (36%)'), 'chicken');
+  assert.equal(leadMeat('meat and animal derivatives (4% chicken)'), null); // generic lead is not a named claim
 });
 
 // ── Golden set: real labels, independent ground truth, per-product ──────────
