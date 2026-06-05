@@ -1,0 +1,20 @@
+{
+  "name": "Royal Canin Kitten (ingredients only, no GA)",
+  "meta": { "title": "Royal Canin Kitten Cat Dry Food", "brand": "Royal Canin · Dry food", "productType": "dry" },
+  "source": {
+    "ingredientsText": "dehydrated poultry protein, rice, vegetable protein isolate, animal fats, maize flour, hydrolysed animal proteins, wheat flour, maize gluten, yeasts and parts thereof, beet pulp, vegetable fibres, fish oil, soya oil, minerals, fructo-oligo-saccharides, psyllium husks and seeds, hydrolysed yeast, yeast extracts, marigold extract.",
+    "gaText": ""
+  },
+  "extracted": {
+    "ingredients": [
+      { "name": "dehydrated poultry protein", "pct": null },
+      { "name": "rice", "pct": null },
+      { "name": "vegetable protein isolate", "pct": null },
+      { "name": "animal fats", "pct": null },
+      { "name": "maize flour", "pct": null },
+      { "name": "wheat flour", "pct": null }
+    ],
+    "ga": { "protein": null, "fat": null, "fibre": null, "moisture": null, "ash": null, "calcium": null, "phosphorus": null, "taurine": null, "taurineListed": false }
+  },
+  "expect": { "verdict": "Okay for now", "firstIngredient": "poultry", "proteinDM": null, "grainFree": false, "completeness": "partial" }
+}

@@ -1,164 +1,138 @@
+// On-demand analysis. Reworked to be label-backed: we resolve the query to a
+// real product, fetch its actual label (Supertails .json), and run the SAME
+// gated pipeline as the bulk ingester. If we cannot find a real label, we say
+// so (honest "not verified") instead of analyzing the product name. Fresh
+// results are returned for display and queued as needs_review, never persisted
+// as a confident verdict.
+
+import { fetchLabel } from '../scripts/lib/source.js';
+import { extractFacts } from '../scripts/lib/extract.js';
+import { validateFacts } from '../scripts/lib/validate.js';
+import { compute } from '../scripts/lib/compute.js';
+import { score, RUBRIC_VERSION } from '../scripts/lib/rubric.js';
+import { voiceOver } from '../scripts/lib/voice.js';
+import { assemble, abstainAnalysis } from '../scripts/lib/schema.js';
+import { productIdentity, labelIdentity, identityConflict, consistencyFlags } from '../scripts/lib/identity.js';
+
 export const config = { maxDuration: 30 };
 
-export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
+const SUPABASE_URL = process.env.SUPABASE_URL || 'https://hjscicnzlplxpgxzvdex.supabase.co';
+const READ_KEY = process.env.SUPABASE_KEY || 'sb_publishable_q8CsjF6ub7apLI79mzsc2Q_Hg7-T2IA';
+const SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
+const enc = encodeURIComponent;
+const slugify = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
-  const { query } = req.body;
+async function sbGet(path) {
+  const r = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, { headers: { apikey: READ_KEY, Authorization: `Bearer ${READ_KEY}` } });
+  if (!r.ok) return [];
+  return r.json();
+}
+
+async function findProduct(query) {
+  const q = query.trim();
+  const pCols = 'slug,brand,title,image_url,product_link,category,life_stage,type,analysis,analysis_v2,rubric_version';
+  let rows = await sbGet(`products?slug=eq.${enc(slugify(q))}&select=${pCols}&limit=1`);
+  if (!rows.length) rows = await sbGet(`products?search_text=ilike.*${enc(q)}*&select=${pCols}&limit=1`);
+  if (rows.length) return { kind: 'product', row: rows[0] };
+  const cat = await sbGet(`shopify_catalog?title=ilike.*${enc(q)}*&select=handle,title,vendor,species,image_url,product_link&limit=1`);
+  if (cat.length) return { kind: 'catalog', row: cat[0] };
+  return null;
+}
+
+function catResponse(identity, analysis) {
+  // Flat object: frontend reads it both as the product (brand/title/etc) and as
+  // the analysis (verdict/metrics/...). type is forced to 'cat'.
+  return { type: 'cat', slug: identity.slug, brand: identity.brand, title: identity.title, image_url: identity.image_url, product_link: identity.product_link, category: identity.category, life_stage: identity.life_stage, ...analysis };
+}
+
+async function queue(identity, analysis, completeness, confidence, facts, source) {
+  if (!SERVICE_KEY || identity.kind !== 'product') return; // non-persist by default
+  try {
+    await fetch(`${SUPABASE_URL}/rest/v1/products?slug=eq.${enc(identity.slug)}`, {
+      method: 'PATCH',
+      headers: { apikey: SERVICE_KEY, Authorization: `Bearer ${SERVICE_KEY}`, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+      body: JSON.stringify({
+        analysis_v2: analysis, extracted_facts: facts || null, data_completeness: completeness,
+        confidence, source_url: source.sourceUrl, source_tier: source.sourceTier,
+        source_fetched_at: source.fetchedAt, rubric_version: RUBRIC_VERSION, needs_review: true,
+      }),
+    });
+  } catch { /* non-blocking */ }
+}
+
+export default async function handler(req, res) {
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+  const { query } = req.body || {};
   if (!query || typeof query !== 'string' || query.trim().length < 2) {
     return res.status(400).json({ error: 'Please enter a product name' });
   }
-
-  const anthropicKey = process.env.ANTHROPIC_API_KEY;
-  if (!anthropicKey) {
-    return res.status(500).json({ error: 'Server configuration error' });
-  }
+  if (!process.env.ANTHROPIC_API_KEY) return res.status(500).json({ error: 'Server configuration error' });
 
   try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': anthropicKey,
-        'anthropic-version': '2023-06-01',
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 2048,
-        messages: [{ role: 'user', content: buildPrompt(query.trim()) }],
-      }),
-    });
+    const found = await findProduct(query);
+    if (!found) return res.status(200).json({ type: 'not_found', query });
 
-    if (!response.ok) {
-      const err = await response.text();
-      console.error('Anthropic API error:', err);
-      return res.status(502).json({ error: 'Analysis service unavailable' });
+    let identity;
+    if (found.kind === 'product') {
+      const r = found.row;
+      if (r.type === 'dog') return res.status(200).json({ type: 'dog', brand: r.brand, title: r.title });
+      // Already label-backed in the DB: serve it.
+      if (r.rubric_version && (r.analysis_v2 || r.analysis)) {
+        return res.status(200).json(catResponse(r, r.analysis_v2 || r.analysis));
+      }
+      identity = { kind: 'product', slug: r.slug, brand: r.brand, title: r.title, image_url: r.image_url, product_link: r.product_link, category: r.category, life_stage: r.life_stage };
+    } else {
+      const r = found.row;
+      if (r.species === 'dog') return res.status(200).json({ type: 'dog', brand: r.vendor, title: r.title });
+      if (r.species && r.species !== 'cat') return res.status(200).json({ type: 'not_food', query });
+      identity = { kind: 'catalog', slug: r.handle, brand: r.vendor, title: r.title, image_url: r.image_url, product_link: r.product_link, category: null, life_stage: null };
     }
 
-    const data = await response.json();
-    const text = data.content[0].text;
+    const source = await fetchLabel({ slug: identity.slug, brand: identity.brand, title: identity.title, product_link: identity.product_link });
+    const provenance = { source: source.sourceTier, sourceUrl: source.sourceUrl, checkedAt: source.fetchedAt, completeness: source.completeness, rubricVersion: RUBRIC_VERSION };
+    const meta = { brand: identity.brand, title: identity.title, productType: identity.category, lifeStage: identity.life_stage, slug: identity.slug };
 
-    const jsonMatch = text.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) {
-      return res.status(502).json({ error: 'Could not parse analysis' });
+    if (source.completeness === 'none') {
+      const a = abstainAnalysis(meta, provenance);
+      await queue(identity, a, 'none', 0, null, source);
+      return res.status(200).json(catResponse(identity, a));
     }
 
-    const result = JSON.parse(jsonMatch[0]);
-    return res.status(200).json(result);
+    const raw = await extractFacts({ ingredientsText: source.ingredientsText, gaText: source.gaText });
+    const val = validateFacts(raw, { ingredientsText: source.ingredientsText || '', gaText: source.gaText || '' });
+    const untrustworthy = !!source.ingredientsText && !val.firstIngredientValid;
+
+    if (untrustworthy) {
+      const a = abstainAnalysis(meta, provenance);
+      await queue(identity, a, 'none', 0, val.facts, source);
+      return res.status(200).json(catResponse(identity, a));
+    }
+
+    const computed = compute(val.facts, meta);
+
+    // Identity & consistency gate (same guarantee as the offline build): never
+    // attach a label that contradicts the product, never score impossible numbers.
+    const prodId = productIdentity({ brand: identity.brand, title: identity.title, category: identity.category, type: 'cat', life_stage: identity.life_stage, slug: identity.slug });
+    const labId = labelIdentity({ facts: val.facts, sourceUrl: source.sourceUrl, firstIngredient: computed.firstIngredient });
+    const conflict = identityConflict(prodId, labId, val.facts.ingredientsText || '');
+    const cf = consistencyFlags({ facts: val.facts, prodForm: prodId.form, harvesterCompleteness: source.completeness });
+    if (conflict.hard.length || cf.gaImplausible) {
+      const reason = conflict.hard.length ? conflict.hard : [`guaranteed analysis sums to ${Math.round(cf.gaSum)}% (implausible)`];
+      const a = abstainAnalysis(meta, { ...provenance, conflict: reason });
+      a.reviewReason = reason.join('; ');
+      await queue(identity, a, 'none', 0, val.facts, source);
+      return res.status(200).json(catResponse(identity, a));
+    }
+
+    const skeleton = score(computed);
+    const v = await voiceOver(meta, computed, skeleton);
+    const analysis = assemble(skeleton, v, { ...provenance, productForm: prodId.form });
+    if (conflict.soft.length) analysis.reviewReason = conflict.soft.join('; ');
+    const completeness = cf.completeness;
+    await queue(identity, analysis, completeness, completeness === 'full' ? 0.65 : 0.5, val.facts, source);
+    return res.status(200).json(catResponse(identity, analysis));
   } catch (err) {
     console.error('Sniff API error:', err);
     return res.status(500).json({ error: 'Something went wrong' });
   }
-}
-
-function buildPrompt(query) {
-  return `You are Sniff's analysis engine. A cat parent in India just typed "${query}" into the search bar.
-
-Your job:
-1. Figure out what product this is
-2. Use your knowledge of its ingredients, guaranteed analysis, and nutritional profile
-3. Generate an honest, opinionated analysis
-
-IMPORTANT CLASSIFICATION:
-First, determine what type of product this is:
-- "cat" — it's a cat food product → generate full analysis
-- "dog" — it's a dog food product → return dog food response
-- "not_food" — it's not a pet food at all → return not_food response
-- "not_found" — you can't find enough reliable data → return not_found response
-
-If the query is vague (just a brand name like "Whiskas"), pick their most popular/common product in India.
-
-SCORING METHODOLOGY (be opinionated, not diplomatic):
-- Cats are obligate carnivores. They need meat, not grains.
-- First ingredient should be a named meat (chicken, tuna, salmon). "Cereals" or "meat by-products" first = red flag.
-- Carbs: wild cats eat ~5%. Anything above 25% is high. Above 35% is grain padding.
-- Protein dry matter: below 30% = barely passing. 30-40% = acceptable. 40-50% = good. 50%+ = excellent.
-- Taurine must be disclosed. If not, it's a transparency failure.
-- Ash content above 8% suggests low-quality ingredients.
-- Ca:P ratio should be 1:1 to 2:1. If not disclosed, that's a gap.
-- Named meat source vs generic "meat by-products" or "animal derivatives" — always flag generic.
-- Ingredient splitting (listing cereals, cereal by-products, wheat, corn separately to push them down the list) = deceptive.
-- Wet food is generally closer to what cats naturally eat (high moisture, higher protein DM, lower carbs).
-
-VERDICT LABELS (pick the most honest one):
-- "Strong choice" — genuinely good, transparent, close to what cats need
-- "Good enough" — decent option, reasonable transparency
-- "Okay for now" — won't harm a healthy cat short-term, but has gaps
-- "Not ideal daily" — too many gaps for confident long-term daily use
-- "Not transparent enough" — can't judge properly because the brand hides too much
-- "Caution" — real concerns about quality or suitability
-
-WORRY LEVELS:
-- "low" (filled: 1) — nothing alarming, minor gaps at most
-- "medium" (filled: 2) — notable gaps in transparency or nutrition
-- "high" (filled: 3) — real concerns about quality, ingredients, or suitability
-
-YOUR VOICE:
-- You're a knowledgeable cat parent talking to another parent. Not a nutritionist giving a lecture.
-- Be direct. "Your cat doesn't need corn" not "corn may not be optimal for feline nutrition."
-- The "parentTake" field is the heart of the product. Write it like you're texting a friend who asked "should I feed this?"
-- Don't hedge everything. Have a point of view.
-- Don't say "consult your vet" for every little thing. Only for genuine health conditions.
-
-RESPONSE FORMAT — return ONLY valid JSON, no markdown, no explanation:
-
-For type "cat":
-{
-  "type": "cat",
-  "brand": "Brand · Type (Dry food / Wet food / Treat)",
-  "title": "Product variant name",
-  "price": "₹XX/100g · ≈ ₹XX/day for a 4kg indoor cat",
-  "verdict": {
-    "label": "One of the verdict labels above",
-    "tag": "Short qualifier",
-    "labelClass": "vp-good | vp-okay | vp-weak",
-    "tagClass": "vp-good | vp-muted",
-    "summary": "2-3 sentences. The honest take on this food."
-  },
-  "worry": {
-    "level": "low | medium | high",
-    "filled": 1-3,
-    "label": "Low concern | Medium concern | Higher concern",
-    "note": "1-2 sentences."
-  },
-  "action": "2-3 sentences. Concrete next steps.",
-  "reasons": [
-    { "status": "good | caution | missing", "q": "Short finding", "a": "1-2 sentence explanation." },
-    { "status": "...", "q": "...", "a": "..." },
-    { "status": "...", "q": "...", "a": "..." }
-  ],
-  "bestUse": [
-    { "q": "Daily base food?", "a": "...", "cls": "bu-good | bu-okay | bu-flag | bu-vet" },
-    { "q": "Backup food?", "a": "...", "cls": "..." },
-    { "q": "For picky cats?", "a": "...", "cls": "..." },
-    { "q": "Kidney / urinary?", "a": "...", "cls": "bu-vet | bu-good | bu-okay" }
-  ],
-  "parentTake": "3-4 sentences. The most important field. Write like texting a friend.",
-  "f1": { "type": "co | ws | gm", "label": "Checks out | Worth a sniff | Gone missing", "val": 33, "unit": "%", "what": "Protein (DM)", "tip": "..." },
-  "f2": { "type": "co | ws | gm", "label": "...", "val": 39, "prefix": "≈", "unit": "%", "what": "Carbs (calc)", "tip": "..." },
-  "f3": { "type": "co | ws | gm", "label": "...", "val": "0.14%" OR "text": "not disclosed", "what": "Taurine | Hydration | ...", "tip": "..." },
-  "barPos": 41,
-  "barLabel": "← 33% here",
-  "ing": "First ingredient name",
-  "ingRest": "then: rest of key ingredients. <strong>Commentary.</strong>",
-  "missing": [["Nutrient", "Not disclosed"], ...],
-  "nose": "2-3 sentences. Punchy, direct, opinionated."
-}
-
-For type "dog":
-{ "type": "dog", "brand": "Brand name", "title": "Product name" }
-
-For type "not_food":
-{ "type": "not_food", "query": "${query}" }
-
-For type "not_found":
-{ "type": "not_found", "query": "${query}", "suggestion": "Brief suggestion or null" }
-
-CRITICAL:
-- Use Indian Rupees (₹). Use actual Indian market prices.
-- Calculate protein on dry matter basis: protein% / (100 - moisture%) × 100
-- Estimate carbs: 100 - protein - fat - fibre - moisture - ash (estimate ash at 7-8% if not disclosed)
-- Return ONLY the JSON object. No markdown fences, no text before or after.
-- For f3, use "val" for known values and "text" for unknown ones. Never both.`;
 }

@@ -1,0 +1,18 @@
+{
+  "name": "Farmina Matisse Salmon & Tuna (THE original culprit; full label, fish-first, grain-heavy)",
+  "meta": { "title": "Farmina Matisse Salmon & Tuna Adult Cat Dry Food", "brand": "Farmina · Dry food", "productType": "dry", "slug": "farmina-matisse-salmon-and-tuna-adult" },
+  "source": {
+    "ingredientsText": "Dehydrated fish (salmon 10%, tuna 10%), rice (20%), dehydrated chicken meat, corn, chicken fat, hydrolyzed animal proteins, dried beetroot pulp, fish oil, vegetable oil, corn gluten, dehydrated whole eggs, sodium chloride, potassium chloride, dehydrated calcium sulfate, dried brewer's yeast.",
+    "gaText": "Raw protein 32.00%; raw fats and oils 11.00%; raw fiber 1.20%; raw ashes 6.60%; Calcium 1.00%; Phosphorus 0.90%; Magnesium 0.08%; Taurine 1800mg/kg."
+  },
+  "extracted": {
+    "ingredients": [
+      { "name": "Dehydrated fish (salmon 10%, tuna 10%)", "pct": null },
+      { "name": "rice", "pct": 20 },
+      { "name": "dehydrated chicken meat", "pct": null },
+      { "name": "corn", "pct": null }
+    ],
+    "ga": { "protein": 32, "fat": 11, "fibre": 1.2, "moisture": null, "ash": 6.6, "calcium": 1.0, "phosphorus": 0.9, "taurine": { "value": 1800, "unit": "mg/kg" }, "taurineListed": true }
+  },
+  "expect": { "verdict": "Not ideal daily", "firstIngredient": "fish", "proteinDM": 35.6, "grainFree": false, "completeness": "full" }
+}

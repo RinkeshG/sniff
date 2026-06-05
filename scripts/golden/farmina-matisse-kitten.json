@@ -1,0 +1,21 @@
+{
+  "name": "Farmina Matisse Kitten (full label)",
+  "meta": { "title": "Farmina Matisse Kitten Cat Dry Food", "brand": "Farmina · Dry food", "productType": "dry" },
+  "source": {
+    "ingredientsText": "Dehydrated chicken meat (36%), rice (20%), chicken fat, corn, dehydrated fish (6%), corn gluten, dehydrated whole eggs (4%), hydrolyzed animal proteins, dried beetroot pulp, fish oil, vegetable oil, sodium chloride, potassium chloride, dihydrate calcium sulfate, dried brewer's yeast, mono-dicalcium phosphate, calcium carbonate.",
+    "gaText": "Raw protein 36.00%; raw fats and oils 14.00%; raw fiber 0.90%; raw ashes 7.30%; Calcium 1.25%; Phosphorus 1.00%; Magnesium 0.09%; Taurine 2900mg/kg."
+  },
+  "extracted": {
+    "ingredients": [
+      { "name": "Dehydrated chicken meat", "pct": 36 },
+      { "name": "rice", "pct": 20 },
+      { "name": "chicken fat", "pct": null },
+      { "name": "corn", "pct": null },
+      { "name": "dehydrated fish", "pct": 6 },
+      { "name": "corn gluten", "pct": null },
+      { "name": "dehydrated whole eggs", "pct": 4 }
+    ],
+    "ga": { "protein": 36, "fat": 14, "fibre": 0.9, "moisture": null, "ash": 7.3, "calcium": 1.25, "phosphorus": 1.0, "taurine": { "value": 2900, "unit": "mg/kg" }, "taurineListed": true }
+  },
+  "expect": { "verdict": "Okay for now", "firstIngredient": "chicken", "proteinDM": 40, "grainFree": false, "completeness": "full" }
+}

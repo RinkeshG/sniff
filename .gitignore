@@ -5,3 +5,6 @@ node_modules/
 
 .claude/
 scripts/shopify_catalog.csv
+scripts/data/
+scripts/bin/
+eng.traineddata

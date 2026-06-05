@@ -1,0 +1,13 @@
+{
+  "name": "Applaws Chicken Breast 70g (GA only, no ingredient list on retailer)",
+  "meta": { "title": "Applaws Chicken Breast Tinned Cat Wet Food 70g", "brand": "Applaws · Wet food", "productType": "wet" },
+  "source": {
+    "ingredientsText": "",
+    "gaText": "Protein 14% Crude Fibre 1% Crude Fat 0.3% Crude Ash 2% Moisture 82%. A natural source of Taurine."
+  },
+  "extracted": {
+    "ingredients": [],
+    "ga": { "protein": 14, "fat": 0.3, "fibre": 1, "moisture": 82, "ash": 2, "calcium": null, "phosphorus": null, "taurine": null, "taurineListed": true }
+  },
+  "expect": { "verdict": "Not transparent enough", "firstIngredient": null, "proteinDM": 77.8, "grainFree": null, "completeness": "partial" }
+}
