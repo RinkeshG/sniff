@@ -1210,7 +1210,11 @@
 
     @media (max-width: 900px) {
       .hero { min-height: auto; }
-      .hero-main { grid-template-columns: 1fr; padding: 40px 24px; gap: 20px; }
+      /* minmax(0,1fr) (not 1fr) so the single column can shrink below its widest
+         child's min-content — long example-chip titles were forcing the track to
+         ~408px and clipping the hero on phones. Lets chip ellipsis + input
+         min-width:0 take over. Desktop (>900px, two-column) is untouched. */
+      .hero-main { grid-template-columns: minmax(0, 1fr); padding: 40px 24px; gap: 20px; }
       .hero-ill { max-width: 300px; margin: 0 auto; order: -1; }
       .hero-nav { padding: 16px 24px; }
       .hero h1 { font-size: clamp(40px, 10vw, 64px); }
@@ -1315,7 +1319,7 @@
 
       .dog-modal { padding: 28px 20px; border-radius: 16px; }
       .dog-modal-form { flex-direction: column; border-radius: 12px; }
-      .dog-modal-form input { padding: 14px 16px; font-size: 15px; text-align: center; }
+      .dog-modal-form input { padding: 14px 16px; font-size: 16px; text-align: center; } /* 16px: stop iOS focus-zoom */
       .dog-modal-form button { padding: 14px 16px; border-radius: 0 0 10px 10px; min-height: 48px; font-size: 12px; }
       .foot-tail { top: -24px; }
       .foot-tail-walk { width: 28px; height: 38px; }
@@ -1956,6 +1960,7 @@
     @media (max-width: 600px) {
       .v3cmp { padding: 6px 18px 22px; }
       .v3cmp-call-h { font-size: 23px; }
+      .v3cmp-search input { font-size: 16px; } /* 16px: stop iOS focus-zoom on the compare search */
     }
     @media (max-width: 380px) {
       .v3cmp-mu { grid-template-columns: 1fr 22px 1fr; gap: 4px; }
@@ -2176,9 +2181,12 @@
     .teaser-mini-cta-btn:hover { background: var(--ginger-deep); }
     .teaser-mini-cta-hint { font-size: 11px; color: var(--indie); margin-top: 8px; }
 
-    /* Autocomplete dropdown — position:fixed so it escapes parent overflow:hidden on .hero / .manifesto */
+    /* Autocomplete dropdown — position:absolute in DOCUMENT coordinates (appended to
+       body). Absolute (not fixed) keeps it glued to the input through page scroll AND
+       the iOS keyboard's visual-viewport shift, instead of floating to the top. It
+       still escapes parent overflow:hidden because it lives on <body>. */
     .autocomplete-results {
-      position: fixed;
+      position: absolute;
       background: white;
       border: 1px solid var(--tabby);
       border-radius: 14px;
@@ -2379,7 +2387,7 @@
   /* section shell */
   .v3-sec{padding:22px}
   .v3-sec + .v3-sec{border-top:1px solid var(--cream-deep)}
-  .v3-sec-head{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+  .v3-sec-head{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:14px} /* wrap: on very narrow screens the transparency badge drops below the heading instead of crowding it; no effect when they fit (desktop/tablet) */
   .v3-sec-h{font-family:var(--serif);font-size:19px;color:var(--charcoal)}
   .v3-whisker{flex:1;height:10px;min-width:40px}
   .v3-whisker svg{width:100%;height:10px;opacity:.6}
@@ -3907,55 +3915,80 @@
         }
       });
     }
+    // Which input's dropdown is currently open (so we can keep it positioned).
+    let acOpenInputId = null;
+
     function positionAutocomplete(inputId) {
       const dropdown = document.getElementById(inputId + 'Ac');
       const input = document.getElementById(inputId);
       if (!dropdown || !input) return;
       // Anchor to the search-field wrapper (so dropdown matches full search width)
       const wrap = input.closest('.search-field, .cta-field, .overlay-search-field') || input;
-      const rect = wrap.getBoundingClientRect();
-      const vh = window.innerHeight;
-      const margin = 16; // breathing room from viewport edge
-      const spaceBelow = vh - rect.bottom - margin;
-      const spaceAbove = rect.top - margin;
-      // Prefer below; flip above if not enough room below AND more room above
-      if (spaceBelow >= 240 || spaceBelow >= spaceAbove) {
-        dropdown.style.top = (rect.bottom + 6) + 'px';
-        dropdown.style.bottom = 'auto';
-        dropdown.style.maxHeight = Math.min(360, spaceBelow) + 'px';
-      } else {
-        dropdown.style.top = 'auto';
-        dropdown.style.bottom = (vh - rect.top + 6) + 'px';
-        dropdown.style.maxHeight = Math.min(360, spaceAbove) + 'px';
-      }
-      dropdown.style.left = rect.left + 'px';
+      const rect = wrap.getBoundingClientRect();           // viewport coords
+      // Use the VISUAL viewport (accounts for the on-screen keyboard) for the
+      // visible region, and PAGE offsets to convert to document coords.
+      const vv = window.visualViewport;
+      const viewTop = vv ? vv.offsetTop : 0;
+      const viewBottom = viewTop + (vv ? vv.height : window.innerHeight);
+      const sx = window.pageXOffset, sy = window.pageYOffset;
+      const margin = 12;
+      const spaceBelow = viewBottom - rect.bottom - margin;
+      const spaceAbove = rect.top - viewTop - margin;
+      dropdown.style.left = (rect.left + sx) + 'px';
       dropdown.style.width = rect.width + 'px';
+      dropdown.style.bottom = 'auto';
+      // Prefer below (so it never floats up over the page); flip above only when
+      // there is clearly no room below but there is room above.
+      if (spaceBelow >= 160 || spaceBelow >= spaceAbove) {
+        dropdown.style.maxHeight = Math.max(96, Math.min(360, spaceBelow)) + 'px';
+        dropdown.style.top = (rect.bottom + sy + 6) + 'px';
+      } else {
+        dropdown.style.maxHeight = Math.max(96, Math.min(360, spaceAbove)) + 'px';
+        dropdown.style.top = (rect.top + sy - 6 - dropdown.offsetHeight) + 'px';
+      }
+    }
+
+    // Keep the open dropdown glued to its input on scroll / resize / keyboard.
+    function acReposition() {
+      if (!acOpenInputId) return;
+      const d = document.getElementById(acOpenInputId + 'Ac');
+      if (d && d.classList.contains('show')) positionAutocomplete(acOpenInputId);
+      else acOpenInputId = null;
+    }
+    window.addEventListener('scroll', acReposition, true); // capture: also catches .overlay-scroll
+    window.addEventListener('resize', acReposition);
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', acReposition);
+      window.visualViewport.addEventListener('scroll', acReposition);
     }
     async function runAutocomplete(inputId, q) {
       const dropdown = document.getElementById(inputId + 'Ac');
       if (!dropdown) return;
       const results = await sbSearch(q, 6);
-      positionAutocomplete(inputId);
+      // onmousedown preventDefault: stop the input from blurring on tap, so the
+      // result's click always lands on mobile (no blur/hide race).
+      const guard = 'onmousedown="event.preventDefault()"';
       if (!results || !results.length) {
-        dropdown.innerHTML = `<div class="ac-fallback" onclick="document.getElementById('${inputId}').blur();searchFood('${q.replace(/'/g,"\\'")}')">Sniff "${q}" anyway →</div>`;
-        dropdown.classList.add('show');
-        return;
+        dropdown.innerHTML = `<div class="ac-fallback" ${guard} onclick="document.getElementById('${inputId}').blur();searchFood('${q.replace(/'/g,"\\'")}')">Sniff "${q}" anyway →</div>`;
+      } else {
+        const isCmp = inputId === 'cmpSearchInput';
+        dropdown.innerHTML = results.map(r => {
+          const brandShort = ((r.brand||'').split(' · ')[0] || '').slice(0, 10);
+          const img = r.image_url
+            ? `<img src="${r.image_url}" alt="${r.title||''}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=&quot;img-fallback&quot; style=&quot;font-size:9px&quot;>${brandShort}</div>'">`
+            : `<div class="img-fallback" style="font-size:9px">${brandShort}</div>`;
+          const action = isCmp
+            ? `hideAutocomplete('${inputId}');selectCompareProduct('${r.slug}')`
+            : `document.getElementById('${inputId}').value='';hideAutocomplete('${inputId}');openOverlaySlug('${r.slug}')`;
+          return `<div class="ac-item" tabindex="-1" ${guard} onclick="${action}">` +
+            `<div class="ac-item-img">${img}</div>` +
+            `<div class="ac-item-info"><div class="ac-item-brand">${r.brand||''}</div><div class="ac-item-title">${r.title||''}</div></div>` +
+          `</div>`;
+        }).join('') + (isCmp ? '' : `<div class="ac-fallback" ${guard} onclick="document.getElementById('${inputId}').blur();searchFood('${q.replace(/'/g,"\\'")}')">Sniff "${q}" anyway →</div>`);
       }
-      const isCmp = inputId === 'cmpSearchInput';
-      dropdown.innerHTML = results.map(r => {
-        const brandShort = ((r.brand||'').split(' · ')[0] || '').slice(0, 10);
-        const img = r.image_url
-          ? `<img src="${r.image_url}" alt="${r.title||''}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=&quot;img-fallback&quot; style=&quot;font-size:9px&quot;>${brandShort}</div>'">`
-          : `<div class="img-fallback" style="font-size:9px">${brandShort}</div>`;
-        const action = isCmp
-          ? `hideAutocomplete('${inputId}');selectCompareProduct('${r.slug}')`
-          : `document.getElementById('${inputId}').value='';hideAutocomplete('${inputId}');openOverlaySlug('${r.slug}')`;
-        return `<div class="ac-item" tabindex="-1" onclick="${action}">` +
-          `<div class="ac-item-img">${img}</div>` +
-          `<div class="ac-item-info"><div class="ac-item-brand">${r.brand||''}</div><div class="ac-item-title">${r.title||''}</div></div>` +
-        `</div>`;
-      }).join('') + (isCmp ? '' : `<div class="ac-fallback" onclick="document.getElementById('${inputId}').blur();searchFood('${q.replace(/'/g,"\\'")}')">Sniff "${q}" anyway →</div>`);
       dropdown.classList.add('show');
+      acOpenInputId = inputId;
+      positionAutocomplete(inputId);   // position AFTER render so above-flip knows the height
     }
     // Re-position any visible dropdowns on scroll/resize
     window.addEventListener('scroll', () => {
@@ -3973,6 +4006,7 @@
     function hideAutocomplete(inputId) {
       const dropdown = document.getElementById(inputId + 'Ac');
       if (dropdown) dropdown.classList.remove('show');
+      if (acOpenInputId === inputId) acOpenInputId = null;
     }
 
     document.getElementById('searchInput').addEventListener('keydown',e=>{if(e.key==='Enter')doSearch();});
