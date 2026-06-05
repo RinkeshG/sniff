@@ -1897,6 +1897,7 @@
     .v3cmp-pill.good { background: rgba(74,143,92,0.16); color: #356642; }
     .v3cmp-pill.okay { background: #FBF1DD; color: #9F6D1F; }
     .v3cmp-pill.weak { background: rgba(179,58,42,0.12); color: var(--flag); }
+    .v3cmp-pill.unv { background: #D8D4CB; color: #6E6A62; }
     .v3cmp-price { font-family: var(--sans); font-weight: 800; font-size: 14px; font-variant-numeric: tabular-nums; color: var(--charcoal); margin-top: 9px; }
     .v3cmp-price small { font-weight: 400; font-size: 10px; color: var(--indie); }
     .v3cmp-vs { align-self: center; justify-self: center; font-family: var(--serif); font-size: 12px; color: var(--indie-soft); margin-top: 38px; }
@@ -2324,10 +2325,10 @@
   .v3-hero.v3-vg{background:var(--good-bg,#E6EFE8)}
   .v3-hero.v3-vo{background:var(--caution-bg,#FBF1DD)}
   .v3-hero.v3-vw{background:var(--charcoal);color:var(--cream)}
-  /* "Not verified yet" is neutral, not a negative verdict: calm, flat, charcoal text */
-  .v3-hero.v3-vu{background:var(--cream-deep)}
-  .v3-hero.v3-vu .v3-vtag{color:var(--indie);opacity:1}
-  .v3-hero.v3-vu .v3-vlabel{color:var(--charcoal)}
+  /* "Not verified yet" is a data gap, not a verdict: a distinct desaturated grey (the same grey that means "missing" elsewhere), so it clearly stands apart from cream and from the colour verdicts — without wrongly condemning the food in red. */
+  .v3-hero.v3-vu{background:#D8D4CB}
+  .v3-hero.v3-vu .v3-vtag{color:#6E6A62;opacity:1}
+  .v3-hero.v3-vu .v3-vlabel{color:#4A4640}
   .v3-cat-face{height:58px;width:auto;margin:0 auto 22px;display:block}
   .v3-vtag{font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;opacity:.7;margin-bottom:13px}
   .v3-hero.v3-vg .v3-vtag{color:var(--good-deep,#356642);opacity:1}
@@ -2359,6 +2360,15 @@
   .v3-paw-empty{opacity:.2}
   .v3-worry-lbl{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
   .v3-wl-1{color:var(--good)} .v3-wl-2{color:var(--caution)} .v3-wl-3,.v3-wl-4{color:var(--flag)}
+
+  /* Transparency badge — lives in the "What they won't tell you" header (its natural
+     home), so it reads as openness, never as a contradiction to the verdict. No border bars. */
+  .v3-trans-badge{margin-left:auto;display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+  .v3-trans-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+  .v3-gm-sub{font-size:12.5px;color:var(--indie);line-height:1.55;margin:-4px 0 14px}
+  .v3-trans-high{color:var(--good-deep,#356642)} .v3-trans-high .v3-trans-dot{background:var(--good)}
+  .v3-trans-medium{color:var(--caution-deep,#9F6D1F)} .v3-trans-medium .v3-trans-dot{background:var(--caution)}
+  .v3-trans-low{color:var(--missing)} .v3-trans-low .v3-trans-dot{background:var(--missing)}
 
   /* M1 · The Nose Knows */
   .v3-nose{display:flex;gap:12px;padding:20px 22px;background:var(--cream);border-top:1px solid var(--cream-deep);border-bottom:1px solid var(--cream-deep)}
@@ -2446,7 +2456,7 @@
   .v3-reason:first-child{padding-top:0}
   .v3-r-ic{flex-shrink:0;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;
     font-size:12px;font-weight:800;color:#fff;margin-top:1px}
-  .v3-reason.v3-r-good .v3-r-ic{background:var(--good)} .v3-reason.v3-r-caution .v3-r-ic{background:var(--caution)} .v3-reason.v3-r-bad .v3-r-ic{background:var(--flag)}
+  .v3-reason.v3-r-good .v3-r-ic{background:var(--good)} .v3-reason.v3-r-caution .v3-r-ic{background:var(--caution)} .v3-reason.v3-r-bad .v3-r-ic{background:var(--flag)} .v3-reason.v3-r-missing .v3-r-ic{background:var(--missing)}
   .v3-r-q{font-family:var(--serif);font-size:15px;color:var(--charcoal);line-height:1.3;margin-bottom:2px}
   .v3-r-a{font-size:12.5px;color:var(--indie);line-height:1.5}
 
@@ -2515,6 +2525,8 @@
   .v3-trust{padding:16px 22px 26px;text-align:center;font-size:11px;color:var(--indie-soft);line-height:1.5}
   .v3-prov{font-size:12px;color:var(--indie);line-height:1.5;margin-bottom:10px}
   .v3-prov a{color:var(--indie)}
+  /* unverified: calm, plain honest line — no badge, no alarm */
+  .v3-unv-line{font-size:14.5px;line-height:1.65;color:var(--indie)}
   .v3-report-wrong{background:none;border:none;padding:0;font:inherit;font-size:12px;color:var(--indie);text-decoration:underline;cursor:pointer}
   .v3-report-wrong:disabled{color:var(--good);text-decoration:none;cursor:default}
 
@@ -3113,7 +3125,7 @@
       // cat-face IS the verdict (matches the report hero); seal only on a strong choice
       const vk = (lc === 'vp-good') ? 'vg' : (lc === 'vp-weak' || lc === 'vp-flag') ? 'vw' : 'vo';
       const catCol = vk === 'vg' ? 'var(--good-deep,#356642)' : vk === 'vw' ? V3G : 'var(--caution-deep,#9F6D1F)';
-      document.getElementById('tmFace').innerHTML = (vk === 'vg' ? v3Seal() : '') + v3CatFace(vk === 'vg' ? 'content' : 'wary', catCol);
+      document.getElementById('tmFace').innerHTML = ((v.label || '').replace(/\.\s*$/, '') === 'Strong choice' ? v3Seal() : '') + v3CatFace(vk === 'vg' ? 'content' : 'wary', catCol);
       document.getElementById('tmVLabel').textContent = clean((v.label || '').replace(/\.\s*$/, ''));
       document.getElementById('tmVSub').textContent = clean(v.tag || '');
       document.getElementById('tmVSummary').textContent = clean(v.summary || '');
@@ -3189,8 +3201,13 @@
       // Track as recently viewed + refresh sidebar cards
       pushRecent(product.slug);
       refreshRecentCards();
-      // Fetch alternatives async (don't block render)
-      fetchAlternatives(product).then(alts => renderAlternatives(product, alts));
+      // Fetch the right "next step" async (don't block render):
+      // unverified → foods we HAVE checked nearby; verified → better alternatives
+      if (product.analysis && product.analysis.unverified) {
+        fetchVerifiedNearby(product).then(res => renderNearby(product, res));
+      } else {
+        fetchAlternatives(product).then(alts => renderAlternatives(product, alts));
+      }
     }
 
     // Backwards compat: openOverlay(idx) for hero chips
@@ -3274,7 +3291,11 @@
           renderProduct(pseudoProduct);
           showOverlayState('content');
           animateOverlayCard();
-          fetchAlternatives(pseudoProduct).then(function(alts) { renderAlternatives(pseudoProduct, alts); });
+          if (pseudoProduct.analysis && pseudoProduct.analysis.unverified) {
+            fetchVerifiedNearby(pseudoProduct).then(function(res) { renderNearby(pseudoProduct, res); });
+          } else {
+            fetchAlternatives(pseudoProduct).then(function(alts) { renderAlternatives(pseudoProduct, alts); });
+          }
         } else {
           showOverlayState('error');
         }
@@ -3567,12 +3588,12 @@
 
       // ── M1 · verdict hero (cat-face IS the verdict; seal only on a strong choice)
       h += '<div class="v3-hero v3-' + vk + '">'
-         + (vk === 'vg' ? v3Seal() : '')
+         + (label === 'Strong choice' ? v3Seal() : '')
          + v3CatFace(mood, catCol)
          + '<div class="v3-vtag">' + (unverified ? 'Sniff says' : 'Sniff verdict') + '</div>'
          + '<div class="v3-vlabel">' + esc(label) + '</div>'
-         + (v.tag ? '<div style="font-family:var(--sans);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;opacity:.7;margin-bottom:14px">' + esc(v.tag) + '</div>' : '')
-         + (v.summary ? '<div class="v3-vsummary">' + esc(v.summary) + '</div>' : '')
+         + (!unverified && v.tag ? '<div style="font-family:var(--sans);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;opacity:.7;margin-bottom:14px">' + esc(v.tag) + '</div>' : '')
+         + (!unverified && v.summary ? '<div class="v3-vsummary">' + esc(v.summary) + '</div>' : '')
          + '</div>';
 
       // ── M1 · worry meter (its own quiet strip). Skip entirely when unverified: no concern to show, we just don't know yet.
@@ -3581,6 +3602,16 @@
            + [1, 2, 3, 4].map(function (i) { return v3Paw(i <= wf); }).join('')
            + '</div><span class="v3-worry-lbl ' + wl + '">' + v3WorryWord(wf) + '</span></div>';
       }
+
+
+      // ── Unverified: we haven't read a real label, so we don't fabricate sections.
+      //    One crisp honest line ("we don't guess") + foods we HAVE checked nearby.
+      if (unverified) {
+        h += '<div class="v3-sec"><div class="v3-unv-line">This one doesn’t have a full label published online, so there’s nothing for us to read. We don’t guess.</div></div>';
+        h += '<div class="v3-sec" id="oNearby" style="display:none">'
+           + '<div class="v3-sec-head"><span class="v3-sec-h">Foods we’ve checked</span></div>'
+           + '<div class="v3-lineup-sub" id="oNearbySub"></div><div id="oNearbyList"></div></div>';
+      } else {
 
       // ── M1 · The Nose Knows (the friend's take, in ginger)
       if (a.parentTake) {
@@ -3628,10 +3659,20 @@
            + barsHtml + '</div>';
       }
 
-      // ── M3 · what they won't tell you (derived from undisclosed metrics)
+      // ── M3 · what they won't tell you — this is also the home of the TRANSPARENCY
+      //    signal. A "Low" badge sits naturally here (this section IS about what's
+      //    missing), so it never contradicts the verdict, and the line names the
+      //    actual gaps instead of a generic note.
       var gone = metrics.filter(function (m) { return v3IsMissingVal(m.value); });
-      h += '<div class="v3-sec"><div class="v3-sec-head"><span class="v3-sec-h">What they won’t tell you</span></div>';
+      var tlev = (a.transparency && a.transparency.level) || (gone.length === 0 ? 'high' : gone.length >= 3 ? 'low' : 'medium');
+      var tlab = tlev === 'high' ? 'High' : tlev === 'medium' ? 'Medium' : 'Low';
+      h += '<div class="v3-sec"><div class="v3-sec-head"><span class="v3-sec-h">What they won’t tell you</span>'
+         + '<span class="v3-trans-badge v3-trans-' + tlev + '"><span class="v3-trans-dot"></span>' + tlab + ' transparency</span></div>';
       if (gone.length) {
+        var gnames = gone.map(function (m) { return (m.name || '').replace(/\s*\(.*\)\s*/, '').toLowerCase(); });
+        var gstr = gnames.length === 1 ? gnames[0]
+          : gnames.slice(0, -1).join(', ') + ' and ' + gnames[gnames.length - 1];
+        h += '<div class="v3-gm-sub">This brand leaves out ' + esc(gstr) + '. We judge it on the ingredient list alone. Tap each to see why it matters.</div>';
         h += '<div class="v3-gm-grid">' + gone.map(function (m) {
           return '<div class="v3-gm" tabindex="0" onclick="this.classList.toggle(\'v3-open\')">'
             + '<span class="v3-gm-q">' + v3TailQ() + '</span>'
@@ -3640,7 +3681,7 @@
             + '<div class="v3-gm-tip">' + esc(v3Explain(m.name)) + '</div></div>';
         }).join('') + '</div>';
       } else {
-        h += '<div class="v3-gm-allclear"><span style="font-size:22px;color:var(--good)">✓</span><div class="v3-t"><b>Nothing hidden.</b> This brand discloses the things that matter — rarer than it should be, and worth rewarding.</div></div>';
+        h += '<div class="v3-gm-allclear"><span style="font-size:22px;color:var(--good)">✓</span><div class="v3-t"><b>Nothing hidden.</b> This brand discloses the things that matter, ingredients and the full guaranteed analysis. Rarer than it should be, and worth rewarding.</div></div>';
       }
       h += '</div>';
 
@@ -3649,8 +3690,9 @@
       if (reasons.length) {
         h += '<div class="v3-sec" data-ph-report="reasons"><div class="v3-sec-head"><span class="v3-sec-h">Why Sniff says this</span></div>';
         h += reasons.map(function (r) {
-          var st = r.status === 'good' ? 'v3-r-good' : r.status === 'caution' ? 'v3-r-caution' : 'v3-r-bad';
-          var ic = r.status === 'good' ? '✓' : r.status === 'caution' ? '!' : '✕';
+          // 'missing' is a disclosure gap, render it neutral grey, never a red fault mark
+          var st = r.status === 'good' ? 'v3-r-good' : r.status === 'caution' ? 'v3-r-caution' : r.status === 'missing' ? 'v3-r-missing' : 'v3-r-bad';
+          var ic = r.status === 'good' ? '✓' : r.status === 'caution' ? '!' : r.status === 'missing' ? '?' : '✕';
           return '<div class="v3-reason ' + st + '"><div class="v3-r-ic">' + ic + '</div>'
             + '<div><div class="v3-r-q">' + esc(r.q || '') + '</div><div class="v3-r-a">' + esc(r.a || '') + '</div></div></div>';
         }).join('');
@@ -3679,8 +3721,10 @@
          + '<div class="v3-sec-head"><span class="v3-sec-h">If you switch</span></div>'
          + '<div class="v3-lineup-sub" id="oAltsSub"></div><div id="oAltsList"></div></div>';
 
-      // ── M6 · the receipts (every number, collapsible)
-      if (metrics.length) {
+      } // end verified-only sections (everything above needs a real label)
+
+      // ── M6 · the receipts (every number, collapsible). Skip when unverified: nothing real to show.
+      if (!unverified && metrics.length) {
         h += '<button class="v3-receipts-toggle" type="button" data-ph-report="receipts" onclick="var b=this.nextElementSibling;var o=b.classList.toggle(\'v3-open\');if(o&&window.posthog)posthog.capture(\'report_tech_details_expanded\',{product_slug:(currentProduct&&currentProduct.slug)||null})"><span>The receipts · every number</span><span>⌄</span></button>';
         h += '<div class="v3-receipts-body">' + metrics.map(function (m) {
           var miss = v3IsMissingVal(m.value);
@@ -3695,8 +3739,7 @@
       var prov = a.provenance || {};
       var provText = '';
       if (unverified) {
-        provText = 'We couldn’t verify a full label for this one yet, so we’re not scoring it.'
-          + (prov.sourceUrl ? ' <a href="' + esc(prov.sourceUrl) + '" target="_blank" rel="noopener">The listing we checked</a>' : '');
+        provText = prov.sourceUrl ? '<a href="' + esc(prov.sourceUrl) + '" target="_blank" rel="noopener">The listing we checked</a>' : '';
       } else if (prov.sourceUrl || prov.checkedAt) {
         var srcName = prov.source === 'brand' ? 'the brand label' : 'the Supertails label';
         var pdate = (prov.checkedAt || '').slice(0, 10);
@@ -3706,7 +3749,7 @@
       h += '<div class="v3-trust">'
          + (provText ? '<div class="v3-prov">' + provText + '</div>' : '')
          + '<button type="button" id="oReportWrong" class="v3-report-wrong" onclick="reportWrong()">Looks wrong? Tell us</button>'
-         + '<div style="margin-top:10px">' + (provText ? '' : 'Based on the published label · ') + 'cat-only · no scores, no sponsors · made in Bangalore</div>'
+         + '<div style="margin-top:10px">' + (unverified ? '' : (provText ? '' : 'Based on the published label · ')) + 'cat-only · no scores, no sponsors · made in Bangalore</div>'
          + '</div>';
 
       document.getElementById('overlayContent').innerHTML = clean(h);
@@ -4272,7 +4315,7 @@
 
     // ═══ RECOMMENDATION ENGINE ═══
     const VERDICT_RANK = {
-      'Strong choice': 6, 'Good enough': 5, 'Okay for now': 4,
+      'Strong choice': 6, 'Good choice': 5, 'Good enough': 5, 'Okay for now': 4,
       'Not ideal daily': 3, 'Not transparent enough': 2, 'Caution': 1
     };
 
@@ -4285,18 +4328,27 @@
       return isNaN(n) ? null : n;
     }
 
+    // Ranking heuristic for recommendations. Mirrors the rubric's philosophy:
+    // led by the verdict + ingredient quality; macros only ADD when disclosed and
+    // good, and NEVER subtract for being missing (a disclosure gap is not a fault).
     function scoreProduct(analysis) {
       if (!analysis) return 0;
       var v = analysis.verdict || {};
       var w = analysis.worry || {};
       var vLabel = (v.label || '').replace(/\.$/, '');
       var vRank = VERDICT_RANK[vLabel] || 0;
-      var protein = parseMetricNum(getMetric(analysis, 'protein')) || 0;
-      var carbs = parseMetricNum(getMetric(analysis, 'carb')) || 50;
+      var protein = parseMetricNum(getMetric(analysis, 'protein'));
+      var carbs = parseMetricNum(getMetric(analysis, 'carb'));
+      var firstIng = getMetric(analysis, 'first ingredient');
       var reasons = analysis.reasons || [];
       var goodCount = reasons.filter(function(r) { return r.status === 'good'; }).length;
-      var badCount = reasons.filter(function(r) { return r.status === 'caution' || r.status === 'missing' || r.status === 'bad'; }).length;
-      return (vRank * 20) + ((4 - (w.filled || 2)) * 10) + (protein * 0.5) - (carbs * 0.3) + (goodCount * 3) - (badCount * 2);
+      // 'missing' is a disclosure gap, not a quality fault — don't count it against the food
+      var badCount = reasons.filter(function(r) { return r.status === 'caution' || r.status === 'bad'; }).length;
+      var s = (vRank * 20) + ((4 - (w.filled || 2)) * 10) + (goodCount * 3) - (badCount * 2);
+      if (firstIng && firstIng.status === 'good') s += 6;                 // ingredient quality, the primary driver
+      if (protein != null && protein >= 40) s += 6; else if (protein != null && protein >= 30) s += 3; // reward when known
+      if (carbs != null && carbs < 25) s += 3; else if (carbs != null && carbs > 35) s -= 4;
+      return s;
     }
 
     function getImprovements(currentA, altA) {
@@ -4350,8 +4402,9 @@
     function v3Weakness(a){
       var carb = parseMetricNum(getMetric(a, 'carb')); if (carb != null && carb > 30) return 'carbs';
       var ing = getMetric(a, 'first ingredient'); if (ing && /cereal|grain|corn|wheat/i.test(ing.value || '')) return 'ingredient';
-      var tau = getMetric(a, 'taurine'); if (tau && v3IsMissingVal(tau.value)) return 'taurine';
       var prot = parseMetricNum(getMetric(a, 'protein')); if (prot != null && prot < 35) return 'protein';
+      // Note: undisclosed taurine is a transparency gap, not a quality weakness, so
+      // it never drives a "switch" recommendation on an otherwise clean food.
       return null;
     }
     function v3Fixes(w, altA){
@@ -4401,6 +4454,7 @@
       const a = product.analysis || {};
       const vLabel = ((a.verdict || {}).label || '').replace(/\.$/, '');
       if (vLabel === 'Strong choice' || product.category === 'prescription') return []; // already great / medical — don't push a switch
+      if (vLabel === 'Good choice' && !v3Weakness(a)) return []; // clean and good with no real weakness — don't nudge a switch
       if (a.unverified) return []; // we haven't judged this food, so don't push a switch off it
       const cat = product.category || 'dry';
       const stage = product.life_stage || 'adult';
@@ -4533,6 +4587,74 @@
       });
     }
 
+    // ── unverified food: show foods we HAVE read in the same category (same brand first), so the visit isn't a dead end
+    async function fetchVerifiedNearby(product) {
+      var cat = product.category || 'dry';
+      var stage = product.life_stage || 'adult';
+      var url = SUPABASE_URL + '/rest/v1/products?category=eq.' + encodeURIComponent(cat)
+        + '&data_completeness=neq.none&slug=neq.' + encodeURIComponent(product.slug) + '&select=*&limit=150';
+      try {
+        var r = await fetch(url, { headers: SUPABASE_HEADERS });
+        var cands = await r.json();
+        if (!Array.isArray(cands)) return { picks: [], sameBrand: false };
+        var myBrand = ((product.brand || '').split(' · ')[0] || '').toLowerCase().trim();
+        function brandOf(c) { return ((c.brand || '').split(' · ')[0] || '').toLowerCase().trim(); }
+        var scored = cands
+          .filter(function (c) { return c.analysis && !c.analysis.unverified; })
+          .map(function (c) { return Object.assign({}, c, { _score: scoreProduct(c.analysis) }); });
+        var sameBrand = scored.filter(function (c) { return myBrand && brandOf(c) === myBrand; })
+          .sort(function (x, y) { return y._score - x._score; });
+        var rest = scored.filter(function (c) { return brandOf(c) !== myBrand; });
+        // prefer same life stage among the rest, but fall back so we never show an empty section
+        var sameStage = rest.filter(function (c) { return (c.life_stage || 'adult') === stage; });
+        var others = (sameStage.length ? sameStage : rest).sort(function (x, y) { return y._score - x._score; });
+        var picks = [], used = {};
+        sameBrand.slice(0, 2).forEach(function (c) { used[c.slug] = 1; picks.push(c); });
+        for (var i = 0; i < others.length && picks.length < 4; i++) {
+          if (!used[others[i].slug]) { used[others[i].slug] = 1; picks.push(others[i]); }
+        }
+        return { picks: picks, sameBrand: sameBrand.length > 0 };
+      } catch (e) {
+        console.error('fetchVerifiedNearby', e);
+        return { picks: [], sameBrand: false };
+      }
+    }
+
+    function renderNearby(product, res) {
+      var container = document.getElementById('oNearby');
+      var list = document.getElementById('oNearbyList');
+      var sub = document.getElementById('oNearbySub');
+      if (!container || !list || !sub) return;
+      var picks = (res && res.picks) || [];
+      if (!picks.length) { container.style.display = 'none'; return; }
+      sub.textContent = res.sameBrand
+        ? 'Other foods in this category we’ve read the real label on, including the same brand.'
+        : 'Foods in this category we’ve already read the real label on.';
+
+      list.innerHTML = clean(picks.map(function (alt) {
+        var aa = alt.analysis || {};
+        var brandShort = ((alt.brand || '').split(' · ')[0] || '').slice(0, 18).replace(/[^A-Za-z0-9 &]/g, '');
+        var vLabel = ((aa.verdict && aa.verdict.label) || '').replace(/\.\s*$/, '');
+        var vClass = (aa.verdict && aa.verdict.labelClass === 'vp-good') ? 'av-good' : 'av-okay';
+        var price = v3Price(alt);
+        var thumb = alt.image_url
+          ? '<img src="' + esc(alt.image_url) + '" alt="' + esc(alt.title || '') + '" loading="lazy" onerror="this.replaceWith(document.createTextNode(\'' + brandShort + '\'))">'
+          : esc(brandShort);
+        var go = "posthog.capture('nearby_clicked',{from_slug:'" + product.slug + "',to_slug:'" + alt.slug + "'});openOverlaySlug('" + alt.slug + "')";
+        return '<div class="v3-tier" onclick="' + go + '" tabindex="0" onkeydown="if(event.key===\'Enter\'){' + go + '}">'
+          + '<div class="v3-tier-thumb">' + thumb + '</div>'
+          + '<div style="min-width:0">'
+          +   '<div class="v3-tier-brand">' + esc(alt.brand || '') + '</div>'
+          +   '<div class="v3-tier-title">' + esc(alt.title || '') + '</div>'
+          +   (vLabel ? '<div class="v3-alt-verdict ' + vClass + '">' + esc(vLabel) + '</div>' : '')
+          +   (price != null ? '<div class="v3-tier-price">₹' + price + '/100g</div>' : '')
+          + '</div></div>';
+      }).join(''));
+
+      container.style.display = 'block';
+      if (window.posthog) posthog.capture('nearby_shown', { product_slug: product.slug, count: picks.length });
+    }
+
     // ═══ COMPARISON VIEW ═══
     var compareMode;
     var compareProductA;
@@ -4609,6 +4731,26 @@
       }
 
       var aA = A.analysis || {}, aB = B.analysis || {};
+
+      // ── one (or both) sides has no published label: there is nothing to lay side by side.
+      //    Don't show an empty table (it just reads as broken). Say plainly why, point to what we can show.
+      var aUnv = !!aA.unverified, bUnv = !!aB.unverified;
+      if (aUnv || bUnv) {
+        var uhtml = '<div class="v3cmp">';
+        uhtml += cmpMatchup(A, B, null);
+        uhtml += '<div class="v3cmp-hr"></div>';
+        uhtml += cmpCallUnverified(A, B, aUnv, bUnv, aUnv && bUnv);
+        uhtml += '<div class="v3cmp-act">'
+          + '<button onclick="exitCompareToReport(\'a\')">Open ' + esc(cmpBrand(A)) + '</button>'
+          + '<button onclick="exitCompareToReport(\'b\')">Open ' + esc(cmpBrand(B)) + '</button></div>';
+        uhtml += '<div class="v3cmp-foot">Cat-only · no scores, no sponsors · made in Bangalore</div>';
+        uhtml += '</div>';
+        view.innerHTML = clean(uhtml);
+        updateCompareHash();
+        posthog.capture('comparison_viewed', { product_a_slug: A.slug, product_b_slug: B.slug, unverified: true });
+        return;
+      }
+
       var cross = (A.category || '') !== (B.category || '');
       // decide the winner from the SAME differences the table shows, so the verdict can never contradict it
       var aAdv = cross ? [] : cmpDiffBits(aA, aB);
@@ -4644,8 +4786,8 @@
       return t.length > 22 ? t.slice(0, 20).replace(/[,\s]+$/, '') + '…' : t;
     }
     function cmpBrand(p) { return ((p.brand || '').split(' · ')[0] || '').trim() || (p.title || 'this food'); }
-    function cmpVClass(a) { var lc = (a.verdict && a.verdict.labelClass) || ''; if (lc === 'vp-good') return 'good'; if (lc === 'vp-weak') return 'weak'; return 'okay'; }
-    function cmpVLabel(a) { return ((a.verdict && a.verdict.label) || '').replace(/\.$/, ''); }
+    function cmpVClass(a) { if (a.unverified) return 'unv'; var lc = (a.verdict && a.verdict.labelClass) || ''; if (lc === 'vp-good') return 'good'; if (lc === 'vp-weak') return 'weak'; return 'okay'; }
+    function cmpVLabel(a) { if (a.unverified) return 'Not verified yet'; return ((a.verdict && a.verdict.label) || '').replace(/\.$/, ''); }
     function cmpNum(m) { if (!m || m.value == null) return null; var mt = String(m.value).match(/(\d+(?:\.\d+)?)/); return mt ? parseFloat(mt[1]) : null; }
     function cmpFmt(v) { return esc(String(v == null ? '' : v).replace(/\s*DM\b/i, '').trim()); }
     function cmpMonthly(p) { var n = v3Price(p); if (n == null) return null; return Math.round(n * v3DailyGrams(p.category) * 30 / 100 / 10) * 10; }
@@ -4768,6 +4910,19 @@
       return '<div class="v3cmp-call"><div class="v3cmp-call-ey">' + seal + 'The verdict</div>' +
         '<div class="v3cmp-call-h">Go with ' + esc(cmpBrand(w)) + '</div>' +
         '<div class="v3cmp-call-p">' + lead + cost + '</div></div>';
+    }
+
+    // shown when a side has no published label — there's nothing to lay side by side, so say so plainly
+    function cmpCallUnverified(A, B, aUnv, bUnv, bothUnv) {
+      if (bothUnv) {
+        return '<div class="v3cmp-call flat"><div class="v3cmp-call-ey">Can’t compare these</div>'
+          + '<div class="v3cmp-call-h">Neither has a label yet</div>'
+          + '<div class="v3cmp-call-p">Neither of these has its full label published online, so there’s nothing to put side by side. Open either one to see more.</div></div>';
+      }
+      var u = aUnv ? A : B; // u = the one with no label
+      return '<div class="v3cmp-call flat"><div class="v3cmp-call-ey">Can’t compare these</div>'
+        + '<div class="v3cmp-call-h">No label for ' + esc(cmpBrand(u)) + ' yet</div>'
+        + '<div class="v3cmp-call-p"><span class="g">' + esc(cmpBrand(u)) + '</span> doesn’t have its full label published online, so there’s nothing to lay side by side. Open ' + esc(cmpBrand(u)) + ' to see why.</div></div>';
     }
 
     function cmpCell(m, win) {

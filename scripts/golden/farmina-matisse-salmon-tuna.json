@@ -10,9 +10,10 @@
       { "name": "Dehydrated fish (salmon 10%, tuna 10%)", "pct": null },
       { "name": "rice", "pct": 20 },
       { "name": "dehydrated chicken meat", "pct": null },
-      { "name": "corn", "pct": null }
+      { "name": "corn", "pct": null },
+      { "name": "corn gluten", "pct": null }
     ],
     "ga": { "protein": 32, "fat": 11, "fibre": 1.2, "moisture": null, "ash": 6.6, "calcium": 1.0, "phosphorus": 0.9, "taurine": { "value": 1800, "unit": "mg/kg" }, "taurineListed": true }
   },
-  "expect": { "verdict": "Not ideal daily", "firstIngredient": "fish", "proteinDM": 35.6, "grainFree": false, "completeness": "full" }
+  "expect": { "verdict": "Okay for now", "firstIngredient": "fish", "proteinDM": 35.6, "grainFree": false, "completeness": "full" }
 }

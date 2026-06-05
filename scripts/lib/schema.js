@@ -49,6 +49,9 @@ export function assemble(skeleton, voice, provenance) {
     parentTake: clean(a.parentTake),
     metrics: a.metrics.map(metricOut),
   };
+  if (a.transparency && a.transparency.level) {
+    out.transparency = { level: a.transparency.level, label: clean(a.transparency.label), note: clean(a.transparency.note) };
+  }
   // The displayed verdict tag must reflect the PRODUCT's own form, never the
   // label's moisture alone, so a card can never say "wet food" on a dry SKU.
   if (provenance && (provenance.productForm === 'wet' || provenance.productForm === 'dry')

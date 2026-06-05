@@ -8,6 +8,8 @@ import {
   GRAIN_RE,
   WET_CARRIER_RE,
   LIST_TERMINATOR_RE,
+  JUNK_RE,
+  PLANT_BULK_RE,
 } from './constants.js';
 
 const r1 = (x) => Math.round(x * 10) / 10;
@@ -127,6 +129,30 @@ export function listLooksComplete(ingredientsText) {
   return t.length > 40 && /[.)]\s*$/.test(t);
 }
 
+// How many DISTINCT named meats genuinely appear (skipping wet carriers and
+// generic sources). Two-plus named meats is a real quality signal.
+function countNamedMeats(ingredients, category) {
+  if (!ingredients || !ingredients.length) return 0;
+  let n = 0;
+  for (const ing of ingredients) {
+    if (category === 'wet' && WET_CARRIER_RE.test(ing.name)) continue;
+    const head = leadPhrase(ing.name);
+    if (isGenericProtein(head)) continue;
+    if (hasNamedMeat(head)) n++;
+  }
+  return n;
+}
+
+// Transparency = how much the brand actually published. This is its OWN axis and
+// never feeds the verdict. 'high' = full guaranteed analysis + a complete list;
+// 'low' = a readable ingredient list but no numbers at all; 'medium' between.
+function transparencyLevel(ga, gaConf, listComplete, firstIngredient) {
+  if (!firstIngredient) return 'low';
+  if (ga.protein == null) return 'low';            // ingredients only, no numbers
+  if (gaConf === 'full' && listComplete) return 'high';
+  return 'medium';
+}
+
 // Main entry. rawFacts: { ingredients:[{name,pct}], ingredientsText, ga:{...} }
 // meta: { productType, title, lifeStage, categoryHint }
 export function compute(rawFacts, meta = {}) {
@@ -153,11 +179,22 @@ export function compute(rawFacts, meta = {}) {
   const vet = isVetDiet({ productType: meta.productType, title: meta.title, brand: meta.brand, slug: meta.slug });
   const dietType = vet ? 'vet' : (category === 'treat' ? 'treat' : 'regular');
   const treatJunk = ingredients.some((i) => /\b(colou?r|tartrazine|sunset yellow|caramel|sugar|sucrose|glucose syrup|sorbitol|humectant)\b/i.test(i.name));
+  // Junk / plant-bulking flags apply to ALL foods (not just treats) and feed the
+  // quality score as real negatives.
+  const junk = ingredients.some((i) => JUNK_RE.test(i.name));
+  const plantBulk = ingredients.some((i) => PLANT_BULK_RE.test(i.name));
+  const namedMeatCount = countNamedMeats(ingredients, category);
+  const gaConf = gaConfidence(ga, flags);
 
   return {
     category,
     dietType,
     treatJunk,
+    junk,
+    plantBulk,
+    namedMeatCount,
+    secondNamedMeat: namedMeatCount >= 2,
+    meatPctRead: first && first.pct != null ? first.pct : null,
     lifeStage: meta.lifeStage || null,
     firstIngredient: first ? first.name : null,
     proteinAsFed: ga.protein ?? null,
@@ -175,7 +212,8 @@ export function compute(rawFacts, meta = {}) {
     genericProtein: !!first && isGenericProtein(leadPhrase(first.name)),
     ingredientSplitting: ingredientSplitting(ingredients),
     listComplete: complete,
-    gaConfidence: gaConfidence(ga, flags),
+    gaConfidence: gaConf,
+    transparency: transparencyLevel(ga, gaConf, complete, first ? first.name : null),
     ...flags,
   };
 }

@@ -75,7 +75,7 @@ async function writeRow(slug, patch) {
 // The conviction gate. We abstain (placeholder) only when there is no usable
 // label, or when a list existed but could not be trusted. A partial label
 // (ingredients-only or GA-only) still renders, with honest gaps.
-const STRONG_LABELS = new Set(['Strong choice', 'Good enough']);
+const STRONG_LABELS = new Set(['Strong choice']);
 function gate(source, validation, label) {
   const errors = [...validation.errors];
   const hadList = !!source.ingredientsText;

@@ -11,7 +11,7 @@
 // This module produces a COMPLETE, correct (if plain) analysis on its own. The
 // voice layer only makes the prose warmer; correctness never depends on the LLM.
 
-export const RUBRIC_VERSION = '2026-06-02';
+export const RUBRIC_VERSION = '2026-06-05';
 
 export const THRESHOLDS = {
   proteinDM: { good: 40, acceptable: 30 }, // %, dry matter
@@ -20,13 +20,17 @@ export const THRESHOLDS = {
 
 const LABEL_CLASS = {
   'Strong choice': 'vp-good',
-  'Good enough': 'vp-good',
+  'Good choice': 'vp-good',
   'Okay for now': 'vp-okay',
   'Not ideal daily': 'vp-weak',
   'Caution': 'vp-weak',
   'Not transparent enough': 'vp-weak',
   'Vet-directed diet': 'vp-okay',
   'Treat, not a meal': 'vp-okay',
+};
+
+const TIER_RANK = {
+  'Caution': 0, 'Not ideal daily': 1, 'Okay for now': 2, 'Good choice': 3, 'Strong choice': 4,
 };
 
 // ── Metrics ──────────────────────────────────────────────────────────────
@@ -84,47 +88,110 @@ export function buildMetrics(c) {
   return [metricFirstIngredient(c), metricProtein(c), metricCarbs(c), metricTaurine(c)];
 }
 
-// ── Verdict decision table ───────────────────────────────────────────────
+// ── Quality score ─────────────────────────────────────────────────────────
+// The verdict is led by the INGREDIENT DECK (what the parent can actually see),
+// refined by macros ONLY when they're disclosed. A missing number scores 0 (it
+// never drags a clean food down). Disclosure can lift a food to the very top
+// (Strong choice) but can never penalise it. This is the whole philosophy:
+// "clean ingredients = good food; missing macros are shown, not punished."
+export function qualityScore(c) {
+  let s = 0;
+
+  // The deck (primary signal)
+  if (c.meatFirst === true) s += 3;
+  if (c.meatFirst === false) s -= 3;            // a plant/grain genuinely leads
+  if (c.secondNamedMeat) s += 1;                // a real second named meat
+  if (c.meatPctRead != null &&
+      ((c.category === 'wet' && c.meatPctRead >= 40) ||
+       (c.category !== 'wet' && c.meatPctRead >= 26))) s += 1;
+  if (c.grainFree === true) s += 1;
+  if (c.grainFree === false) s -= 1;            // some grain in the mix
+  if (c.plantBulk) s -= 1;                      // plant protein padding the number
+  // Note: heavy cereal stacking (ingredientSplitting) isn't scored here; it caps
+  // the verdict at "Okay for now" in decideVerdict, which matches how a parent
+  // reads a meat-first food that's still cut with a lot of grain.
+  if (c.junk) s -= 3;                           // colours / sugar / artificial preservatives
+
+  // Macros — refine ONLY when disclosed; absence is neutral (0)
+  if (c.proteinDM != null) {
+    if (c.proteinDM >= THRESHOLDS.proteinDM.good) s += 2;
+    else if (c.proteinDM >= THRESHOLDS.proteinDM.acceptable) s += 1;
+    else s -= 2;                                // disclosed AND low: a real negative
+  }
+  if (c.carbs != null && !c.carbsUnreliable) {
+    if (c.carbs < THRESHOLDS.carbs.good) s += 1;
+    else if (c.carbs > THRESHOLDS.carbs.high) s -= 2;
+  }
+  if (c.taurineDisclosed) s += 1;
+
+  return s;
+}
+
+// ── Verdict ────────────────────────────────────────────────────────────────
 export function decideVerdict(c) {
-  const ingredientsDisclosed = !!c.firstIngredient;
-  if (!ingredientsDisclosed) {
+  if (!c.firstIngredient) {
     return { label: 'Not transparent enough', judgeable: false, cap: 'no-ingredients' };
   }
+  // Generic, un-named protein ("meat and animal derivatives") is a hard floor.
+  if (c.genericProtein) return { label: 'Caution', judgeable: true, cap: null };
 
-  const grainPresent = c.grainFree === false;
+  const score = qualityScore(c);
   const carbsKnown = c.carbs != null && !c.carbsUnreliable;
   const proteinKnown = c.proteinDM != null;
 
-  // Hard negatives first.
-  if (c.genericProtein) return { label: 'Caution', judgeable: true, cap: null };
-  if (c.meatFirst === false) return { label: 'Not ideal daily', judgeable: true, cap: null };
-  if (carbsKnown && c.carbs > THRESHOLDS.carbs.high) return { label: 'Not ideal daily', judgeable: true, cap: null };
-  if (proteinKnown && c.proteinDM < THRESHOLDS.proteinDM.acceptable) return { label: 'Not ideal daily', judgeable: true, cap: null };
-
-  // Meat leads (true) or is unconfirmed (null). Grade upward only on real evidence.
-  const meatGood = c.meatFirst === true;
-  const strong =
-    meatGood && proteinKnown && c.proteinDM >= THRESHOLDS.proteinDM.good &&
+  // Strong choice = a clean meat-first deck AND the numbers confirm it's excellent.
+  // This is the only tier that requires disclosure, and it's a reward, not a gate
+  // applied to everyone.
+  const cleanDeck = c.meatFirst === true && !c.junk && !c.ingredientSplitting && c.grainFree !== false;
+  const strong = cleanDeck &&
+    proteinKnown && c.proteinDM >= THRESHOLDS.proteinDM.good &&
     carbsKnown && c.carbs < THRESHOLDS.carbs.good &&
-    c.taurineDisclosed && !grainPresent && !c.ingredientSplitting &&
-    c.gaConfidence === 'full';
+    c.taurineDisclosed;
   if (strong) return { label: 'Strong choice', judgeable: true, cap: null };
 
-  const good =
-    meatGood && proteinKnown && c.proteinDM >= THRESHOLDS.proteinDM.acceptable &&
-    (!carbsKnown || c.carbs < 30) && c.taurineDisclosed;
-  if (good) return { label: 'Good enough', judgeable: true, cap: null };
+  // Otherwise map the score to a tier. A clean meat-first deck (+3) clears "Good
+  // choice" on its own, with or without numbers.
+  let label;
+  if (score >= 2) label = 'Good choice';
+  else if (score >= 0) label = 'Okay for now';
+  else if (score >= -3) label = 'Not ideal daily';
+  else label = 'Caution';
 
-  // Meat leads but we can't fully confirm the numbers (often GA absent).
-  return { label: 'Okay for now', judgeable: true, cap: c.gaConfidence === 'none' ? 'no-ga' : null };
+  // Caps: things that should hold a food back regardless of other positives.
+  if (c.meatFirst === false && TIER_RANK[label] > TIER_RANK['Not ideal daily']) label = 'Not ideal daily';
+  if (c.junk && TIER_RANK[label] > TIER_RANK['Okay for now']) label = 'Okay for now';
+  // A meat-first food still stacked with cereals (rice + corn + corn gluten, etc.)
+  // is at best "Okay for now", however good its protein number looks.
+  if (c.ingredientSplitting && TIER_RANK[label] > TIER_RANK['Okay for now']) label = 'Okay for now';
+
+  // "Caution" is the harshest call. Reserve it for a label that's vague about its
+  // meat (generic protein) or carries junk. A food that's merely plant-leading or
+  // filler-heavy floors at "Not ideal daily" instead, so we never over-condemn,
+  // and the Caution copy (about un-named meat) always matches the reason.
+  if (label === 'Caution' && !c.genericProtein && !c.junk) label = 'Not ideal daily';
+
+  return { label, judgeable: true, cap: c.gaConfidence === 'none' ? 'no-ga' : null };
 }
 
 function worryFor(label) {
-  const filled = label === 'Strong choice' || label === 'Good enough' ? 1
+  const filled = label === 'Strong choice' || label === 'Good choice' ? 1
     : label === 'Okay for now' || label === 'Not ideal daily' ? 2 : 3;
   const level = filled === 1 ? 'low' : filled === 2 ? 'medium' : 'high';
   const text = filled === 1 ? 'Low concern' : filled === 2 ? 'Medium concern' : 'Higher concern';
   return { level, filled, label: text };
+}
+
+// Transparency is its own surfaced axis (never the verdict). 'high' brands
+// publish the full label; 'low' publish little beyond an ingredient list.
+function transparencyOut(c) {
+  const level = c.transparency || 'low';
+  const label = level === 'high' ? 'High' : level === 'medium' ? 'Medium' : 'Low';
+  const note = level === 'high'
+    ? 'This brand publishes the full label, the ingredients and the guaranteed analysis.'
+    : level === 'medium'
+      ? 'This brand publishes part of the label. Some of the numbers are missing.'
+      : 'This brand publishes very little. We are going on the ingredient list alone.';
+  return { level, label, note };
 }
 
 // ── Plain (fallback) prose + reasons, all TRUE by construction ─────────────
@@ -163,16 +230,19 @@ function buildReasons(c, metrics) {
     out.push({ status: 'missing', q: 'Taurine not listed', a: "Taurine matters for a cat's heart and eyes, and this label does not mention it." });
   }
 
-  // Keep the decisive few: all non-good, then fill with good, cap at 4.
-  const nonGood = out.filter((r) => r.status !== 'good');
+  // "Why Sniff says this" explains the VERDICT, which is about quality. Real
+  // negatives lead, then the good points. Disclosure gaps ('missing') are NOT
+  // reasons for the verdict, they live in the transparency signal and the
+  // "what they won't tell you" section, so they're dropped here.
+  const negatives = out.filter((r) => r.status === 'caution' || r.status === 'bad');
   const goodOnes = out.filter((r) => r.status === 'good');
-  return [...nonGood, ...goodOnes].slice(0, 4);
+  return [...negatives, ...goodOnes].slice(0, 4);
 }
 
 function buildFits(c, label) {
   const fits = [];
   const noFit = [];
-  if (label === 'Strong choice' || label === 'Good enough') fits.push('Healthy adult cats as a daily food');
+  if (label === 'Strong choice' || label === 'Good choice') fits.push('Healthy adult cats as a daily food');
   if (c.meatFirst === true) fits.push('Cats who do well on a meat-first recipe');
   if (c.grainFree === true) fits.push('Cats you are keeping off grains');
   if (c.grainFree === false) noFit.push('Cats you want fully off grains');
@@ -206,13 +276,17 @@ function plainSummary(c, label) {
       `Genuinely strong. ${ing} up front, barely any carbs, no grain filler. This is what cat food is meant to look like.`,
     ]);
   }
-  if (label === 'Good enough') {
-    return `A sensible, honest pick. It leads with ${ing}, the protein holds up, and nothing on the label throws a flag.`;
+  if (label === 'Good choice') {
+    return vary(ing, [
+      `A clean, honest bowl. It leads with ${ing}, a real named meat, and nothing on the label raises a flag. A solid everyday food.`,
+      `This is a good one. ${ing} up front and a clean ingredient list. Exactly the kind of food a cat does well on.`,
+    ]);
   }
   if (label === 'Okay for now') {
     const carbBit = (c.carbs != null && !c.carbsUnreliable && c.carbs >= 25) ? ` carbs sit a bit high (around ${c.carbs}%)` : '';
     const grainBit = c.grainFree === false ? `${carbBit ? ' and' : ''} there's some grain in the mix` : '';
-    const gap = (carbBit || grainBit) ? `, but${carbBit}${grainBit}.` : ', with a few small gaps.';
+    const splitBit = (!carbBit && !grainBit && c.ingredientSplitting) ? ' it leans on a fair bit of cereal filler' : '';
+    const gap = (carbBit || grainBit) ? `, but${carbBit}${grainBit}.` : (splitBit ? `, but${splitBit}.` : ', but a few things hold it back.');
     return `Not bad, not amazing. It does start with ${ing}, which is what you want${gap} Fine for now if it suits your cat, though I'd keep half an eye out for something better.`;
   }
   if (label === 'Not ideal daily') {
@@ -224,14 +298,16 @@ function plainSummary(c, label) {
     return `I wouldn't make this the everyday bowl. The catch is ${why}. Cats are built for meat, and this leans the other way.`;
   }
   if (label === 'Caution') {
-    return `This is one I'd be wary of. It leads with "${ing}", which is a vague way of saying meat without naming it, and usually means there isn't much real meat in there.`;
+    if (c.genericProtein) return `This is one I'd be wary of. It leads with "${ing}", a vague way of saying meat without naming it, which usually means there isn't much real meat in there.`;
+    if (c.junk) return `This is one I'd be wary of. The label carries things a cat has no use for, like added colour or sugar. I'd rather feed something cleaner.`;
+    return `This is one I'd be wary of. The recipe leans hard on filler instead of the meat a cat is built for.`;
   }
   return '';
 }
 
 function plainParentTake(c, label) {
   if (label === 'Strong choice') return "If my cat liked it, this would stay in the rotation. It's meat-first, easy on the carbs cats don't need, and the label is honest about what's inside.";
-  if (label === 'Good enough') return "I'd feed this without losing sleep. Not the fanciest bag on the shelf, but it covers the basics and doesn't hide anything.";
+  if (label === 'Good choice') return "I'd feed this without losing sleep. It leads with real meat and keeps the ingredient list clean. A good everyday bowl.";
   if (label === 'Okay for now') return "It won't hurt a healthy cat, and if yours is happy on it, no panic. But if you can find something meatier with less grain, that's the better long-term bowl.";
   if (label === 'Not ideal daily') return "I'd keep this as a backup, not the daily bowl. Your cat would do better on something that leads with real meat and goes easier on the carbs.";
   if (label === 'Caution') return "Honestly, I'd pick something else. When a label won't even name the meat, I'd rather not guess what my cat is eating every day.";
@@ -240,7 +316,7 @@ function plainParentTake(c, label) {
 }
 
 function plainAction(c, label) {
-  if (label === 'Strong choice' || label === 'Good enough') return "Feed it as the daily bowl, and keep some water-rich wet food in the mix for hydration.";
+  if (label === 'Strong choice' || label === 'Good choice') return "Feed it as the daily bowl, and keep some water-rich wet food in the mix for hydration.";
   if (label === 'Okay for now') return "Fine to keep feeding, but compare it with a meatier, lower-carb option before you commit to the big bag.";
   if (label === 'Not ideal daily') return "Use it as a backup if you need to, and look for a meat-first option for everyday.";
   if (label === 'Caution') return "I'd swap this for a food that names its meat and shares its numbers.";
@@ -264,6 +340,7 @@ function scoreVetDiet(c) {
     doesntFitIf: ['Healthy cats with no diagnosed condition', 'Everyday feeding without vet advice'],
     parentTake: 'If your vet prescribed this, feed it as directed and do not switch without asking them. If no one prescribed it, this is not the everyday food to reach for.',
     action: 'Use only under your vet\'s guidance.',
+    transparency: transparencyOut(c),
     judgeable: true, cap: 'vet',
   };
 }
@@ -283,6 +360,7 @@ function scoreTreat(c) {
     doesntFitIf: ['As a daily meal', 'Cats watching their weight'],
     parentTake: 'Treat it like candy, not dinner. A little now and then is fine; it should not replace proper food.',
     action: 'Give sparingly, alongside a proper diet.',
+    transparency: transparencyOut(c),
     judgeable: true, cap: 'treat',
   };
 }
@@ -311,6 +389,7 @@ export function score(c) {
     doesntFitIf,
     parentTake: plainParentTake(c, v.label),
     action: plainAction(c, v.label),
+    transparency: transparencyOut(c),
     judgeable: v.judgeable,
     cap: v.cap,
   };

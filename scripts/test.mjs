@@ -376,7 +376,7 @@ for (const fx of loadGolden()) {
     }
     // The headline guarantee: a confident-looking green verdict never rides on a
     // value we could not verify.
-    if (['Strong choice', 'Good enough'].includes(sk.verdict.label)) {
+    if (['Strong choice', 'Good choice'].includes(sk.verdict.label)) {
       assert.notEqual(c.proteinDM, null, `${fx.name} claims ${sk.verdict.label} without protein`);
       assert.equal(c.meatFirst, true);
     }

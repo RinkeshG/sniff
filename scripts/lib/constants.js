@@ -86,3 +86,13 @@ export const LIST_TERMINATOR_RE =
 // Marketing phrases that must NOT be treated as label facts.
 export const MARKETING_CLAIM_RE =
   /\b(grain[-\s]?free|high[-\s]?protein|complete|balanced|natural|premium|holistic|human[-\s]?grade|vet[-\s]?recommended|no\s+fillers)\b/i;
+
+// Junk a cat food has no business containing: artificial colours, added sugars,
+// and artificial preservatives. Bare "sugar" is deliberately excluded so
+// "sugar beet pulp" (a fibre) never trips it; only real added sweeteners match.
+export const JUNK_RE =
+  /\b(colou?rs?|colou?ring|tartrazine|sunset yellow|ponceau|allura red|caramel|sucrose|glucose syrup|corn syrup|invert syrup|sorbitol|bha|bht|ethoxyquin|propyl gallate)\b/i;
+
+// Plant proteins used to bulk up the protein number cheaply, not to feed a cat.
+export const PLANT_BULK_RE =
+  /\b(pea protein|potato protein|corn gluten|maize gluten|wheat gluten|soya?\s+protein|vegetable protein|plant protein)\b/i;
