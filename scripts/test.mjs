@@ -350,6 +350,29 @@ test('identity helpers: brandKey + leadMeat behave', () => {
   assert.equal(leadMeat('meat and animal derivatives (4% chicken)'), null); // generic lead is not a named claim
 });
 
+test('parse: a single named-meat ingredient (freeze-dried treat) is OK, not a bad parse', () => {
+  // "Ingredients: Tuna" / "Whole Shrimp" are genuinely complete single-ingredient
+  // labels, so they must NOT be flagged low-confidence and abstained.
+  const tuna = parseLabel({ ingredientsText: 'Tuna', gaText: '' });
+  assert.equal(tuna.parseConfidence, 'ok');
+  assert.equal(tuna.ingredients.length, 1);
+  // but a single NON-meat ingredient is still a truncation signal -> low.
+  const rice = parseLabel({ ingredientsText: 'Rice', gaText: '' });
+  assert.equal(rice.parseConfidence, 'low');
+});
+
+test('identity: "Cats and Kittens" label is all-life-stages, no false conflict vs adult', () => {
+  const prod = productIdentity({ brand: 'Goofy Tails · Wet food', title: 'Mackerel and Seaweed', category: 'wet', type: 'cat', life_stage: 'adult' });
+  const label = labelIdentity({
+    facts: { ga: { moisture: 81 }, ingredientsText: 'mackerel, water' },
+    sourceUrl: 'https://goofytails.com/products/goofy-tails-mackerel-and-seaweed-wet-cat-food-and-kitten-food',
+    firstIngredient: 'Mackerel',
+  });
+  const c = identityConflict(prod, label, 'mackerel, water');
+  assert.equal(c.ok, true);
+  assert.equal(c.soft.length, 0, c.soft.join(','));
+});
+
 // ── Golden set: real labels, independent ground truth, per-product ──────────
 function loadGolden() {
   const dir = fileURLToPath(new URL('./golden/', import.meta.url));

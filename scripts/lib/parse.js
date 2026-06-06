@@ -6,6 +6,8 @@
 // parseConfidence flags labels this parser could not read cleanly, so a human
 // (or a careful read) can handle the long tail instead of trusting a bad parse.
 
+import { hasNamedMeat } from './constants.js';
+
 // Split on top-level commas OR semicolons (some labels use ';'), respecting
 // parentheses so "Minerals (Calcium, ...)" stays one ingredient.
 function splitTop(s) {
@@ -90,7 +92,11 @@ export function parseLabel({ ingredientsText, gaText } = {}) {
   ga.taurineListed = ga.taurineListed || /taurine/i.test(ingredientsText || '');
 
   // Low confidence = the parser likely missed something the source clearly had.
-  const lowIngredients = !!ingredientsText && ingredients.length < 2;
+  // A single ingredient is normally a truncation signal, EXCEPT when that one
+  // ingredient is itself a named meat: single-ingredient freeze-dried treats
+  // ("Whole Shrimp", "Whole Tuna") are genuinely one clean, complete ingredient.
+  const singleNamedMeat = ingredients.length === 1 && hasNamedMeat(ingredients[0].name);
+  const lowIngredients = !!ingredientsText && ingredients.length < 2 && !singleNamedMeat;
   const lowGa = !!gaText && /protein/i.test(gaText) && ga.protein == null;
   return { ingredients, ga, parseConfidence: lowIngredients || lowGa ? 'low' : 'ok' };
 }

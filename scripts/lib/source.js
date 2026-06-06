@@ -7,6 +7,7 @@
 // site) is a hook that currently abstains rather than guess, by design.
 
 import { listLooksComplete } from './compute.js';
+import { hasNamedMeat } from './constants.js';
 
 // Inline tags can sit MID-WORD (e.g. "L<span>amb"), so they must be removed with
 // no space or the word splits ("L amb"). Block tags become whitespace boundaries.
@@ -70,11 +71,32 @@ function topCommas(s) {
   return n;
 }
 
+// A lone, clearly-named ingredient IS a complete list (single-ingredient treats:
+// "Ingredients: Anchovies"). Accept it; reject marketing tokens up the chain.
+function isSingleIngredient(s) {
+  const v = String(s || '').replace(/\(.*?\)/g, '').trim();
+  return !!v && topCommas(v) === 0 && v.split(/\s+/).length <= 3 && hasNamedMeat(v);
+}
+
+// A real list LEADS with a real ingredient, not a marketing sentence. Guards the
+// text extractor against "Ingredients: Blended with nutrient-rich superfoods..."
+// (the lead must be a short noun, no claim words). Mirrors labelharvest.cleanLead.
+const LEAD_MARKETING = /\b(quality|grade|single|human|flavou?rs?|preservativ\w*|natural|premium|high|just|made|recipe|supports?|packed|crispy|crunch\w*|snack\w*|superior|nutrition|balanced|complete|wholesome|blended|crafted|delicious|tasty|benefits?|healthy|rich|nutrient|added|formulated|goodness|taste|cravings?|wellness)\b/i;
+function cleanLead(item) {
+  const w = String(item || '').replace(/\(.*?\)/g, '').trim();
+  if (w.length < 3 || w.length > 40) return false;
+  if (/\d/.test(w)) return false;
+  if (w.split(/\s+/).length > 5) return false;
+  if (LEAD_MARKETING.test(w)) return false;
+  return true;
+}
+
 function findIngredients(lines) {
   const i = lines.findIndex(isIngHeader);
   if (i < 0) return null;
   const h = headerMatch(lines[i], ING_WORDS);
-  if (h.content && topCommas(h.content) >= 2) return stripLabel(h.content);
+  if (h.content && topCommas(h.content) >= 2 && cleanLead(h.content.split(',')[0])) return stripLabel(h.content);
+  if (h.content && isSingleIngredient(stripLabel(h.content))) return stripLabel(h.content).replace(/[.;]+$/, '').trim();
 
   const bullets = [];
   for (let j = i + 1; j < Math.min(lines.length, i + 40); j++) {
@@ -82,13 +104,36 @@ function findIngredients(lines) {
     if (!raw) { if (bullets.length) break; else continue; }
     const isBullet = raw.startsWith('•');
     const body = (isBullet ? raw.replace(/^•\s*/, '') : raw).trim();
-    if (topCommas(body) >= 2) return stripLabel(body);   // full list on one line or one bullet
+    if (topCommas(body) >= 2 && cleanLead(body.split(',')[0])) return stripLabel(body);   // full list on one line or one bullet
+    if (!bullets.length && isSingleIngredient(body)) return body.replace(/[.;]+$/, '').trim();
     if (isBullet) { bullets.push(body); continue; }       // multi-item bullet list
     if (bullets.length) break;
     if (/^[A-Za-z][\w\s/&]{2,32}:?$/.test(raw)) break;    // next header
     break;
   }
   return bullets.length >= 3 ? bullets.join(', ') : null;
+}
+
+// Context-aware fallback for run-on descriptions where the list is NOT on its own
+// line ("...Key Features: ... Ingredients : Anchovies Serving Recommendation:...").
+// Only fires on an explicit "Ingredients:" / "Composition:" label (a colon-led
+// declaration, never a stray marketing mention), and stops at the next section.
+const NEXT_SECTION = /\b(serving|feeding|storage|nutrition\w*|guaranteed|analytical|analysis|net\s|best before|direction|recommend|how to|caution|manufactur|marketed|fssai)\b/i;
+function findIngredientsInline(text) {
+  const re = /\b(?:composition|ingredients?)\s*[:\-]\s*([A-Za-z(][\s\S]{0,400})/ig;
+  let m;
+  while ((m = re.exec(text))) {
+    let body = m[1];
+    const s = body.search(NEXT_SECTION);
+    if (s > 0) body = body.slice(0, s);
+    body = body.replace(/\s+/g, ' ').trim().replace(/[.;,]+$/, '');
+    const lead = cleanLead(body.split(',')[0]);
+    if (topCommas(body) >= 2 && listLooksComplete(body) && lead) return body;
+    if (topCommas(body) >= 1 && hasNamedMeat(body) && lead) return body;  // short 2-item list
+    if (isSingleIngredient(body)) return body;                            // single-ingredient
+    // else: a marketing "Ingredients:" mention -> keep scanning for a real one
+  }
+  return null;
 }
 
 // Real guaranteed analysis only: a labeled GA block, or a line that lists a
@@ -143,9 +188,16 @@ export function extractLabelFromHtml(bodyHtml, identityOk = true) {
   const text = htmlToText(bodyHtml);
   const lines = text.split('\n').map((l) => l.trim());
   const multiProduct = lines.filter(isIngHeader).length >= 2;
-  const ingT = findIngredients(lines);
+  let ingT = findIngredients(lines);
+  if (!ingT) ingT = findIngredientsInline(text);   // run-on description fallback
   const gaT = findGA(lines, ingT);
-  const ingredientsText = (ingT && /,/.test(ingT) && listLooksComplete(ingT) && identityOk && !multiProduct) ? ingT : null;
+  // Accept a multi-item list (>=1 comma; the finders already require a clean,
+  // named-meat lead) OR a single named-meat ingredient. Completeness is not
+  // re-gated here: compute() conservatively returns grain-free=unknown for a
+  // truncated list, so a real-but-trimmed list is still safe to use (partial).
+  const single = !!ingT && isSingleIngredient(ingT);
+  const listOk = !!ingT && /,/.test(ingT);
+  const ingredientsText = (ingT && (listOk || single) && identityOk && !multiProduct) ? ingT : null;
   const gaText = (gaT && /\d/.test(gaT) && identityOk) ? gaT : null;
   const have = !!ingredientsText || !!gaText;
   return { ingredientsText, gaText, multiProduct, completeness: ingredientsText && gaText ? 'full' : have ? 'partial' : 'none' };

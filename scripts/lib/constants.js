@@ -17,10 +17,13 @@ export const NAMED_MEATS = [
 const MEAT_FORMS = '(?:fresh|dried|dehydrated|de-?hydrated|hydrol(?:y|i)zed|hydrolysed|raw|frozen|cooked|whole|deboned|boneless|meal|protein|fillet|flesh|broth|meat)';
 
 // A named meat appears in the string (e.g. "Dehydrated chicken meat (36%)").
-// The trailing "(?:e?s)?" lets a singular lexicon entry also match its plural so
-// "Sardines"/"Prawns"/"Eggs" read as named meats, not as "a plant leads".
+// Each lexicon entry also matches its plural: "+s/+es" for most, and "y -> ies"
+// for y-endings, so "Sardines"/"Prawns"/"Anchovies"/"Crunchies"-free fish all
+// read as named meats, not as "a plant leads". (anchovy -> anchovies was the miss
+// that wrongly made HUFT single-ingredient anchovy treats look unverifiable.)
+export const meatPluralAlt = (w) => (/y$/i.test(w) ? w.slice(0, -1) + '(?:y|ys|ies)' : w + '(?:e?s)?');
 const NAMED_MEAT_RE = new RegExp(
-  '\\b(?:' + MEAT_FORMS + '\\s+)*(' + NAMED_MEATS.join('|') + ')(?:e?s)?\\b',
+  '\\b(?:' + MEAT_FORMS + '\\s+)*(?:' + NAMED_MEATS.map(meatPluralAlt).join('|') + ')\\b',
   'i'
 );
 export function hasNamedMeat(str) {

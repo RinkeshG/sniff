@@ -54,6 +54,10 @@ export function classifyLifeStage(text) {
   if (/\ball life ?stages?\b/.test(t)) return 'all';
   // a label that addresses both kitten and adult is "all"
   if (/\bkitten\b/.test(t) && /\badult\b/.test(t)) return 'all';
+  // "...for Cats and Kittens" / "Cat Food and Kitten Food" addresses the whole
+  // range, so it is all-life-stages, not kitten-specific (which would falsely
+  // conflict with an adult product). Proximity-bound so it stays precise.
+  if (/\bcats?\b.{0,15}\bkittens?\b|\bkittens?\b.{0,15}\bcats?\b/is.test(t)) return 'all';
   if (/\b(kitten|kittens|junior|mother (?:and|&) baby|growth|starter)\b/.test(t)) return 'kitten';
   if (/\b(senior|mature|ageing|aging|7\s*\+|11\s*\+)\b/.test(t)) return 'senior';
   if (/\b(adult|1\s*\+)\b/.test(t)) return 'adult';
